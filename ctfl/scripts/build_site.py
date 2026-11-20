@@ -60,5 +60,11 @@ for n in range(1,7):
         name=f'sp/ch{n}_{g//N:02d}.jpg'; c.save(name,quality=78,optimize=True,progressive=True)
         for k in range(len(ims[g:g+N])): slides[g+k]['img']=name+'?v='+V; slides[g+k]['k']=k
     decks.append({'id':f'ch{n}','num':n,'title':CH[n][0],'sub':CH[n][1],'cover':f'img/ch{n}.jpg','ratio':f'{w}/{h}','per':N,'slides':slides})
+# keep the table of contents (added by toc_json.py) when rebuilding
+try:
+    _old={x['id']:x.get('toc') for x in json.load(open('decks.json'))}
+    for x in decks:
+        if _old.get(x['id']): x['toc']=_old[x['id']]
+except Exception as e: print('toc not kept:',e)
 json.dump(decks,open('decks.json','w'),ensure_ascii=False)
 print(len(glob.glob('sp/*')),'sprites', sum(len(d['slides']) for d in decks),'slides')
