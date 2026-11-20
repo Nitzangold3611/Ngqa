@@ -48,17 +48,33 @@
     } else setCookie(s);
     return s;
   }
+  /* roles live in the token, which is renewed only once an hour. Ask the server for the current
+     user on every page load; when the admin changed the roles, get a new token right away. */
+  let freshDone = false;
+  async function fresh() {
+    let s = await session(); if (!s || freshDone) return s;
+    freshDone = true;
+    try {
+      const u = await req('/user', { headers: { Authorization: 'Bearer ' + s.access_token } });
+      const tok = decode(s.access_token) || {};
+      const same = JSON.stringify((tok.app_metadata || {}).roles || []) === JSON.stringify((u.app_metadata || {}).roles || [])
+                && !!(tok.app_metadata || {}).blocked === !!(u.app_metadata || {}).blocked;
+      if (!same) s = await storeTokens(await req('/token', form({ grant_type: 'refresh_token', refresh_token: s.refresh_token })));
+      else { s.user = u; save(s); }
+    } catch (e) { if (e.status === 401) { save(null); return null; } }
+    return s;
+  }
   function info(s) {
     if (!s) return null;
     const c = decode(s.access_token) || {}; const u = s.user || {};
-    const am = c.app_metadata || u.app_metadata || {}; const um = c.user_metadata || u.user_metadata || {};
+    const am = u.app_metadata || c.app_metadata || {}; const um = u.user_metadata || c.user_metadata || {};
     const roles = am.roles || [];
     return { email: c.email || u.email, name: um.full_name || um.name || '', roles, admin: roles.includes('admin'), blocked: !!am.blocked };
   }
   const can = (i, course) => !!i && !i.blocked && (i.admin || i.roles.includes(course));
 
   const Auth = {
-    COURSES, isEnabled, session, info, can,
+    COURSES, isEnabled, session, fresh, info, can,
     async login(email, password) { return storeTokens(await req('/token', form({ grant_type: 'password', username: email, password }))); },
     google() { location.href = API + '/authorize?provider=google'; },
     async recover(email) { await req('/recover', json('POST', { email })); },
@@ -85,7 +101,7 @@
     /* course pages: send people without access back to the home page (does nothing while Identity is off) */
     async guard(course) {
       if (!(await isEnabled())) return true;
-      const i = info(await session());
+      const i = info(await fresh());
       if (can(i, course)) return true;
       location.replace('/?' + (i ? 'denied=' + course : 'login=1&next=' + encodeURIComponent(location.pathname + location.hash)));
       return false;

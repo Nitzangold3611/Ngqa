@@ -122,7 +122,7 @@ dialog::backdrop{background:rgba(11,10,36,.6)}
     </a>
   </div>
 </main>
-<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.1 · 20.11.2026</bdi></span></footer>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.1.1 · 20.11.2026</bdi></span></footer>
 <script>
 {const g=document.getElementById('traces');let s='';const col=i=>i%4===2?'#F38911':'#14DACD';
 for(let i=0;i<9;i++){const y=380-i*24,a=60+((i*97)%220),b=20+((i*53)%50),c=30+((i*71)%140);
@@ -195,7 +195,7 @@ function viewRecovery(){
 function notice(t){const n=$('notice');n.textContent=t||'';n.classList.toggle('on',!!t)}
 async function render(){
   if(!on){$('topbar').innerHTML='';return}
-  const i=A.info(await A.session());
+  const i=A.info(await A.fresh());
   document.querySelectorAll('.course').forEach(c=>{const ok=A.can(i,c.dataset.c);c.classList.toggle('locked',!ok);
     c.querySelector('.go').textContent=ok?'כניסה לקורס ←':(i?'אין לך גישה לקורס':'התחברות לקורס 🔒')});
   $('topbar').innerHTML=i?`<div class="umenu" id="um"><button class="abtn" type="button" id="umB" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>${esc(i.name||i.email.split('@')[0])}</button>
