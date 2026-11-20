@@ -34,6 +34,8 @@ python3 patch_d2.py d2_final.pptx d2_final_p.pptx && mv d2_final_p.pptx d2_final
 python3 patch_d4.py d4_final.pptx d4_final_p.pptx && mv d4_final_p.pptx d4_final.pptx
 python3 patch_d5.py d5_final.pptx d5_final_p.pptx && mv d5_final_p.pptx d5_final.pptx
 for n in 1 2 3 4 5 6; do python3 add_toc.py $n d${n}_final.pptx d${n}_toc.pptx; done
+# user feedback fixes (20.11.2026) + dark-text-on-dark-fill fix
+for n in 1 2 3 4 5 6; do python3 patches2.py $n d${n}_toc.pptx d${n}_tp.pptx && python3 fix_contrast.py d${n}_tp.pptx d${n}_toc.pptx && rm d${n}_tp.pptx; done
 S=/root/.claude/skills/synced/d581b97c-8232-4796-9289-5c7868eb7101_0c95616f-1c1c-47af-8e20-d3b0c58604f4/pptx
 for n in 1 2 3 4 5 6; do python3 $S/scripts/office/validate.py d${n}_toc.pptx --original d$n.pptx 2>&1 | tail -1; done
 for n in 1 2 3 4 5 6; do (rm -rf hr$n && mkdir -p hr$n && cd hr$n && cp ../d${n}_toc.pptx deck.pptx && timeout 900 python3 $S/scripts/office/soffice.py --headless --convert-to pdf deck.pptx >/dev/null 2>&1; pdftoppm -jpeg -r 120 deck.pdf s) & done; wait

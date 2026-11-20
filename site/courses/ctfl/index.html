@@ -158,15 +158,13 @@ body.feed .stage .frame,body.feed .stage .nav,body.feed .stage .links,body.feed 
 body.feed .stage{margin:0;padding:0}
 .fcard{position:relative;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(18,17,51,.16);margin:0 0 14px;aspect-ratio:var(--ar,16/9)}
 .fcard .sl{position:absolute;inset:0;background-color:#f1f3f8}
-.fcard .fn{position:absolute;bottom:6px;inset-inline-end:6px;background:rgba(18,17,51,.78);color:#fff;font-size:11px;border-radius:999px;padding:1px 8px;font-variant-numeric:tabular-nums}
+.fcard .fn{display:none;position:absolute;bottom:6px;inset-inline-end:6px;background:rgba(18,17,51,.78);color:#fff;font-size:11px;border-radius:999px;padding:1px 8px;font-variant-numeric:tabular-nums}
 .flinks{display:flex;flex-wrap:wrap;gap:6px;margin:-6px 0 14px}
 .flinks a{display:inline-flex;align-items:center;min-height:40px;padding:0 12px;border-radius:10px;background:var(--navy);color:#fff;text-decoration:none;font-size:14px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr}
 .fpill{position:fixed;top:calc(var(--vbh,120px) + 8px);left:50%;transform:translateX(-50%);max-width:92vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--navy);color:#fff;border-radius:999px;padding:8px 16px;font-weight:700;font-size:14px;z-index:20;box-shadow:0 6px 20px rgba(0,0,0,.25);display:none;font-variant-numeric:tabular-nums}
 body.feed .fpill{display:block}
 body.feed .stage .frame.pfs,body.feed .stage .frame:fullscreen{display:block}
 body.pfs-on .fpill{display:none}
-.rot{display:none!important}
-@media(orientation:portrait){.frame.pfs .rot{display:block!important;position:absolute;top:14px;inset-inline-start:14px;z-index:3;color:#c9cbf0;font-size:13px;pointer-events:none}}
 
 /* ---- toolbar v3 ---- */
 .vbar .acts{display:flex;gap:8px;align-items:center}
@@ -218,6 +216,7 @@ body.feed .stage>.nextch{display:none!important}
 .ch .prog{display:inline-block;margin-top:4px;padding:2px 8px;border-radius:999px;background:rgba(91,95,224,.12);color:#4b4fd0;font-size:12px;font-weight:600}
 .allc{display:table;color:#c9cbf0;text-decoration:none;font-size:14px;font-weight:600;border:1px solid #3b3a78;border-radius:999px;padding:4px 12px;margin-bottom:14px}.allc:hover{color:var(--teal);border-color:var(--teal)}
 .frame{touch-action:pan-y pinch-zoom}.frame.pfs,.frame:fullscreen{touch-action:none}
+.fpill{transition:opacity .35s;opacity:0;pointer-events:none}.fpill.on{opacity:.95}
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -245,7 +244,7 @@ body.feed .stage>.nextch{display:none!important}
     <h2>פרקי הקורס</h2>
     <div class="grid" id="grid"></div>
   </div></main>
-  <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.0.1 · 20.11.2026</bdi></span></footer>
+  <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.0.2 · 20.11.2026</bdi></span></footer>
 </div>
 
 <div id="viewer">
@@ -262,7 +261,7 @@ body.feed .stage>.nextch{display:none!important}
   </div>
   <div class="stage">
     <p class="where" id="where" aria-live="polite"></p>
-    <div class="frame" id="frame"><div id="slide" class="sl" role="img" aria-label=""></div><div id="hot"></div><button class="xfs" id="xfs" type="button" aria-label="יציאה ממסך מלא">✕</button><a class="nextch" id="nextchf" href="#"></a><p class="rot">סובבו את הטלפון לרוחב לתצוגה מלאה</p><div class="fsbar" id="fsbar"><span class="fst" id="fst"></span><span class="fsn" id="fsn"></span></div><p class="sr" id="stext" aria-live="polite"></p></div>
+    <div class="frame" id="frame"><div id="slide" class="sl" role="img" aria-label=""></div><div id="hot"></div><button class="xfs" id="xfs" type="button" aria-label="יציאה ממסך מלא">✕</button><a class="nextch" id="nextchf" href="#"></a><div class="fsbar" id="fsbar"><span class="fst" id="fst"></span><span class="fsn" id="fsn"></span></div><p class="sr" id="stext" aria-live="polite"></p></div>
     <div class="links" id="links"></div>
     <p class="hint">סובבו את הטלפון לרוחב לתצוגה גדולה יותר · החליקו ימינה/שמאלה למעבר בין שקפים</p>
     <div class="nav">
@@ -274,7 +273,7 @@ body.feed .stage>.nextch{display:none!important}
   </div>
   <div class="rail" id="rail"></div>
   <div id="feed" aria-label="שקופיות המצגת"></div>
-  <p class="ver vver">גרסה <bdi dir="ltr">v3.0.1 · 20.11.2026</bdi></p>
+  <p class="ver vver">גרסה <bdi dir="ltr">v3.0.2 · 20.11.2026</bdi></p>
   <div class="fpill" id="fpill" aria-hidden="true"></div>
 </div>
 
@@ -445,6 +444,7 @@ function updWhere(){if(!cur)return;const n=`${idx+1} מתוך ${cur.slides.lengt
 let idleT=null;function wake(){const f=$('frame');f.classList.remove('idle');clearTimeout(idleT);idleT=setTimeout(()=>f.classList.add('idle'),2500)}
 ['mousemove','touchstart','click','keydown'].forEach(ev=>document.addEventListener(ev,()=>{if($('frame').classList.contains('pfs')||document.fullscreenElement)wake()},{passive:true}));
 document.addEventListener('fullscreenchange',wake);
+let fpT=0;addEventListener('scroll',()=>{if(!document.body.classList.contains('feed'))return;const f=$('fpill');f.classList.add('on');clearTimeout(fpT);fpT=setTimeout(()=>f.classList.remove('on'),1300)},{passive:true});
 window.addEventListener('hashchange',route);
 fetch('decks.json').then(r=>r.json()).then(d=>{decks=d;renderGrid();route()}).catch(()=>{$('grid').innerHTML='<p>לא ניתן לטעון את רשימת המצגות.</p>'});
 }
