@@ -257,6 +257,7 @@ a.chip:hover{background:light-dark(#dff5f3,#2f2e6a)}
 .links a.exb,.flinks a.exb{direction:rtl;background:var(--orange)}
 @media(max-width:700px){.lbm{display:none}.exhead{top:var(--vbh,0px)}.tabs{padding-top:8px}.tabs button{flex:1;justify-content:center;padding:0 10px;font-size:15px}.exc{flex-wrap:wrap}.exc .go{width:100%;justify-content:center}.exttl h2{font-size:19px}}
 .allc{display:table;color:#c9cbf0;text-decoration:none;font-size:14px;font-weight:600;border:1px solid #3b3a78;border-radius:999px;padding:4px 12px;margin-bottom:14px}.allc:hover{color:var(--teal);border-color:var(--teal)}
+.frame{touch-action:pan-y pinch-zoom}.frame.pfs,.frame:fullscreen{touch-action:none}
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -284,7 +285,7 @@ a.chip:hover{background:light-dark(#dff5f3,#2f2e6a)}
     <h2>פרקי הקורס</h2>
     <div class="grid" id="grid"></div>
   </div></main>
-  <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v1.1 · 20.11.2026</bdi></span></footer>
+  <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v1.1.1 · 20.11.2026</bdi></span></footer>
 </div>
 
 <div id="viewer">
@@ -319,7 +320,7 @@ a.chip:hover{background:light-dark(#dff5f3,#2f2e6a)}
   </div>
   <div class="rail" id="rail"></div>
   <div id="feed" aria-label="שקופיות המצגת"></div>
-  <p class="ver vver">גרסה <bdi dir="ltr">v1.1 · 20.11.2026</bdi></p>
+  <p class="ver vver">גרסה <bdi dir="ltr">v1.1.1 · 20.11.2026</bdi></p>
   <div class="fpill" id="fpill" aria-hidden="true"></div>
 </div>
 
@@ -421,14 +422,22 @@ function pfs(on){const was=$('frame').classList.contains('pfs');$('frame').class
 $('fs').onclick=()=>{const f=$('frame');if(feedOn())show(idx);if(document.fullscreenElement){document.exitFullscreen();return}
   if(f.requestFullscreen){f.requestFullscreen().then(()=>{try{screen.orientation.lock('landscape').catch(()=>{})}catch(e){}}).catch(()=>pfs(true))}else pfs(true)};
 $('xfs').onclick=e=>{e.stopPropagation();if(document.fullscreenElement)document.exitFullscreen();pfs(false)};
-$('frame').addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){e.preventDefault();show(+g.dataset.go-1);return}if(e.target.closest('a'))return;const r=e.currentTarget.getBoundingClientRect();show(e.clientX<r.left+r.width/2?idx+1:idx-1)});
+$('frame').addEventListener('click',e=>{if(Date.now()-swiped<400)return;const g=e.target.closest('[data-go]');if(g){e.preventDefault();show(+g.dataset.go-1);return}if(e.target.closest('a'))return;const r=e.currentTarget.getBoundingClientRect();show(e.clientX<r.left+r.width/2?idx+1:idx-1)});
 document.addEventListener('keydown',e=>{if(!cur||document.body.classList.contains('m-list')||document.body.classList.contains('m-ex'))return;if(e.key==='Escape'){if(document.body.classList.contains('toc-open')){openToc(false);return}pfs(false);return}if(document.body.classList.contains('toc-open')||feedOn())return;
   if(['ArrowLeft','PageDown',' '].includes(e.key)){e.preventDefault();show(idx+1)}
   else if(['ArrowRight','PageUp'].includes(e.key)){e.preventDefault();show(idx-1)}
   else if(e.key==='Home')show(0);else if(e.key==='End')show(cur.slides.length-1)});
 let wAcc=0,wLock=0;$('frame').addEventListener('wheel',e=>{if(!cur)return;e.preventDefault();const d=Math.abs(e.deltaY)>=Math.abs(e.deltaX)?e.deltaY:e.deltaX;wAcc+=d;const now=Date.now();if(now<wLock){wAcc=0;return}if(Math.abs(wAcc)>=40){show(wAcc>0?idx+1:idx-1);wAcc=0;wLock=now+380}},{passive:false});
-let tx=null;$('frame').addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
-$('frame').addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40)show(dx>0?idx+1:idx-1);tx=null});
+/* swipe: works in normal and full-screen; also when the browser cancels the touch (touchcancel) */
+let sw=null;const F=$('frame');
+F.addEventListener('touchstart',e=>{if(e.touches.length!==1){sw=null;return}const t=e.touches[0];sw={x:t.clientX,y:t.clientY,lx:t.clientX,ly:t.clientY,t:Date.now()}},{passive:true});
+F.addEventListener('touchmove',e=>{if(!sw)return;const t=e.touches[0];sw.lx=t.clientX;sw.ly=t.clientY;
+  const fs=F.classList.contains('pfs')||document.fullscreenElement===F;if(fs&&e.cancelable&&Math.abs(sw.lx-sw.x)>Math.abs(sw.ly-sw.y))e.preventDefault()},{passive:false});
+function swEnd(x,y){if(!sw)return;const dx=x-sw.x,dy=y-sw.y,dt=Date.now()-sw.t;sw=null;
+  if(Math.abs(dx)>35&&Math.abs(dx)>Math.abs(dy)*1.2&&dt<1200){swiped=Date.now();show(dx>0?idx+1:idx-1)}}
+let swiped=0;
+F.addEventListener('touchend',e=>{const t=e.changedTouches[0];swEnd(t.clientX,t.clientY)});
+F.addEventListener('touchcancel',()=>{if(sw)swEnd(sw.lx,sw.ly)});
 
 let lazyObs=[];
 function lazy(root,scope){const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){const el=en.target;el.style.backgroundImage=`url("${el.dataset.bg}")`;io.unobserve(el)}}),{root:root===document?null:root,rootMargin:'600px'});
