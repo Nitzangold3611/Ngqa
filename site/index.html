@@ -53,10 +53,49 @@ footer{color:var(--mute);font-size:13px;text-align:center;padding:24px 16px 36px
 .ver{display:block;font-size:11px;opacity:.75;margin-top:6px}
 @media(max-width:700px){.hero{padding:22px 16px 26px}.hero .in{grid-template-columns:1fr}.hero img{order:-1;width:120px}.hero svg{display:none}h1{font-size:30px}.grid{grid-template-columns:1fr;gap:14px}main{padding:22px 12px}}
 @media(prefers-reduced-motion:reduce){.course{transition:none}}
+
+/* ---- auth ---- */
+.topbar{position:absolute;top:14px;inset-inline-start:max(5vw,16px);z-index:3;display:flex;gap:8px;align-items:center}
+.abtn{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;border-radius:999px;border:1.5px solid #3b3a78;background:rgba(255,255,255,.06);color:#fff;font:inherit;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none}
+.abtn:hover{border-color:var(--teal);color:var(--teal)}
+.abtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.umenu{position:relative}.umenu .dd{position:absolute;top:calc(100% + 6px);inset-inline-start:0;min-width:200px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.25);padding:6px;display:none}
+.umenu.open .dd{display:block}.dd small{display:block;padding:6px 10px;color:var(--mute);direction:ltr;text-align:end}
+.dd a,.dd button{display:block;width:100%;text-align:start;padding:10px;border:0;background:none;color:inherit;font:inherit;border-radius:8px;cursor:pointer;text-decoration:none}
+.dd a:hover,.dd button:hover{background:light-dark(#eef0f8,#26255a)}
+.course.locked .th::after{content:"";position:absolute;inset:0;background:rgba(11,10,36,.55)}
+.lock{position:absolute;inset:0;display:none;place-items:center;z-index:1}
+.course.locked .lock{display:grid}
+.lock span{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.lock svg{width:30px;height:30px;fill:none;stroke:var(--navy);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.course.locked .go{background:var(--orange)}
+.notice{max-width:1100px;margin:0 auto;padding:12px 16px;border-radius:12px;background:light-dark(#fff4e6,#3a2a12);border:1px solid #f3c58a;color:var(--ink);display:none;margin-bottom:16px}
+.notice.on{display:block}
+dialog{border:0;border-radius:18px;padding:0;width:min(440px,94vw);background:var(--card);color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.45)}
+dialog::backdrop{background:rgba(11,10,36,.6)}
+.dh{background:var(--navy);color:#fff;padding:18px 20px;display:flex;align-items:center;gap:12px}
+.dh img{height:34px}.dh h3{margin:0;font-size:19px;flex:1}
+.dh .x{background:none;border:0;color:#fff;font-size:22px;cursor:pointer;width:40px;height:40px;border-radius:10px}
+.db{padding:18px 20px 22px;display:grid;gap:12px}
+.db label{display:grid;gap:4px;font-size:14px;font-weight:600}
+.db input{font:inherit;padding:11px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+.db input:focus{outline:none;border-color:var(--teal)}
+.pbtn{font:inherit;font-weight:700;min-height:46px;border-radius:10px;border:0;background:var(--navy);color:#fff;cursor:pointer}
+.pbtn:hover{background:var(--teal-d)}.pbtn[disabled]{opacity:.6}
+.gbtn{font:inherit;font-weight:600;min-height:46px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}
+.gbtn svg{width:20px;height:20px}
+.sep{display:flex;align-items:center;gap:10px;color:var(--mute);font-size:13px}.sep::before,.sep::after{content:"";flex:1;height:1px;background:var(--line)}
+.lnk{background:none;border:0;color:var(--teal-d);font:inherit;font-size:14px;cursor:pointer;padding:0;justify-self:start;text-decoration:underline}
+.err{color:#c0392b;font-size:14px;min-height:0}.err:empty{display:none}
+.ok{color:var(--teal-d);font-size:14px}.ok:empty{display:none}
+.warn{background:light-dark(#fff4e6,#3a2a12);border-radius:10px;padding:10px 12px;font-size:13.5px}
+.hint2{color:var(--mute);font-size:13px;margin:0}
+@media(max-width:700px){.topbar{top:10px;inset-inline-start:12px}.hero{padding-top:62px!important}}
 </style>
 </head>
 <body>
 <header class="hero">
+  <div class="topbar" id="topbar"></div>
   <svg aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 1200 400"><g fill="none" stroke-width="2" id="traces"></g></svg>
   <div class="in">
     <div>
@@ -68,21 +107,22 @@ footer{color:var(--mute);font-size:13px;text-align:center;padding:24px 16px 36px
   </div>
 </header>
 <main>
+  <p class="notice" id="notice" role="status"></p>
   <h2>בחרו קורס</h2>
   <div class="grid">
     <a class="course" href="/courses/ctfl/" data-c="ctfl">
-      <span class="th"><img src="/courses/ctfl/img/ch1.jpg" alt="" loading="lazy"><span class="badge">CTFL 4.0</span></span>
+      <span class="th"><img src="/courses/ctfl/img/ch1.jpg" alt="" loading="lazy"><span class="badge">CTFL 4.0</span><span class="lock" aria-hidden="true"><span><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span></span>
       <span class="bd"><b>ISTQB Foundation Level</b><small>הכנה למבחן ISTQB CTFL 4.0 – יסודות בדיקות התוכנה</small>
       <span class="meta"></span><span class="go">כניסה לקורס ←</span></span>
     </a>
     <a class="course" href="/courses/genai/" data-c="genai">
-      <span class="th"><img src="/courses/genai/img/ch1.jpg" alt="" loading="lazy"><span class="badge">CT-GenAI</span></span>
+      <span class="th"><img src="/courses/genai/img/ch1.jpg" alt="" loading="lazy"><span class="badge">CT-GenAI</span><span class="lock" aria-hidden="true"><span><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span></span>
       <span class="bd"><b>בינה מלאכותית יוצרת בבדיקות תוכנה</b><small>ISTQB Certified Tester – Testing with Generative AI</small>
       <span class="meta"></span><span class="go">כניסה לקורס ←</span></span>
     </a>
   </div>
 </main>
-<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.0.2 · 20.11.2026</bdi></span></footer>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.1 · 20.11.2026</bdi></span></footer>
 <script>
 {const g=document.getElementById('traces');let s='';const col=i=>i%4===2?'#F38911':'#14DACD';
 for(let i=0;i<9;i++){const y=380-i*24,a=60+((i*97)%220),b=20+((i*53)%50),c=30+((i*71)%140);
@@ -91,6 +131,111 @@ g.innerHTML=s;
 document.querySelectorAll('.course').forEach(el=>{fetch(`/courses/${el.dataset.c}/decks.json`).then(r=>r.json()).then(d=>{
   const sl=d.reduce((n,x)=>n+x.slides.length,0),ex=d.reduce((n,x)=>n+((x.ex||[]).length),0);
   el.querySelector('.meta').innerHTML=`<span class="chip">${d.length} פרקים</span><span class="chip">${sl} שקופיות</span>${ex?`<span class="chip">${ex} תרגילים מעשיים</span>`:''}`}).catch(()=>{})})}
+</script>
+
+<dialog id="dlg" aria-labelledby="dlgT">
+  <div class="dh"><img src="/logo.png" alt=""><h3 id="dlgT">התחברות</h3><button class="x" type="button" id="dlgX" aria-label="סגירה">✕</button></div>
+  <div class="db" id="dlgB"></div>
+</dialog>
+<script src="/auth.js"></script>
+<script>
+{
+const A=window.NGQAAuth,$=id=>document.getElementById(id),dlg=$('dlg');
+const G='<svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>';
+let next=null,on=false;
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function open(title,html){$('dlgT').textContent=title;$('dlgB').innerHTML=html;if(!dlg.open)dlg.showModal();const f=$('dlgB').querySelector('input');if(f)f.focus()}
+$('dlgX').onclick=()=>dlg.close();
+function busy(b,on){const x=$('dlgB').querySelector('.pbtn');if(x)x.disabled=on}
+function err(m){const e=$('dlgB').querySelector('.err');if(e)e.textContent=m}
+function viewLogin(msg){
+  open('התחברות',`${msg?`<p class="ok">${msg}</p>`:''}
+  ${A.inApp()?`<p class="warn">פתחתם את האתר מתוך אפליקציה (למשל וואטסאפ). כניסה עם Google לא תעבוד כאן – פתחו את הקישור בכרום או בספארי, או התחברו עם מייל וסיסמה.</p>`:''}
+  <button class="gbtn" type="button" id="gIn">${G}כניסה עם Google</button>
+  <div class="sep">או</div>
+  <form id="fLogin" class="db" style="padding:0">
+    <label>מייל<input type="email" name="email" autocomplete="email" required dir="ltr"></label>
+    <label>סיסמה<input type="password" name="password" autocomplete="current-password" required dir="ltr"></label>
+    <p class="err"></p>
+    <button class="pbtn" type="submit">כניסה</button>
+  </form>
+  <button class="lnk" type="button" id="toForgot">שכחתי סיסמה</button>
+  <p class="hint2">הכניסה בהזמנה בלבד. אין לכם חשבון? פנו ל-NGQA.</p>`);
+  $('gIn').onclick=()=>{try{sessionStorage.setItem('ngqa.next',next||'')}catch(e){}A.google()};
+  $('toForgot').onclick=viewForgot;
+  $('fLogin').onsubmit=async e=>{e.preventDefault();const f=e.target;busy(1,true);err('');
+    try{await A.login(f.email.value.trim(),f.password.value);dlg.close();await afterLogin()}catch(x){err(A.he(x.message))}finally{busy(1,false)}};
+}
+function viewForgot(){
+  open('איפוס סיסמה',`<p class="hint2">הקלידו את המייל שלכם ונשלח קישור לבחירת סיסמה חדשה. המייל נשלח מ-Netlify (באנגלית) – בדקו גם בתיקיית הספאם.</p>
+  <form id="fF" class="db" style="padding:0"><label>מייל<input type="email" name="email" autocomplete="email" required dir="ltr"></label><p class="err"></p><p class="ok"></p><button class="pbtn" type="submit">שליחת קישור לאיפוס</button></form>
+  <button class="lnk" type="button" id="toLogin">חזרה להתחברות</button>`);
+  $('toLogin').onclick=()=>viewLogin();
+  $('fF').onsubmit=async e=>{e.preventDefault();busy(1,true);err('');
+    try{await A.recover(e.target.email.value.trim());$('dlgB').querySelector('.ok').textContent='אם המייל רשום אצלנו, נשלח אליו קישור לאיפוס. פתחו אותו מאותו מכשיר.'}catch(x){err(A.he(x.message))}finally{busy(1,false)}};
+}
+function viewInvite(token){
+  open('ברוכים הבאים ל-NGQA הדרכות',`<p class="hint2">קיבלתם הזמנה לאתר הקורסים. בחרו סיסמה כדי להשלים את ההרשמה.</p>
+  <form id="fI" class="db" style="padding:0">
+    <label>שם מלא<input name="name" autocomplete="name"></label>
+    <label>סיסמה (לפחות 8 תווים)<input type="password" name="p1" minlength="8" autocomplete="new-password" required dir="ltr"></label>
+    <label>אימות סיסמה<input type="password" name="p2" minlength="8" autocomplete="new-password" required dir="ltr"></label>
+    <p class="err"></p><button class="pbtn" type="submit">השלמת הרשמה</button></form>`);
+  $('fI').onsubmit=async e=>{e.preventDefault();const f=e.target;if(f.p1.value!==f.p2.value){err('הסיסמאות לא זהות.');return}
+    busy(1,true);err('');try{await A.acceptInvite(token,f.p1.value,f.name.value.trim());dlg.close();await afterLogin('ההרשמה הושלמה!')}catch(x){err(A.he(x.message))}finally{busy(1,false)}};
+}
+function viewRecovery(){
+  open('בחירת סיסמה חדשה',`<form id="fR" class="db" style="padding:0">
+    <label>סיסמה חדשה (לפחות 8 תווים)<input type="password" name="p1" minlength="8" autocomplete="new-password" required dir="ltr"></label>
+    <label>אימות סיסמה<input type="password" name="p2" minlength="8" autocomplete="new-password" required dir="ltr"></label>
+    <p class="err"></p><button class="pbtn" type="submit">שמירת הסיסמה</button></form>`);
+  $('fR').onsubmit=async e=>{e.preventDefault();const f=e.target;if(f.p1.value!==f.p2.value){err('הסיסמאות לא זהות.');return}
+    busy(1,true);err('');try{await A.setPassword(f.p1.value);dlg.close();await afterLogin('הסיסמה עודכנה.')}catch(x){err(A.he(x.message))}finally{busy(1,false)}};
+}
+function notice(t){const n=$('notice');n.textContent=t||'';n.classList.toggle('on',!!t)}
+async function render(){
+  if(!on){$('topbar').innerHTML='';return}
+  const i=A.info(await A.session());
+  document.querySelectorAll('.course').forEach(c=>{const ok=A.can(i,c.dataset.c);c.classList.toggle('locked',!ok);
+    c.querySelector('.go').textContent=ok?'כניסה לקורס ←':(i?'אין לך גישה לקורס':'התחברות לקורס 🔒')});
+  $('topbar').innerHTML=i?`<div class="umenu" id="um"><button class="abtn" type="button" id="umB" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>${esc(i.name||i.email.split('@')[0])}</button>
+      <div class="dd"><small>${esc(i.email)}</small>${i.admin?'<a href="/admin/">⚙ ניהול משתמשים</a>':''}<button type="button" id="lo">התנתקות</button></div></div>`
+    :`<button class="abtn" type="button" id="liB"><svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>התחברות</button>`;
+  if(i){$('umB').onclick=()=>{const m=$('um');m.classList.toggle('open');$('umB').setAttribute('aria-expanded',m.classList.contains('open'))};
+    $('lo').onclick=()=>{A.logout();notice('התנתקת.');render()}}
+  else $('liB').onclick=()=>viewLogin();
+}
+document.addEventListener('click',e=>{const m=$('um');if(m&&!m.contains(e.target))m.classList.remove('open')});
+async function afterLogin(msg){
+  let n=next;try{n=n||sessionStorage.getItem('ngqa.next');sessionStorage.removeItem('ngqa.next')}catch(e){}
+  const i=A.info(await A.session());
+  if(n&&/^\/courses\/([a-z0-9-]+)\//.test(n)&&A.can(i,n.split('/')[2])){location.href=n;return}
+  if(n==='/admin/'&&i&&i.admin){location.href=n;return}
+  const nc=n&&(n.match(/^\/courses\/([a-z0-9-]+)\//)||[])[1];
+  if(nc&&i&&!A.can(i,nc)){await render();const c=A.COURSES.find(x=>x.id===nc);notice((msg?msg+' ':'')+'אין לך גישה לקורס '+(c?c.name:'')+'. אם זו טעות, פנו ל-NGQA.');return}
+  notice(msg?msg+' ':'');await render();
+  if(i&&!i.admin&&!A.COURSES.some(c=>A.can(i,c.id)))notice((msg?msg+' ':'')+'עדיין לא נפתחו לך קורסים. NGQA תפתח לך גישה בקרוב.');
+}
+document.querySelectorAll('.course').forEach(c=>c.addEventListener('click',async e=>{
+  if(!on)return;const i=A.info(await A.session());if(A.can(i,c.dataset.c))return;
+  e.preventDefault();
+  if(!i){next=c.getAttribute('href');viewLogin()}else notice('אין לך גישה לקורס '+c.querySelector('b').textContent+'. אם זו טעות, פנו ל-NGQA.');
+}));
+(async()=>{
+  on=await A.isEnabled();if(!on)return;
+  const h=await A.handleHash();
+  const q=new URLSearchParams(location.search);next=q.get('next');
+  if(q.has('login')||q.has('denied')||q.has('next'))history.replaceState(null,'','/');
+  await render();
+  if(h&&h.type==='invite')viewInvite(h.token);
+  else if(h&&h.type==='recovery'){try{await A.verifyRecovery(h.token);viewRecovery()}catch(x){viewLogin();err(A.he(x.message))}}
+  else if(h&&h.type==='confirmation'){try{await A.confirm(h.token);await afterLogin('החשבון אושר.')}catch(x){notice(A.he(x.message))}}
+  else if(h&&h.type==='external')await afterLogin();
+  else if(h&&h.type==='error')notice(A.he(h.message));
+  else if(q.has('denied')){const c=A.COURSES.find(c=>c.id===q.get('denied'));notice('אין לך גישה לקורס '+(c?c.name:'')+'. אם זו טעות, פנו ל-NGQA.')}
+  else if(q.has('login'))viewLogin();
+})();
+}
 </script>
 </body>
 </html>

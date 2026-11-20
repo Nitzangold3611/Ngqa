@@ -1,0 +1,7 @@
+# Base directory in Netlify = "site" (this folder)
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"

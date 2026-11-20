@@ -2,6 +2,9 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
+<script src="/auth.js"></script>
+<script>document.documentElement.style.visibility='hidden';NGQAAuth.guard('genai').then(ok=>{if(ok)document.documentElement.style.visibility=''}).catch(()=>{document.documentElement.style.visibility=''});</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NGQA · CT-GenAI</title>
 <meta name="description" content="מצגות ותרגילים מעשיים לקורס בינה מלאכותית יוצרת לבדיקות תוכנה (CT-GenAI) של NGQA ייעוץ והדרכה בבדיקות תוכנה.">
@@ -284,7 +287,7 @@ a.chip:hover{background:light-dark(#dff5f3,#2f2e6a)}
     <h2>פרקי הקורס</h2>
     <div class="grid" id="grid"></div>
   </div></main>
-  <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v1.1.2 · 20.11.2026</bdi></span></footer>
+  <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v1.2 · 20.11.2026</bdi></span></footer>
 </div>
 
 <div id="viewer">
@@ -319,7 +322,7 @@ a.chip:hover{background:light-dark(#dff5f3,#2f2e6a)}
   </div>
   <div class="rail" id="rail"></div>
   <div id="feed" aria-label="שקופיות המצגת"></div>
-  <p class="ver vver">גרסה <bdi dir="ltr">v1.1.2 · 20.11.2026</bdi></p>
+  <p class="ver vver">גרסה <bdi dir="ltr">v1.2 · 20.11.2026</bdi></p>
   <div class="fpill" id="fpill" aria-hidden="true"></div>
 </div>
 
