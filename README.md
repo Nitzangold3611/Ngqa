@@ -9,6 +9,16 @@
 | ISTQB CTFL 4.0 | `/courses/ctfl/` | `site/courses/ctfl/`, `ctfl/scripts/` |
 | CT-GenAI – בינה מלאכותית יוצרת בבדיקות תוכנה | `/courses/genai/` | `site/courses/genai/`, `genai/scripts/`, `genai/spec/` |
 
+## גרסאות
+כל גרסה מתועדת כאן בקצרה, ובפירוט ב-[CHANGELOG.md](CHANGELOG.md). הקומיט של כל גרסה נקרא `Release vX.Y.Z`.
+
+| גרסה | תאריך | מה כוללת |
+|---|---|---|
+| v3.0.1 | 20.11.2026 | מובייל, מסך מלא: החלקה באצבע עוברת בין השקפים. CTFL v3.0.1, CT-GenAI v1.1.1 |
+| v3.0 | 20.11.2026 | אתר קורסים מאוחד: עמוד ראשי עם מלבן לכל קורס, `/courses/ctfl/` ו-`/courses/genai/`, דומיין courses.ngqa.net, הפניות מהכתובות הישנות, PWA אחד "NGQA הדרכות". CTFL v3.0, CT-GenAI v1.1 |
+| v2.9 | 19.11.2026 | ייבוא ראשוני ל-GitHub: אתר CTFL 4.0 (v2.9) ואתר CT-GenAI (v1.0) כאתרים נפרדים, סקריפטי בנייה ותמלול שקפים |
+
+
 ## מבנה
 - `site/` – האתר שמתפרסם (עמוד ראשי + `courses/<קורס>/`).
 - `*/scripts/` – סקריפטי בנייה (יצירת המצגות וחיתוך השקפים לאתר).
