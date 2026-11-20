@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NGQA הדרכות · הקורסים</title>
 <script>/* קישורים ישנים של אתר CTFL (#ch3/5) עוברים לנתיב החדש */
-function lg(){if(/^#ch\d/.test(location.hash))location.replace('/courses/ctfl/'+location.hash)}lg();addEventListener('hashchange',lg);</script>
+function lg(){if(!location.search&&/^#ch\d/.test(location.hash))location.replace('/courses/ctfl/'+location.hash)}lg();addEventListener('hashchange',lg);</script>
 <meta name="description" content="מצגות ותרגילים לקורסים של NGQA ייעוץ והדרכה בבדיקות תוכנה: ISTQB CTFL 4.0 ו-CT-GenAI.">
 <meta name="theme-color" content="#121133">
 <meta property="og:title" content="NGQA הדרכות · הקורסים">
 <meta property="og:description" content="מצגות ותרגילים לקורסי בדיקות תוכנה של NGQA.">
-<meta property="og:image" content="/courses/ctfl/img/ch1.jpg">
+<meta property="og:image" content="/covers/ctfl.jpg">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.webmanifest">
@@ -91,6 +91,9 @@ dialog::backdrop{background:rgba(11,10,36,.6)}
 .warn{background:light-dark(#fff4e6,#3a2a12);border-radius:10px;padding:10px 12px;font-size:13.5px}
 .hint2{color:var(--mute);font-size:13px;margin:0}
 @media(max-width:700px){.topbar{top:10px;inset-inline-start:12px}.hero{padding-top:62px!important}}
+.hsr{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}.hsr h2{margin:0;flex:1}
+.hsb{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:700;cursor:pointer}
+.hsb:hover{border-color:var(--teal);color:var(--teal-d)}.hsb svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
 </style>
 </head>
 <body>
@@ -108,29 +111,29 @@ dialog::backdrop{background:rgba(11,10,36,.6)}
 </header>
 <main>
   <p class="notice" id="notice" role="status"></p>
-  <h2>בחרו קורס</h2>
+  <div class="hsr"><h2>בחרו קורס</h2><button type="button" class="hsb" id="hsrch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>חיפוש בכל הקורסים</button></div>
   <div class="grid">
     <a class="course" href="/courses/ctfl/" data-c="ctfl">
-      <span class="th"><img src="/courses/ctfl/img/ch1.jpg" alt="" loading="lazy"><span class="badge">CTFL 4.0</span><span class="lock" aria-hidden="true"><span><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span></span>
+      <span class="th"><img src="/covers/ctfl.jpg" alt="" loading="lazy"><span class="badge">CTFL 4.0</span><span class="lock" aria-hidden="true"><span><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span></span>
       <span class="bd"><b>ISTQB Foundation Level</b><small>הכנה למבחן ISTQB CTFL 4.0 – יסודות בדיקות התוכנה</small>
       <span class="meta"></span><span class="go">כניסה לקורס ←</span></span>
     </a>
     <a class="course" href="/courses/genai/" data-c="genai">
-      <span class="th"><img src="/courses/genai/img/ch1.jpg" alt="" loading="lazy"><span class="badge">CT-GenAI</span><span class="lock" aria-hidden="true"><span><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span></span>
+      <span class="th"><img src="/covers/genai.jpg" alt="" loading="lazy"><span class="badge">CT-GenAI</span><span class="lock" aria-hidden="true"><span><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span></span>
       <span class="bd"><b>בינה מלאכותית יוצרת בבדיקות תוכנה</b><small>ISTQB Certified Tester – Testing with Generative AI</small>
       <span class="meta"></span><span class="go">כניסה לקורס ←</span></span>
     </a>
   </div>
 </main>
-<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.1.1 · 20.11.2026</bdi></span></footer>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.2 · 20.11.2026</bdi></span></footer>
 <script>
 {const g=document.getElementById('traces');let s='';const col=i=>i%4===2?'#F38911':'#14DACD';
 for(let i=0;i<9;i++){const y=380-i*24,a=60+((i*97)%220),b=20+((i*53)%50),c=30+((i*71)%140);
  s+=`<path d="M0 ${y}H${a}l${b} -${b}H${a+b+c}" stroke="${col(i)}" opacity=".55"/><circle cx="${a+b+c}" cy="${y-b}" r="5" fill="${col(i)}" opacity=".7"/>`}
 g.innerHTML=s;
-document.querySelectorAll('.course').forEach(el=>{fetch(`/courses/${el.dataset.c}/decks.json`).then(r=>r.json()).then(d=>{
-  const sl=d.reduce((n,x)=>n+x.slides.length,0),ex=d.reduce((n,x)=>n+((x.ex||[]).length),0);
-  el.querySelector('.meta').innerHTML=`<span class="chip">${d.length} פרקים</span><span class="chip">${sl} שקופיות</span>${ex?`<span class="chip">${ex} תרגילים מעשיים</span>`:''}`}).catch(()=>{})})}
+fetch('/courses.json').then(r=>r.json()).then(all=>document.querySelectorAll('.course').forEach(el=>{const x=all[el.dataset.c];if(!x)return;
+  const d={length:x.chapters},sl=x.slides,ex=x.exercises;
+  el.querySelector('.meta').innerHTML=`<span class="chip">${d.length} פרקים</span><span class="chip">${sl} שקופיות</span>${ex?`<span class="chip">${ex} תרגילים מעשיים</span>`:''}`})).catch(()=>{})}
 </script>
 
 <dialog id="dlg" aria-labelledby="dlgT">
@@ -138,6 +141,7 @@ document.querySelectorAll('.course').forEach(el=>{fetch(`/courses/${el.dataset.c
   <div class="db" id="dlgB"></div>
 </dialog>
 <script src="/auth.js"></script>
+<script src="/search.js"></script>
 <script>
 {
 const A=window.NGQAAuth,$=id=>document.getElementById(id),dlg=$('dlg');
@@ -146,6 +150,11 @@ let next=null,on=false;
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function open(title,html){$('dlgT').textContent=title;$('dlgB').innerHTML=html;if(!dlg.open)dlg.showModal();const f=$('dlgB').querySelector('input');if(f)f.focus()}
 $('dlgX').onclick=()=>dlg.close();
+/* Enter in any field submits the form (some browsers / password managers skip the implicit submit) */
+dlg.addEventListener('keydown',e=>{if(e.key!=='Enter'||e.isComposing)return;const t=e.target;if(!t||t.tagName!=='INPUT')return;const f=t.form;if(!f)return;
+  e.preventDefault();const b=f.querySelector('.pbtn');if(b&&b.disabled)return;
+  const inv=[...f.querySelectorAll('input[required]')].find(x=>!x.value);if(inv){inv.focus();return}
+  f.requestSubmit?f.requestSubmit():b&&b.click()});
 function busy(b,on){const x=$('dlgB').querySelector('.pbtn');if(x)x.disabled=on}
 function err(m){const e=$('dlgB').querySelector('.err');if(e)e.textContent=m}
 function viewLogin(msg){
@@ -154,8 +163,8 @@ function viewLogin(msg){
   <button class="gbtn" type="button" id="gIn">${G}כניסה עם Google</button>
   <div class="sep">או</div>
   <form id="fLogin" class="db" style="padding:0">
-    <label>מייל<input type="email" name="email" autocomplete="email" required dir="ltr"></label>
-    <label>סיסמה<input type="password" name="password" autocomplete="current-password" required dir="ltr"></label>
+    <label>מייל<input type="email" name="email" autocomplete="email" required dir="ltr" enterkeyhint="next"></label>
+    <label>סיסמה<input type="password" name="password" autocomplete="current-password" required dir="ltr" enterkeyhint="go"></label>
     <p class="err"></p>
     <button class="pbtn" type="submit">כניסה</button>
   </form>
@@ -221,11 +230,27 @@ document.querySelectorAll('.course').forEach(c=>c.addEventListener('click',async
   e.preventDefault();
   if(!i){next=c.getAttribute('href');viewLogin()}else notice('אין לך גישה לקורס '+c.querySelector('b').textContent+'. אם זו טעות, פנו ל-NGQA.');
 }));
+async function hubSearch(){
+  const all=[{id:'ctfl',name:'CTFL 4.0'},{id:'genai',name:'CT-GenAI'}];let cs=all;
+  if(on){const i=A.info(await A.session());if(!i){next=null;viewLogin('התחברו כדי לחפש בקורסים שלכם.');return}cs=all.filter(x=>A.can(i,x.id));
+    if(!cs.length){notice('עדיין לא נפתחו לך קורסים לחיפוש.');return}}
+  NGQASearch.open({courses:cs,scope:'all',onPick:r=>{location.href=`/courses/${r.course}/#`+(r.kind==='ex'?`ch${r.c}/ex/${r.id}`:`ch${r.c}/${r.s}`)}})}
+$('hsrch').onclick=hubSearch;
+document.addEventListener('keydown',e=>{if(NGQASearch.isOpen()||dlg.open)return;const t=e.target;if(t&&/INPUT|TEXTAREA/.test(t.tagName))return;
+  if(e.key==='/'||((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='f')){e.preventDefault();hubSearch()}});
 (async()=>{
   on=await A.isEnabled();if(!on)return;
   const h=await A.handleHash();
   const q=new URLSearchParams(location.search);next=q.get('next');
+  if(next&&/^#(ch\d|home)/.test(location.hash))next+=location.hash;
   if(q.has('login')||q.has('denied')||q.has('next'))history.replaceState(null,'','/');
+  if(next&&!h){const i=A.info(await A.fresh()),nc=(next.match(/^\/courses\/([a-z0-9-]+)\//)||[])[1];
+    if(i&&nc&&A.can(i,nc)){
+      /* loop guard: the server sent us back here although the browser thinks access is allowed */
+      let b={t:0,n:0};try{b=JSON.parse(sessionStorage.getItem('ngqa.bounce')||'{"t":0,"n":0}')}catch(e){}
+      if(Date.now()-b.t>20000)b={t:Date.now(),n:0};b.n++;try{sessionStorage.setItem('ngqa.bounce',JSON.stringify(b))}catch(e){}
+      if(b.n<=2){location.replace(next);return}
+      notice('לא הצלחנו לפתוח את הקורס. נסו להתנתק ולהתחבר מחדש. אם זה חוזר – פנו ל-NGQA.')}}
   await render();
   if(h&&h.type==='invite')viewInvite(h.token);
   else if(h&&h.type==='recovery'){try{await A.verifyRecovery(h.token);viewRecovery()}catch(x){viewLogin();err(A.he(x.message))}}
@@ -233,7 +258,8 @@ document.querySelectorAll('.course').forEach(c=>c.addEventListener('click',async
   else if(h&&h.type==='external')await afterLogin();
   else if(h&&h.type==='error')notice(A.he(h.message));
   else if(q.has('denied')){const c=A.COURSES.find(c=>c.id===q.get('denied'));notice('אין לך גישה לקורס '+(c?c.name:'')+'. אם זו טעות, פנו ל-NGQA.')}
-  else if(q.has('login'))viewLogin();
+  else if(q.has('login')){const i=A.info(await A.session()),nc=next&&(next.match(/^\/courses\/([a-z0-9-]+)\//)||[])[1];
+    if(i&&nc){const c=A.COURSES.find(x=>x.id===nc);notice('אין לך גישה לקורס '+(c?c.name:'')+'. אם זו טעות, פנו ל-NGQA.')}else if(!i)viewLogin()}
 })();
 }
 </script>

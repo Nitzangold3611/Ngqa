@@ -1,2 +1,11 @@
+# internal sources – never served
 /netlify/*  /404.html  404!
+
+# old Netlify address → own domain
 https://ngqa-ctfl40.netlify.app/*  https://courses.ngqa.net/:splat  301!
+
+# ---- server-side lock (v3.2): course files only for logged-in users with the course role ----
+/courses/ctfl/*   /courses/ctfl/:splat   200!  Role=ctfl,admin
+/courses/genai/*  /courses/genai/:splat  200!  Role=genai,admin
+/courses/ctfl/*   /?login=1&next=/courses/ctfl/   302!
+/courses/genai/*  /?login=1&next=/courses/genai/  302!

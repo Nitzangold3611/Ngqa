@@ -57,7 +57,10 @@ exports.handler = async (event, context) => {
       case 'block': {
         const u = await getUser(b.id);
         if (u.email === me.email) return out(400, { error: 'אי אפשר לחסום את עצמך' });
-        return out(200, { user: await setMeta(b.id, { blocked: !!b.blocked }) });
+        const am = u.app_metadata || {};
+        const patch = b.blocked ? { blocked: true, roles: [], prev_roles: (am.roles || []).filter(r => r !== 'admin') }
+                                : { blocked: false, roles: cleanRoles(am.prev_roles || []), prev_roles: [] };
+        return out(200, { user: await setMeta(b.id, patch) });
       }
       case 'resend': {
         const u = await getUser(b.id);
