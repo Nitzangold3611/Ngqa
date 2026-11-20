@@ -16,3 +16,8 @@
 קבצי ה-PPTX המקוריים והמעוצבים נשמרים בכונן NGQA ולא בריפוזיטורי.
 
 © כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה
+
+## פריסה
+כל push ל-`main` מתפרסם אוטומטית ב-Netlify:
+- ngqa-ctfl40 → Base directory: `ctfl/site`
+- ngqa-genai → Base directory: `genai/site`
