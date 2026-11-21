@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<script src="/auth.js"></script>
+<script>document.documentElement.style.visibility='hidden';NGQAAuth.guard('sql').then(ok=>{if(ok)document.documentElement.style.visibility=''}).catch(()=>{document.documentElement.style.visibility=''});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>חומר עזר · SQL לבודקי תוכנה | NGQA</title>
+<meta name="theme-color" content="#121133">
+<script src="/wa.js" defer></script>
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;
+--bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960)}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Heebo,Arial,sans-serif}
+a{color:var(--teal-d)}
+.hero{background:var(--navy);color:#fff;padding:clamp(22px,4vw,46px) max(5vw,16px)}
+.hero .in{max-width:1000px;margin:auto;display:flex;gap:20px;align-items:center;justify-content:space-between}
+.hero h1{margin:6px 0 6px;font-size:clamp(28px,4.4vw,44px);line-height:1.1}
+.hero p{margin:0;color:#c9cbf0;max-width:60ch}
+.hero img{width:clamp(110px,16vw,180px)}
+.allc{display:inline-block;color:#c9cbf0;text-decoration:none;font-size:14px;font-weight:600;border:1px solid #3b3a78;border-radius:999px;padding:4px 12px}
+.allc:hover{color:var(--teal);border-color:var(--teal)}
+main{max-width:1000px;margin:auto;padding:26px max(4vw,14px) 50px}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+nav.toc a{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;text-decoration:none;color:var(--ink);font-weight:600;font-size:14px}
+section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px clamp(16px,3vw,28px);margin:0 0 20px;scroll-margin-top:16px}
+section>h2{margin:0 0 4px;font-size:23px}
+section>.sub{color:var(--mute);margin:0 0 14px}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.steps>li{counter-increment:s;display:flex;gap:12px;align-items:flex-start}
+.steps>li::before{content:counter(s);flex:none;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;margin-top:1px}
+.steps b{color:var(--ink)}
+code,kbd{direction:ltr;unicode-bidi:isolate;background:light-dark(#eef0f8,#26255a);border-radius:6px;padding:1px 6px;font:14px Consolas,Menlo,monospace}
+.tip{background:light-dark(#eafbfa,#13324a);border-inline-start:4px solid var(--teal);border-radius:10px;padding:10px 14px;margin:14px 0 0}
+.warn{background:light-dark(#fff6ea,#2a2340);border-inline-start:4px solid var(--orange);border-radius:10px;padding:10px 14px;margin:14px 0 0}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:10px;background:var(--orange);color:#fff;font-weight:700;text-decoration:none;margin:6px 0 0 8px}
+.btn.alt{background:var(--navy)}
+.vid{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;margin-top:12px}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+img.dia{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);background:#fff;margin-top:10px}
+table.cmd{width:100%;border-collapse:collapse;font-size:14.5px}
+table.cmd th{background:var(--navy);color:#fff;padding:8px 10px;text-align:start}
+table.cmd td{border-bottom:1px solid var(--line);padding:8px 10px;vertical-align:top}
+table.cmd td:first-child{font-weight:700;white-space:nowrap}
+table.cmd td.x{direction:ltr;text-align:left;font:13.5px/1.5 Consolas,Menlo,monospace;white-space:pre-wrap}
+table.cmd tr.g td{background:light-dark(#eafbfa,#1d1c4a);color:var(--teal-d);font-weight:800}
+.tbls{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}.tbls code{font-size:13px}
+.qa{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:12px;counter-reset:q}
+.qa>li{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 14px;counter-increment:q}
+.qa .q{display:flex;gap:10px;font-weight:600}.qa .q::before{content:counter(q);flex:none;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:800}
+.qa details{margin-top:8px}.qa summary{cursor:pointer;display:inline-flex;align-items:center;min-height:38px;padding:0 14px;border-radius:10px;background:var(--orange);color:#fff;font-weight:700;list-style:none}
+.qa summary::-webkit-details-marker{display:none}.qa details[open] summary{background:var(--teal-d)}
+.qa details[open] summary .s1,.qa details:not([open]) summary .s2{display:none}
+pre.sql{direction:ltr;text-align:left;background:#121133;color:#fff;border-radius:12px;padding:12px 14px;margin:10px 0 0;overflow-x:auto;font:14px/1.55 Consolas,Menlo,monospace;white-space:pre}
+pre.sql .k{color:#14DACD;font-weight:700}pre.sql .s{color:#F7B267}pre.sql .n{color:#B5E8A0}pre.sql .c{color:#8A93A6;font-style:italic}pre.sql .f{color:#FFD580}
+.fixn{margin-top:8px;font-size:13.5px;color:var(--mute);background:light-dark(#fff6ea,#2a2340);border-radius:10px;padding:8px 12px;border-inline-start:4px solid var(--orange)}
+.credit{color:var(--mute);font-size:14px;margin:4px 0 0}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:0 0 22px}
+.scard{display:flex;gap:12px;align-items:center;background:var(--navy);color:#fff;border-radius:14px;padding:14px 16px;text-decoration:none;border-inline-start:5px solid var(--teal);transition:transform .2s}
+.scard:nth-child(3n+2){border-inline-start-color:var(--orange)}.scard:hover{transform:translateY(-2px)}
+.scard b{display:block;font-size:17px}.scard small{display:block;color:#c9cbf0;font-size:13px}.scard em{font-style:normal;color:var(--teal);font-size:12.5px;font-weight:700}
+.si{font-size:30px;flex:none;width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.08);display:grid;place-items:center}
+.shd{display:flex;gap:14px;align-items:center;margin-bottom:8px}.shd .si{background:light-dark(#eef0f8,#26255a)}.shd h2{margin:0;font-size:23px}.shd .sub{margin:0}
+.shd .top{margin-inline-start:auto;text-decoration:none;color:var(--mute);font-size:20px}
+footer{text-align:center;color:var(--mute);font-size:13px;padding:24px 10px 34px}
+footer .ver{display:block;margin-top:4px}
+@media(max-width:600px){.hero img{display:none}table.cmd td:first-child{white-space:normal}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="in"><div><a class="allc" href="../">→ לקורס SQL</a><h1>חומר עזר</h1><p>כל מה שצריך כדי להתחיל: התקנת הסביבה, שחזור מסד הנתונים Northwind, תרשים המסד ודף פקודות.</p></div><img src="../logo.png" alt="NGQA Software Testing Services"></div></header>
+<main>
+<nav class="toc"><a href="#install">התקנת SQL Server</a><a href="#ssms">התקנת SSMS</a><a href="#restore">שחזור Northwind</a><a href="#video">סרטון הדגמה</a><a href="#diagram">תרשים Northwind</a><a href="#cmd">דף פקודות</a></nav>
+<section id="install"><h2>1. התקנת SQL Server 2025 Express</h2><p class="sub">שרת מסד הנתונים · גרסה חינמית · Windows 10/11</p>
+<ol class="steps">
+<li><span>נכנסים לדף ההורדות של מיקרוסופט: <a href="https://www.microsoft.com/sql-server/sql-server-downloads" target="_blank" rel="noopener">microsoft.com/sql-server/sql-server-downloads</a>, ובאזור <b>Express</b> לוחצים <b>Download now</b>.</span></li>
+<li><span>מריצים את הקובץ שירד (<code>SQL2025-SSEI-Expr.exe</code>) ובוחרים בסוג ההתקנה <b>Basic</b>.</span></li>
+<li><span>מאשרים את תנאי הרישיון (<b>Accept</b>), משאירים את תיקיית ההתקנה המוצעת ולוחצים <b>Install</b>.</span></li>
+<li><span>ממתינים לסיום ההורדה וההתקנה (כמה דקות). במסך הסיום מופיע שם השרת, בדרך כלל <code>localhost\SQLEXPRESS</code>. כדאי לרשום אותו.</span></li>
+</ol>
+<div class="tip">במסך הסיום יש כפתור <b>Install SSMS</b>. הוא פותח את דף ההורדה של כלי הניהול, השלב הבא.</div>
+</section>
+<section id="ssms"><h2>2. התקנת SQL Server Management Studio 22</h2><p class="sub">הכלי הגרפי שבו כותבים ומריצים שאילתות</p>
+<ol class="steps">
+<li><span>נכנסים ל-<a href="https://learn.microsoft.com/ssms/install/install" target="_blank" rel="noopener">learn.microsoft.com/ssms/install/install</a> ומורידים את <b>SSMS 22</b> (הקובץ <code>vs_SSMS.exe</code>).</span></li>
+<li><span>מריצים את הקובץ. נפתח <b>Visual Studio Installer</b>; משאירים את ברירת המחדל ולוחצים <b>Install</b>.</span></li>
+<li><span>בסיום פותחים את SSMS מתפריט Start (מקלידים <kbd>SSMS</kbd>). בפתיחה הראשונה אפשר לדלג על ההתחברות לחשבון מיקרוסופט.</span></li>
+<li><span>בחלון <b>Connect to Server</b>: Server type = <b>Database Engine</b>, Server name = <code>localhost\SQLEXPRESS</code>, Authentication = <b>Windows Authentication</b>. אם מופיעה שגיאת תעודה, מסמנים <b>Trust Server Certificate</b>. לוחצים <b>Connect</b>.</span></li>
+</ol>
+<div class="tip">מומלץ להצמיד את SSMS לשורת המשימות: נשתמש בו בכל שיעור.</div>
+</section>
+<section id="restore"><h2>3. שחזור מסד הנתונים Northwind</h2><p class="sub">מסד הנתונים שאיתו עובדים בכל הקורס</p>
+<a class="btn" href="../dl/northwind.bak" download>⬇ הורדת northwind.bak</a>
+<ol class="steps" style="margin-top:14px">
+<li><span>מעתיקים את הקובץ לתיקייה פשוטה, למשל <code>C:\SQLBackups</code> (תיקיית ההורדות לפעמים חסומה לשרת).</span></li>
+<li><span>ב-SSMS, בחלון <b>Object Explorer</b>: קליק ימני על <b>Databases</b> ← <b>Restore Database…</b></span></li>
+<li><span>תחת <b>Source</b> מסמנים <b>Device</b>, לוחצים על <b>…</b> ← <b>Add</b> ← בוחרים את <code>northwind.bak</code> ← <b>OK</b>.</span></li>
+<li><span>בעמוד <b>Files</b> (בצד שמאל של החלון) מסמנים <b>Relocate all files to folder</b>. הקובץ נוצר במחשב אחר, ובלי הסימון הזה השחזור נכשל על נתיב שלא קיים.</span></li>
+<li><span>לוחצים <b>OK</b>. אחרי ההודעה <i>Database 'Northwind' restored successfully</i> מרעננים (F5) את Databases ומופיע המסד <b>Northwind</b>.</span></li>
+<li><span>בודקים: <b>New Query</b>, בוחרים את Northwind ברשימת המסדים, ומריצים <code>SELECT * FROM Customers;</code></span></li>
+</ol>
+<div class="warn">אם מתקבלת שגיאה על גרסה: קובץ גיבוי אפשר לשחזר רק לגרסת שרת שווה או חדשה יותר. עם SQL Server 2025 אין בעיה.</div>
+</section>
+<section id="video"><h2>סרטון הדגמה: שחזור קובץ גיבוי</h2><p class="sub">אותם שלבים, צעד אחר צעד</p>
+<div class="vid"><iframe src="https://www.youtube-nocookie.com/embed/wVFGJqigGk0" title="שחזור קובץ גיבוי ב-SQL Server" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+<p><a href="https://www.youtube.com/watch?v=wVFGJqigGk0" target="_blank" rel="noopener">לפתיחה ב-YouTube</a></p>
+</section>
+<section id="diagram"><h2>תרשים מסד הנתונים Northwind</h2><p class="sub">הטבלאות והקשרים ביניהן</p>
+<a class="btn alt" href="../dl/northwind-diagram.png" download>⬇ הורדת התרשים</a>
+<img class="dia" src="../dl/northwind-diagram.png" alt="תרשים מסד הנתונים Northwind" loading="lazy">
+</section>
+<section id="cmd"><h2>דף פקודות SQL</h2><p class="sub">ריכוז הפקודות של הקורס בתחביר SQL Server (T-SQL)</p>
+<div style="overflow-x:auto"><table class="cmd"><thead><tr><th>פקודה</th><th>מה היא עושה</th><th>דוגמה</th></tr></thead><tbody><tr class="g"><td colspan="3">שליפה</td></tr><tr><td><bdi dir="ltr">SELECT … FROM</bdi></td><td>אילו עמודות לשלוף ומאיזו טבלה</td><td class="x">SELECT FirstName, LastName
+FROM Employees;</td></tr><tr><td><bdi dir="ltr">WHERE</bdi></td><td>סינון שורות לפי תנאי</td><td class="x">WHERE Country = &#x27;USA&#x27;</td></tr><tr><td><bdi dir="ltr">DISTINCT</bdi></td><td>ביטול שורות כפולות בתוצאה</td><td class="x">SELECT DISTINCT Country FROM Customers;</td></tr><tr><td><bdi dir="ltr">AS</bdi></td><td>כינוי (Alias) לעמודה או לטבלה</td><td class="x">SELECT UnitPrice * 0.9 AS SalePrice</td></tr><tr><td><bdi dir="ltr">TOP</bdi></td><td>רק N השורות הראשונות</td><td class="x">SELECT TOP 5 * FROM Products ORDER BY UnitPrice DESC;</td></tr><tr><td><bdi dir="ltr">ORDER BY</bdi></td><td>מיון: ASC עולה (ברירת מחדל), DESC יורד</td><td class="x">ORDER BY Country, City DESC</td></tr><tr class="g"><td colspan="3">אופרטורים</td></tr><tr><td><bdi dir="ltr">= &lt;&gt; &lt; &gt; &lt;= &gt;=</bdi></td><td>השוואה (&lt;&gt; וגם != = שונה מ-)</td><td class="x">WHERE UnitPrice &gt;= 20</td></tr><tr><td><bdi dir="ltr">AND / OR / NOT</bdi></td><td>שילוב תנאים; AND קודם ל-OR, לכן כדאי סוגריים</td><td class="x">WHERE (City = &#x27;London&#x27; OR City = &#x27;Paris&#x27;) AND Fax IS NOT NULL</td></tr><tr><td><bdi dir="ltr">BETWEEN</bdi></td><td>טווח, כולל הקצוות</td><td class="x">WHERE UnitPrice BETWEEN 10 AND 50</td></tr><tr><td><bdi dir="ltr">IN</bdi></td><td>אחד מתוך רשימה (קיצור ל-OR)</td><td class="x">WHERE Country IN (&#x27;UK&#x27;, &#x27;France&#x27;)</td></tr><tr><td><bdi dir="ltr">LIKE</bdi></td><td>% = כל רצף תווים, _ = תו אחד</td><td class="x">WHERE CompanyName LIKE &#x27;A%&#x27;</td></tr><tr><td><bdi dir="ltr">IS NULL / IS NOT NULL</bdi></td><td>בדיקת ערך חסר (לא = NULL!)</td><td class="x">WHERE Region IS NULL</td></tr><tr class="g"><td colspan="3">פונקציות</td></tr><tr><td><bdi dir="ltr">COUNT / SUM / AVG / MIN / MAX</bdi></td><td>פונקציות צבירה</td><td class="x">SELECT COUNT(*), AVG(UnitPrice) FROM Products;</td></tr><tr><td><bdi dir="ltr">UPPER / LOWER / LEN</bdi></td><td>אותיות גדולות/קטנות, אורך מחרוזת</td><td class="x">SELECT UPPER(LastName), LEN(LastName)</td></tr><tr><td><bdi dir="ltr">SUBSTRING / LEFT / RIGHT</bdi></td><td>חלק ממחרוזת</td><td class="x">SUBSTRING(City, 1, 4)</td></tr><tr><td><bdi dir="ltr">REPLACE / LTRIM / RTRIM</bdi></td><td>החלפה וניקוי רווחים</td><td class="x">REPLACE(City, &#x27;London&#x27;, &#x27;Londinium&#x27;)</td></tr><tr><td><bdi dir="ltr">ROUND / CEILING / FLOOR</bdi></td><td>עיגול מספרים</td><td class="x">ROUND(UnitPrice, 2)</td></tr><tr><td><bdi dir="ltr">GETDATE / DATEADD / DATEDIFF</bdi></td><td>תאריך נוכחי, הוספה והפרש</td><td class="x">DATEDIFF(DAY, OrderDate, ShippedDate)</td></tr><tr><td><bdi dir="ltr">YEAR / MONTH / DAY / DATENAME</bdi></td><td>חלקי תאריך</td><td class="x">YEAR(OrderDate), DATENAME(MONTH, OrderDate)</td></tr><tr><td><bdi dir="ltr">ISNULL / CAST / CONVERT</bdi></td><td>ערך חלופי ל-NULL, המרת טיפוסים</td><td class="x">ISNULL(Fax, N&#x27;אין&#x27;), CAST(UnitPrice AS INT)</td></tr><tr class="g"><td colspan="3">קיבוץ</td></tr><tr><td><bdi dir="ltr">GROUP BY</bdi></td><td>קיבוץ שורות לפי ערך משותף</td><td class="x">SELECT Country, COUNT(*)
+FROM Customers
+GROUP BY Country;</td></tr><tr><td><bdi dir="ltr">HAVING</bdi></td><td>תנאי על קבוצות (אחרי GROUP BY)</td><td class="x">HAVING COUNT(*) &gt; 5</td></tr><tr class="g"><td colspan="3">צירוף טבלאות</td></tr><tr><td><bdi dir="ltr">INNER JOIN</bdi></td><td>רק שורות עם התאמה בשתי הטבלאות</td><td class="x">SELECT p.ProductName, c.CategoryName
+FROM Products p
+INNER JOIN Categories c ON p.CategoryID = c.CategoryID;</td></tr><tr><td><bdi dir="ltr">LEFT / RIGHT JOIN</bdi></td><td>כל השורות מטבלה אחת, ומהשנייה רק מה שמתאים</td><td class="x">FROM Customers c
+LEFT JOIN Orders o ON c.CustomerID = o.CustomerID</td></tr><tr><td><bdi dir="ltr">FULL / CROSS JOIN</bdi></td><td>כל השורות משתי הטבלאות / מכפלה קרטזית</td><td class="x">FROM Customers c FULL JOIN Orders o ON …</td></tr><tr><td><bdi dir="ltr">UNION</bdi></td><td>איחוד תוצאות של שתי שאילתות (UNION ALL משאיר כפולים)</td><td class="x">SELECT City FROM Customers
+UNION
+SELECT City FROM Suppliers;</td></tr><tr><td><bdi dir="ltr">תת-שאילתה</bdi></td><td>שאילתה בתוך שאילתה</td><td class="x">WHERE UnitPrice &gt; (SELECT AVG(UnitPrice) FROM Products)</td></tr><tr class="g"><td colspan="3">שינוי נתונים ומבנה</td></tr><tr><td><bdi dir="ltr">INSERT</bdi></td><td>הוספת שורה</td><td class="x">INSERT INTO Shippers (CompanyName, Phone)
+VALUES (&#x27;Fast Ship&#x27;, &#x27;03-5551234&#x27;);</td></tr><tr><td><bdi dir="ltr">UPDATE</bdi></td><td>עדכון שורות (בלי WHERE – כל הטבלה!)</td><td class="x">UPDATE Products SET UnitPrice = 20
+WHERE ProductID = 1;</td></tr><tr><td><bdi dir="ltr">DELETE</bdi></td><td>מחיקת שורות (בלי WHERE – כל הטבלה!)</td><td class="x">DELETE FROM Shippers WHERE ShipperID = 4;</td></tr><tr><td><bdi dir="ltr">CREATE / ALTER / DROP TABLE</bdi></td><td>יצירה, שינוי ומחיקה של טבלה</td><td class="x">ALTER TABLE Student ADD Email varchar(50);
+ALTER TABLE Student DROP COLUMN Email;</td></tr><tr><td><bdi dir="ltr">VIEW</bdi></td><td>שאילתה שמורה שמתנהגת כמו טבלה</td><td class="x">CREATE VIEW UK_Customers AS
+SELECT * FROM Customers WHERE Country = &#x27;UK&#x27;;</td></tr><tr><td><bdi dir="ltr">PROCEDURE</bdi></td><td>קוד שמור שמריצים בשם</td><td class="x">CREATE PROCEDURE GetEmployees AS
+SELECT * FROM Employees;
+EXEC GetEmployees;</td></tr></tbody></table></div>
+<div class="tip">פונקציות מהדף הישן כמו <code>FIRST()</code>, <code>LAST()</code>, <code>UCASE()</code> ו-<code>NOW()</code> לא קיימות ב-SQL Server. במקומן: <code>TOP</code> עם <code>ORDER BY</code>, <code>UPPER()</code> ו-<code>GETDATE()</code>.</div>
+</section>
+</main>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v1.0 · 21.11.2026</bdi></span></footer>
+<script>
+const SQLKW=new Set('SELECT FROM WHERE ORDER BY GROUP HAVING INSERT INTO VALUES UPDATE SET DELETE CREATE ALTER DROP TABLE VIEW PROCEDURE AND OR NOT IN LIKE BETWEEN IS NULL AS ON JOIN INNER LEFT RIGHT FULL OUTER CROSS UNION ALL DISTINCT TOP ASC DESC EXISTS CASE WHEN THEN ELSE END BEGIN DECLARE EXEC RETURN IF COLUMN VARCHAR INT'.split(' '));
+const E=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+document.querySelectorAll('pre.sql').forEach(p=>{p.innerHTML=p.textContent.split('\n').map(l=>{const m=l.match(/^(.*?)(--.*)?$/);
+  const t=E(m[1]).replace(/('[^']*'?)|(\b\d+(?:\.\d+)?\b)|(\b[A-Za-z_]\w*\b)(?=\s*\()|(\b[A-Za-z_]+\b)/g,(x,s,n,f,w)=>s?`<span class="s">${s}</span>`:n?`<span class="n">${n}</span>`:f?(SQLKW.has(f.toUpperCase())?`<span class="k">${f}</span>`:`<span class="f">${f}</span>`):SQLKW.has(w.toUpperCase())?`<span class="k">${w}</span>`:w);
+  return t+(m[2]?`<span class="c">${E(m[2])}</span>`:'')}).join('\n')});
+</script>
+</body>
+</html>

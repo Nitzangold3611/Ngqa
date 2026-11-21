@@ -1,0 +1,798 @@
+{
+ "1": {
+  "title": "שאילתות SELECT … FROM",
+  "items": [
+   {
+    "sec": "",
+    "q": "הצג את כל הנתונים מהטבלה Customers",
+    "a": "SELECT *\nFROM Customers;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות החברות (CompanyName) של כל הלקוחות.",
+    "a": "SELECT CompanyName\nFROM Customers;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שם הלקוח (ContactName) ואת המדינה (Country) עבור כל הלקוחות.",
+    "a": "SELECT ContactName, Country\nFROM Customers;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את כל הנתונים מהטבלה Products",
+    "a": "SELECT *\nFROM Products;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שם המוצר (ProductName) ואת המחיר ליחידה (UnitPrice) עבור כל המוצרים.",
+    "a": "SELECT ProductName, UnitPrice\nFROM Products;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות הספקים (CompanyName) מתוך הטבלה Suppliers.",
+    "a": "SELECT CompanyName\nFROM Suppliers;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את כל העמודות מתוך הטבלה Orders.",
+    "a": "SELECT *\nFROM Orders;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את מזהה ההזמנה (OrderID) ואת מזהה הלקוח (CustomerID) מתוך Orders",
+    "a": "SELECT OrderID, CustomerID\nFROM Orders;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את רשימת כל המדינות הייחודיות (כל אחת פעם אחת) מתוך Customers",
+    "a": "SELECT DISTINCT Country\nFROM Customers;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שם המוצר (ProductName), הקטגוריה שלו (CategoryID), והמחיר ליחידה (UnitPrice) מתוך Products",
+    "a": "SELECT ProductName, CategoryID, UnitPrice\nFROM Products;"
+   }
+  ]
+ },
+ "2": {
+  "title": "אופרטורים",
+  "items": [
+   {
+    "sec": "אופרטורים תוויים",
+    "q": "הצג את שמות המוצרים המכילים את המילה 'Choco'.",
+    "a": "SELECT ProductName\nFROM Products\nWHERE ProductName LIKE '%Choco%';"
+   },
+   {
+    "sec": "אופרטורים תוויים",
+    "q": "הצג את שמות הלקוחות שהשם שלהם מתחיל באות A.",
+    "a": "SELECT CompanyName\nFROM Customers\nWHERE CompanyName LIKE 'A%';",
+    "fixed": "בטבלת Customers אין עמודה CustomerName; שם החברה הוא CompanyName"
+   },
+   {
+    "sec": "אופרטורים תוויים",
+    "q": "הצג את שמות המוצרים שהשם שלהם מסתיים ב-'berry'.",
+    "a": "SELECT ProductName\nFROM Products\nWHERE ProductName LIKE '%berry';"
+   },
+   {
+    "sec": "אופרטורים תוויים",
+    "q": "הצג את שמות הספקים המכילים את המילה 'Food' בכל מקום בשם.",
+    "a": "SELECT CompanyName\nFROM Suppliers\nWHERE CompanyName LIKE '%Food%';",
+    "fixed": "בטבלת Suppliers אין עמודה SupplierName; שם הספק הוא CompanyName"
+   },
+   {
+    "sec": "אופרטורים השוואתיים",
+    "q": "הצג את שמות המוצרים ואת מחירם כולל מע\"מ של 17%.",
+    "a": "SELECT ProductName, UnitPrice * 1.17 AS PriceWithVAT\nFROM Products;"
+   },
+   {
+    "sec": "אופרטורים השוואתיים",
+    "q": "הצג את שמות המוצרים והמחיר לאחר הנחה של 10%.",
+    "a": "SELECT ProductName, UnitPrice * 0.9 AS DiscountedPrice\nFROM Products;"
+   },
+   {
+    "sec": "אופרטורים לוגיים",
+    "q": "הצג את שמות המוצרים שמחירם בין 10 ל-50 דולר.",
+    "a": "SELECT ProductName\nFROM Products\nWHERE UnitPrice BETWEEN 10 AND 50;"
+   },
+   {
+    "sec": "אופרטורים לוגיים",
+    "q": "הצג את שמות המוצרים שמחירם קטן מ-20 או גדול מ-100.",
+    "a": "SELECT ProductName\nFROM Products\nWHERE UnitPrice < 20 OR UnitPrice > 100;"
+   },
+   {
+    "sec": "אופרטורים לוגיים",
+    "q": "הצג את שמות המוצרים שהחלק השלם של מחירם אינו מכיל את הספרה 0.",
+    "a": "SELECT ProductName, UnitPrice\nFROM Products\nWHERE CAST(FLOOR(UnitPrice) AS VARCHAR(10)) NOT LIKE '%0%';",
+    "fixed": "UnitPrice הוא money, והמרה לטקסט מוסיפה \".00\", כך שכל מחיר \"מכיל 0\". בודקים רק את החלק השלם"
+   },
+   {
+    "sec": "אופרטורים לוגיים",
+    "q": "הצג את שמות העובדים שגרים בעיר סיאטל ומשמשים כנציגי מכירות (Sales Representative).",
+    "a": "SELECT FirstName, LastName\nFROM Employees\nWHERE City = 'Seattle' AND Title = 'Sales Representative';",
+    "fixed": "בטבלת Employees אין עמודות EmployeeName ו-Department; משתמשים ב-FirstName, LastName ו-Title"
+   }
+  ]
+ },
+ "3": {
+  "title": "פונקציות מוכללות",
+  "items": [
+   {
+    "sec": "פונקציות צבירה",
+    "q": "הצג את מספר המוצרים הקיימים בטבלה.",
+    "a": "SELECT COUNT(*) AS ProductsCount\nFROM Products;",
+    "fixed": "הפתרון המקורי חישב סכום מלאי ולא מספר מוצרים"
+   },
+   {
+    "sec": "פונקציות צבירה",
+    "q": "הצג את הסכום הכולל של המלאי של כל המוצרים.",
+    "a": "SELECT SUM(UnitsInStock) AS TotalStock\nFROM Products;",
+    "fixed": "הפתרון המקורי חישב ממוצע מחיר ולא סכום מלאי"
+   },
+   {
+    "sec": "פונקציות צבירה",
+    "q": "הצג את המחיר הממוצע של המוצרים בטבלה.",
+    "a": "SELECT AVG(UnitPrice) AS AveragePrice\nFROM Products;",
+    "fixed": "שאלה שנוספה (הפתרון שלה הופיע בקובץ בלי שאלה)"
+   },
+   {
+    "sec": "פונקציות צבירה",
+    "q": "הצג את המחיר הגבוה ביותר של מוצר בטבלה.",
+    "a": "SELECT MAX(UnitPrice) AS HighestPrice\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות צבירה",
+    "q": "הצג את המחיר הנמוך ביותר של מוצר בטבלה.",
+    "a": "SELECT MIN(UnitPrice) AS LowestPrice\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות צבירה",
+    "q": "הצג את המלאי המקסימלי של כל קטגוריה.",
+    "a": "SELECT CategoryID, MAX(UnitsInStock) AS MaxStock\nFROM Products\nGROUP BY CategoryID;"
+   },
+   {
+    "sec": "פונקציות צבירה",
+    "q": "הצג את המלאי המינימלי של כל ספק.",
+    "a": "SELECT SupplierID, MIN(UnitsInStock) AS MinStock\nFROM Products\nGROUP BY SupplierID;"
+   },
+   {
+    "sec": "פונקציות חשבוניות",
+    "q": "הצג את שמות המוצרים ואת המחיר המעוגל כלפי מעלה.",
+    "a": "SELECT ProductName, CEILING(UnitPrice) AS RoundedUpPrice\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות חשבוניות",
+    "q": "הצג את שמות המוצרים ואת המחיר המעוגל כלפי מטה.",
+    "a": "SELECT ProductName, FLOOR(UnitPrice) AS RoundedDownPrice\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות חשבוניות",
+    "q": "הצג את שמות המוצרים ואת המחיר המעוגל לשתי ספרות עשרוניות.",
+    "a": "SELECT ProductName, ROUND(UnitPrice, 2) AS RoundedPrice\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות חשבוניות",
+    "q": "הצג את שמות המוצרים ואת השורש הריבועי של המחיר.",
+    "a": "SELECT ProductName, POWER(UnitPrice, 0.5) AS SquareRootPrice\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את שמות המוצרים באותיות גדולות בלבד.",
+    "a": "SELECT UPPER(ProductName) AS UpperCaseName\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את שמות המוצרים באותיות קטנות בלבד.",
+    "a": "SELECT LOWER(ProductName) AS LowerCaseName\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את שמות המוצרים כפול 3 פעמים ברצף.",
+    "a": "SELECT REPLICATE(ProductName, 3) AS RepeatedName\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את שמות המוצרים עם 5 רווחים ביניהם.",
+    "a": "SELECT ProductName + SPACE(5) + ProductName AS SpacedName\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את שמות המוצרים ואת מספר התווים בכל שם.",
+    "a": "SELECT ProductName, LEN(ProductName) AS NameLength\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את שמות המוצרים לאחר החלפת התו 'a' בתו 'o'.",
+    "a": "SELECT REPLACE(ProductName, 'a', 'o') AS ReplacedName\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את 5 התווים הראשונים של כל שם מוצר.",
+    "a": "SELECT SUBSTRING(ProductName, 1, 5) AS ShortName\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את 3 התווים הראשונים של שם המשפחה של כל עובד.",
+    "a": "SELECT SUBSTRING(LastName, 1, 3) AS ShortLastName\nFROM Employees;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "החלף את שם העיר 'London' ב'Londinium'-",
+    "a": "SELECT REPLACE(City, 'London', 'Londinium') AS NewCityName\nFROM Customers;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את שמות הספקים ואת מספר התווים בכל שם.",
+    "a": "SELECT CompanyName, LEN(CompanyName) AS NameLength\nFROM Suppliers;",
+    "fixed": "שם הספק הוא CompanyName"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את התאריך והשעה הנוכחיים.",
+    "a": "SELECT GETDATE() AS CurrentDateTime;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את התאריך שיהיה בעוד 30 ימים מהתאריך הנוכחי.",
+    "a": "SELECT DATEADD(DAY, 30, GETDATE()) AS DateIn30Days;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את מספר הימים בין תאריך ההזמנה לתאריך המשלוח בכל הזמנה.",
+    "a": "SELECT OrderID, DATEDIFF(DAY, OrderDate, ShippedDate) AS DaysBetween\nFROM Orders;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את מספר החודש מתוך תאריך ההזמנה.",
+    "a": "SELECT OrderID, DATEPART(MONTH, OrderDate) AS OrderMonth\nFROM Orders;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את שם החודש מתוך תאריך ההזמנה.",
+    "a": "SELECT OrderID, DATENAME(MONTH, OrderDate) AS OrderMonthName\nFROM Orders;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את היום בתאריך ההזמנה.",
+    "a": "SELECT OrderID, DAY(OrderDate) AS OrderDay\nFROM Orders;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את החודש מתוך תאריך המשלוח.",
+    "a": "SELECT OrderID, MONTH(ShippedDate) AS ShippedMonth\nFROM Orders;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את השנה מתוך תאריך הלידה של העובדים.",
+    "a": "SELECT EmployeeID, YEAR(BirthDate) AS BirthYear\nFROM Employees;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את גילם של העובדים לפי תאריך הלידה.",
+    "a": "SELECT EmployeeID, DATEDIFF(YEAR, BirthDate, GETDATE()) AS Age\nFROM Employees;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את תאריך הלידה של העובדים לאחר הוספת שנה.",
+    "a": "SELECT EmployeeID, DATEADD(YEAR, 1, BirthDate) AS NextYearBirthday\nFROM Employees;"
+   },
+   {
+    "sec": "פונקציות כלליות",
+    "q": "הצג את שם המשתמש המחובר כרגע.",
+    "a": "SELECT SUSER_NAME() AS CurrentUser;"
+   },
+   {
+    "sec": "פונקציות כלליות",
+    "q": "הצג את שמות הלקוחות ומספר הפקס שלהם; אם אין פקס תוצג המחרוזת 'לא זמין'.",
+    "a": "SELECT CompanyName, ISNULL(Fax, N'לא זמין') AS Fax\nFROM Customers;",
+    "fixed": "בטבלת Customers אין עמודת Email; משתמשים בעמודת Fax שיש בה ערכי NULL"
+   },
+   {
+    "sec": "פונקציות כלליות",
+    "q": "הצג את חמשת הלקוחות הראשונים בטבלה.",
+    "a": "SELECT TOP 5 CompanyName\nFROM Customers;",
+    "fixed": "שם הלקוח הוא CompanyName"
+   },
+   {
+    "sec": "פונקציות כלליות",
+    "q": "הצג את שמות עשרת המוצרים עם המחיר הגבוה ביותר.",
+    "a": "SELECT TOP 10 ProductName, UnitPrice\nFROM Products\nORDER BY UnitPrice DESC;"
+   }
+  ]
+ },
+ "4": {
+  "title": "הוראות בשאילתות",
+  "items": [
+   {
+    "sec": "GROUP BY",
+    "q": "הצג את מספר ההזמנה ואת הסכום הכולל של ההנחות בה.",
+    "a": "SELECT OrderID, SUM(Discount) AS TotalDiscount\nFROM [Order Details]\nGROUP BY OrderID;",
+    "fixed": "שם הטבלה הוא [Order Details] (עם רווח, בסוגריים מרובעים)"
+   },
+   {
+    "sec": "GROUP BY",
+    "q": "הצג את שם המדינה ומספר הלקוחות בה.",
+    "a": "SELECT Country, COUNT(CustomerID) AS CustomerCount\nFROM Customers\nGROUP BY Country;"
+   },
+   {
+    "sec": "GROUP BY",
+    "q": "הצג את חודש ההזמנה ואת מספר ההזמנות שבוצעו באותו חודש.",
+    "a": "SELECT DATEPART(MONTH, OrderDate) AS OrderMonth, COUNT(OrderID) AS OrdersCount\nFROM Orders\nGROUP BY DATEPART(MONTH, OrderDate);"
+   },
+   {
+    "sec": "ORDER BY",
+    "q": "הצג את שמות המוצרים מסודרים לפי מחירם בסדר עולה.",
+    "a": "SELECT ProductName, UnitPrice\nFROM Products\nORDER BY UnitPrice ASC;"
+   },
+   {
+    "sec": "ORDER BY",
+    "q": "הצג את שמות המוצרים מסודרים לפי מחירם בסדר יורד.",
+    "a": "SELECT ProductName, UnitPrice\nFROM Products\nORDER BY UnitPrice DESC;"
+   },
+   {
+    "sec": "ORDER BY",
+    "q": "הצג את מספרי ההזמנות מסודרים לפי תאריך ההזמנה מהעתיק לחדש.",
+    "a": "SELECT OrderID, OrderDate\nFROM Orders\nORDER BY OrderDate ASC;"
+   },
+   {
+    "sec": "ORDER BY",
+    "q": "הצג את שמות הלקוחות מסודרים לפי סדר אלפביתי.",
+    "a": "SELECT CompanyName\nFROM Customers\nORDER BY CompanyName ASC;",
+    "fixed": "שם הלקוח הוא CompanyName"
+   },
+   {
+    "sec": "ORDER BY",
+    "q": "הצג את שמות העובדים מסודרים לפי גיל מהצעיר למבוגר.",
+    "a": "SELECT FirstName + ' ' + LastName AS EmployeeName,\n       DATEDIFF(YEAR, BirthDate, GETDATE()) AS Age\nFROM Employees\nORDER BY Age ASC;",
+    "fixed": "אין עמודה EmployeeName; מחברים FirstName ו-LastName"
+   },
+   {
+    "sec": "ORDER BY",
+    "q": "הצג את שמות המוצרים מסודרים לפי קטגוריה ואז לפי מחיר בסדר יורד.",
+    "a": "SELECT CategoryID, ProductName, UnitPrice\nFROM Products\nORDER BY CategoryID, UnitPrice DESC;"
+   },
+   {
+    "sec": "HAVING",
+    "q": "הצג את התפקיד (Title) ואת הגיל הממוצע של העובדים בו, רק אם הממוצע גדול מ-70.",
+    "a": "SELECT Title, AVG(DATEDIFF(YEAR, BirthDate, GETDATE())) AS AverageAge\nFROM Employees\nGROUP BY Title\nHAVING AVG(DATEDIFF(YEAR, BirthDate, GETDATE())) > 70;",
+    "fixed": "אין מחלקות בטבלת Employees, אז מקבצים לפי Title. כל העובדים מעל גיל 30, לכן הסף הועלה ל-70"
+   },
+   {
+    "sec": "HAVING",
+    "q": "הצג את שנת ההזמנה ומספר ההזמנות, רק אם מספר ההזמנות גדול מ-50.",
+    "a": "SELECT YEAR(OrderDate) AS OrderYear, COUNT(OrderID) AS OrderCount\nFROM Orders\nGROUP BY YEAR(OrderDate)\nHAVING COUNT(OrderID) > 50;"
+   }
+  ]
+ },
+ "5": {
+  "title": "צירוף טבלאות – JOIN",
+  "items": [
+   {
+    "sec": "",
+    "q": "הצג את שמות המוצרים ושמות הקטגוריות שלהם.",
+    "a": "SELECT ProductName, CategoryName\nFROM Products\nINNER JOIN Categories ON Products.CategoryID = Categories.CategoryID;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את מספרי ההזמנות ושמות הלקוחות שביצעו אותן.",
+    "a": "SELECT o.OrderID, c.CompanyName\nFROM Orders o\nINNER JOIN Customers c ON o.CustomerID = c.CustomerID;",
+    "fixed": "שם הלקוח הוא CompanyName"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות העובדים ואת שמות האזורים (Territories) שבאחריותם.",
+    "a": "SELECT e.FirstName, e.LastName, t.TerritoryDescription\nFROM Employees e\nINNER JOIN EmployeeTerritories et ON e.EmployeeID = et.EmployeeID\nINNER JOIN Territories t ON et.TerritoryID = t.TerritoryID;",
+    "fixed": "אין טבלת Departments ב-Northwind; השאלה הוחלפה לצירוף של שלוש טבלאות שקיימות"
+   },
+   {
+    "sec": "",
+    "q": "הצג את מספר ההזמנה, שם המוצר והכמות המוזמנת.",
+    "a": "SELECT od.OrderID, p.ProductName, od.Quantity\nFROM [Order Details] od\nINNER JOIN Products p ON od.ProductID = p.ProductID;",
+    "fixed": "שם הטבלה הוא [Order Details]"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות הספקים ושמות המוצרים שסיפקו.",
+    "a": "SELECT s.CompanyName, p.ProductName\nFROM Suppliers s\nINNER JOIN Products p ON s.SupplierID = p.SupplierID;",
+    "fixed": "שם הספק הוא CompanyName"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שם המוצר ומספרי ההזמנות שבהן נמכר.",
+    "a": "SELECT p.ProductName, od.OrderID\nFROM [Order Details] od\nINNER JOIN Products p ON od.ProductID = p.ProductID;",
+    "fixed": "שם הטבלה הוא [Order Details]"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות העובדים ומספרי ההזמנות שהם טיפלו בהן.",
+    "a": "SELECT e.FirstName, e.LastName, o.OrderID\nFROM Orders o\nINNER JOIN Employees e ON o.EmployeeID = e.EmployeeID;",
+    "fixed": "אין עמודה EmployeeName; משתמשים ב-FirstName ו-LastName"
+   }
+  ]
+ },
+ "6": {
+  "title": "שאילתות משנה",
+  "items": [
+   {
+    "sec": "",
+    "q": "הצג את שמות המוצרים שמחירם גבוה מהממוצע של כל המוצרים.",
+    "a": "SELECT ProductName, UnitPrice\nFROM Products\nWHERE UnitPrice > (SELECT AVG(UnitPrice) FROM Products);"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות הלקוחות שביצעו את ההזמנה היקרה ביותר.",
+    "a": "SELECT CompanyName\nFROM Customers\nWHERE CustomerID IN (\n    SELECT CustomerID FROM Orders\n    WHERE OrderID = (\n        SELECT TOP 1 OrderID\n        FROM [Order Details]\n        GROUP BY OrderID\n        ORDER BY SUM(UnitPrice * Quantity * (1 - Discount)) DESC));",
+    "fixed": "אין עמודה TotalAmount בטבלת Orders; סכום ההזמנה מחושב מתוך [Order Details]"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות המוצרים שלא קיימים בטבלת ההזמנות.",
+    "a": "SELECT ProductName\nFROM Products\nWHERE ProductID NOT IN (SELECT ProductID FROM [Order Details]);",
+    "fixed": "שם הטבלה הוא [Order Details]"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות הספקים שמספקים את המוצר היקר ביותר.",
+    "a": "SELECT CompanyName\nFROM Suppliers\nWHERE SupplierID IN (\n    SELECT SupplierID FROM Products\n    WHERE UnitPrice = (SELECT MAX(UnitPrice) FROM Products));",
+    "fixed": "שם הספק הוא CompanyName"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות המוצרים שמחירם גבוה ממחיר המוצר 'Chai'.",
+    "a": "SELECT ProductName\nFROM Products\nWHERE UnitPrice > (SELECT UnitPrice FROM Products WHERE ProductName = 'Chai');"
+   }
+  ]
+ },
+ "7": {
+  "title": "טיפול בנתונים",
+  "intro": "הריצו כל שאלה בתוך BEGIN TRANSACTION … ROLLBACK, כך שמסד Northwind יחזור למצבו המקורי.",
+  "items": [
+   {
+    "sec": "INSERT",
+    "q": "הוסיפו לטבלת Shippers חברת משלוחים בשם Fast Lane עם הטלפון (03) 555-1234, והציגו את הטבלה.",
+    "a": "BEGIN TRANSACTION;\nINSERT INTO Shippers (CompanyName, Phone)\nVALUES ('Fast Lane', '(03) 555-1234');\nSELECT * FROM Shippers;\nROLLBACK;",
+    "fixed": "",
+    "note": "ShipperID מוגדר IDENTITY, ולכן לא מכניסים לו ערך: המערכת מספרת לבד."
+   },
+   {
+    "sec": "INSERT",
+    "q": "הוסיפו קטגוריה חדשה בשם Snacks עם התיאור Chips, nuts and crackers.",
+    "a": "BEGIN TRANSACTION;\nINSERT INTO Categories (CategoryName, Description)\nVALUES ('Snacks', 'Chips, nuts and crackers');\nSELECT * FROM Categories WHERE CategoryName = 'Snacks';\nROLLBACK;",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "INSERT",
+    "q": "הוסיפו לטבלת Region אזור חדש: מספר 5, בשם Middle East.",
+    "a": "BEGIN TRANSACTION;\nINSERT INTO Region (RegionID, RegionDescription)\nVALUES (5, 'Middle East');\nSELECT * FROM Region;\nROLLBACK;",
+    "fixed": "",
+    "note": "בניגוד ל-Shippers, בטבלת Region העמודה RegionID אינה IDENTITY, ולכן חובה לתת לה ערך."
+   },
+   {
+    "sec": "INSERT",
+    "q": "הוסיפו עובד חדש, דנה כהן (FirstName = Dana, LastName = Cohen), בלי למלא אף עמודה אחרת. אילו ערכים יופיעו בשאר העמודות?",
+    "a": "BEGIN TRANSACTION;\nINSERT INTO Employees (LastName, FirstName)\nVALUES ('Cohen', 'Dana');\nSELECT TOP 1 * FROM Employees ORDER BY EmployeeID DESC;\nROLLBACK;",
+    "fixed": "",
+    "note": "בכל העמודות שלא מולאו יופיע NULL, כי הן מאפשרות ערך ריק ואין להן ברירת מחדל."
+   },
+   {
+    "sec": "INSERT",
+    "q": "העתיקו לטבלה זמנית בשם #UK_Customers את כל הלקוחות מבריטניה (Country = UK), ובדקו כמה שורות הועתקו.",
+    "a": "SELECT *\nINTO #UK_Customers\nFROM Customers\nWHERE Country = 'UK';\n\nSELECT COUNT(*) AS Copied FROM #UK_Customers;",
+    "fixed": "",
+    "note": "SELECT … INTO יוצר טבלה חדשה ומעתיק אליה את הנתונים. טבלה ששמה מתחיל ב-# היא טבלה זמנית שנמחקת כשסוגרים את החלון."
+   },
+   {
+    "sec": "UPDATE",
+    "q": "העלו ב-10% את המחיר של כל המוצרים בקטגוריה 1 (Beverages).",
+    "a": "BEGIN TRANSACTION;\nUPDATE Products\nSET UnitPrice = UnitPrice * 1.1\nWHERE CategoryID = 1;\nSELECT ProductName, UnitPrice FROM Products WHERE CategoryID = 1;\nROLLBACK;",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "UPDATE",
+    "q": "שנו את התואר (ContactTitle) של איש הקשר אצל הלקוח ALFKI ל-Owner.",
+    "a": "BEGIN TRANSACTION;\nUPDATE Customers\nSET ContactTitle = 'Owner'\nWHERE CustomerID = 'ALFKI';\nSELECT CustomerID, ContactName, ContactTitle FROM Customers WHERE CustomerID = 'ALFKI';\nROLLBACK;",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "UPDATE",
+    "q": "סמנו כמוצרים שהופסקו (Discontinued = 1) את כל המוצרים שאין מהם מלאי (UnitsInStock = 0).",
+    "a": "BEGIN TRANSACTION;\nUPDATE Products\nSET Discontinued = 1\nWHERE UnitsInStock = 0;\nSELECT ProductName, UnitsInStock, Discontinued FROM Products WHERE UnitsInStock = 0;\nROLLBACK;",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "UPDATE",
+    "q": "הוזילו ב-5% את כל המוצרים של הספק Exotic Liquids. מצאו את מספר הספק בעזרת תת-שאילתה.",
+    "a": "BEGIN TRANSACTION;\nUPDATE Products\nSET UnitPrice = UnitPrice * 0.95\nWHERE SupplierID = (SELECT SupplierID FROM Suppliers\n                    WHERE CompanyName = 'Exotic Liquids');\nSELECT ProductName, UnitPrice FROM Products WHERE SupplierID = 1;\nROLLBACK;",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "DELETE",
+    "q": "בתוך טרנזקציה אחת: הוסיפו את חברת המשלוחים Fast Lane, מחקו אותה לפי השם, ובדקו שהיא לא מופיעה.",
+    "a": "BEGIN TRANSACTION;\nINSERT INTO Shippers (CompanyName, Phone) VALUES ('Fast Lane', '(03) 555-1234');\nDELETE FROM Shippers WHERE CompanyName = 'Fast Lane';\nSELECT * FROM Shippers;\nROLLBACK;",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "DELETE",
+    "q": "נסו למחוק את הקטגוריה מספר 1. מה קורה, ולמה?",
+    "a": "DELETE FROM Categories\nWHERE CategoryID = 1;\n-- שגיאה 547: The DELETE statement conflicted with the REFERENCE constraint",
+    "fixed": "",
+    "note": "יש מוצרים שמפנים לקטגוריה הזו (מפתח זר מ-Products), ולכן המחיקה נחסמת. זו בדיוק המטרה של האילוץ: למנוע מוצרים \"יתומים\"."
+   },
+   {
+    "sec": "בקרת תנועות",
+    "q": "פתחו טרנזקציה, מחקו את כל שורות הפירוט של הזמנה 10248 מ-[Order Details], ודאו שנמחקו, בטלו את הטרנזקציה ובדקו שהן חזרו.",
+    "a": "BEGIN TRANSACTION;\nDELETE FROM [Order Details] WHERE OrderID = 10248;\nSELECT COUNT(*) AS AfterDelete FROM [Order Details] WHERE OrderID = 10248;  -- 0\nROLLBACK;\nSELECT COUNT(*) AS AfterRollback FROM [Order Details] WHERE OrderID = 10248;  -- 3",
+    "fixed": "",
+    "note": ""
+   }
+  ]
+ },
+ "8": {
+  "title": "פקודות DDL",
+  "intro": "התרגיל נעשה במסד תרגול נפרד (SchoolPractice), כדי לא לשנות את Northwind.",
+  "items": [
+   {
+    "sec": "הכנה",
+    "q": "צרו מסד נתונים חדש לתרגול בשם SchoolPractice ועברו לעבוד בו.",
+    "a": "CREATE DATABASE SchoolPractice;\nGO\nUSE SchoolPractice;",
+    "fixed": "",
+    "note": "כך הטבלאות של התרגיל לא מתערבבות עם Northwind."
+   },
+   {
+    "sec": "CREATE TABLE",
+    "q": "צרו טבלה Courses: CourseID מספר שלם שמתמלא אוטומטית ומשמש מפתח ראשי, CourseName עד 50 תווים וחובה, Hours מספר שלם שחייב להיות גדול מ-0, ו-StartDate תאריך שברירת המחדל שלו היא היום.",
+    "a": "CREATE TABLE Courses (\n    CourseID   INT IDENTITY(1,1) PRIMARY KEY,\n    CourseName NVARCHAR(50) NOT NULL,\n    Hours      INT CHECK (Hours > 0),\n    StartDate  DATE DEFAULT GETDATE()\n);",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "CREATE TABLE",
+    "q": "צרו טבלה Students: StudentID תעודת זהות (9 תווים) כמפתח ראשי, FirstName ו-LastName חובה, ו-Email שחייב להיות ייחודי.",
+    "a": "CREATE TABLE Students (\n    StudentID CHAR(9) PRIMARY KEY,\n    FirstName NVARCHAR(30) NOT NULL,\n    LastName  NVARCHAR(30) NOT NULL,\n    Email     VARCHAR(60) UNIQUE\n);",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "CREATE TABLE",
+    "q": "צרו טבלה Enrollments שמקשרת סטודנט לקורס: מפתחות זרים ל-Students ול-Courses, ציון בין 0 ל-100, ומפתח ראשי משולב של סטודנט וקורס.",
+    "a": "CREATE TABLE Enrollments (\n    StudentID CHAR(9) REFERENCES Students(StudentID),\n    CourseID  INT REFERENCES Courses(CourseID),\n    Grade     TINYINT CHECK (Grade BETWEEN 0 AND 100),\n    PRIMARY KEY (StudentID, CourseID)\n);",
+    "fixed": "",
+    "note": "מפתח ראשי משולב מבטיח שסטודנט לא יירשם פעמיים לאותו קורס."
+   },
+   {
+    "sec": "אילוצים",
+    "q": "הוסיפו את הקורס SQL בן 40 שעות, ואחר כך נסו להוסיף קורס בן 0 שעות. מה קורה לשתי הפקודות?",
+    "a": "INSERT INTO Courses (CourseName, Hours) VALUES ('SQL', 40);   -- מצליח\nINSERT INTO Courses (CourseName, Hours) VALUES ('Excel', 0);  -- נכשל: CHECK constraint\nSELECT * FROM Courses;",
+    "fixed": "",
+    "note": "בשורה הראשונה StartDate מקבל את תאריך היום מברירת המחדל. השנייה נחסמת על ידי אילוץ ה-CHECK."
+   },
+   {
+    "sec": "אילוצים",
+    "q": "הוסיפו סטודנט, רשמו אותו לקורס SQL, ואז נסו לרשום אותו לקורס שלא קיים (CourseID = 99).",
+    "a": "INSERT INTO Students (StudentID, FirstName, LastName, Email)\nVALUES ('123456789', 'Noa', 'Levi', 'noa@example.com');\nINSERT INTO Enrollments (StudentID, CourseID, Grade) VALUES ('123456789', 1, 92);\nINSERT INTO Enrollments (StudentID, CourseID, Grade) VALUES ('123456789', 99, 80);  -- נכשל: FOREIGN KEY",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "ALTER TABLE",
+    "q": "הוסיפו לטבלת Students עמודה Phone באורך 15 תווים.",
+    "a": "ALTER TABLE Students\nADD Phone VARCHAR(15);",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "ALTER TABLE",
+    "q": "הגדילו את העמודה Phone ל-20 תווים.",
+    "a": "ALTER TABLE Students\nALTER COLUMN Phone VARCHAR(20);",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "ALTER TABLE",
+    "q": "הוסיפו לטבלת Courses אילוץ בשם UQ_Courses_Name שמונע שני קורסים עם אותו שם.",
+    "a": "ALTER TABLE Courses\nADD CONSTRAINT UQ_Courses_Name UNIQUE (CourseName);",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "ALTER TABLE",
+    "q": "מחקו את העמודה Phone מטבלת Students.",
+    "a": "ALTER TABLE Students\nDROP COLUMN Phone;",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "טבלה מטבלה אחרת",
+    "q": "צרו במסד SchoolPractice טבלה ProductsArchive עם קוד, שם ומחיר של כל המוצרים שהופסקו ב-Northwind.",
+    "a": "SELECT ProductID, ProductName, UnitPrice\nINTO ProductsArchive\nFROM Northwind.dbo.Products\nWHERE Discontinued = 1;\n\nSELECT * FROM ProductsArchive;",
+    "fixed": "",
+    "note": "אפשר לפנות לטבלה במסד אחר בשם מלא: Database.Schema.Table."
+   },
+   {
+    "sec": "DROP",
+    "q": "רוקנו את ProductsArchive בלי למחוק אותה, ואחר כך מחקו את כל טבלאות התרגיל. באיזה סדר צריך למחוק אותן?",
+    "a": "TRUNCATE TABLE ProductsArchive;\nDROP TABLE ProductsArchive;\n\nDROP TABLE Enrollments;   -- קודם הטבלה עם המפתחות הזרים\nDROP TABLE Students;\nDROP TABLE Courses;",
+    "fixed": "",
+    "note": "Enrollments מפנה ל-Students ול-Courses, ולכן מוחקים אותה ראשונה. אחרת המחיקה נחסמת."
+   }
+  ]
+ },
+ "9": {
+  "title": "Views",
+  "intro": "כל ה-Views נוצרים במסד Northwind, ובסוף התרגיל מוחקים אותם.",
+  "items": [
+   {
+    "sec": "יצירת View",
+    "q": "צרו View בשם vw_UK_Customers עם קוד, שם חברה, עיר וטלפון של הלקוחות מבריטניה, והציגו אותו.",
+    "a": "CREATE VIEW vw_UK_Customers AS\nSELECT CustomerID, CompanyName, City, Phone\nFROM Customers\nWHERE Country = 'UK';\nGO\nSELECT * FROM vw_UK_Customers;",
+    "fixed": "",
+    "note": "CREATE VIEW חייב להיות הפקודה היחידה ב-batch, ולכן מפרידים ב-GO לפני השאילתה."
+   },
+   {
+    "sec": "יצירת View",
+    "q": "צרו View בשם vw_ProductCatalog שמציג שם מוצר, שם קטגוריה, מחיר ומלאי.",
+    "a": "CREATE VIEW vw_ProductCatalog AS\nSELECT p.ProductName, c.CategoryName, p.UnitPrice, p.UnitsInStock\nFROM Products p\nINNER JOIN Categories c ON p.CategoryID = c.CategoryID;",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "שימוש ב-View",
+    "q": "בעזרת vw_ProductCatalog הציגו את המוצרים בקטגוריה Seafood שמחירם נמוך מ-20, מהזול ליקר.",
+    "a": "SELECT ProductName, UnitPrice\nFROM vw_ProductCatalog\nWHERE CategoryName = 'Seafood' AND UnitPrice < 20\nORDER BY UnitPrice;",
+    "fixed": "",
+    "note": "שואלים View בדיוק כמו טבלה."
+   },
+   {
+    "sec": "יצירת View",
+    "q": "צרו View בשם vw_CategoryStats שמציג לכל קטגוריה את מספר המוצרים ואת המחיר הממוצע.",
+    "a": "CREATE VIEW vw_CategoryStats AS\nSELECT c.CategoryName,\n       COUNT(*) AS ProductCount,\n       AVG(p.UnitPrice) AS AvgPrice\nFROM Categories c\nINNER JOIN Products p ON p.CategoryID = c.CategoryID\nGROUP BY c.CategoryName;",
+    "fixed": "",
+    "note": "לכל עמודה מחושבת ב-View חייב להיות שם (AS)."
+   },
+   {
+    "sec": "יצירת View",
+    "q": "צרו View בשם vw_OrderTotals עם קוד הזמנה, קוד לקוח, תאריך וסכום ההזמנה (מחיר × כמות × (1 − הנחה)).",
+    "a": "CREATE VIEW vw_OrderTotals AS\nSELECT o.OrderID, o.CustomerID, o.OrderDate,\n       SUM(od.UnitPrice * od.Quantity * (1 - od.Discount)) AS Total\nFROM Orders o\nINNER JOIN [Order Details] od ON od.OrderID = o.OrderID\nGROUP BY o.OrderID, o.CustomerID, o.OrderDate;",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "שימוש ב-View",
+    "q": "הציגו את 5 ההזמנות היקרות ביותר עם שם החברה של הלקוח, בעזרת vw_OrderTotals.",
+    "a": "SELECT TOP 5 t.OrderID, c.CompanyName, t.Total\nFROM vw_OrderTotals t\nINNER JOIN Customers c ON c.CustomerID = t.CustomerID\nORDER BY t.Total DESC;",
+    "fixed": "",
+    "note": "אפשר לצרף View לטבלה, כמו כל טבלה אחרת."
+   },
+   {
+    "sec": "שינוי ומחיקה",
+    "q": "שנו את vw_UK_Customers כך שיכלול גם את שם איש הקשר (ContactName).",
+    "a": "ALTER VIEW vw_UK_Customers AS\nSELECT CustomerID, CompanyName, ContactName, City, Phone\nFROM Customers\nWHERE Country = 'UK';",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "שינוי ומחיקה",
+    "q": "הציגו את ההגדרה (הקוד) של vw_UK_Customers.",
+    "a": "EXEC sp_helptext 'vw_UK_Customers';",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "DML על Views",
+    "q": "עדכנו דרך vw_UK_Customers את הטלפון של הלקוח AROUT ל-(171) 555-0000, ובדקו שהשינוי הגיע לטבלת Customers.",
+    "a": "BEGIN TRANSACTION;\nUPDATE vw_UK_Customers\nSET Phone = '(171) 555-0000'\nWHERE CustomerID = 'AROUT';\nSELECT CustomerID, Phone FROM Customers WHERE CustomerID = 'AROUT';\nROLLBACK;",
+    "fixed": "",
+    "note": "View פשוט על טבלה אחת אפשר לעדכן, והשינוי נשמר בטבלה עצמה."
+   },
+   {
+    "sec": "DML על Views",
+    "q": "צרו View בשם vw_CheapProducts של מוצרים שמחירם נמוך מ-10, עם WITH CHECK OPTION. נסו לעדכן דרכו מחיר של מוצר ל-15. מה קורה?",
+    "a": "CREATE VIEW vw_CheapProducts AS\nSELECT ProductID, ProductName, UnitPrice\nFROM Products\nWHERE UnitPrice < 10\nWITH CHECK OPTION;\nGO\nUPDATE vw_CheapProducts\nSET UnitPrice = 15\nWHERE ProductID = 13;   -- נכשל",
+    "fixed": "",
+    "note": "WITH CHECK OPTION חוסם עדכון שיוציא את השורה מתנאי ה-View."
+   },
+   {
+    "sec": "DML על Views",
+    "q": "נסו לעדכן את העמודה ProductCount ב-vw_CategoryStats. למה זה לא עובד?",
+    "a": "UPDATE vw_CategoryStats\nSET ProductCount = 20\nWHERE CategoryName = 'Beverages';   -- נכשל",
+    "fixed": "",
+    "note": "אי אפשר לעדכן עמודה מחושבת או View עם GROUP BY: אין שורה אחת בטבלה שמתאימה לערך."
+   },
+   {
+    "sec": "שינוי ומחיקה",
+    "q": "מחקו את כל ה-Views שיצרתם בתרגיל.",
+    "a": "DROP VIEW vw_UK_Customers, vw_ProductCatalog, vw_CategoryStats,\n          vw_OrderTotals, vw_CheapProducts;",
+    "fixed": "",
+    "note": "מחיקת View לא מוחקת נתונים מהטבלאות."
+   }
+  ]
+ },
+ "10": {
+  "title": "Stored Procedures",
+  "intro": "כל הפרוצדורות נוצרות במסד Northwind, ובסוף התרגיל מוחקים אותן. שינויים בנתונים נבדקים בתוך טרנזקציה.",
+  "items": [
+   {
+    "sec": "יצירה והרצה",
+    "q": "צרו פרוצדורה usp_GetEmployees שמציגה קוד, שם פרטי, שם משפחה ותפקיד של כל העובדים, והריצו אותה.",
+    "a": "CREATE PROCEDURE usp_GetEmployees AS\nSELECT EmployeeID, FirstName, LastName, Title\nFROM Employees;\nGO\nEXEC usp_GetEmployees;",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "פרמטרים",
+    "q": "צרו פרוצדורה usp_CustomersByCountry שמקבלת שם מדינה ומציגה את הלקוחות ממנה. הריצו עבור Germany.",
+    "a": "CREATE PROCEDURE usp_CustomersByCountry\n    @Country NVARCHAR(15)\nAS\nSELECT CustomerID, CompanyName, City\nFROM Customers\nWHERE Country = @Country;\nGO\nEXEC usp_CustomersByCountry 'Germany';",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "פרמטרים",
+    "q": "צרו פרוצדורה usp_ProductsInPriceRange שמקבלת מחיר מינימום ומקסימום ומציגה את המוצרים בטווח, מהזול ליקר.",
+    "a": "CREATE PROCEDURE usp_ProductsInPriceRange\n    @Min MONEY,\n    @Max MONEY\nAS\nSELECT ProductName, UnitPrice\nFROM Products\nWHERE UnitPrice BETWEEN @Min AND @Max\nORDER BY UnitPrice;\nGO\nEXEC usp_ProductsInPriceRange @Min = 20, @Max = 30;",
+    "fixed": "",
+    "note": "אפשר להעביר פרמטרים לפי השם שלהם, ואז הסדר לא משנה."
+   },
+   {
+    "sec": "פרמטרים",
+    "q": "שנו את usp_CustomersByCountry כך שאם לא מעבירים מדינה, יוצגו לקוחות מ-USA.",
+    "a": "ALTER PROCEDURE usp_CustomersByCountry\n    @Country NVARCHAR(15) = 'USA'\nAS\nSELECT CustomerID, CompanyName, City\nFROM Customers\nWHERE Country = @Country;\nGO\nEXEC usp_CustomersByCountry;          -- USA\nEXEC usp_CustomersByCountry 'France';",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "החזרת ערכים",
+    "q": "צרו פרוצדורה usp_CountProducts שמקבלת קוד קטגוריה ומחזירה בפרמטר OUTPUT את מספר המוצרים בה. הציגו את התוצאה עבור קטגוריה 1.",
+    "a": "CREATE PROCEDURE usp_CountProducts\n    @CategoryID INT,\n    @Count INT OUTPUT\nAS\nSELECT @Count = COUNT(*)\nFROM Products\nWHERE CategoryID = @CategoryID;\nGO\nDECLARE @n INT;\nEXEC usp_CountProducts 1, @n OUTPUT;\nSELECT @n AS ProductsInCategory;",
+    "fixed": "",
+    "note": "צריך לכתוב OUTPUT גם בהגדרה וגם בהרצה."
+   },
+   {
+    "sec": "החזרת ערכים",
+    "q": "צרו פרוצדורה usp_CustomerExists שמחזירה בעזרת RETURN את הערך 1 אם הלקוח קיים ו-0 אם לא. בדקו עבור ALFKI ועבור ZZZZZ.",
+    "a": "CREATE PROCEDURE usp_CustomerExists\n    @CustomerID NCHAR(5)\nAS\nIF EXISTS (SELECT 1 FROM Customers WHERE CustomerID = @CustomerID)\n    RETURN 1;\nRETURN 0;\nGO\nDECLARE @r INT;\nEXEC @r = usp_CustomerExists 'ALFKI';\nSELECT @r AS ALFKI;\nEXEC @r = usp_CustomerExists 'ZZZZZ';\nSELECT @r AS ZZZZZ;",
+    "fixed": "",
+    "note": "RETURN מחזיר רק מספר שלם. לערכים אחרים משתמשים ב-OUTPUT."
+   },
+   {
+    "sec": "DML בפרוצדורה",
+    "q": "צרו פרוצדורה usp_AddShipper שמוסיפה חברת משלוחים לפי שם וטלפון ומציגה את הקוד החדש שקיבלה. בדקו בתוך טרנזקציה.",
+    "a": "CREATE PROCEDURE usp_AddShipper\n    @Name  NVARCHAR(40),\n    @Phone NVARCHAR(24)\nAS\nINSERT INTO Shippers (CompanyName, Phone) VALUES (@Name, @Phone);\nSELECT SCOPE_IDENTITY() AS NewShipperID;\nGO\nBEGIN TRANSACTION;\nEXEC usp_AddShipper 'Fast Lane', '(03) 555-1234';\nROLLBACK;",
+    "fixed": "",
+    "note": "SCOPE_IDENTITY() מחזיר את ערך ה-IDENTITY האחרון שנוצר באותה פרוצדורה."
+   },
+   {
+    "sec": "DML בפרוצדורה",
+    "q": "צרו פרוצדורה usp_RaisePrice שמקבלת קוד מוצר ואחוז העלאה. אם האחוז גדול מ-50, הדפיסו 'אחוז גבוה מדי' ואל תעדכנו.",
+    "a": "CREATE PROCEDURE usp_RaisePrice\n    @ProductID INT,\n    @Percent   DECIMAL(5,2)\nAS\nIF @Percent > 50\nBEGIN\n    PRINT N'אחוז גבוה מדי';\n    RETURN;\nEND\nUPDATE Products\nSET UnitPrice = UnitPrice * (1 + @Percent / 100)\nWHERE ProductID = @ProductID;\nGO\nBEGIN TRANSACTION;\nEXEC usp_RaisePrice 1, 10;\nEXEC usp_RaisePrice 1, 80;   -- רק הודעה\nSELECT ProductName, UnitPrice FROM Products WHERE ProductID = 1;\nROLLBACK;",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "שינוי פרוצדורה",
+    "q": "שנו את usp_GetEmployees כך שתציג גם את תאריך הקבלה לעבודה ותמיין לפי שם משפחה.",
+    "a": "ALTER PROCEDURE usp_GetEmployees AS\nSELECT EmployeeID, FirstName, LastName, Title, HireDate\nFROM Employees\nORDER BY LastName;\nGO\nEXEC usp_GetEmployees;",
+    "fixed": "",
+    "note": ""
+   },
+   {
+    "sec": "שילוב",
+    "q": "שמרו בטבלה זמנית את תוצאות usp_CustomersByCountry עבור UK, וספרו כמה לקוחות התקבלו.",
+    "a": "CREATE TABLE #UK (\n    CustomerID  NCHAR(5),\n    CompanyName NVARCHAR(40),\n    City        NVARCHAR(15)\n);\nINSERT INTO #UK\nEXEC usp_CustomersByCountry 'UK';\nSELECT COUNT(*) AS UKCustomers FROM #UK;",
+    "fixed": "",
+    "note": "מבנה הטבלה הזמנית חייב להתאים לעמודות שהפרוצדורה מחזירה."
+   },
+   {
+    "sec": "מחיקה",
+    "q": "מחקו את כל הפרוצדורות שיצרתם בתרגיל.",
+    "a": "DROP PROCEDURE usp_GetEmployees, usp_CustomersByCountry, usp_ProductsInPriceRange,\n               usp_CountProducts, usp_CustomerExists, usp_AddShipper, usp_RaisePrice;",
+    "fixed": "",
+    "note": ""
+   }
+  ]
+ }
+}
