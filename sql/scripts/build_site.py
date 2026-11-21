@@ -18,7 +18,7 @@ CH = {1: 'מבוא ל-SQL', 2: 'שאילתות', 3: 'אופרטורים', 4: 'פ
 SUB = {1: 'Introduction & Getting Started', 2: 'SELECT … FROM', 3: 'Operators', 4: 'Built-in Functions',
        5: 'Query Clauses', 6: 'JOIN', 7: 'Subqueries', 8: 'Data Manipulation (DML)', 9: 'Data Definition Language',
        10: 'Views', 11: 'Stored Procedures'}
-EXCH = {'1': 2, '2': 3, '3': 4, '4': 5, '5': 6, '6': 7}
+EXCH = {'1': 2, '2': 3, '3': 4, '4': 5, '5': 6, '6': 7, '7': 8, '8': 9, '9': 10, '10': 11}
 EXS = json.load(open(SQ + '/ex/exercises.json'))
 SUM = json.load(open(SQ + '/sum/summary.json'))
 esc = html.escape
@@ -91,7 +91,7 @@ for n in range(1, 12):
         e = EXS[eid]
         sl = sorted(b['slide'] for b in site.get('ex', {}).get(eid, []))
         exs.append({'id': eid, 'label': f'תרגיל {eid}', 'title': e['title'], 'n': len(e['items']), 'slides': sl,
-                    'items': e['items']})
+                    'items': e['items'], 'intro': e.get('intro', '')})
     decks.append({'id': f'ch{n}', 'num': n, 'title': CH[n], 'sub': SUB[n], 'cover': f'img/ch{n}.jpg?v={V}',
                   'ratio': f'{w}/{h}', 'per': N, 'toc': site['toc'], 'ex': exs, 'slides': slides})
 json.dump(decks, open(f'{OUT}/decks.json', 'w'), ensure_ascii=False)
@@ -99,7 +99,7 @@ json.dump(decks, open(f'{OUT}/decks.json', 'w'), ensure_ascii=False)
 # ---------------------------------------------------------------- downloads
 shutil.copy(f'{UP}/../68f6f513-northwind_2.bak' if os.path.exists(f'{UP}/../68f6f513-northwind_2.bak')
             else '/mnt/user-data/uploads/68f6f513-northwind_2.bak', f'{OUT}/dl/northwind.bak')
-for f in ('college_setup.sql', 'party_setup.sql'):
+for f in [x['setup'] for x in SUM if x['setup']]:
     shutil.copy(f'{SQ}/sum/dl/{f}', f'{OUT}/dl/{f}')
 im = Image.open(f'{UP}/חומר עזר/Northwind diagram.png').convert('RGB')
 im.save(f'{OUT}/dl/northwind-diagram.png', optimize=True)
@@ -137,11 +137,13 @@ src = re.sub(r'<span class="ver">גרסה <bdi dir="ltr">[^<]*</bdi></span>',
 # home boxes: reference material + summary exercises
 boxes = '''<div class="xbx">
       <a class="xb" href="ref/"><span class="xi" aria-hidden="true">🧰</span><span><b>חומר עזר</b><small>מדריך התקנה (SQL Server 2025 + SSMS 22), שחזור Northwind, סרטון הדגמה, תרשים המסד ודף פקודות</small></span></a>
-      <a class="xb" href="summary/"><span class="xi" aria-hidden="true">🏁</span><span><b>תרגילים מסכמים</b><small>College · Party, עם קובצי הקמה ופתרונות</small></span></a>
+      <a class="xb" href="summary/"><span class="xi" aria-hidden="true">🏁</span><span><b>תרגילים מסכמים</b><small>מרפאה וטרינרית · מוזיאון · משימות חלל · College · Party – עם קובצי הקמה ופתרונות</small></span></a>
     </div>
     <div class="hsr">'''
 src = src.replace('<div class="hsr">', boxes, 1)
 css = '''.exttl .lab{direction:rtl}
+.exintro{margin:8px 0 0;background:light-dark(#eafbfa,#13324a);border-inline-start:4px solid var(--teal);border-radius:10px;padding:10px 14px;font-size:15px}
+.fixn.tipn{background:light-dark(#eafbfa,#13324a);border-inline-start-color:var(--teal)}
 .xbx{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:0 0 30px}
 .xb{display:flex;gap:14px;align-items:center;background:var(--navy);color:#fff;border-radius:16px;padding:18px 20px;text-decoration:none;border-inline-start:6px solid var(--teal);transition:transform .2s}
 .xb+.xb{border-inline-start-color:var(--orange)}.xb:hover{transform:translateY(-2px)}
@@ -164,9 +166,9 @@ src = src.replace('/* ---- tabs & exercises (CT-GenAI) ---- */', css + '/* ---- 
 new_show = r'''function showEx(e){const d=cur,k=d.ex.indexOf(e),b=backSlide(e),pv=d.ex[k-1],nx=d.ex[k+1];
   document.title=`${e.label} · ${e.title} | NGQA`;let last='';
   const qs=e.items.map(it=>{let h='';if(it.sec&&it.sec!==last){last=it.sec;h+=`<li class="sec">${esc(it.sec)}</li>`}
-    return h+`<li><div class="q">${esc(it.q)}</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql"><button class="cpy" type="button">העתקה</button>${hlSql(it.a)}</pre>${it.fixed?`<div class="fixn">הערה: ${esc(it.fixed)}</div>`:''}</details></li>`}).join('');
+    return h+`<li><div class="q">${esc(it.q)}</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql"><button class="cpy" type="button">העתקה</button>${hlSql(it.a)}</pre>${it.fixed?`<div class="fixn">הערה: ${esc(it.fixed)}</div>`:''}${it.note?`<div class="fixn tipn">💡 ${esc(it.note)}</div>`:''}</details></li>`}).join('');
   $('exview').innerHTML=`<div class="exhead">${b?`<a class="back" href="#${d.id}/${b}">→ חזרה לשקף ${b}</a>`:`<a class="back" href="#${d.id}">→ חזרה למצגת</a>`}<a class="dl" href="#${d.id}/ex">כל התרגילים</a></div>
-    <div class="exttl"><span class="lab">${e.label} · מסד הנתונים Northwind</span><h2>${e.title}</h2></div>
+    <div class="exttl"><span class="lab">${e.label} · מסד הנתונים Northwind</span><h2>${e.title}</h2>${e.intro?`<p class="exintro">${esc(e.intro)}</p>`:''}</div>
     <ol class="qa">${qs}</ol>
     <div class="exnav">${nx?`<a href="#${d.id}/ex/${nx.id}">→ ${nx.label}</a>`:'<span></span>'}${pv?`<a href="#${d.id}/ex/${pv.id}">${pv.label} ←</a>`:''}</div>
     ${b?`<div class="exhead" style="position:static;justify-content:center"><a class="back" href="#${d.id}/${b}">→ חזרה לשקף ${b}</a></div>`:''}`}
@@ -246,6 +248,13 @@ pre.sql{direction:ltr;text-align:left;background:#121133;color:#fff;border-radiu
 pre.sql .k{color:#14DACD;font-weight:700}pre.sql .s{color:#F7B267}pre.sql .n{color:#B5E8A0}pre.sql .c{color:#8A93A6;font-style:italic}pre.sql .f{color:#FFD580}
 .fixn{margin-top:8px;font-size:13.5px;color:var(--mute);background:light-dark(#fff6ea,#2a2340);border-radius:10px;padding:8px 12px;border-inline-start:4px solid var(--orange)}
 .credit{color:var(--mute);font-size:14px;margin:4px 0 0}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:0 0 22px}
+.scard{display:flex;gap:12px;align-items:center;background:var(--navy);color:#fff;border-radius:14px;padding:14px 16px;text-decoration:none;border-inline-start:5px solid var(--teal);transition:transform .2s}
+.scard:nth-child(3n+2){border-inline-start-color:var(--orange)}.scard:hover{transform:translateY(-2px)}
+.scard b{display:block;font-size:17px}.scard small{display:block;color:#c9cbf0;font-size:13px}.scard em{font-style:normal;color:var(--teal);font-size:12.5px;font-weight:700}
+.si{font-size:30px;flex:none;width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.08);display:grid;place-items:center}
+.shd{display:flex;gap:14px;align-items:center;margin-bottom:8px}.shd .si{background:light-dark(#eef0f8,#26255a)}.shd h2{margin:0;font-size:23px}.shd .sub{margin:0}
+.shd .top{margin-inline-start:auto;text-decoration:none;color:var(--mute);font-size:20px}
 footer{text-align:center;color:var(--mute);font-size:13px;padding:24px 10px 34px}
 footer .ver{display:block;margin-top:4px}
 @media(max-width:600px){.hero img{display:none}table.cmd td:first-child{white-space:normal}}
@@ -284,15 +293,17 @@ def qa(items):
 
 
 # summary page
-body = '<nav class="toc">' + ''.join(f'<a href="#{s["id"]}">{esc(s["title"])}</a>' for s in SUM) + '</nav>'
+body = '<div class="sgrid">' + ''.join(
+    f'<a class="scard" href="#{s["id"]}"><span class="si">{s.get("ic", "📋")}</span><span><b>{esc(s["title"])}</b>'
+    f'<small>{esc(s["sub"])}</small><em>{len(s["items"])} שאלות · {len(s["tables"])} טבלאות</em></span></a>' for s in SUM) + '</div>'
 for s in SUM:
     dl = f'<a class="btn" href="../dl/{s["setup"]}" download>⬇ קובץ הקמה ({s["setup"]})</a>' if s['setup'] else ''
     tb = '<div class="tbls">' + ''.join(f'<code>{esc(t)}</code>' for t in s['tables']) + '</div>'
-    cr = f'<p class="credit">{esc(s["credit"])}</p>' if s.get('credit') else ''
-    body += (f'<section id="{s["id"]}"><h2>{esc(s["title"])}</h2><p class="sub">{esc(s["sub"])} · {len(s["items"])} שאלות</p>'
-             f'<p>{esc(s["about"])}</p>{tb}{dl}{cr}{qa(s["items"])}</section>')
+    body += (f'<section id="{s["id"]}"><div class="shd"><span class="si">{s.get("ic", "📋")}</span><div><h2>{esc(s["title"])}</h2>'
+             f'<p class="sub">{esc(s["sub"])} · {len(s["items"])} שאלות</p></div><a class="top" href="#">↑</a></div>'
+             f'<p>{esc(s["about"])}</p>{tb}{dl}{qa(s["items"])}</section>')
 page(f'{OUT}/summary/index.html', 'תרגילים מסכמים',
-     'תרגילים שמסכמים את כל הקורס. מקימים את הטבלאות מקובץ ההקמה, פותרים לבד, ורק אז פותחים את הפתרון.', body)
+     'חמישה תרגילים שמסכמים את כל הקורס. מקימים את הטבלאות מקובץ ההקמה, פותרים לבד, ורק אז פותחים את הפתרון.', body)
 
 # reference page
 CMD = [

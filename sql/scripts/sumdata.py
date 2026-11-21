@@ -66,3 +66,28 @@ for s in SUM:
     s['items'] = [{'q': q, 'a': a, 'fixed': n} for q, a, n in s['items']]
 json.dump(SUM, open('/home/claude/sql/sum/summary.json', 'w'), ensure_ascii=False, indent=1)
 print([(s['id'], len(s['items']), sum(1 for i in s['items'] if i['fixed'])) for s in SUM])
+
+# ---- new summary exercises (SQL_Practice_HE): veterinary clinic, museum, space missions
+import html as _h
+SRC = '/mnt/user-data/uploads/SQL_Practice_HE'
+NEW = [('01_veterinary', 'vet', 'מרפאה וטרינרית', 'בעלי חיים, טיפולים וביקורים', '🐾'),
+       ('02_museum', 'museum', 'מוזיאון ותערוכות', 'אמנים, יצירות ואולמות תצוגה', '🖼️'),
+       ('03_space', 'space', 'משימות חלל', 'חלליות, יעדים ומשימות מחקר', '🚀')]
+for k, id_, title, sub, ic in NEW:
+    t = open(f'{SRC}/{k}_exercise.html').read()
+    qs = [_h.unescape(re.sub('<[^>]+>', '', q)).strip() for q in re.findall(r'<div class="question"><span class="num">\d+</span>(.*?)<div class="blank">', t, re.S)]
+    a = open(f'{SRC}/{k}_answers.sql').read()
+    parts = re.split(r'(?m)^-- Question (\d+)\s*$', a)[1:]
+    ans = {int(n): b.strip().replace('-- Verify:', '-- בדיקה:') for n, b in zip(parts[0::2], parts[1::2])}
+    setup = open(f'{SRC}/{k}_setup.sql').read()
+    tabs = [f"{n} ({', '.join(c.strip().split()[0] for c in body.split(',\n') if c.strip() and not c.strip().upper().startswith(('PRIMARY', 'FOREIGN')))})"
+            for n, body in re.findall(r'CREATE TABLE (\w+)\s*\((.*?)\n\);', setup, re.S)]
+    open(f'/home/claude/sql/sum/dl/{id_}_setup.sql', 'w').write(setup)
+    items = [{'q': q, 'a': ans[i], 'fixed': ''} for i, q in enumerate(qs, 1)]
+    SUM.append({'id': id_, 'title': title, 'sub': sub, 'credit': '', 'ic': ic,
+                'about': 'מקימים את הטבלאות מקובץ ההקמה במסד תרגול ריק, ופותרים. כל שאלה מתייחסת לנתוני הפתיחה: את שאלות ה-INSERT וה-UPDATE מריצים בתוך BEGIN TRANSACTION … ROLLBACK.',
+                'setup': f'{id_}_setup.sql', 'tables': tabs, 'items': items})
+for s in SUM:
+    s.setdefault('ic', {'college': '🎓', 'party': '🎉'}.get(s['id'], '📋'))
+json.dump(SUM, open('/home/claude/sql/sum/summary.json', 'w'), ensure_ascii=False, indent=1)
+print([(s['id'], len(s['items']), s['tables'][:1]) for s in SUM])

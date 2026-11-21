@@ -14,7 +14,8 @@ NAMES = {1: 'מבוא ל-SQL', 2: 'שאילתות', 3: 'אופרטורים', 4: 
 EN = {1: 'Introduction & Getting Started', 2: 'SELECT … FROM', 3: 'Operators', 4: 'Built-in Functions',
       5: 'Query Clauses', 6: 'JOIN', 7: 'Subqueries', 8: 'Data Manipulation (DML)', 9: 'Data Definition Language',
       10: 'Views', 11: 'Stored Procedures'}
-EXNAME = {1: 'שאילתות', 2: 'אופרטורים', 3: 'פונקציות', 4: 'הוראות בשאילתות', 5: 'JOIN', 6: 'תת שאילתות'}
+EXNAME = {1: 'שאילתות', 2: 'אופרטורים', 3: 'פונקציות', 4: 'הוראות בשאילתות', 5: 'JOIN', 6: 'תת שאילתות',
+          7: 'טיפול בנתונים', 8: 'פקודות DDL', 9: 'Views', 10: 'Stored Procedures'}
 IMG = '/home/claude/sql/imgs'
 CONV = '/home/claude/sql/imgconv'
 os.makedirs(CONV, exist_ok=True)

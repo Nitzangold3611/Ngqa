@@ -72,7 +72,8 @@
     "a": "SELECT AVG(G.Grade) AS AvgGrade\nFROM Grade AS G\nINNER JOIN Student AS S ON G.ID = S.ID\nWHERE S.First = 'John' AND S.Last = 'Good';",
     "fixed": ""
    }
-  ]
+  ],
+  "ic": "🎓"
  },
  {
   "id": "party",
@@ -238,6 +239,235 @@
    {
     "q": "שלוף את שם העיר של מי שמעל גיל 40, אינו ממחלקת ההנהלה ושמו מתחיל באות D.",
     "a": "SELECT city\nFROM party\nWHERE age > 40 AND department !='management' AND name LIKE 'D%'",
+    "fixed": ""
+   }
+  ],
+  "ic": "🎉"
+ },
+ {
+  "id": "vet",
+  "title": "מרפאה וטרינרית",
+  "sub": "בעלי חיים, טיפולים וביקורים",
+  "credit": "",
+  "ic": "🐾",
+  "about": "מקימים את הטבלאות מקובץ ההקמה במסד תרגול ריק, ופותרים. כל שאלה מתייחסת לנתוני הפתיחה: את שאלות ה-INSERT וה-UPDATE מריצים בתוך BEGIN TRANSACTION … ROLLBACK.",
+  "setup": "vet_setup.sql",
+  "tables": [
+   "Pets (PetID, PetName, Species, OwnerPhone)",
+   "Treatments (TreatmentID, TreatmentName, StandardFee)",
+   "Visits (VisitID, PetID, TreatmentID, VisitDate, PaidAmount)"
+  ],
+  "items": [
+   {
+    "q": "הציגו את הקוד והשם של כל החתולים, במיון עולה לפי קוד בעל החיים.",
+    "a": "SELECT PetID, PetName FROM Pets WHERE Species = 'Cat' ORDER BY PetID;",
+    "fixed": ""
+   },
+   {
+    "q": "הציגו את כל בעלי החיים במיון עולה לפי סוג ובתוך כל סוג לפי שם. הציגו את העמודות PetName ו־Species בכינויים [Pet Name] ו־[Animal Type].",
+    "a": "SELECT PetID, PetName AS [Pet Name], Species AS [Animal Type], OwnerPhone FROM Pets ORDER BY Species, PetName;",
+    "fixed": ""
+   },
+   {
+    "q": "עדכנו את מספר הטלפון של הבעלים של P103 לערך 0503333333.",
+    "a": "UPDATE Pets SET OwnerPhone = '0503333333' WHERE PetID = 'P103';\n-- בדיקה:\nSELECT PetID, OwnerPhone FROM Pets WHERE PetID = 'P103';",
+    "fixed": ""
+   },
+   {
+    "q": "חשבו את ממוצע התשלומים בפועל עבור הטיפול Checkup. אין להתייחס ל־NULL כאפס.",
+    "a": "SELECT AVG(v.PaidAmount * 1.0) AS AveragePaid FROM Visits v JOIN Treatments t ON v.TreatmentID = t.TreatmentID WHERE t.TreatmentName = 'Checkup';",
+    "fixed": ""
+   },
+   {
+    "q": "הוסיפו בעל חיים: קוד P107, שם Coco, סוג Bird. מספר הטלפון טרם נמסר.",
+    "a": "INSERT INTO Pets (PetID, PetName, Species, OwnerPhone) VALUES ('P107', 'Coco', 'Bird', NULL);\n-- בדיקה:\nSELECT * FROM Pets WHERE PetID = 'P107';",
+    "fixed": ""
+   },
+   {
+    "q": "בביקור מספר 5 נפלה טעות בתשלום. אפסו את המידע באמצעות NULL, בלי למחוק את הביקור.",
+    "a": "UPDATE Visits SET PaidAmount = NULL WHERE VisitID = 5;\n-- בדיקה:\nSELECT VisitID, PaidAmount FROM Visits WHERE VisitID = 5;",
+    "fixed": ""
+   },
+   {
+    "q": "מצאו את התשלום הגבוה ביותר ששולם בביקור יחיד.",
+    "a": "SELECT MAX(PaidAmount) AS MaximumPaid FROM Visits;",
+    "fixed": ""
+   },
+   {
+    "q": "הציגו את שם בעל החיים, תאריך הביקור ושם הטיפול לכל ביקור של Rex, במיון כרונולוגי.",
+    "a": "SELECT p.PetName, v.VisitDate, t.TreatmentName FROM Pets p JOIN Visits v ON p.PetID = v.PetID JOIN Treatments t ON t.TreatmentID = v.TreatmentID WHERE p.PetName = 'Rex' ORDER BY v.VisitDate;",
+    "fixed": ""
+   },
+   {
+    "q": "חשבו את סך התשלומים בביקורים 2 עד 7, כולל הקצוות וללא ביקור 4.",
+    "a": "SELECT SUM(PaidAmount) AS TotalPaid FROM Visits WHERE VisitID BETWEEN 2 AND 7 AND VisitID <> 4;",
+    "fixed": ""
+   },
+   {
+    "q": "הציגו את כל בעלי החיים ולצד כל אחד את קודי הביקורים שלו. יש לכלול גם בעלי חיים ללא ביקורים. מיינו לפי קוד בעל החיים ואז קוד ביקור.",
+    "a": "SELECT p.PetID, p.PetName, v.VisitID FROM Pets p LEFT JOIN Visits v ON p.PetID = v.PetID ORDER BY p.PetID, v.VisitID;",
+    "fixed": ""
+   },
+   {
+    "q": "הציגו ללא כפילויות שמות טיפולים שבוצעו לפחות פעם אחת בתשלום נמוך מהמחיר הרגיל. אין לכלול תשלום חסר.",
+    "a": "SELECT DISTINCT t.TreatmentName FROM Treatments t JOIN Visits v ON t.TreatmentID = v.TreatmentID WHERE v.PaidAmount < t.StandardFee ORDER BY t.TreatmentName;",
+    "fixed": ""
+   },
+   {
+    "q": "לכל בעל חיים שביקר במרפאה, הציגו קוד, שם ומספר ביקורים. מיינו לפי מספר ביקורים בסדר יורד, ואז לפי הקוד בסדר עולה.",
+    "a": "SELECT p.PetID, p.PetName, COUNT(*) AS VisitCount FROM Pets p JOIN Visits v ON p.PetID = v.PetID GROUP BY p.PetID, p.PetName ORDER BY VisitCount DESC, p.PetID;",
+    "fixed": ""
+   }
+  ]
+ },
+ {
+  "id": "museum",
+  "title": "מוזיאון ותערוכות",
+  "sub": "אמנים, יצירות ואולמות תצוגה",
+  "credit": "",
+  "ic": "🖼️",
+  "about": "מקימים את הטבלאות מקובץ ההקמה במסד תרגול ריק, ופותרים. כל שאלה מתייחסת לנתוני הפתיחה: את שאלות ה-INSERT וה-UPDATE מריצים בתוך BEGIN TRANSACTION … ROLLBACK.",
+  "setup": "museum_setup.sql",
+  "tables": [
+   "Artists (ArtistID, ArtistName, Country)",
+   "Halls (HallID, HallName, FloorNumber)",
+   "Artworks (ArtworkID, Title, ArtistID, HallID, CreationYear, InsuranceValue)"
+  ],
+  "items": [
+   {
+    "q": "הציגו קוד ושם של כל יצירה שנוצרה משנת 2021 ואילך, במיון לפי קוד היצירה.",
+    "a": "SELECT ArtworkID, Title FROM Artworks WHERE CreationYear >= 2021 ORDER BY ArtworkID;",
+    "fixed": ""
+   },
+   {
+    "q": "הציגו את שם היצירה ושנת יצירתה בכינויים [Artwork Title] ו־[Year Created]. מיינו לפי שנה בסדר יורד ואז לפי שם בסדר עולה.",
+    "a": "SELECT Title AS [Artwork Title], CreationYear AS [Year Created] FROM Artworks ORDER BY CreationYear DESC, Title;",
+    "fixed": ""
+   },
+   {
+    "q": "עדכנו את מדינת המקור של האמן A04 ל־Jordan.",
+    "a": "UPDATE Artists SET Country = 'Jordan' WHERE ArtistID = 'A04';\n-- בדיקה:\nSELECT ArtistID, Country FROM Artists WHERE ArtistID = 'A04';",
+    "fixed": ""
+   },
+   {
+    "q": "חשבו את שווי הביטוח הממוצע של היצירות המוצגות באולם Modern Art.",
+    "a": "SELECT AVG(a.InsuranceValue * 1.0) AS AverageValue FROM Artworks a JOIN Halls h ON a.HallID = h.HallID WHERE h.HallName = 'Modern Art';",
+    "fixed": ""
+   },
+   {
+    "q": "הוסיפו אמן חדש: A06, בשם Tom Green. מדינת המקור אינה ידועה.",
+    "a": "INSERT INTO Artists (ArtistID, ArtistName, Country) VALUES ('A06', 'Tom Green', NULL);\n-- בדיקה:\nSELECT * FROM Artists WHERE ArtistID = 'A06';",
+    "fixed": ""
+   },
+   {
+    "q": "היצירה מספר 2 הועברה למחסן. הסירו רק את שיוכה לאולם באמצעות NULL.",
+    "a": "UPDATE Artworks SET HallID = NULL WHERE ArtworkID = 2;\n-- בדיקה:\nSELECT ArtworkID, HallID FROM Artworks WHERE ArtworkID = 2;",
+    "fixed": ""
+   },
+   {
+    "q": "מצאו את שווי הביטוח הנמוך ביותר מבין הערכים הידועים.",
+    "a": "SELECT MIN(InsuranceValue) AS MinimumValue FROM Artworks;",
+    "fixed": ""
+   },
+   {
+    "q": "הציגו את שם היצירה ושם האולם עבור יצירות של Maya Levi. כללו גם יצירות שלה ללא אולם, אם קיימות. מיינו לפי קוד היצירה.",
+    "a": "SELECT a.Title, h.HallName FROM Artworks a JOIN Artists r ON a.ArtistID = r.ArtistID LEFT JOIN Halls h ON a.HallID = h.HallID WHERE r.ArtistName = 'Maya Levi' ORDER BY a.ArtworkID;",
+    "fixed": ""
+   },
+   {
+    "q": "חשבו את סך שווי הביטוח של יצירות מהשנים 2018 עד 2021 כולל, למעט שנת 2019.",
+    "a": "SELECT SUM(InsuranceValue) AS TotalValue FROM Artworks WHERE CreationYear BETWEEN 2018 AND 2021 AND CreationYear <> 2019;",
+    "fixed": ""
+   },
+   {
+    "q": "הציגו את כל האולמות ומספר היצירות בכל אולם, כולל אולמות ריקים. מיינו לפי קוד אולם.",
+    "a": "SELECT h.HallID, h.HallName, COUNT(a.ArtworkID) AS ArtworkCount FROM Halls h LEFT JOIN Artworks a ON h.HallID = a.HallID GROUP BY h.HallID, h.HallName ORDER BY h.HallID;",
+    "fixed": ""
+   },
+   {
+    "q": "הציגו ללא כפילויות שמות אמנים שיש להם לפחות יצירה אחת עם שווי ביטוח מעל 20000. מיינו לפי שם האמן.",
+    "a": "SELECT DISTINCT r.ArtistName FROM Artists r JOIN Artworks a ON r.ArtistID = a.ArtistID WHERE a.InsuranceValue > 20000 ORDER BY r.ArtistName;",
+    "fixed": ""
+   },
+   {
+    "q": "הציגו קוד ושם של כל יצירה שאינה משויכת לאולם, במיון לפי קוד היצירה.",
+    "a": "SELECT ArtworkID, Title FROM Artworks WHERE HallID IS NULL ORDER BY ArtworkID;",
+    "fixed": ""
+   }
+  ]
+ },
+ {
+  "id": "space",
+  "title": "משימות חלל",
+  "sub": "חלליות, יעדים ומשימות מחקר",
+  "credit": "",
+  "ic": "🚀",
+  "about": "מקימים את הטבלאות מקובץ ההקמה במסד תרגול ריק, ופותרים. כל שאלה מתייחסת לנתוני הפתיחה: את שאלות ה-INSERT וה-UPDATE מריצים בתוך BEGIN TRANSACTION … ROLLBACK.",
+  "setup": "space_setup.sql",
+  "tables": [
+   "Spacecraft (CraftID, CraftName, Agency)",
+   "Destinations (DestinationID, DestinationName, DestinationType)",
+   "Missions (MissionID, CraftID, DestinationID, LaunchYear, DurationDays, BudgetMillions)"
+  ],
+  "items": [
+   {
+    "q": "הציגו קוד ושם של חלליות השייכות ל־NASA, במיון לפי קוד חללית.",
+    "a": "SELECT CraftID, CraftName FROM Spacecraft WHERE Agency = 'NASA' ORDER BY CraftID;",
+    "fixed": ""
+   },
+   {
+    "q": "הציגו קוד משימה, שנת שיגור ותקציב. תנו לשתי העמודות האחרונות את הכינויים [Launch Year] ו־[Budget USD Millions]. מיינו לפי תקציב בסדר יורד ואז שנת שיגור בסדר עולה.",
+    "a": "SELECT MissionID, LaunchYear AS [Launch Year], BudgetMillions AS [Budget USD Millions] FROM Missions ORDER BY BudgetMillions DESC, LaunchYear;",
+    "fixed": ""
+   },
+   {
+    "q": "עדכנו את הסוכנות של החללית C04 ל־ISA.",
+    "a": "UPDATE Spacecraft SET Agency = 'ISA' WHERE CraftID = 'C04';\n-- בדיקה:\nSELECT CraftID, Agency FROM Spacecraft WHERE CraftID = 'C04';",
+    "fixed": ""
+   },
+   {
+    "q": "חשבו את משך המשימה הממוצע בימים במשימות ל־Mars. חשבו ממוצע עשרוני.",
+    "a": "SELECT AVG(m.DurationDays * 1.0) AS AverageDays FROM Missions m JOIN Destinations d ON m.DestinationID = d.DestinationID WHERE d.DestinationName = 'Mars';",
+    "fixed": ""
+   },
+   {
+    "q": "הוסיפו חללית חדשה: C06, בשם Nova, ללא סוכנות ידועה.",
+    "a": "INSERT INTO Spacecraft (CraftID, CraftName, Agency) VALUES ('C06', 'Nova', NULL);\n-- בדיקה:\nSELECT * FROM Spacecraft WHERE CraftID = 'C06';",
+    "fixed": ""
+   },
+   {
+    "q": "משך משימה מספר 4 דורש בדיקה מחדש. החליפו את משך המשימה ב־NULL ושמרו את יתר הנתונים.",
+    "a": "UPDATE Missions SET DurationDays = NULL WHERE MissionID = 4;\n-- בדיקה:\nSELECT MissionID, DurationDays FROM Missions WHERE MissionID = 4;",
+    "fixed": ""
+   },
+   {
+    "q": "מצאו את התקציב הגבוה ביותר במשימה ששוגרה לפני שנת 2025.",
+    "a": "SELECT MAX(BudgetMillions) AS MaximumBudget FROM Missions WHERE LaunchYear < 2025;",
+    "fixed": ""
+   },
+   {
+    "q": "הציגו קוד משימה, שם יעד ומשך בימים לכל המשימות של Horizon. מיינו לפי קוד משימה.",
+    "a": "SELECT m.MissionID, d.DestinationName, m.DurationDays FROM Missions m JOIN Spacecraft s ON m.CraftID = s.CraftID JOIN Destinations d ON m.DestinationID = d.DestinationID WHERE s.CraftName = 'Horizon' ORDER BY m.MissionID;",
+    "fixed": ""
+   },
+   {
+    "q": "חשבו את סך התקציבים של משימות ששוגרו בין 2021 ל־2025 כולל, ללא שנת 2023.",
+    "a": "SELECT SUM(BudgetMillions) AS TotalBudget FROM Missions WHERE LaunchYear BETWEEN 2021 AND 2025 AND LaunchYear <> 2023;",
+    "fixed": ""
+   },
+   {
+    "q": "הציגו את כל החלליות ולצד כל אחת קוד משימה, גם אם אין לה משימות. מיינו לפי קוד חללית ואז קוד משימה.",
+    "a": "SELECT s.CraftID, s.CraftName, m.MissionID FROM Spacecraft s LEFT JOIN Missions m ON s.CraftID = m.CraftID ORDER BY s.CraftID, m.MissionID;",
+    "fixed": ""
+   },
+   {
+    "q": "הציגו ללא כפילויות שמות יעדים שלפחות משימה אחת אליהם נמשכה יותר מ־200 ימים. מיינו לפי שם היעד.",
+    "a": "SELECT DISTINCT d.DestinationName FROM Destinations d JOIN Missions m ON d.DestinationID = m.DestinationID WHERE m.DurationDays > 200 ORDER BY d.DestinationName;",
+    "fixed": ""
+   },
+   {
+    "q": "הציגו לכל יעד קוד, שם וסך תקציבים, רק אם הסכום גדול מ־1000 מיליון דולר. מיינו לפי הסכום בסדר יורד.",
+    "a": "SELECT d.DestinationID, d.DestinationName, SUM(m.BudgetMillions) AS TotalBudget FROM Destinations d JOIN Missions m ON d.DestinationID = m.DestinationID GROUP BY d.DestinationID, d.DestinationName HAVING SUM(m.BudgetMillions) > 1000 ORDER BY TotalBudget DESC;",
     "fixed": ""
    }
   ]
