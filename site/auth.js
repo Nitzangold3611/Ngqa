@@ -7,7 +7,10 @@
   const COURSES = [
     { id: 'ctfl', name: 'ISTQB CTFL 4.0', path: '/courses/ctfl/' },
     { id: 'genai', name: 'CT-GenAI', path: '/courses/genai/' },
-    { id: 'sql', name: 'SQL', path: '/courses/sql/' }
+    { id: 'sql', name: 'SQL', path: '/courses/sql/' },
+    { id: 'ste', name: 'CT-STE', path: '/courses/ste/' },
+    { id: 'ai', name: 'CT-AI', path: '/courses/ai/' },
+    { id: 'mat', name: 'CT-MAT', path: '/courses/mat/' }
   ];
   let enabled = null; // null = unknown, true/false after probe
 

@@ -133,9 +133,24 @@ dialog::backdrop{background:rgba(11,10,36,.6)}
       <span class="bd"><b>SQL לבודקי תוכנה</b><small>שאילתות, צירופים, פונקציות ועבודה עם נתונים ב-SQL Server</small>
       <span class="meta"></span><span class="go">כניסה לקורס ←</span></span>
     </a>
+    <a class="course" href="/courses/ste/" data-c="ste">
+      <span class="th"><img src="/covers/ste.jpg?v=1" alt="" loading="lazy"><span class="badge">CT-STE</span><span class="lock" aria-hidden="true"><span><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span></span>
+      <span class="bd"><b>אבטחת מידע וסייבר</b><small>ISTQB Certified Tester – Security Test Engineer</small>
+      <span class="meta"></span><span class="go">כניסה לקורס ←</span></span>
+    </a>
+    <a class="course" href="/courses/ai/" data-c="ai">
+      <span class="th"><img src="/covers/ai.jpg?v=1" alt="" loading="lazy"><span class="badge">CT-AI</span><span class="lock" aria-hidden="true"><span><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span></span>
+      <span class="bd"><b>בדיקות מערכות בינה מלאכותית</b><small>ISTQB Certified Tester – AI Testing</small>
+      <span class="meta"></span><span class="go">כניסה לקורס ←</span></span>
+    </a>
+    <a class="course" href="/courses/mat/" data-c="mat">
+      <span class="th"><img src="/covers/mat.jpg?v=1" alt="" loading="lazy"><span class="badge">CT-MAT</span><span class="lock" aria-hidden="true"><span><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span></span>
+      <span class="bd"><b>בדיקות אפליקציות מובייל</b><small>ISTQB Certified Tester – Mobile Application Testing</small>
+      <span class="meta"></span><span class="go">כניסה לקורס ←</span></span>
+    </a>
   </div>
 </main>
-<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.3 · 21.11.2026</bdi></span></footer>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.6 · 21.11.2026</bdi></span></footer>
 <script>
 {const g=document.getElementById('traces');let s='';const col=i=>i%4===2?'#F38911':'#14DACD';
 for(let i=0;i<9;i++){const y=380-i*24,a=60+((i*97)%220),b=20+((i*53)%50),c=30+((i*71)%140);
@@ -247,7 +262,7 @@ document.querySelectorAll('.course').forEach(c=>c.addEventListener('click',async
   if(!i){next=c.getAttribute('href');viewLogin()}else notice('אין לך גישה לקורס '+c.querySelector('b').textContent+'. אם זו טעות, פנו לניצן: 052-6718757 או nitzan@ngqa.info');
 }));
 async function hubSearch(){
-  const all=[{id:'ctfl',name:'CTFL 4.0'},{id:'genai',name:'CT-GenAI'},{id:'sql',name:'SQL'}];let cs=all;
+  const all=[{id:'ctfl',name:'CTFL 4.0'},{id:'genai',name:'CT-GenAI'},{id:'sql',name:'SQL'},{id:'ste',name:'CT-STE'},{id:'ai',name:'CT-AI'},{id:'mat',name:'CT-MAT'}];let cs=all;
   if(on){const i=A.info(await A.session());if(!i){next=null;viewLogin('התחברו כדי לחפש בקורסים שלכם.');return}cs=all.filter(x=>A.can(i,x.id));
     if(!cs.length){notice('עדיין לא נפתחו לך קורסים לחיפוש.');return}}
   NGQASearch.open({courses:cs,scope:'all',onPick:r=>{location.href=`/courses/${r.course}/#`+(r.kind==='ex'?`ch${r.c}/ex/${r.id}`:`ch${r.c}/${r.s}`)}})}
