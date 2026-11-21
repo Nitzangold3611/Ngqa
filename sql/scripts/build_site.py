@@ -194,6 +194,7 @@ HEAD = '''<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>__T__ · SQL לבודקי תוכנה | NGQA</title>
 <meta name="theme-color" content="#121133">
+<script src="/wa.js" defer></script>
 <link rel="icon" type="image/png" href="../favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
