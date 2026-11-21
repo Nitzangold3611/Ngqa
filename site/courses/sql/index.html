@@ -315,7 +315,7 @@ a.chip:hover{background:light-dark(#dff5f3,#2f2e6a)}
     <div class="hsr"><h2>פרקי הקורס</h2><button type="button" class="hsb" id="hsrch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>חיפוש בקורס</button></div>
     <div class="grid" id="grid"></div>
   </div></main>
-  <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v1.0.1 · 21.11.2026</bdi></span></footer>
+  <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v1.1 · 21.11.2026</bdi></span></footer>
 </div>
 
 <div id="viewer">
@@ -539,13 +539,13 @@ function routeIn(sp,exid,fresh){
   if(fresh||was){window.scrollTo(0,0);setMode(true)}else if(sp&&+sp>0)goTo(idx)}
 function backSlide(e){if(exFrom&&exFrom.id===e.id)return exFrom.slide;return e.slides.length?e.slides[e.slides.length-1]:0}
 function buildExList(){const d=cur;
-  $('exlist').innerHTML=d.ex.length?`<ul class="exl">${d.ex.map(e=>`<li class="exc"><span class="ic" aria-hidden="true">✎</span><div class="bd"><span class="lab">${e.label}</span><h3>${e.title}</h3><div class="meta"><span class="chip">${e.n} שאלות</span>${e.slides.length?`<a class="chip" href="#${d.id}/${e.slides[0]}">↩ בשקף ${e.slides[0]}</a>`:''}</div></div><a class="go" href="#${d.id}/ex/${e.id}">לפתיחת התרגיל ←</a></li>`).join('')}</ul>`
+  $('exlist').innerHTML=d.ex.length?`<ul class="exl">${d.ex.map(e=>`<li class="exc"><span class="ic" aria-hidden="true">✎</span><div class="bd"><span class="lab">${e.label}</span><h3>${e.title}</h3><div class="meta"><span class="chip">${e.n} שאלות</span><a class="chip" href="dl/docs/ex${e.id}.pdf" target="_blank" rel="noopener">📄 מסמך PDF</a><span hidden></span>${e.slides.length?`<a class="chip" href="#${d.id}/${e.slides[0]}">↩ בשקף ${e.slides[0]}</a>`:''}</div></div><a class="go" href="#${d.id}/ex/${e.id}">לפתיחת התרגיל ←</a></li>`).join('')}</ul>`
     :`<p class="exempty">אין דף תרגילים לפרק זה.<br>לתרגול נוסף: התרגילים המסכמים בעמוד הבית של הקורס.</p>`}
 function showEx(e){const d=cur,k=d.ex.indexOf(e),b=backSlide(e),pv=d.ex[k-1],nx=d.ex[k+1];
   document.title=`${e.label} · ${e.title} | NGQA`;let last='';
   const qs=e.items.map(it=>{let h='';if(it.sec&&it.sec!==last){last=it.sec;h+=`<li class="sec">${esc(it.sec)}</li>`}
     return h+`<li><div class="q">${esc(it.q)}</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql"><button class="cpy" type="button">העתקה</button>${hlSql(it.a)}</pre>${it.fixed?`<div class="fixn">הערה: ${esc(it.fixed)}</div>`:''}${it.note?`<div class="fixn tipn">💡 ${esc(it.note)}</div>`:''}</details></li>`}).join('');
-  $('exview').innerHTML=`<div class="exhead">${b?`<a class="back" href="#${d.id}/${b}">→ חזרה לשקף ${b}</a>`:`<a class="back" href="#${d.id}">→ חזרה למצגת</a>`}<a class="dl" href="#${d.id}/ex">כל התרגילים</a></div>
+  $('exview').innerHTML=`<div class="exhead">${b?`<a class="back" href="#${d.id}/${b}">→ חזרה לשקף ${b}</a>`:`<a class="back" href="#${d.id}">→ חזרה למצגת</a>`}<a class="dl" href="#${d.id}/ex">כל התרגילים</a><span class="sp"></span><a class="dl" href="dl/docs/ex${e.id}.pdf" target="_blank" rel="noopener">📄 השאלות כמסמך</a><a class="dl" href="dl/docs/ex${e.id}-answers.pdf" target="_blank" rel="noopener">📄 פתרונות כמסמך</a></div>
     <div class="exttl"><span class="lab">${e.label} · מסד הנתונים Northwind</span><h2>${e.title}</h2>${e.intro?`<p class="exintro">${esc(e.intro)}</p>`:''}</div>
     <ol class="qa">${qs}</ol>
     <div class="exnav">${nx?`<a href="#${d.id}/ex/${nx.id}">→ ${nx.label}</a>`:'<span></span>'}${pv?`<a href="#${d.id}/ex/${pv.id}">${pv.label} ←</a>`:''}</div>

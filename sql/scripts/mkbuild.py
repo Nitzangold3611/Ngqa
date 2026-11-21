@@ -19,6 +19,9 @@ src = src.replace("""        elif kd == 'k':
 assert "kd == 'd'" in src
 src = src.replace("'indent': 0.2 if k in ('b', 'k', 'v') else 0", "'indent': 0.52 if k == 'd' else (0.2 if k in ('b', 'k', 'v') else 0)")
 src = src.replace("[('מטרות למידה', 's')]", "[(sp.get('objh', 'מטרות למידה'), 's')]")
+src = src.replace("    s.text('הנושא הבא', X0 + 0.3, 3.35, pw - 0.6, 0.35, 13, TEAL, True, 'ctr')",
+                  "    s.box('Topic Name', X0 + 0.3, 3.0, pw - 0.6, 0.68, [(sp.get('t', ''), 'h')], 17, 10, al='ctr', anchor='b', hcol='FFFFFF', ins=(0.02, 0, 0.02, 0))")
+assert "Topic Name" in src
 extra = open('/home/claude/sql/sqlx.py').read()
 assert src.rstrip().endswith('main()')
 src = src.rstrip()[:-len('main()')] + extra + '\n\nmain()\n'

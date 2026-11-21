@@ -114,7 +114,7 @@ rep = [
     ('const CHAPTERS=[1,2,3,4,5].map(n=>({num:n}));', 'const CHAPTERS=[1,2,3,4,5,6,7,8,9,10,11].map(n=>({num:n}));'),
     ("pdf/NGQA-CT-GenAI-ch${cur.num}.pdf", "pdf/NGQA-SQL-ch${cur.num}.pdf"),
     ("`NGQA CT-GenAI פרק ${cur.num}.pdf`", "`NGQA SQL פרק ${cur.num}.pdf`"),
-    ('${e.pages} עמודים', '${e.n} שאלות'),
+    ('${e.pages} עמודים', '${e.n} שאלות</span><a class="chip" href="dl/docs/ex${e.id}.pdf" target="_blank" rel="noopener">📄 מסמך PDF</a><span hidden>'),
     ('אין תרגילים מעשיים בפרק זה.<br>התרגילים מתחילים בפרק 2.',
      'אין דף תרגילים לפרק זה.<br>לתרגול נוסף: התרגילים המסכמים בעמוד הבית של הקורס.'),
     ("${d.ex.length?` · ${d.ex.length} תרגילים`:''}", "${d.ex.length?` · ${d.ex[0].n} שאלות תרגול`:''}"),
@@ -167,7 +167,7 @@ new_show = r'''function showEx(e){const d=cur,k=d.ex.indexOf(e),b=backSlide(e),p
   document.title=`${e.label} · ${e.title} | NGQA`;let last='';
   const qs=e.items.map(it=>{let h='';if(it.sec&&it.sec!==last){last=it.sec;h+=`<li class="sec">${esc(it.sec)}</li>`}
     return h+`<li><div class="q">${esc(it.q)}</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql"><button class="cpy" type="button">העתקה</button>${hlSql(it.a)}</pre>${it.fixed?`<div class="fixn">הערה: ${esc(it.fixed)}</div>`:''}${it.note?`<div class="fixn tipn">💡 ${esc(it.note)}</div>`:''}</details></li>`}).join('');
-  $('exview').innerHTML=`<div class="exhead">${b?`<a class="back" href="#${d.id}/${b}">→ חזרה לשקף ${b}</a>`:`<a class="back" href="#${d.id}">→ חזרה למצגת</a>`}<a class="dl" href="#${d.id}/ex">כל התרגילים</a></div>
+  $('exview').innerHTML=`<div class="exhead">${b?`<a class="back" href="#${d.id}/${b}">→ חזרה לשקף ${b}</a>`:`<a class="back" href="#${d.id}">→ חזרה למצגת</a>`}<a class="dl" href="#${d.id}/ex">כל התרגילים</a><span class="sp"></span><a class="dl" href="dl/docs/ex${e.id}.pdf" target="_blank" rel="noopener">📄 השאלות כמסמך</a><a class="dl" href="dl/docs/ex${e.id}-answers.pdf" target="_blank" rel="noopener">📄 פתרונות כמסמך</a></div>
     <div class="exttl"><span class="lab">${e.label} · מסד הנתונים Northwind</span><h2>${e.title}</h2>${e.intro?`<p class="exintro">${esc(e.intro)}</p>`:''}</div>
     <ol class="qa">${qs}</ol>
     <div class="exnav">${nx?`<a href="#${d.id}/ex/${nx.id}">→ ${nx.label}</a>`:'<span></span>'}${pv?`<a href="#${d.id}/ex/${pv.id}">${pv.label} ←</a>`:''}</div>
@@ -254,7 +254,14 @@ pre.sql .k{color:#14DACD;font-weight:700}pre.sql .s{color:#F7B267}pre.sql .n{col
 .scard b{display:block;font-size:17px}.scard small{display:block;color:#c9cbf0;font-size:13px}.scard em{font-style:normal;color:var(--teal);font-size:12.5px;font-weight:700}
 .si{font-size:30px;flex:none;width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.08);display:grid;place-items:center}
 .shd{display:flex;gap:14px;align-items:center;margin-bottom:8px}.shd .si{background:light-dark(#eef0f8,#26255a)}.shd h2{margin:0;font-size:23px}.shd .sub{margin:0}
-.shd .top{margin-inline-start:auto;text-decoration:none;color:var(--mute);font-size:20px}
+.shd .top{margin-inline-start:auto;text-decoration:none;color:#fff;background:var(--teal-d);font-weight:700;font-size:14px;border-radius:999px;padding:6px 14px;white-space:nowrap}
+.totop{position:fixed;right:16px;bottom:16px;z-index:50;width:56px;height:56px;border-radius:50%;background:var(--orange);color:#fff;text-decoration:none;display:grid;place-items:center;font-size:24px;font-weight:800;line-height:1;box-shadow:0 6px 18px rgba(0,0,0,.25);padding-top:4px}
+.totop span{font-size:10px;font-weight:700;margin-top:-6px}
+details.data{margin:12px 0 0;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+details.data summary{cursor:pointer;padding:10px 14px;font-weight:700;color:var(--teal-d)}
+.dt{padding:0 14px 12px}.dt b{display:block;margin:4px 0 2px}.dt .cols{direction:ltr;text-align:left;font:12.5px Consolas,Menlo,monospace;color:var(--mute);margin-bottom:6px}
+.tw{overflow-x:auto;direction:ltr}.tw table{border-collapse:collapse;font-size:13px}.tw th{background:var(--navy);color:#fff;padding:4px 10px;text-align:left}
+.tw td{border:1px solid var(--line);padding:3px 10px;background:var(--card)}.tw td.nl{color:var(--mute);font-style:italic}
 footer{text-align:center;color:var(--mute);font-size:13px;padding:24px 10px 34px}
 footer .ver{display:block;margin-top:4px}
 @media(max-width:600px){.hero img{display:none}table.cmd td:first-child{white-space:normal}}
@@ -292,16 +299,69 @@ def qa(items):
     return '<ol class="qa">' + ''.join(out) + '</ol>'
 
 
+def parse_setup(sql):
+    """-> [(table, [(col, type)], [rows])]"""
+    sql = re.sub(r'--[^\n]*', '', sql)
+    out = {}
+    order = []
+    for name, body in re.findall(r'create\s+table\s+(\w+)\s*\((.*?)\)\s*;', sql, re.S | re.I):
+        cols = []
+        depth, cur = 0, ''
+        for ch in body:
+            if ch == '(':
+                depth += 1
+            elif ch == ')':
+                depth -= 1
+            if ch == ',' and depth == 0:
+                cols.append(cur); cur = ''
+            else:
+                cur += ch
+        cols.append(cur)
+        cl = []
+        for c in cols:
+            c = ' '.join(c.split())
+            if not c or c.upper().startswith(('PRIMARY KEY', 'FOREIGN KEY', 'CONSTRAINT')):
+                continue
+            nm, rest = (c.split(' ', 1) + [''])[:2]
+            cl.append((nm, rest))
+        out[name.lower()] = [name, cl, []]
+        order.append(name.lower())
+    for name, cols, vals in re.findall(r'insert\s+into\s+(\w+)\s*\(([^)]*)\)\s*values\s*(.*?);', sql, re.S | re.I):
+        rows = []
+        for tup in re.findall(r"\(((?:[^()']|'[^']*')*)\)", vals):
+            cells = [x.strip() for x in re.findall(r"'[^']*'|[^,]+", tup)]
+            rows.append(['NULL' if c.upper() == 'NULL' else c.strip("'") for c in cells])
+        if name.lower() in out:
+            out[name.lower()][2] += rows
+    return [out[k] for k in order]
+
+
+
 # summary page
+def parse_setup_early(sql):
+    return parse_setup(sql)
+
+
 body = '<div class="sgrid">' + ''.join(
     f'<a class="scard" href="#{s["id"]}"><span class="si">{s.get("ic", "📋")}</span><span><b>{esc(s["title"])}</b>'
     f'<small>{esc(s["sub"])}</small><em>{len(s["items"])} שאלות · {len(s["tables"])} טבלאות</em></span></a>' for s in SUM) + '</div>'
 for s in SUM:
     dl = f'<a class="btn" href="../dl/{s["setup"]}" download>⬇ קובץ הקמה ({s["setup"]})</a>' if s['setup'] else ''
     tb = '<div class="tbls">' + ''.join(f'<code>{esc(t)}</code>' for t in s['tables']) + '</div>'
+    tabs = parse_setup_early(open(f'{SQ}/sum/dl/{s["setup"]}').read()) if s['setup'] else []
+    data = ''
+    if tabs:
+        data = '<details class="data"><summary>מבנה הטבלאות ונתוני הפתיחה</summary>' + ''.join(
+            f'<div class="dt"><b>{esc(n)}</b><div class="cols">' + ' · '.join(esc(f"{c} {t}".strip()) for c, t in cols) + '</div>' +
+            ('<div class="tw"><table><tr>' + ''.join(f'<th>{esc(c)}</th>' for c, _ in cols) + '</tr>' +
+             ''.join('<tr>' + ''.join('<td class="nl">NULL</td>' if v == 'NULL' else f'<td>{esc(v)}</td>' for v in r) + '</tr>' for r in rows) +
+             '</table></div>' if rows else '') + '</div>' for n, cols, rows in tabs) + '</details>'
+    dl += (f'<a class="btn alt" href="../dl/docs/{s["id"]}.pdf" target="_blank" rel="noopener">📄 השאלות כמסמך</a>'
+           f'<a class="btn alt" href="../dl/docs/{s["id"]}-answers.pdf" target="_blank" rel="noopener">📄 פתרונות כמסמך</a>')
     body += (f'<section id="{s["id"]}"><div class="shd"><span class="si">{s.get("ic", "📋")}</span><div><h2>{esc(s["title"])}</h2>'
-             f'<p class="sub">{esc(s["sub"])} · {len(s["items"])} שאלות</p></div><a class="top" href="#">↑</a></div>'
-             f'<p>{esc(s["about"])}</p>{tb}{dl}{qa(s["items"])}</section>')
+             f'<p class="sub">{esc(s["sub"])} · {len(s["items"])} שאלות</p></div><a class="top" href="#" aria-label="חזרה למעלה">↑ למעלה</a></div>'
+             f'<p>{esc(s["about"])}</p>{tb}{dl}{data}{qa(s["items"])}</section>')
+body += '<a class="totop" href="#" aria-label="חזרה למעלה">↑<span>למעלה</span></a>'
 page(f'{OUT}/summary/index.html', 'תרגילים מסכמים',
      'חמישה תרגילים שמסכמים את כל הקורס. מקימים את הטבלאות מקובץ ההקמה, פותרים לבד, ורק אז פותחים את הפתרון.', body)
 
@@ -393,10 +453,122 @@ body = f'''<nav class="toc"><a href="#install">התקנת SQL Server</a><a href=
 <img class="dia" src="../dl/northwind-diagram.png" alt="תרשים מסד הנתונים Northwind" loading="lazy">
 </section>
 <section id="cmd"><h2>דף פקודות SQL</h2><p class="sub">ריכוז הפקודות של הקורס בתחביר SQL Server (T-SQL)</p>
-<div style="overflow-x:auto"><table class="cmd"><thead><tr><th>פקודה</th><th>מה היא עושה</th><th>דוגמה</th></tr></thead><tbody>{rows}</tbody></table></div>
-<div class="tip">פונקציות מהדף הישן כמו <code>FIRST()</code>, <code>LAST()</code>, <code>UCASE()</code> ו-<code>NOW()</code> לא קיימות ב-SQL Server. במקומן: <code>TOP</code> עם <code>ORDER BY</code>, <code>UPPER()</code> ו-<code>GETDATE()</code>.</div>
+<a class="btn alt" href="../dl/NGQA-SQL-cheatsheet.pdf" download="NGQA דף פקודות SQL.pdf">⬇ הורדת דף הפקודות כ-PDF</a>
+<div style="overflow-x:auto;margin-top:12px"><table class="cmd"><thead><tr><th>פקודה</th><th>מה היא עושה</th><th>דוגמה</th></tr></thead><tbody>{rows}</tbody></table></div>
 </section>
 '''
+body += '<a class="totop" href="#" aria-label="חזרה למעלה">↑<span>למעלה</span></a>'
 page(f'{OUT}/ref/index.html', 'חומר עזר',
      'כל מה שצריך כדי להתחיל: התקנת הסביבה, שחזור מסד הנתונים Northwind, תרשים המסד ודף פקודות.', body)
 print(sum(len(d['slides']) for d in decks), 'slides,', sum(len(d['ex']) for d in decks), 'exercise pages')
+
+
+# ---------------------------------------------------------------- cheat sheet PDF
+import base64
+from playwright.sync_api import sync_playwright
+logo = base64.b64encode(open(f'{OUT}/logo.png', 'rb').read()).decode()
+cheat = f"""<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="utf-8"><style>
+@page{{size:A4;margin:12mm 11mm 14mm}}
+body{{font:10.5px/1.4 Arial,sans-serif;color:#121133;margin:0}}
+.hd{{display:flex;align-items:center;justify-content:space-between;background:#121133;color:#fff;border-radius:10px;padding:10px 16px;margin-bottom:10px}}
+.hd h1{{margin:0;font-size:22px}}.hd p{{margin:2px 0 0;color:#14DACD;font-size:11px;font-weight:700}}.hd img{{height:46px}}
+table{{width:100%;border-collapse:collapse}}
+th{{background:#121133;color:#fff;padding:5px 7px;text-align:right;font-size:11px}}
+td{{border-bottom:1px solid #e1e3ef;padding:4px 7px;vertical-align:top}}
+td:first-child{{font-weight:700;white-space:nowrap;width:24%}}td:nth-child(2){{width:30%}}
+td.x{{direction:ltr;text-align:left;font:9.5px/1.35 Consolas,"Courier New",monospace;white-space:pre-wrap;color:#1b1a4a}}
+tr.g td{{background:#eafbfa;color:#0E9F97;font-weight:800;font-size:11.5px;padding:5px 7px;border-bottom:2px solid #14DACD}}
+tr{{page-break-inside:avoid}}
+.ft{{position:fixed;bottom:-9mm;left:0;right:0;text-align:center;color:#7c7b98;font-size:8.5px}}
+</style></head><body>
+<div class="hd"><div><h1>דף פקודות SQL</h1><p>SQL לבודקי תוכנה · Microsoft SQL Server (T-SQL)</p></div><img src="data:image/png;base64,{logo}"></div>
+<table><thead><tr><th>פקודה</th><th>מה היא עושה</th><th>דוגמה</th></tr></thead><tbody>{rows}</tbody></table>
+<div class="ft">כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה · courses.ngqa.net · v{V}</div>
+</body></html>"""
+with sync_playwright() as pw:
+    br = pw.chromium.launch(executable_path='/usr/bin/google-chrome')
+    pg = br.new_page()
+    pg.set_content(cheat, wait_until='load')
+    pg.pdf(path=f'{OUT}/dl/NGQA-SQL-cheatsheet.pdf', format='A4', print_background=True,
+           margin={'top': '12mm', 'bottom': '14mm', 'left': '11mm', 'right': '11mm'})
+    br.close()
+print('cheat sheet pdf ok')
+
+# ---------------------------------------------------------------- exercise documents (questions / answers) as PDF
+DOC_CSS = '''@page{size:A4;margin:14mm 12mm 16mm}
+body{font:12px/1.55 Arial,sans-serif;color:#121133;margin:0}
+.hd{display:flex;align-items:center;justify-content:space-between;background:#121133;color:#fff;border-radius:12px;padding:14px 18px;margin-bottom:14px}
+.hd .k{color:#14DACD;font-weight:700;font-size:11.5px;letter-spacing:.3px}.hd h1{margin:2px 0 2px;font-size:24px}.hd p{margin:0;color:#c9cbf0;font-size:12px}.hd img{height:54px}
+h2{font-size:15px;color:#0E9F97;margin:16px 0 6px;border-bottom:2px solid #14DACD;padding-bottom:3px}
+.box{background:#eafbfa;border-right:4px solid #14DACD;border-radius:8px;padding:8px 12px;margin:0 0 10px}
+.tb{margin:0 0 10px;page-break-inside:avoid}.tb table{margin-left:auto}.tb b{display:block;margin:0 0 3px;font-size:12.5px}
+table{border-collapse:collapse;width:auto;font-size:10.5px;direction:ltr}
+th{background:#121133;color:#fff;padding:3px 8px;text-align:left;font-weight:700}
+td{border:1px solid #dfe2ee;padding:2px 8px;text-align:left}tr:nth-child(even) td{background:#f6f7fb}
+td.nl{color:#9a99b4;font-style:italic}
+.cols{direction:ltr;text-align:left;font:10.5px Consolas,"Courier New",monospace;color:#1b1a4a;margin:0 0 4px}
+.q{display:flex;gap:10px;margin:0 0 12px;page-break-inside:avoid}
+.q .n{flex:none;width:24px;height:24px;border-radius:50%;background:#121133;color:#fff;display:grid;place-items:center;font-weight:700;font-size:11px}
+.q .t{flex:1}.q .sec{color:#0E9F97;font-weight:700;font-size:11px}
+.ln{border-bottom:1px dashed #c9cbe0;height:20px}
+pre{direction:ltr;text-align:left;background:#121133;color:#fff;border-radius:8px;padding:8px 10px;margin:5px 0 0;font:10.5px/1.45 Consolas,"Courier New",monospace;white-space:pre-wrap}
+pre .k{color:#14DACD;font-weight:700}pre .s{color:#F7B267}pre .c{color:#8A93A6}
+.note{font-size:10.5px;color:#5d5c7c;margin-top:4px}
+.ft{position:fixed;bottom:-10mm;left:0;right:0;text-align:center;color:#7c7b98;font-size:9px}'''
+KW_RE = re.compile(r"('[^']*')|(--[^\n]*)|\b(SELECT|FROM|WHERE|ORDER|BY|GROUP|HAVING|INSERT|INTO|VALUES|UPDATE|SET|DELETE|CREATE|ALTER|DROP|TABLE|VIEW|PROCEDURE|AND|OR|NOT|IN|LIKE|BETWEEN|IS|NULL|AS|ON|JOIN|INNER|LEFT|RIGHT|FULL|DISTINCT|TOP|ASC|DESC|EXISTS|BEGIN|END|DECLARE|EXEC|RETURN|IF|TRANSACTION|ROLLBACK|GO|PRIMARY|KEY|REFERENCES|CHECK|UNIQUE|DEFAULT|IDENTITY|ADD|COLUMN|CONSTRAINT|TRUNCATE|OUTPUT|WITH|OPTION|USE|DATABASE|PRINT)\b", re.I)
+
+
+def hl(a):
+    a = esc(a)
+    return KW_RE.sub(lambda m: f'<span class="s">{m.group(1)}</span>' if m.group(1) else
+                     (f'<span class="c">{m.group(2)}</span>' if m.group(2) else f'<span class="k">{m.group(3)}</span>'), a)
+
+
+def doc_html(kicker, title, sub, intro, tables, items, answers):
+    h = [f'<div class="hd"><div><div class="k">{esc(kicker)}</div><h1>{esc(title)}</h1><p>{esc(sub)}</p></div>'
+         f'<img src="data:image/png;base64,{logo}"></div>']
+    if intro:
+        h.append(f'<div class="box">{esc(intro)}</div>')
+    if tables:
+        h.append('<h2>מבנה הנתונים ונתוני הפתיחה</h2>')
+        for name, cols, rows in tables:
+            h.append(f'<div class="tb"><b>{esc(name)}</b><div class="cols">' +
+                     ' · '.join(esc(f'{c} {t}'.strip()) for c, t in cols) + '</div>')
+            if rows:
+                h.append('<table><tr>' + ''.join(f'<th>{esc(c)}</th>' for c, _ in cols) + '</tr>' +
+                         ''.join('<tr>' + ''.join(f'<td class="nl">NULL</td>' if v == 'NULL' else f'<td>{esc(v)}</td>' for v in r) + '</tr>'
+                                 for r in rows) + '</table>')
+            h.append('</div>')
+    h.append(f'<h2>{"פתרונות" if answers else "שאלות"}</h2>')
+    last = ''
+    for i, it in enumerate(items, 1):
+        sec = it.get('sec', '')
+        sh = f'<div class="sec">{esc(sec)}</div>' if sec and sec != last else ''
+        last = sec or last
+        body = f'<pre>{hl(it["a"])}</pre>' if answers else '<div class="ln"></div><div class="ln"></div>'
+        nt = ''
+        if answers and (it.get('note') or it.get('fixed')):
+            nt = f'<div class="note">💡 {esc(it.get("note") or it.get("fixed"))}</div>'
+        h.append(f'<div class="q"><span class="n">{i}</span><div class="t">{sh}{esc(it["q"])}{body}{nt}</div></div>')
+    h.append(f'<div class="ft">כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה · SQL לבודקי תוכנה · courses.ngqa.net</div>')
+    return f'<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="utf-8"><style>{DOC_CSS}</style></head><body>{"".join(h)}</body></html>'
+
+
+os.makedirs(f'{OUT}/dl/docs', exist_ok=True)
+DOCS = []
+for k, e in EXS.items():
+    DOCS.append((f'ex{k}', f'תרגיל {k} · מסד הנתונים Northwind', e['title'], f'פרק {EXCH[k]} · {CH[EXCH[k]]}',
+                 e.get('intro', ''), [], e['items']))
+for s in SUM:
+    tabs = parse_setup(open(f'{OUT}/dl/{s["setup"]}').read()) if s['setup'] else []
+    DOCS.append((s['id'], 'תרגיל מסכם', s['title'], s['sub'], s['about'], tabs, s['items']))
+with sync_playwright() as pw:
+    br = pw.chromium.launch(executable_path='/usr/bin/google-chrome')
+    pg = br.new_page()
+    for did, kick, title, sub, intro, tabs, items in DOCS:
+        for ans, suf in ((False, ''), (True, '-answers')):
+            pg.set_content(doc_html(kick, title + (' · פתרונות' if ans else ''), sub, intro, tabs, items, ans), wait_until='load')
+            pg.pdf(path=f'{OUT}/dl/docs/{did}{suf}.pdf', format='A4', print_background=True,
+                   margin={'top': '14mm', 'bottom': '16mm', 'left': '12mm', 'right': '12mm'})
+    br.close()
+print(len(DOCS) * 2, 'exercise documents')
