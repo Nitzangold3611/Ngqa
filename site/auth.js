@@ -115,7 +115,7 @@
       if (/User not found/i.test(m)) return 'לא נמצא משתמש עם המייל הזה.';
       if (/expired|invalid.*token|Invalid token|not found/i.test(m)) return 'הקישור כבר לא בתוקף. בקשו קישור חדש.';
       if (/password.*(short|least|characters)/i.test(m)) return 'הסיסמה קצרה מדי (לפחות 8 תווים).';
-      if (/Signups not allowed|registration/i.test(m)) return 'הכניסה בהזמנה בלבד. פנו ל-NGQA כדי לקבל הזמנה.';
+      if (/Signups not allowed|registration/i.test(m)) return 'הכניסה בהזמנה בלבד. לקבלת הזמנה פנו לניצן: 052-6718757 או nitzan@ngqa.info';
       if (/rate|too many/i.test(m)) return 'יותר מדי ניסיונות. נסו שוב בעוד כמה דקות.';
       return 'משהו השתבש: ' + m;
     }
