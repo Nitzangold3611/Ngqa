@@ -1,0 +1,445 @@
+{
+ "1": {
+  "title": "שאילתות SELECT … FROM",
+  "items": [
+   {
+    "sec": "",
+    "q": "הצג את כל הנתונים מהטבלה Customers",
+    "a": "SELECT *\nFROM Customers;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות החברות (CompanyName) של כל הלקוחות.",
+    "a": "SELECT CompanyName\nFROM Customers;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שם הלקוח (ContactName) ואת המדינה (Country) עבור כל הלקוחות.",
+    "a": "SELECT ContactName, Country\nFROM Customers;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את כל הנתונים מהטבלה Products",
+    "a": "SELECT *\nFROM Products;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שם המוצר (ProductName) ואת המחיר ליחידה (UnitPrice) עבור כל המוצרים.",
+    "a": "SELECT ProductName, UnitPrice\nFROM Products;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות הספקים (CompanyName) מתוך הטבלה Suppliers.",
+    "a": "SELECT CompanyName\nFROM Suppliers;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את כל העמודות מתוך הטבלה Orders.",
+    "a": "SELECT *\nFROM Orders;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את מזהה ההזמנה (OrderID) ואת מזהה הלקוח (CustomerID) מתוך Orders",
+    "a": "SELECT OrderID, CustomerID\nFROM Orders;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את רשימת כל המדינות הייחודיות (כל אחת פעם אחת) מתוך Customers",
+    "a": "SELECT DISTINCT Country\nFROM Customers;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שם המוצר (ProductName), הקטגוריה שלו (CategoryID), והמחיר ליחידה (UnitPrice) מתוך Products",
+    "a": "SELECT ProductName, CategoryID, UnitPrice\nFROM Products;"
+   }
+  ]
+ },
+ "2": {
+  "title": "אופרטורים",
+  "items": [
+   {
+    "sec": "אופרטורים תוויים",
+    "q": "הצג את שמות המוצרים המכילים את המילה 'Choco'.",
+    "a": "SELECT ProductName\nFROM Products\nWHERE ProductName LIKE '%Choco%';"
+   },
+   {
+    "sec": "אופרטורים תוויים",
+    "q": "הצג את שמות הלקוחות שהשם שלהם מתחיל באות A.",
+    "a": "SELECT CompanyName\nFROM Customers\nWHERE CompanyName LIKE 'A%';",
+    "fixed": "בטבלת Customers אין עמודה CustomerName; שם החברה הוא CompanyName"
+   },
+   {
+    "sec": "אופרטורים תוויים",
+    "q": "הצג את שמות המוצרים שהשם שלהם מסתיים ב-'berry'.",
+    "a": "SELECT ProductName\nFROM Products\nWHERE ProductName LIKE '%berry';"
+   },
+   {
+    "sec": "אופרטורים תוויים",
+    "q": "הצג את שמות הספקים המכילים את המילה 'Food' בכל מקום בשם.",
+    "a": "SELECT CompanyName\nFROM Suppliers\nWHERE CompanyName LIKE '%Food%';",
+    "fixed": "בטבלת Suppliers אין עמודה SupplierName; שם הספק הוא CompanyName"
+   },
+   {
+    "sec": "אופרטורים השוואתיים",
+    "q": "הצג את שמות המוצרים ואת מחירם כולל מע\"מ של 17%.",
+    "a": "SELECT ProductName, UnitPrice * 1.17 AS PriceWithVAT\nFROM Products;"
+   },
+   {
+    "sec": "אופרטורים השוואתיים",
+    "q": "הצג את שמות המוצרים והמחיר לאחר הנחה של 10%.",
+    "a": "SELECT ProductName, UnitPrice * 0.9 AS DiscountedPrice\nFROM Products;"
+   },
+   {
+    "sec": "אופרטורים לוגיים",
+    "q": "הצג את שמות המוצרים שמחירם בין 10 ל-50 דולר.",
+    "a": "SELECT ProductName\nFROM Products\nWHERE UnitPrice BETWEEN 10 AND 50;"
+   },
+   {
+    "sec": "אופרטורים לוגיים",
+    "q": "הצג את שמות המוצרים שמחירם קטן מ-20 או גדול מ-100.",
+    "a": "SELECT ProductName\nFROM Products\nWHERE UnitPrice < 20 OR UnitPrice > 100;"
+   },
+   {
+    "sec": "אופרטורים לוגיים",
+    "q": "הצג את שמות המוצרים שהחלק השלם של מחירם אינו מכיל את הספרה 0.",
+    "a": "SELECT ProductName, UnitPrice\nFROM Products\nWHERE CAST(FLOOR(UnitPrice) AS VARCHAR(10)) NOT LIKE '%0%';",
+    "fixed": "UnitPrice הוא money, והמרה לטקסט מוסיפה \".00\", כך שכל מחיר \"מכיל 0\". בודקים רק את החלק השלם"
+   },
+   {
+    "sec": "אופרטורים לוגיים",
+    "q": "הצג את שמות העובדים שגרים בעיר סיאטל ומשמשים כנציגי מכירות (Sales Representative).",
+    "a": "SELECT FirstName, LastName\nFROM Employees\nWHERE City = 'Seattle' AND Title = 'Sales Representative';",
+    "fixed": "בטבלת Employees אין עמודות EmployeeName ו-Department; משתמשים ב-FirstName, LastName ו-Title"
+   }
+  ]
+ },
+ "3": {
+  "title": "פונקציות מוכללות",
+  "items": [
+   {
+    "sec": "פונקציות צבירה",
+    "q": "הצג את מספר המוצרים הקיימים בטבלה.",
+    "a": "SELECT COUNT(*) AS ProductsCount\nFROM Products;",
+    "fixed": "הפתרון המקורי חישב סכום מלאי ולא מספר מוצרים"
+   },
+   {
+    "sec": "פונקציות צבירה",
+    "q": "הצג את הסכום הכולל של המלאי של כל המוצרים.",
+    "a": "SELECT SUM(UnitsInStock) AS TotalStock\nFROM Products;",
+    "fixed": "הפתרון המקורי חישב ממוצע מחיר ולא סכום מלאי"
+   },
+   {
+    "sec": "פונקציות צבירה",
+    "q": "הצג את המחיר הממוצע של המוצרים בטבלה.",
+    "a": "SELECT AVG(UnitPrice) AS AveragePrice\nFROM Products;",
+    "fixed": "שאלה שנוספה (הפתרון שלה הופיע בקובץ בלי שאלה)"
+   },
+   {
+    "sec": "פונקציות צבירה",
+    "q": "הצג את המחיר הגבוה ביותר של מוצר בטבלה.",
+    "a": "SELECT MAX(UnitPrice) AS HighestPrice\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות צבירה",
+    "q": "הצג את המחיר הנמוך ביותר של מוצר בטבלה.",
+    "a": "SELECT MIN(UnitPrice) AS LowestPrice\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות צבירה",
+    "q": "הצג את המלאי המקסימלי של כל קטגוריה.",
+    "a": "SELECT CategoryID, MAX(UnitsInStock) AS MaxStock\nFROM Products\nGROUP BY CategoryID;"
+   },
+   {
+    "sec": "פונקציות צבירה",
+    "q": "הצג את המלאי המינימלי של כל ספק.",
+    "a": "SELECT SupplierID, MIN(UnitsInStock) AS MinStock\nFROM Products\nGROUP BY SupplierID;"
+   },
+   {
+    "sec": "פונקציות חשבוניות",
+    "q": "הצג את שמות המוצרים ואת המחיר המעוגל כלפי מעלה.",
+    "a": "SELECT ProductName, CEILING(UnitPrice) AS RoundedUpPrice\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות חשבוניות",
+    "q": "הצג את שמות המוצרים ואת המחיר המעוגל כלפי מטה.",
+    "a": "SELECT ProductName, FLOOR(UnitPrice) AS RoundedDownPrice\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות חשבוניות",
+    "q": "הצג את שמות המוצרים ואת המחיר המעוגל לשתי ספרות עשרוניות.",
+    "a": "SELECT ProductName, ROUND(UnitPrice, 2) AS RoundedPrice\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות חשבוניות",
+    "q": "הצג את שמות המוצרים ואת השורש הריבועי של המחיר.",
+    "a": "SELECT ProductName, POWER(UnitPrice, 0.5) AS SquareRootPrice\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את שמות המוצרים באותיות גדולות בלבד.",
+    "a": "SELECT UPPER(ProductName) AS UpperCaseName\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את שמות המוצרים באותיות קטנות בלבד.",
+    "a": "SELECT LOWER(ProductName) AS LowerCaseName\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את שמות המוצרים כפול 3 פעמים ברצף.",
+    "a": "SELECT REPLICATE(ProductName, 3) AS RepeatedName\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את שמות המוצרים עם 5 רווחים ביניהם.",
+    "a": "SELECT ProductName + SPACE(5) + ProductName AS SpacedName\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את שמות המוצרים ואת מספר התווים בכל שם.",
+    "a": "SELECT ProductName, LEN(ProductName) AS NameLength\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את שמות המוצרים לאחר החלפת התו 'a' בתו 'o'.",
+    "a": "SELECT REPLACE(ProductName, 'a', 'o') AS ReplacedName\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את 5 התווים הראשונים של כל שם מוצר.",
+    "a": "SELECT SUBSTRING(ProductName, 1, 5) AS ShortName\nFROM Products;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את 3 התווים הראשונים של שם המשפחה של כל עובד.",
+    "a": "SELECT SUBSTRING(LastName, 1, 3) AS ShortLastName\nFROM Employees;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "החלף את שם העיר 'London' ב'Londinium'-",
+    "a": "SELECT REPLACE(City, 'London', 'Londinium') AS NewCityName\nFROM Customers;"
+   },
+   {
+    "sec": "פונקציות תווים",
+    "q": "הצג את שמות הספקים ואת מספר התווים בכל שם.",
+    "a": "SELECT CompanyName, LEN(CompanyName) AS NameLength\nFROM Suppliers;",
+    "fixed": "שם הספק הוא CompanyName"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את התאריך והשעה הנוכחיים.",
+    "a": "SELECT GETDATE() AS CurrentDateTime;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את התאריך שיהיה בעוד 30 ימים מהתאריך הנוכחי.",
+    "a": "SELECT DATEADD(DAY, 30, GETDATE()) AS DateIn30Days;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את מספר הימים בין תאריך ההזמנה לתאריך המשלוח בכל הזמנה.",
+    "a": "SELECT OrderID, DATEDIFF(DAY, OrderDate, ShippedDate) AS DaysBetween\nFROM Orders;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את מספר החודש מתוך תאריך ההזמנה.",
+    "a": "SELECT OrderID, DATEPART(MONTH, OrderDate) AS OrderMonth\nFROM Orders;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את שם החודש מתוך תאריך ההזמנה.",
+    "a": "SELECT OrderID, DATENAME(MONTH, OrderDate) AS OrderMonthName\nFROM Orders;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את היום בתאריך ההזמנה.",
+    "a": "SELECT OrderID, DAY(OrderDate) AS OrderDay\nFROM Orders;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את החודש מתוך תאריך המשלוח.",
+    "a": "SELECT OrderID, MONTH(ShippedDate) AS ShippedMonth\nFROM Orders;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את השנה מתוך תאריך הלידה של העובדים.",
+    "a": "SELECT EmployeeID, YEAR(BirthDate) AS BirthYear\nFROM Employees;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את גילם של העובדים לפי תאריך הלידה.",
+    "a": "SELECT EmployeeID, DATEDIFF(YEAR, BirthDate, GETDATE()) AS Age\nFROM Employees;"
+   },
+   {
+    "sec": "פונקציות זמנים ותאריכים",
+    "q": "הצג את תאריך הלידה של העובדים לאחר הוספת שנה.",
+    "a": "SELECT EmployeeID, DATEADD(YEAR, 1, BirthDate) AS NextYearBirthday\nFROM Employees;"
+   },
+   {
+    "sec": "פונקציות כלליות",
+    "q": "הצג את שם המשתמש המחובר כרגע.",
+    "a": "SELECT SUSER_NAME() AS CurrentUser;"
+   },
+   {
+    "sec": "פונקציות כלליות",
+    "q": "הצג את שמות הלקוחות ומספר הפקס שלהם; אם אין פקס תוצג המחרוזת 'לא זמין'.",
+    "a": "SELECT CompanyName, ISNULL(Fax, N'לא זמין') AS Fax\nFROM Customers;",
+    "fixed": "בטבלת Customers אין עמודת Email; משתמשים בעמודת Fax שיש בה ערכי NULL"
+   },
+   {
+    "sec": "פונקציות כלליות",
+    "q": "הצג את חמשת הלקוחות הראשונים בטבלה.",
+    "a": "SELECT TOP 5 CompanyName\nFROM Customers;",
+    "fixed": "שם הלקוח הוא CompanyName"
+   },
+   {
+    "sec": "פונקציות כלליות",
+    "q": "הצג את שמות עשרת המוצרים עם המחיר הגבוה ביותר.",
+    "a": "SELECT TOP 10 ProductName, UnitPrice\nFROM Products\nORDER BY UnitPrice DESC;"
+   }
+  ]
+ },
+ "4": {
+  "title": "הוראות בשאילתות",
+  "items": [
+   {
+    "sec": "GROUP BY",
+    "q": "הצג את מספר ההזמנה ואת הסכום הכולל של ההנחות בה.",
+    "a": "SELECT OrderID, SUM(Discount) AS TotalDiscount\nFROM [Order Details]\nGROUP BY OrderID;",
+    "fixed": "שם הטבלה הוא [Order Details] (עם רווח, בסוגריים מרובעים)"
+   },
+   {
+    "sec": "GROUP BY",
+    "q": "הצג את שם המדינה ומספר הלקוחות בה.",
+    "a": "SELECT Country, COUNT(CustomerID) AS CustomerCount\nFROM Customers\nGROUP BY Country;"
+   },
+   {
+    "sec": "GROUP BY",
+    "q": "הצג את חודש ההזמנה ואת מספר ההזמנות שבוצעו באותו חודש.",
+    "a": "SELECT DATEPART(MONTH, OrderDate) AS OrderMonth, COUNT(OrderID) AS OrdersCount\nFROM Orders\nGROUP BY DATEPART(MONTH, OrderDate);"
+   },
+   {
+    "sec": "ORDER BY",
+    "q": "הצג את שמות המוצרים מסודרים לפי מחירם בסדר עולה.",
+    "a": "SELECT ProductName, UnitPrice\nFROM Products\nORDER BY UnitPrice ASC;"
+   },
+   {
+    "sec": "ORDER BY",
+    "q": "הצג את שמות המוצרים מסודרים לפי מחירם בסדר יורד.",
+    "a": "SELECT ProductName, UnitPrice\nFROM Products\nORDER BY UnitPrice DESC;"
+   },
+   {
+    "sec": "ORDER BY",
+    "q": "הצג את מספרי ההזמנות מסודרים לפי תאריך ההזמנה מהעתיק לחדש.",
+    "a": "SELECT OrderID, OrderDate\nFROM Orders\nORDER BY OrderDate ASC;"
+   },
+   {
+    "sec": "ORDER BY",
+    "q": "הצג את שמות הלקוחות מסודרים לפי סדר אלפביתי.",
+    "a": "SELECT CompanyName\nFROM Customers\nORDER BY CompanyName ASC;",
+    "fixed": "שם הלקוח הוא CompanyName"
+   },
+   {
+    "sec": "ORDER BY",
+    "q": "הצג את שמות העובדים מסודרים לפי גיל מהצעיר למבוגר.",
+    "a": "SELECT FirstName + ' ' + LastName AS EmployeeName,\n       DATEDIFF(YEAR, BirthDate, GETDATE()) AS Age\nFROM Employees\nORDER BY Age ASC;",
+    "fixed": "אין עמודה EmployeeName; מחברים FirstName ו-LastName"
+   },
+   {
+    "sec": "ORDER BY",
+    "q": "הצג את שמות המוצרים מסודרים לפי קטגוריה ואז לפי מחיר בסדר יורד.",
+    "a": "SELECT CategoryID, ProductName, UnitPrice\nFROM Products\nORDER BY CategoryID, UnitPrice DESC;"
+   },
+   {
+    "sec": "HAVING",
+    "q": "הצג את התפקיד (Title) ואת הגיל הממוצע של העובדים בו, רק אם הממוצע גדול מ-70.",
+    "a": "SELECT Title, AVG(DATEDIFF(YEAR, BirthDate, GETDATE())) AS AverageAge\nFROM Employees\nGROUP BY Title\nHAVING AVG(DATEDIFF(YEAR, BirthDate, GETDATE())) > 70;",
+    "fixed": "אין מחלקות בטבלת Employees, אז מקבצים לפי Title. כל העובדים מעל גיל 30, לכן הסף הועלה ל-70"
+   },
+   {
+    "sec": "HAVING",
+    "q": "הצג את שנת ההזמנה ומספר ההזמנות, רק אם מספר ההזמנות גדול מ-50.",
+    "a": "SELECT YEAR(OrderDate) AS OrderYear, COUNT(OrderID) AS OrderCount\nFROM Orders\nGROUP BY YEAR(OrderDate)\nHAVING COUNT(OrderID) > 50;"
+   }
+  ]
+ },
+ "5": {
+  "title": "צירוף טבלאות – JOIN",
+  "items": [
+   {
+    "sec": "",
+    "q": "הצג את שמות המוצרים ושמות הקטגוריות שלהם.",
+    "a": "SELECT ProductName, CategoryName\nFROM Products\nINNER JOIN Categories ON Products.CategoryID = Categories.CategoryID;"
+   },
+   {
+    "sec": "",
+    "q": "הצג את מספרי ההזמנות ושמות הלקוחות שביצעו אותן.",
+    "a": "SELECT o.OrderID, c.CompanyName\nFROM Orders o\nINNER JOIN Customers c ON o.CustomerID = c.CustomerID;",
+    "fixed": "שם הלקוח הוא CompanyName"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות העובדים ואת שמות האזורים (Territories) שבאחריותם.",
+    "a": "SELECT e.FirstName, e.LastName, t.TerritoryDescription\nFROM Employees e\nINNER JOIN EmployeeTerritories et ON e.EmployeeID = et.EmployeeID\nINNER JOIN Territories t ON et.TerritoryID = t.TerritoryID;",
+    "fixed": "אין טבלת Departments ב-Northwind; השאלה הוחלפה לצירוף של שלוש טבלאות שקיימות"
+   },
+   {
+    "sec": "",
+    "q": "הצג את מספר ההזמנה, שם המוצר והכמות המוזמנת.",
+    "a": "SELECT od.OrderID, p.ProductName, od.Quantity\nFROM [Order Details] od\nINNER JOIN Products p ON od.ProductID = p.ProductID;",
+    "fixed": "שם הטבלה הוא [Order Details]"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות הספקים ושמות המוצרים שסיפקו.",
+    "a": "SELECT s.CompanyName, p.ProductName\nFROM Suppliers s\nINNER JOIN Products p ON s.SupplierID = p.SupplierID;",
+    "fixed": "שם הספק הוא CompanyName"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שם המוצר ומספרי ההזמנות שבהן נמכר.",
+    "a": "SELECT p.ProductName, od.OrderID\nFROM [Order Details] od\nINNER JOIN Products p ON od.ProductID = p.ProductID;",
+    "fixed": "שם הטבלה הוא [Order Details]"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות העובדים ומספרי ההזמנות שהם טיפלו בהן.",
+    "a": "SELECT e.FirstName, e.LastName, o.OrderID\nFROM Orders o\nINNER JOIN Employees e ON o.EmployeeID = e.EmployeeID;",
+    "fixed": "אין עמודה EmployeeName; משתמשים ב-FirstName ו-LastName"
+   }
+  ]
+ },
+ "6": {
+  "title": "שאילתות משנה",
+  "items": [
+   {
+    "sec": "",
+    "q": "הצג את שמות המוצרים שמחירם גבוה מהממוצע של כל המוצרים.",
+    "a": "SELECT ProductName, UnitPrice\nFROM Products\nWHERE UnitPrice > (SELECT AVG(UnitPrice) FROM Products);"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות הלקוחות שביצעו את ההזמנה היקרה ביותר.",
+    "a": "SELECT CompanyName\nFROM Customers\nWHERE CustomerID IN (\n    SELECT CustomerID FROM Orders\n    WHERE OrderID = (\n        SELECT TOP 1 OrderID\n        FROM [Order Details]\n        GROUP BY OrderID\n        ORDER BY SUM(UnitPrice * Quantity * (1 - Discount)) DESC));",
+    "fixed": "אין עמודה TotalAmount בטבלת Orders; סכום ההזמנה מחושב מתוך [Order Details]"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות המוצרים שלא קיימים בטבלת ההזמנות.",
+    "a": "SELECT ProductName\nFROM Products\nWHERE ProductID NOT IN (SELECT ProductID FROM [Order Details]);",
+    "fixed": "שם הטבלה הוא [Order Details]"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות הספקים שמספקים את המוצר היקר ביותר.",
+    "a": "SELECT CompanyName\nFROM Suppliers\nWHERE SupplierID IN (\n    SELECT SupplierID FROM Products\n    WHERE UnitPrice = (SELECT MAX(UnitPrice) FROM Products));",
+    "fixed": "שם הספק הוא CompanyName"
+   },
+   {
+    "sec": "",
+    "q": "הצג את שמות המוצרים שמחירם גבוה ממחיר המוצר 'Chai'.",
+    "a": "SELECT ProductName\nFROM Products\nWHERE UnitPrice > (SELECT UnitPrice FROM Products WHERE ProductName = 'Chai');"
+   }
+  ]
+ }
+}

@@ -1,0 +1,339 @@
+[
+ {
+  "id": "college",
+  "title": "College",
+  "sub": "סטודנטים, קורסים וציונים",
+  "credit": "מחבר השאלון: קובי יונסי",
+  "about": "שלוש טבלאות: Student (ID, First, Last), Course (Code, Title) ו-Grade (ID, Code, Grade). מריצים את קובץ ההקמה במסד נתונים חדש ופותרים.",
+  "setup": "college_setup.sql",
+  "tables": [
+   "Student",
+   "Course",
+   "Grade"
+  ],
+  "items": [
+   {
+    "q": "מצא את שמו הפרטי ומספר הסטודנט של מר בראון (Brown).",
+    "a": "SELECT First, ID\nFROM Student\nWHERE Last = 'Brown';",
+    "fixed": ""
+   },
+   {
+    "q": "סדר מחדש את טבלת הסטודנטים בסדר יורד לפי מספר הסטודנט ובסדר עולה לפי שם המשפחה. דאג שהעמודות First ו-Last יוצגו בשמות First Name ו-Last Name.",
+    "a": "SELECT ID, First AS [First Name], Last AS [Last Name]\nFROM Student\nORDER BY ID DESC, Last ASC;",
+    "fixed": ""
+   },
+   {
+    "q": "עדכן לתלמידה S104 שם משפחה חדש בעקבות נישואיה: Jones-Abutbul.",
+    "a": "UPDATE Student\nSET Last = 'Jones-Abutbul'\nWHERE ID = 'S104';",
+    "fixed": "שימו לב: העמודה Last מוגדרת char(10) והשם החדש ארוך יותר, ולכן תתקבל שגיאת קיצור (String or binary data would be truncated). אפשר להגדיל קודם את העמודה: ALTER TABLE Student ALTER COLUMN Last varchar(20);"
+   },
+   {
+    "q": "מצא את ממוצע הציונים שהתקבלו בקורס תכנות 2.",
+    "a": "SELECT AVG(G.Grade) AS AvgGrade\nFROM Grade AS G\nINNER JOIN Course AS C ON G.Code = C.Code\nWHERE C.Title = 'Programming 2';",
+    "fixed": "תוקן: AVEG → AVG"
+   },
+   {
+    "q": "הכנס תלמיד חדש למערכת: S108, תומר (לא מסר שם משפחה בשלב זה).",
+    "a": "INSERT INTO Student (ID, First, Last)\nVALUES ('S108', 'Tomer', NULL);",
+    "fixed": ""
+   },
+   {
+    "q": "מחק לתלמיד S104 את הציון בלבד מהרשימה הרלוונטית.",
+    "a": "UPDATE Grade\nSET Grade = NULL\nWHERE ID = 'S104';",
+    "fixed": ""
+   },
+   {
+    "q": "מצא מהו הציון הגבוה ביותר שהתקבל בקורס ניהול פרויקטים.",
+    "a": "SELECT MAX(G.Grade) AS MaxGrade\nFROM Grade AS G\nINNER JOIN Course AS C ON G.Code = C.Code\nWHERE C.Title = 'Project Mgmt';",
+    "fixed": ""
+   },
+   {
+    "q": "מצא את הציונים שקיבלו כל הסטודנטים ששמם הפרטי הוא John.",
+    "a": "SELECT G.Grade\nFROM Grade AS G\nINNER JOIN Student AS S ON G.ID = S.ID\nWHERE S.First = 'John';",
+    "fixed": ""
+   },
+   {
+    "q": "מצא את סכום כל הציונים שהתקבלו יחד מהתלמידים S103 עד S107 (ללא התלמיד S104).",
+    "a": "SELECT SUM(Grade) AS TotalGrades\nFROM Grade\nWHERE ID BETWEEN 'S103' AND 'S107' AND ID <> 'S104';\n\n-- או:\n-- WHERE ID IN ('S103', 'S105', 'S106', 'S107');",
+    "fixed": "תוקן: בקובץ המקורי הופיעו שתי הוראות WHERE ברצף; השנייה הועברה להערה כחלופה"
+   },
+   {
+    "q": "מצא את שמות המשפחה של כל הסטודנטים, ועבור אלו שנבחנו הצג לצד השם את קוד הקורס שבו נבחנו.",
+    "a": "SELECT S.Last, G.Code\nFROM Student AS S\nLEFT JOIN Grade AS G ON G.ID = S.ID;",
+    "fixed": ""
+   },
+   {
+    "q": "מצא את שם הקורס שיש בו נכשלים (נכשל = ציון נמוך מ-60).",
+    "a": "SELECT DISTINCT C.Title\nFROM Course AS C\nINNER JOIN Grade AS G ON G.Code = C.Code\nWHERE G.Grade < 60;",
+    "fixed": "נוסף DISTINCT כדי שכל קורס יופיע פעם אחת"
+   },
+   {
+    "q": "מצא את ממוצע הציונים של התלמיד John Good.",
+    "a": "SELECT AVG(G.Grade) AS AvgGrade\nFROM Grade AS G\nINNER JOIN Student AS S ON G.ID = S.ID\nWHERE S.First = 'John' AND S.Last = 'Good';",
+    "fixed": ""
+   }
+  ]
+ },
+ {
+  "id": "party",
+  "title": "Party",
+  "sub": "מסיבת החברה · טבלה אחת",
+  "credit": "",
+  "about": "טבלה אחת, Party, עם רשימת המוזמנים: עיר, מחלקה, גיל, מין, אמצעי הגעה, ארוחה ושני משקאות. שימו לב לערכים חסרים (NULL ומחרוזת ריקה).",
+  "setup": "party_setup.sql",
+  "tables": [
+   "Party"
+  ],
+  "items": [
+   {
+    "q": "שלוף את שמותיהם בלבד של מי שאישר הגעה למסיבה (כלומר כל מי שמופיע בטבלה).",
+    "a": "SELECT name\nFROM party",
+    "fixed": ""
+   },
+   {
+    "q": "שלוף את שמם וגילם של כל מי שעדכן באיזה אמצעי תחבורה יגיע.",
+    "a": "SELECT Name, age\nFROM party\nWHERE transport IS NOT NULL",
+    "fixed": ""
+   },
+   {
+    "q": "אתר את כל פרטי האנשים שמגיעים מנתניה.",
+    "a": "SELECT *\nFROM party\nWHERE city = 'Netanya'",
+    "fixed": ""
+   },
+   {
+    "q": "אתר את פרטי כל מי שמגיע במונית או ברכבת.",
+    "a": "SELECT *\nFROM party\nWHERE transport IN ('train', 'taxi')",
+    "fixed": ""
+   },
+   {
+    "q": "אתר את פרטי כל הגברים במסיבה.",
+    "a": "SELECT *\nFROM party\nWHERE gender = 'm'",
+    "fixed": ""
+   },
+   {
+    "q": "אתר את כל פרטי שלושת המבוגרים ביותר במסיבה.",
+    "a": "SELECT TOP 3 *\nFROM Party\nORDER BY Age DESC;",
+    "fixed": "השאלה מבקשת את כל הפרטים, לכן * במקום age בלבד"
+   },
+   {
+    "q": "אתר את כל פרטי מי שמגיע למסיבה ואינו ממחלקת מכירות.",
+    "a": "SELECT *\nFROM party\nWHERE department != 'sales'",
+    "fixed": ""
+   },
+   {
+    "q": "אתר את גילו ושמו של מי שלא מסר אם הוא מעוניין בארוחה בשרית או חלבית.",
+    "a": "SELECT *\nFROM party\nWHERE food IS NULL",
+    "fixed": ""
+   },
+   {
+    "q": "אתר שם, גיל ומין של מי שלא ידוע איך הוא מתכונן להגיע למסיבה.",
+    "a": "SELECT name, age, gender\nFROM party\nWHERE transport IS NULL",
+    "fixed": ""
+   },
+   {
+    "q": "אתר את מחלקתו של מי שמעוניין לשתות יין או וודקה, או שלא מסר שום הודעה בעניין השתייה.",
+    "a": "SELECT Department\nFROM Party\nWHERE Drink1 IN ('Wine', 'Vodka') OR Drink2 IN ('Wine', 'Vodka')\n   OR (Drink1 IS NULL AND (Drink2 IS NULL OR Drink2 = ''));",
+    "fixed": "לא מסר הודעה על שתייה = שני המשקאות ריקים (NULL או מחרוזת ריקה)"
+   },
+   {
+    "q": "אתר את שמו, ארוחתו, מחלקתו וגילו של מי ששותה בירה.",
+    "a": "SELECT name, food, department, age\nFROM party\nWHERE drink1 = 'beer' OR drink2 = 'beer'",
+    "fixed": ""
+   },
+   {
+    "q": "אתר את שמו וגילו של כל מי ששותה וודקה, מים או פפסי.",
+    "a": "SELECT name, age\nFROM party\nWHERE drink1 IN ('vodka', 'water', 'pepsi') OR drink2 IN ('vodka', 'water', 'pepsi')",
+    "fixed": ""
+   },
+   {
+    "q": "אתר את מינו של מי ששותה בירה ופפסי יחד.",
+    "a": "SELECT gender\nFROM party\nWHERE drink1 IN ('beer', 'pepsi') AND drink2 IN ('beer', 'pepsi')",
+    "fixed": ""
+   },
+   {
+    "q": "אתר את שמו ועיר מגוריו של כל מי שדיווח מה הוא רוצה לשתות.",
+    "a": "SELECT name, city\nFROM party\nWHERE drink1 IS NOT NULL OR drink2 IS NOT NULL",
+    "fixed": ""
+   },
+   {
+    "q": "מיין את הטבלה בסדר עולה לפי גיל המשתתפים.",
+    "a": "SELECT *\nFROM party\nORDER BY age",
+    "fixed": ""
+   },
+   {
+    "q": "הצג את שם המשתתפים והמשקאות שהזמינו, עבור כל מי שמגיע מעיר ששמה מכיל את האות A.",
+    "a": "SELECT name, drink1, drink2\nFROM party\nWHERE city LIKE '%A%'",
+    "fixed": ""
+   },
+   {
+    "q": "שלוף את כל מי ששמו מסתיים באות I באנגלית.",
+    "a": "SELECT *\nFROM party\nWHERE name LIKE '%i'",
+    "fixed": ""
+   },
+   {
+    "q": "הצג את גילו של כל מי שמגיע ממחלקת מכירות והזמין ארוחה בשרית.",
+    "a": "SELECT age\nFROM party\nWHERE department = 'sales' AND food = 'meat'",
+    "fixed": ""
+   },
+   {
+    "q": "שלוף את המשקאות של כל מי שאינו ממחלקת הנהלה.",
+    "a": "SELECT drink1, drink2\nFROM party\nWHERE department != 'management'",
+    "fixed": ""
+   },
+   {
+    "q": "שלוף את שם המשתתף ומחלקתו של כל מי שמעל גיל 30.",
+    "a": "SELECT name, department\nFROM party\nWHERE age > 30",
+    "fixed": ""
+   },
+   {
+    "q": "שלוף את שמו של כל מי שמתחת לגיל 60 ומגיע ברכב או ברכבת.",
+    "a": "SELECT name\nFROM party\nWHERE age < 60 AND transport IN ('car', 'train')",
+    "fixed": ""
+   },
+   {
+    "q": "ערוך את הטבלה בסדר חדש לפי שם העיר בסדר עולה.",
+    "a": "SELECT *\nFROM party\nORDER BY city ASC",
+    "fixed": ""
+   },
+   {
+    "q": "הצג את המשקה שהזמין מי שלא דיווח איך יגיע וגם לא דיווח מה ירצה לאכול.",
+    "a": "SELECT drink1, drink2\nFROM party\nWHERE transport IS NULL AND food IS NULL",
+    "fixed": ""
+   },
+   {
+    "q": "שלוף את אמצעי התחבורה והגיל של כל מי שלא דיווח על הארוחה הרצויה.",
+    "a": "SELECT transport, age\nFROM party\nWHERE food IS NULL",
+    "fixed": ""
+   },
+   {
+    "q": "שלוף את המזון, המשקה, השם והגיל של כל מי שאינו ממחלקת הנהלה או מכירות.",
+    "a": "SELECT Name, Food, Drink1, Drink2, Age\nFROM Party\nWHERE Department NOT IN ('management', 'sales');",
+    "fixed": "נוספה העמודה Name שהשאלה מבקשת"
+   },
+   {
+    "q": "שלוף את סוג המשקה והארוחה של כל מי ששמו דודי או מירב.",
+    "a": "SELECT drink1, drink2, food\nFROM party\nWHERE name IN ('dudi', 'merav')",
+    "fixed": ""
+   },
+   {
+    "q": "שלוף את שמות הנשים שגילן בין 20 ל-40.",
+    "a": "SELECT name\nFROM party\nWHERE gender = 'f' AND age BETWEEN 20 AND 40",
+    "fixed": ""
+   },
+   {
+    "q": "שלוף את שם מי שמעל גיל 18, שייך למחלקת מכירות ומעוניין לשתות מים במסיבה.",
+    "a": "SELECT Name\nFROM Party\nWHERE Age > 18 AND Department = 'sales'\n  AND (Drink1 = 'water' OR Drink2 = 'water');",
+    "fixed": "נוספו סוגריים: בלעדיהם ה-OR עוקף את שאר התנאים"
+   },
+   {
+    "q": "שלוף את שמות כל הנשים שמגיעות בכל אמצעי למעט אופניים.",
+    "a": "SELECT Name\nFROM Party\nWHERE Gender = 'F' AND (Transport <> 'bike' OR Transport IS NULL);",
+    "fixed": "NOT IN לא מחזיר שורות שבהן Transport הוא NULL; אם רוצים לכלול גם את מי שלא דיווח, מוסיפים IS NULL"
+   },
+   {
+    "q": "שלוף את המשקאות, הארוחה והשם של כל מי שאינו מגיע מרמלה, גדרה או חולון.",
+    "a": "SELECT Drink1, Drink2, Food, Name\nFROM Party\nWHERE City NOT IN ('Ramla', 'Gadera', 'Holon');",
+    "fixed": "תוקן שם העיר: בטבלה היא כתובה Ramla ולא ramle"
+   },
+   {
+    "q": "שלוף את שם העיר של מי שמעל גיל 40, אינו ממחלקת ההנהלה ושמו מתחיל באות D.",
+    "a": "SELECT city\nFROM party\nWHERE age > 40 AND department !='management' AND name LIKE 'D%'",
+    "fixed": ""
+   }
+  ]
+ },
+ {
+  "id": "hr",
+  "title": "Human Resources",
+  "sub": "מסד HR: עובדים, מחלקות, תפקידים ומיקומים",
+  "credit": "מחבר השאלון: קובי יונסי",
+  "about": "תרגיל על הסכמה של מסד HR (בלי קובץ הקמה): REGIONS, COUNTRIES, LOCATIONS, DEPARTMENTS, JOBS, EMPLOYEES ו-JOB_HISTORY. כותבים את השאילתות לפי מבנה הטבלאות.",
+  "setup": "",
+  "tables": [
+   "REGIONS (region_id, region_name)",
+   "COUNTRIES (country_id, country_name, region_id)",
+   "LOCATIONS (location_id, street_address, postal_code, city, state_province, country_id)",
+   "DEPARTMENTS (department_id, department_name, manager_id, location_id)",
+   "JOBS (job_id, job_title, min_salary, max_salary)",
+   "EMPLOYEES (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)",
+   "JOB_HISTORY (employee_id, start_date, end_date, job_id, department_id)"
+  ],
+  "items": [
+   {
+    "q": "מצא את 3 המשכורות הגבוהות ביותר מתוך עמודת משכורות המינימום, כנה את העמודה MIN_MAX_SALARY, וסדר בסדר יורד (בלי נהגים ומורים).",
+    "a": "SELECT TOP 3 min_salary AS MIN_MAX_SALARY\nFROM JOBS\nWHERE job_title NOT IN ('Drivers', 'Teachers')\nORDER BY min_salary DESC, job_id DESC;",
+    "fixed": "תוקן ל-T-SQL: LIMIT 3 → TOP 3"
+   },
+   {
+    "q": "שלוף את שם העובד, שם משפחתו וכותרת התפקיד שלו.",
+    "a": "SELECT E.first_name, E.last_name, J.job_title\nFROM EMPLOYEES AS E\nINNER JOIN JOBS AS J ON E.job_id = J.job_id;",
+    "fixed": ""
+   },
+   {
+    "q": "עדכן בטבלת המיקומים לכולם עיר = ערך ריק, למעט המיקומים בקוד מדינה 972.",
+    "a": "UPDATE LOCATIONS\nSET city = NULL\nWHERE country_id <> '972';",
+    "fixed": ""
+   },
+   {
+    "q": "הצג את מספרי המנהלים של העובדים בחברה, ועבור אלו שרשומה להם מחלקה הוסף גם את מספר המחלקה.",
+    "a": "SELECT manager_id, department_id\nFROM EMPLOYEES;",
+    "fixed": "תוקן שם העמודה managr_id → manager_id"
+   },
+   {
+    "q": "מצא את כל פרטי המדינות שמופיעות גם בטבלת המיקומים.",
+    "a": "SELECT *\nFROM COUNTRIES\nWHERE country_id IN (SELECT country_id FROM LOCATIONS);",
+    "fixed": "תוקן: שמות טבלה ועמודה שגויים, והצירוף המקורי החזיר כל מדינה כמה פעמים"
+   },
+   {
+    "q": "מצא את מספר התפקיד ומספר המחלקה של כל העובדים שהתחילו לעבוד בשנת 2009.",
+    "a": "SELECT job_id, department_id\nFROM EMPLOYEES\nWHERE YEAR(hire_date) = 2009;",
+    "fixed": "הוחלף LIKE '%2009%' ב-YEAR(), שעובד נכון על עמודת תאריך"
+   },
+   {
+    "q": "הצג את כל מספרי האזורים, ועבור אזורים שמחוברים למדינות הצג גם את שמות המדינות. סדר לפי שם המדינה בסדר יורד.",
+    "a": "SELECT R.region_id, C.country_name\nFROM REGIONS AS R\nLEFT JOIN COUNTRIES AS C ON R.region_id = C.region_id\nORDER BY C.country_name DESC;",
+    "fixed": "תוקנו שמות הטבלאות"
+   },
+   {
+    "q": "הצג את ממוצע המשכורות של העובדים בעמודה אחת.",
+    "a": "SELECT AVG(salary) AS AvgSalary\nFROM EMPLOYEES;",
+    "fixed": ""
+   },
+   {
+    "q": "מצא כמה רשומות קיימות בטבלת המדינות.",
+    "a": "SELECT COUNT(*) AS CountriesCount\nFROM COUNTRIES;",
+    "fixed": ""
+   },
+   {
+    "q": "מצא את הערך המינימלי של עמודת המשכורת המקסימלית בטבלת התפקידים.",
+    "a": "SELECT MIN(max_salary)\nFROM JOBS;",
+    "fixed": ""
+   },
+   {
+    "q": "מצא את שמות המשפחה של 5 העובדים שמשתכרים הכי גבוה בחברה.",
+    "a": "SELECT TOP 5 last_name\nFROM EMPLOYEES\nORDER BY salary DESC;",
+    "fixed": "תוקן ל-T-SQL: LIMIT 5 → TOP 5"
+   },
+   {
+    "q": "מצא את סכום כל המשכורות שהחברה משלמת לעובדים וכנה את העמודה TOTAL.",
+    "a": "SELECT SUM(salary) AS TOTAL\nFROM EMPLOYEES;",
+    "fixed": ""
+   },
+   {
+    "q": "מצא את תאריך סיום העבודה ומספר המחלקה של כל העובדים שמסיימים לעבוד השנה.",
+    "a": "SELECT end_date, department_id\nFROM JOB_HISTORY\nWHERE YEAR(end_date) = YEAR(GETDATE());",
+    "fixed": "השנה הקבועה 2021 הוחלפה בשנה הנוכחית"
+   },
+   {
+    "q": "מצא את שם המחלקה וקוד המדינה עבור מחלקות שממוקמות בעיר ברצלונה.",
+    "a": "SELECT D.department_name, L.country_id\nFROM DEPARTMENTS AS D\nINNER JOIN LOCATIONS AS L ON D.location_id = L.location_id\nWHERE L.city = 'Barcelona';",
+    "fixed": "תוקן שם העמודה locatin_id"
+   },
+   {
+    "q": "מצא את מספר העובד, העמלה שהוא מקבל, ומספר ושם המחלקה שהוא מנהל, רק עבור מנהלים בפועל.",
+    "a": "SELECT E.employee_id, E.commission_pct, D.department_id, D.department_name\nFROM DEPARTMENTS AS D\nINNER JOIN EMPLOYEES AS E ON D.manager_id = E.employee_id;",
+    "fixed": "הוחלף הפתרון: מנהל בפועל הוא העובד שמופיע ב-DEPARTMENTS.manager_id"
+   }
+  ]
+ }
+]

@@ -291,7 +291,7 @@ a.chip:hover{background:light-dark(#dff5f3,#2f2e6a)}
     <div class="hsr"><h2>פרקי הקורס</h2><button type="button" class="hsb" id="hsrch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>חיפוש בקורס</button></div>
     <div class="grid" id="grid"></div>
   </div></main>
-  <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v1.3.1 · 20.11.2026</bdi></span></footer>
+  <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v1.3.2 · 21.11.2026</bdi></span></footer>
 </div>
 
 <div id="viewer">
@@ -327,7 +327,7 @@ a.chip:hover{background:light-dark(#dff5f3,#2f2e6a)}
   </div>
   <div class="rail" id="rail"></div>
   <div id="feed" aria-label="שקופיות המצגת"></div>
-  <p class="ver vver">גרסה <bdi dir="ltr">v1.3.1 · 20.11.2026</bdi></p>
+  <p class="ver vver">גרסה <bdi dir="ltr">v1.3.2 · 21.11.2026</bdi></p>
   <div class="fpill" id="fpill" aria-hidden="true"></div>
 </div>
 
@@ -531,7 +531,7 @@ let fpT=0;addEventListener('scroll',()=>{if(!document.body.classList.contains('f
 
 /* ---- search ---- */
 
-async function srchCourses(){const all=[{id:'ctfl',name:'CTFL 4.0'},{id:'genai',name:'CT-GenAI'}];
+async function srchCourses(){const all=[{id:'ctfl',name:'CTFL 4.0'},{id:'genai',name:'CT-GenAI'},{id:'sql',name:'SQL'}];
   try{const A=window.NGQAAuth;if(A&&await A.isEnabled()){const i=A.info(await A.session());return all.filter(x=>A.can(i,x.id))}}catch(e){}return all}
 async function openSearch(){if(document.fullscreenElement)document.exitFullscreen();pfs(false);openToc(false);
   const inView=$('viewer').style.display==='block'&&cur;

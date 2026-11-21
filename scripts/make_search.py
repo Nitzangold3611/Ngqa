@@ -5,7 +5,8 @@ import json, re, subprocess, glob, os
 SKILL = glob.glob('/root/.claude/skills/synced/*/pptx')[0]
 SITE = '/home/claude/ngqa/site'
 SRC = {'ctfl': [f'/home/claude/work/d{n}_toc.pptx' for n in range(1, 7)],
-       'genai': [f'/home/claude/genai/out/g{n}.pptx' for n in range(1, 6)]}
+       'genai': [f'/home/claude/genai/out/g{n}.pptx' for n in range(1, 6)],
+       'sql': [f'/home/claude/sql/out/ch{n}.pptx' for n in range(1, 12)]}
 DROP = re.compile(r'^(\d+\s*/\s*\d+|☰?\s*תוכן עניינים|כל הזכויות שמורות.*|לתרגיל .*←|לפתיחת התרגיל.*)$')
 
 def clean(block):
@@ -42,6 +43,13 @@ for course, decks in SRC.items():
                 t = subprocess.run(['pdftotext', '-layout', pdf, '-'], capture_output=True, text=True).stdout
                 t = re.sub(r'[‎‏‪-‮]', '', t)
                 t = re.sub(r'[ \t]+', ' ', t); t = ' · '.join(l.strip() for l in t.splitlines() if l.strip())
+                ex.append({'c': d['num'], 'id': e['id'], 'label': e['label'], 't': e['title'], 'x': t[:20000]})
+        out['ex'] = ex
+    if course == 'sql':
+        ex = []
+        for d in json.load(open(f'{SITE}/courses/sql/decks.json')):
+            for e in d.get('ex', []):
+                t = ' · '.join(i['q'] + ' ' + i['a'].replace('\n', ' ') for i in e['items'])
                 ex.append({'c': d['num'], 'id': e['id'], 'label': e['label'], 't': e['title'], 'x': t[:20000]})
         out['ex'] = ex
     p = f'{SITE}/courses/{course}/search.json'

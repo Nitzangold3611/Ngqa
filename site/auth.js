@@ -6,7 +6,8 @@
   const KEY = 'ngqa.auth';
   const COURSES = [
     { id: 'ctfl', name: 'ISTQB CTFL 4.0', path: '/courses/ctfl/' },
-    { id: 'genai', name: 'CT-GenAI', path: '/courses/genai/' }
+    { id: 'genai', name: 'CT-GenAI', path: '/courses/genai/' },
+    { id: 'sql', name: 'SQL', path: '/courses/sql/' }
   ];
   let enabled = null; // null = unknown, true/false after probe
 

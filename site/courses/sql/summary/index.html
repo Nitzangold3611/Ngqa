@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<script src="/auth.js"></script>
+<script>document.documentElement.style.visibility='hidden';NGQAAuth.guard('sql').then(ok=>{if(ok)document.documentElement.style.visibility=''}).catch(()=>{document.documentElement.style.visibility=''});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>תרגילים מסכמים · SQL לבודקי תוכנה | NGQA</title>
+<meta name="theme-color" content="#121133">
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;
+--bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960)}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Heebo,Arial,sans-serif}
+a{color:var(--teal-d)}
+.hero{background:var(--navy);color:#fff;padding:clamp(22px,4vw,46px) max(5vw,16px)}
+.hero .in{max-width:1000px;margin:auto;display:flex;gap:20px;align-items:center;justify-content:space-between}
+.hero h1{margin:6px 0 6px;font-size:clamp(28px,4.4vw,44px);line-height:1.1}
+.hero p{margin:0;color:#c9cbf0;max-width:60ch}
+.hero img{width:clamp(110px,16vw,180px)}
+.allc{display:inline-block;color:#c9cbf0;text-decoration:none;font-size:14px;font-weight:600;border:1px solid #3b3a78;border-radius:999px;padding:4px 12px}
+.allc:hover{color:var(--teal);border-color:var(--teal)}
+main{max-width:1000px;margin:auto;padding:26px max(4vw,14px) 50px}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+nav.toc a{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;text-decoration:none;color:var(--ink);font-weight:600;font-size:14px}
+section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px clamp(16px,3vw,28px);margin:0 0 20px;scroll-margin-top:16px}
+section>h2{margin:0 0 4px;font-size:23px}
+section>.sub{color:var(--mute);margin:0 0 14px}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.steps>li{counter-increment:s;display:flex;gap:12px;align-items:flex-start}
+.steps>li::before{content:counter(s);flex:none;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;margin-top:1px}
+.steps b{color:var(--ink)}
+code,kbd{direction:ltr;unicode-bidi:isolate;background:light-dark(#eef0f8,#26255a);border-radius:6px;padding:1px 6px;font:14px Consolas,Menlo,monospace}
+.tip{background:light-dark(#eafbfa,#13324a);border-inline-start:4px solid var(--teal);border-radius:10px;padding:10px 14px;margin:14px 0 0}
+.warn{background:light-dark(#fff6ea,#2a2340);border-inline-start:4px solid var(--orange);border-radius:10px;padding:10px 14px;margin:14px 0 0}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:10px;background:var(--orange);color:#fff;font-weight:700;text-decoration:none;margin:6px 0 0 8px}
+.btn.alt{background:var(--navy)}
+.vid{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;margin-top:12px}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+img.dia{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);background:#fff;margin-top:10px}
+table.cmd{width:100%;border-collapse:collapse;font-size:14.5px}
+table.cmd th{background:var(--navy);color:#fff;padding:8px 10px;text-align:start}
+table.cmd td{border-bottom:1px solid var(--line);padding:8px 10px;vertical-align:top}
+table.cmd td:first-child{font-weight:700;white-space:nowrap}
+table.cmd td.x{direction:ltr;text-align:left;font:13.5px/1.5 Consolas,Menlo,monospace;white-space:pre-wrap}
+table.cmd tr.g td{background:light-dark(#eafbfa,#1d1c4a);color:var(--teal-d);font-weight:800}
+.tbls{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}.tbls code{font-size:13px}
+.qa{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:12px;counter-reset:q}
+.qa>li{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 14px;counter-increment:q}
+.qa .q{display:flex;gap:10px;font-weight:600}.qa .q::before{content:counter(q);flex:none;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:800}
+.qa details{margin-top:8px}.qa summary{cursor:pointer;display:inline-flex;align-items:center;min-height:38px;padding:0 14px;border-radius:10px;background:var(--orange);color:#fff;font-weight:700;list-style:none}
+.qa summary::-webkit-details-marker{display:none}.qa details[open] summary{background:var(--teal-d)}
+.qa details[open] summary .s1,.qa details:not([open]) summary .s2{display:none}
+pre.sql{direction:ltr;text-align:left;background:#121133;color:#fff;border-radius:12px;padding:12px 14px;margin:10px 0 0;overflow-x:auto;font:14px/1.55 Consolas,Menlo,monospace;white-space:pre}
+pre.sql .k{color:#14DACD;font-weight:700}pre.sql .s{color:#F7B267}pre.sql .n{color:#B5E8A0}pre.sql .c{color:#8A93A6;font-style:italic}pre.sql .f{color:#FFD580}
+.fixn{margin-top:8px;font-size:13.5px;color:var(--mute);background:light-dark(#fff6ea,#2a2340);border-radius:10px;padding:8px 12px;border-inline-start:4px solid var(--orange)}
+.credit{color:var(--mute);font-size:14px;margin:4px 0 0}
+footer{text-align:center;color:var(--mute);font-size:13px;padding:24px 10px 34px}
+footer .ver{display:block;margin-top:4px}
+@media(max-width:600px){.hero img{display:none}table.cmd td:first-child{white-space:normal}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="in"><div><a class="allc" href="../">→ לקורס SQL</a><h1>תרגילים מסכמים</h1><p>שלושה תרגילים שמסכמים את כל הקורס. מקימים את הטבלאות מקובץ ההקמה, פותרים לבד, ורק אז פותחים את הפתרון.</p></div><img src="../logo.png" alt="NGQA Software Testing Services"></div></header>
+<main>
+<nav class="toc"><a href="#college">College</a><a href="#party">Party</a><a href="#hr">Human Resources</a></nav><section id="college"><h2>College</h2><p class="sub">סטודנטים, קורסים וציונים · 12 שאלות</p><p>שלוש טבלאות: Student (ID, First, Last), Course (Code, Title) ו-Grade (ID, Code, Grade). מריצים את קובץ ההקמה במסד נתונים חדש ופותרים.</p><div class="tbls"><code>Student</code><code>Course</code><code>Grade</code></div><a class="btn" href="../dl/college_setup.sql" download>⬇ קובץ הקמה (college_setup.sql)</a><p class="credit">מחבר השאלון: קובי יונסי</p><ol class="qa"><li><div class="q">מצא את שמו הפרטי ומספר הסטודנט של מר בראון (Brown).</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT First, ID
+FROM Student
+WHERE Last = &#x27;Brown&#x27;;</pre></details></li><li><div class="q">סדר מחדש את טבלת הסטודנטים בסדר יורד לפי מספר הסטודנט ובסדר עולה לפי שם המשפחה. דאג שהעמודות First ו-Last יוצגו בשמות First Name ו-Last Name.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT ID, First AS [First Name], Last AS [Last Name]
+FROM Student
+ORDER BY ID DESC, Last ASC;</pre></details></li><li><div class="q">עדכן לתלמידה S104 שם משפחה חדש בעקבות נישואיה: Jones-Abutbul.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">UPDATE Student
+SET Last = &#x27;Jones-Abutbul&#x27;
+WHERE ID = &#x27;S104&#x27;;</pre><div class="fixn">הערה: שימו לב: העמודה Last מוגדרת char(10) והשם החדש ארוך יותר, ולכן תתקבל שגיאת קיצור (String or binary data would be truncated). אפשר להגדיל קודם את העמודה: ALTER TABLE Student ALTER COLUMN Last varchar(20);</div></details></li><li><div class="q">מצא את ממוצע הציונים שהתקבלו בקורס תכנות 2.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT AVG(G.Grade) AS AvgGrade
+FROM Grade AS G
+INNER JOIN Course AS C ON G.Code = C.Code
+WHERE C.Title = &#x27;Programming 2&#x27;;</pre><div class="fixn">הערה: תוקן: AVEG → AVG</div></details></li><li><div class="q">הכנס תלמיד חדש למערכת: S108, תומר (לא מסר שם משפחה בשלב זה).</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">INSERT INTO Student (ID, First, Last)
+VALUES (&#x27;S108&#x27;, &#x27;Tomer&#x27;, NULL);</pre></details></li><li><div class="q">מחק לתלמיד S104 את הציון בלבד מהרשימה הרלוונטית.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">UPDATE Grade
+SET Grade = NULL
+WHERE ID = &#x27;S104&#x27;;</pre></details></li><li><div class="q">מצא מהו הציון הגבוה ביותר שהתקבל בקורס ניהול פרויקטים.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT MAX(G.Grade) AS MaxGrade
+FROM Grade AS G
+INNER JOIN Course AS C ON G.Code = C.Code
+WHERE C.Title = &#x27;Project Mgmt&#x27;;</pre></details></li><li><div class="q">מצא את הציונים שקיבלו כל הסטודנטים ששמם הפרטי הוא John.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT G.Grade
+FROM Grade AS G
+INNER JOIN Student AS S ON G.ID = S.ID
+WHERE S.First = &#x27;John&#x27;;</pre></details></li><li><div class="q">מצא את סכום כל הציונים שהתקבלו יחד מהתלמידים S103 עד S107 (ללא התלמיד S104).</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT SUM(Grade) AS TotalGrades
+FROM Grade
+WHERE ID BETWEEN &#x27;S103&#x27; AND &#x27;S107&#x27; AND ID &lt;&gt; &#x27;S104&#x27;;
+
+-- או:
+-- WHERE ID IN (&#x27;S103&#x27;, &#x27;S105&#x27;, &#x27;S106&#x27;, &#x27;S107&#x27;);</pre><div class="fixn">הערה: תוקן: בקובץ המקורי הופיעו שתי הוראות WHERE ברצף; השנייה הועברה להערה כחלופה</div></details></li><li><div class="q">מצא את שמות המשפחה של כל הסטודנטים, ועבור אלו שנבחנו הצג לצד השם את קוד הקורס שבו נבחנו.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT S.Last, G.Code
+FROM Student AS S
+LEFT JOIN Grade AS G ON G.ID = S.ID;</pre></details></li><li><div class="q">מצא את שם הקורס שיש בו נכשלים (נכשל = ציון נמוך מ-60).</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT DISTINCT C.Title
+FROM Course AS C
+INNER JOIN Grade AS G ON G.Code = C.Code
+WHERE G.Grade &lt; 60;</pre><div class="fixn">הערה: נוסף DISTINCT כדי שכל קורס יופיע פעם אחת</div></details></li><li><div class="q">מצא את ממוצע הציונים של התלמיד John Good.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT AVG(G.Grade) AS AvgGrade
+FROM Grade AS G
+INNER JOIN Student AS S ON G.ID = S.ID
+WHERE S.First = &#x27;John&#x27; AND S.Last = &#x27;Good&#x27;;</pre></details></li></ol></section><section id="party"><h2>Party</h2><p class="sub">מסיבת החברה · טבלה אחת · 31 שאלות</p><p>טבלה אחת, Party, עם רשימת המוזמנים: עיר, מחלקה, גיל, מין, אמצעי הגעה, ארוחה ושני משקאות. שימו לב לערכים חסרים (NULL ומחרוזת ריקה).</p><div class="tbls"><code>Party</code></div><a class="btn" href="../dl/party_setup.sql" download>⬇ קובץ הקמה (party_setup.sql)</a><ol class="qa"><li><div class="q">שלוף את שמותיהם בלבד של מי שאישר הגעה למסיבה (כלומר כל מי שמופיע בטבלה).</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT name
+FROM party</pre></details></li><li><div class="q">שלוף את שמם וגילם של כל מי שעדכן באיזה אמצעי תחבורה יגיע.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT Name, age
+FROM party
+WHERE transport IS NOT NULL</pre></details></li><li><div class="q">אתר את כל פרטי האנשים שמגיעים מנתניה.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT *
+FROM party
+WHERE city = &#x27;Netanya&#x27;</pre></details></li><li><div class="q">אתר את פרטי כל מי שמגיע במונית או ברכבת.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT *
+FROM party
+WHERE transport IN (&#x27;train&#x27;, &#x27;taxi&#x27;)</pre></details></li><li><div class="q">אתר את פרטי כל הגברים במסיבה.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT *
+FROM party
+WHERE gender = &#x27;m&#x27;</pre></details></li><li><div class="q">אתר את כל פרטי שלושת המבוגרים ביותר במסיבה.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT TOP 3 *
+FROM Party
+ORDER BY Age DESC;</pre><div class="fixn">הערה: השאלה מבקשת את כל הפרטים, לכן * במקום age בלבד</div></details></li><li><div class="q">אתר את כל פרטי מי שמגיע למסיבה ואינו ממחלקת מכירות.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT *
+FROM party
+WHERE department != &#x27;sales&#x27;</pre></details></li><li><div class="q">אתר את גילו ושמו של מי שלא מסר אם הוא מעוניין בארוחה בשרית או חלבית.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT *
+FROM party
+WHERE food IS NULL</pre></details></li><li><div class="q">אתר שם, גיל ומין של מי שלא ידוע איך הוא מתכונן להגיע למסיבה.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT name, age, gender
+FROM party
+WHERE transport IS NULL</pre></details></li><li><div class="q">אתר את מחלקתו של מי שמעוניין לשתות יין או וודקה, או שלא מסר שום הודעה בעניין השתייה.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT Department
+FROM Party
+WHERE Drink1 IN (&#x27;Wine&#x27;, &#x27;Vodka&#x27;) OR Drink2 IN (&#x27;Wine&#x27;, &#x27;Vodka&#x27;)
+   OR (Drink1 IS NULL AND (Drink2 IS NULL OR Drink2 = &#x27;&#x27;));</pre><div class="fixn">הערה: לא מסר הודעה על שתייה = שני המשקאות ריקים (NULL או מחרוזת ריקה)</div></details></li><li><div class="q">אתר את שמו, ארוחתו, מחלקתו וגילו של מי ששותה בירה.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT name, food, department, age
+FROM party
+WHERE drink1 = &#x27;beer&#x27; OR drink2 = &#x27;beer&#x27;</pre></details></li><li><div class="q">אתר את שמו וגילו של כל מי ששותה וודקה, מים או פפסי.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT name, age
+FROM party
+WHERE drink1 IN (&#x27;vodka&#x27;, &#x27;water&#x27;, &#x27;pepsi&#x27;) OR drink2 IN (&#x27;vodka&#x27;, &#x27;water&#x27;, &#x27;pepsi&#x27;)</pre></details></li><li><div class="q">אתר את מינו של מי ששותה בירה ופפסי יחד.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT gender
+FROM party
+WHERE drink1 IN (&#x27;beer&#x27;, &#x27;pepsi&#x27;) AND drink2 IN (&#x27;beer&#x27;, &#x27;pepsi&#x27;)</pre></details></li><li><div class="q">אתר את שמו ועיר מגוריו של כל מי שדיווח מה הוא רוצה לשתות.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT name, city
+FROM party
+WHERE drink1 IS NOT NULL OR drink2 IS NOT NULL</pre></details></li><li><div class="q">מיין את הטבלה בסדר עולה לפי גיל המשתתפים.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT *
+FROM party
+ORDER BY age</pre></details></li><li><div class="q">הצג את שם המשתתפים והמשקאות שהזמינו, עבור כל מי שמגיע מעיר ששמה מכיל את האות A.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT name, drink1, drink2
+FROM party
+WHERE city LIKE &#x27;%A%&#x27;</pre></details></li><li><div class="q">שלוף את כל מי ששמו מסתיים באות I באנגלית.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT *
+FROM party
+WHERE name LIKE &#x27;%i&#x27;</pre></details></li><li><div class="q">הצג את גילו של כל מי שמגיע ממחלקת מכירות והזמין ארוחה בשרית.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT age
+FROM party
+WHERE department = &#x27;sales&#x27; AND food = &#x27;meat&#x27;</pre></details></li><li><div class="q">שלוף את המשקאות של כל מי שאינו ממחלקת הנהלה.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT drink1, drink2
+FROM party
+WHERE department != &#x27;management&#x27;</pre></details></li><li><div class="q">שלוף את שם המשתתף ומחלקתו של כל מי שמעל גיל 30.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT name, department
+FROM party
+WHERE age &gt; 30</pre></details></li><li><div class="q">שלוף את שמו של כל מי שמתחת לגיל 60 ומגיע ברכב או ברכבת.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT name
+FROM party
+WHERE age &lt; 60 AND transport IN (&#x27;car&#x27;, &#x27;train&#x27;)</pre></details></li><li><div class="q">ערוך את הטבלה בסדר חדש לפי שם העיר בסדר עולה.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT *
+FROM party
+ORDER BY city ASC</pre></details></li><li><div class="q">הצג את המשקה שהזמין מי שלא דיווח איך יגיע וגם לא דיווח מה ירצה לאכול.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT drink1, drink2
+FROM party
+WHERE transport IS NULL AND food IS NULL</pre></details></li><li><div class="q">שלוף את אמצעי התחבורה והגיל של כל מי שלא דיווח על הארוחה הרצויה.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT transport, age
+FROM party
+WHERE food IS NULL</pre></details></li><li><div class="q">שלוף את המזון, המשקה, השם והגיל של כל מי שאינו ממחלקת הנהלה או מכירות.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT Name, Food, Drink1, Drink2, Age
+FROM Party
+WHERE Department NOT IN (&#x27;management&#x27;, &#x27;sales&#x27;);</pre><div class="fixn">הערה: נוספה העמודה Name שהשאלה מבקשת</div></details></li><li><div class="q">שלוף את סוג המשקה והארוחה של כל מי ששמו דודי או מירב.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT drink1, drink2, food
+FROM party
+WHERE name IN (&#x27;dudi&#x27;, &#x27;merav&#x27;)</pre></details></li><li><div class="q">שלוף את שמות הנשים שגילן בין 20 ל-40.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT name
+FROM party
+WHERE gender = &#x27;f&#x27; AND age BETWEEN 20 AND 40</pre></details></li><li><div class="q">שלוף את שם מי שמעל גיל 18, שייך למחלקת מכירות ומעוניין לשתות מים במסיבה.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT Name
+FROM Party
+WHERE Age &gt; 18 AND Department = &#x27;sales&#x27;
+  AND (Drink1 = &#x27;water&#x27; OR Drink2 = &#x27;water&#x27;);</pre><div class="fixn">הערה: נוספו סוגריים: בלעדיהם ה-OR עוקף את שאר התנאים</div></details></li><li><div class="q">שלוף את שמות כל הנשים שמגיעות בכל אמצעי למעט אופניים.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT Name
+FROM Party
+WHERE Gender = &#x27;F&#x27; AND (Transport &lt;&gt; &#x27;bike&#x27; OR Transport IS NULL);</pre><div class="fixn">הערה: NOT IN לא מחזיר שורות שבהן Transport הוא NULL; אם רוצים לכלול גם את מי שלא דיווח, מוסיפים IS NULL</div></details></li><li><div class="q">שלוף את המשקאות, הארוחה והשם של כל מי שאינו מגיע מרמלה, גדרה או חולון.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT Drink1, Drink2, Food, Name
+FROM Party
+WHERE City NOT IN (&#x27;Ramla&#x27;, &#x27;Gadera&#x27;, &#x27;Holon&#x27;);</pre><div class="fixn">הערה: תוקן שם העיר: בטבלה היא כתובה Ramla ולא ramle</div></details></li><li><div class="q">שלוף את שם העיר של מי שמעל גיל 40, אינו ממחלקת ההנהלה ושמו מתחיל באות D.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT city
+FROM party
+WHERE age &gt; 40 AND department !=&#x27;management&#x27; AND name LIKE &#x27;D%&#x27;</pre></details></li></ol></section><section id="hr"><h2>Human Resources</h2><p class="sub">מסד HR: עובדים, מחלקות, תפקידים ומיקומים · 15 שאלות</p><p>תרגיל על הסכמה של מסד HR (בלי קובץ הקמה): REGIONS, COUNTRIES, LOCATIONS, DEPARTMENTS, JOBS, EMPLOYEES ו-JOB_HISTORY. כותבים את השאילתות לפי מבנה הטבלאות.</p><div class="tbls"><code>REGIONS (region_id, region_name)</code><code>COUNTRIES (country_id, country_name, region_id)</code><code>LOCATIONS (location_id, street_address, postal_code, city, state_province, country_id)</code><code>DEPARTMENTS (department_id, department_name, manager_id, location_id)</code><code>JOBS (job_id, job_title, min_salary, max_salary)</code><code>EMPLOYEES (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)</code><code>JOB_HISTORY (employee_id, start_date, end_date, job_id, department_id)</code></div><p class="credit">מחבר השאלון: קובי יונסי</p><ol class="qa"><li><div class="q">מצא את 3 המשכורות הגבוהות ביותר מתוך עמודת משכורות המינימום, כנה את העמודה MIN_MAX_SALARY, וסדר בסדר יורד (בלי נהגים ומורים).</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT TOP 3 min_salary AS MIN_MAX_SALARY
+FROM JOBS
+WHERE job_title NOT IN (&#x27;Drivers&#x27;, &#x27;Teachers&#x27;)
+ORDER BY min_salary DESC, job_id DESC;</pre><div class="fixn">הערה: תוקן ל-T-SQL: LIMIT 3 → TOP 3</div></details></li><li><div class="q">שלוף את שם העובד, שם משפחתו וכותרת התפקיד שלו.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT E.first_name, E.last_name, J.job_title
+FROM EMPLOYEES AS E
+INNER JOIN JOBS AS J ON E.job_id = J.job_id;</pre></details></li><li><div class="q">עדכן בטבלת המיקומים לכולם עיר = ערך ריק, למעט המיקומים בקוד מדינה 972.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">UPDATE LOCATIONS
+SET city = NULL
+WHERE country_id &lt;&gt; &#x27;972&#x27;;</pre></details></li><li><div class="q">הצג את מספרי המנהלים של העובדים בחברה, ועבור אלו שרשומה להם מחלקה הוסף גם את מספר המחלקה.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT manager_id, department_id
+FROM EMPLOYEES;</pre><div class="fixn">הערה: תוקן שם העמודה managr_id → manager_id</div></details></li><li><div class="q">מצא את כל פרטי המדינות שמופיעות גם בטבלת המיקומים.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT *
+FROM COUNTRIES
+WHERE country_id IN (SELECT country_id FROM LOCATIONS);</pre><div class="fixn">הערה: תוקן: שמות טבלה ועמודה שגויים, והצירוף המקורי החזיר כל מדינה כמה פעמים</div></details></li><li><div class="q">מצא את מספר התפקיד ומספר המחלקה של כל העובדים שהתחילו לעבוד בשנת 2009.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT job_id, department_id
+FROM EMPLOYEES
+WHERE YEAR(hire_date) = 2009;</pre><div class="fixn">הערה: הוחלף LIKE &#x27;%2009%&#x27; ב-YEAR(), שעובד נכון על עמודת תאריך</div></details></li><li><div class="q">הצג את כל מספרי האזורים, ועבור אזורים שמחוברים למדינות הצג גם את שמות המדינות. סדר לפי שם המדינה בסדר יורד.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT R.region_id, C.country_name
+FROM REGIONS AS R
+LEFT JOIN COUNTRIES AS C ON R.region_id = C.region_id
+ORDER BY C.country_name DESC;</pre><div class="fixn">הערה: תוקנו שמות הטבלאות</div></details></li><li><div class="q">הצג את ממוצע המשכורות של העובדים בעמודה אחת.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT AVG(salary) AS AvgSalary
+FROM EMPLOYEES;</pre></details></li><li><div class="q">מצא כמה רשומות קיימות בטבלת המדינות.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT COUNT(*) AS CountriesCount
+FROM COUNTRIES;</pre></details></li><li><div class="q">מצא את הערך המינימלי של עמודת המשכורת המקסימלית בטבלת התפקידים.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT MIN(max_salary)
+FROM JOBS;</pre></details></li><li><div class="q">מצא את שמות המשפחה של 5 העובדים שמשתכרים הכי גבוה בחברה.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT TOP 5 last_name
+FROM EMPLOYEES
+ORDER BY salary DESC;</pre><div class="fixn">הערה: תוקן ל-T-SQL: LIMIT 5 → TOP 5</div></details></li><li><div class="q">מצא את סכום כל המשכורות שהחברה משלמת לעובדים וכנה את העמודה TOTAL.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT SUM(salary) AS TOTAL
+FROM EMPLOYEES;</pre></details></li><li><div class="q">מצא את תאריך סיום העבודה ומספר המחלקה של כל העובדים שמסיימים לעבוד השנה.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT end_date, department_id
+FROM JOB_HISTORY
+WHERE YEAR(end_date) = YEAR(GETDATE());</pre><div class="fixn">הערה: השנה הקבועה 2021 הוחלפה בשנה הנוכחית</div></details></li><li><div class="q">מצא את שם המחלקה וקוד המדינה עבור מחלקות שממוקמות בעיר ברצלונה.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT D.department_name, L.country_id
+FROM DEPARTMENTS AS D
+INNER JOIN LOCATIONS AS L ON D.location_id = L.location_id
+WHERE L.city = &#x27;Barcelona&#x27;;</pre><div class="fixn">הערה: תוקן שם העמודה locatin_id</div></details></li><li><div class="q">מצא את מספר העובד, העמלה שהוא מקבל, ומספר ושם המחלקה שהוא מנהל, רק עבור מנהלים בפועל.</div><details><summary><span class="s1">הצג פתרון</span><span class="s2">הסתר פתרון</span></summary><pre class="sql">SELECT E.employee_id, E.commission_pct, D.department_id, D.department_name
+FROM DEPARTMENTS AS D
+INNER JOIN EMPLOYEES AS E ON D.manager_id = E.employee_id;</pre><div class="fixn">הערה: הוחלף הפתרון: מנהל בפועל הוא העובד שמופיע ב-DEPARTMENTS.manager_id</div></details></li></ol></section></main>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v1.0 · 21.11.2026</bdi></span></footer>
+<script>
+const SQLKW=new Set('SELECT FROM WHERE ORDER BY GROUP HAVING INSERT INTO VALUES UPDATE SET DELETE CREATE ALTER DROP TABLE VIEW PROCEDURE AND OR NOT IN LIKE BETWEEN IS NULL AS ON JOIN INNER LEFT RIGHT FULL OUTER CROSS UNION ALL DISTINCT TOP ASC DESC EXISTS CASE WHEN THEN ELSE END BEGIN DECLARE EXEC RETURN IF COLUMN VARCHAR INT'.split(' '));
+const E=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+document.querySelectorAll('pre.sql').forEach(p=>{p.innerHTML=p.textContent.split('\n').map(l=>{const m=l.match(/^(.*?)(--.*)?$/);
+  const t=E(m[1]).replace(/('[^']*'?)|(\b\d+(?:\.\d+)?\b)|(\b[A-Za-z_]\w*\b)(?=\s*\()|(\b[A-Za-z_]+\b)/g,(x,s,n,f,w)=>s?`<span class="s">${s}</span>`:n?`<span class="n">${n}</span>`:f?(SQLKW.has(f.toUpperCase())?`<span class="k">${f}</span>`:`<span class="f">${f}</span>`):SQLKW.has(w.toUpperCase())?`<span class="k">${w}</span>`:w);
+  return t+(m[2]?`<span class="c">${E(m[2])}</span>`:'')}).join('\n')});
+</script>
+</body>
+</html>
