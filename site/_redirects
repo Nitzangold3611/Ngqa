@@ -8,6 +8,8 @@ https://ngqa-ctfl40.netlify.app/*  https://courses.ngqa.net/:splat  301!
 /courses/ctfl/*   /courses/ctfl/:splat   200!  Role=ctfl,admin
 /courses/genai/*  /courses/genai/:splat  200!  Role=genai,admin
 /courses/sql/*    /courses/sql/:splat    200!  Role=sql,admin
+/courses/ste/*    /courses/ste/:splat    200!  Role=ste,admin
 /courses/ctfl/*   /?login=1&next=/courses/ctfl/   302!
 /courses/genai/*  /?login=1&next=/courses/genai/  302!
 /courses/sql/*    /?login=1&next=/courses/sql/    302!
+/courses/ste/*    /?login=1&next=/courses/ste/    302!
