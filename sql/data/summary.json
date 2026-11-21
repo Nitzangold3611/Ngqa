@@ -3,7 +3,7 @@
   "id": "college",
   "title": "College",
   "sub": "סטודנטים, קורסים וציונים",
-  "credit": "מחבר השאלון: קובי יונסי",
+  "credit": "",
   "about": "שלוש טבלאות: Student (ID, First, Last), Course (Code, Title) ו-Grade (ID, Code, Grade). מריצים את קובץ ההקמה במסד נתונים חדש ופותרים.",
   "setup": "college_setup.sql",
   "tables": [
@@ -239,100 +239,6 @@
     "q": "שלוף את שם העיר של מי שמעל גיל 40, אינו ממחלקת ההנהלה ושמו מתחיל באות D.",
     "a": "SELECT city\nFROM party\nWHERE age > 40 AND department !='management' AND name LIKE 'D%'",
     "fixed": ""
-   }
-  ]
- },
- {
-  "id": "hr",
-  "title": "Human Resources",
-  "sub": "מסד HR: עובדים, מחלקות, תפקידים ומיקומים",
-  "credit": "מחבר השאלון: קובי יונסי",
-  "about": "תרגיל על הסכמה של מסד HR (בלי קובץ הקמה): REGIONS, COUNTRIES, LOCATIONS, DEPARTMENTS, JOBS, EMPLOYEES ו-JOB_HISTORY. כותבים את השאילתות לפי מבנה הטבלאות.",
-  "setup": "",
-  "tables": [
-   "REGIONS (region_id, region_name)",
-   "COUNTRIES (country_id, country_name, region_id)",
-   "LOCATIONS (location_id, street_address, postal_code, city, state_province, country_id)",
-   "DEPARTMENTS (department_id, department_name, manager_id, location_id)",
-   "JOBS (job_id, job_title, min_salary, max_salary)",
-   "EMPLOYEES (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)",
-   "JOB_HISTORY (employee_id, start_date, end_date, job_id, department_id)"
-  ],
-  "items": [
-   {
-    "q": "מצא את 3 המשכורות הגבוהות ביותר מתוך עמודת משכורות המינימום, כנה את העמודה MIN_MAX_SALARY, וסדר בסדר יורד (בלי נהגים ומורים).",
-    "a": "SELECT TOP 3 min_salary AS MIN_MAX_SALARY\nFROM JOBS\nWHERE job_title NOT IN ('Drivers', 'Teachers')\nORDER BY min_salary DESC, job_id DESC;",
-    "fixed": "תוקן ל-T-SQL: LIMIT 3 → TOP 3"
-   },
-   {
-    "q": "שלוף את שם העובד, שם משפחתו וכותרת התפקיד שלו.",
-    "a": "SELECT E.first_name, E.last_name, J.job_title\nFROM EMPLOYEES AS E\nINNER JOIN JOBS AS J ON E.job_id = J.job_id;",
-    "fixed": ""
-   },
-   {
-    "q": "עדכן בטבלת המיקומים לכולם עיר = ערך ריק, למעט המיקומים בקוד מדינה 972.",
-    "a": "UPDATE LOCATIONS\nSET city = NULL\nWHERE country_id <> '972';",
-    "fixed": ""
-   },
-   {
-    "q": "הצג את מספרי המנהלים של העובדים בחברה, ועבור אלו שרשומה להם מחלקה הוסף גם את מספר המחלקה.",
-    "a": "SELECT manager_id, department_id\nFROM EMPLOYEES;",
-    "fixed": "תוקן שם העמודה managr_id → manager_id"
-   },
-   {
-    "q": "מצא את כל פרטי המדינות שמופיעות גם בטבלת המיקומים.",
-    "a": "SELECT *\nFROM COUNTRIES\nWHERE country_id IN (SELECT country_id FROM LOCATIONS);",
-    "fixed": "תוקן: שמות טבלה ועמודה שגויים, והצירוף המקורי החזיר כל מדינה כמה פעמים"
-   },
-   {
-    "q": "מצא את מספר התפקיד ומספר המחלקה של כל העובדים שהתחילו לעבוד בשנת 2009.",
-    "a": "SELECT job_id, department_id\nFROM EMPLOYEES\nWHERE YEAR(hire_date) = 2009;",
-    "fixed": "הוחלף LIKE '%2009%' ב-YEAR(), שעובד נכון על עמודת תאריך"
-   },
-   {
-    "q": "הצג את כל מספרי האזורים, ועבור אזורים שמחוברים למדינות הצג גם את שמות המדינות. סדר לפי שם המדינה בסדר יורד.",
-    "a": "SELECT R.region_id, C.country_name\nFROM REGIONS AS R\nLEFT JOIN COUNTRIES AS C ON R.region_id = C.region_id\nORDER BY C.country_name DESC;",
-    "fixed": "תוקנו שמות הטבלאות"
-   },
-   {
-    "q": "הצג את ממוצע המשכורות של העובדים בעמודה אחת.",
-    "a": "SELECT AVG(salary) AS AvgSalary\nFROM EMPLOYEES;",
-    "fixed": ""
-   },
-   {
-    "q": "מצא כמה רשומות קיימות בטבלת המדינות.",
-    "a": "SELECT COUNT(*) AS CountriesCount\nFROM COUNTRIES;",
-    "fixed": ""
-   },
-   {
-    "q": "מצא את הערך המינימלי של עמודת המשכורת המקסימלית בטבלת התפקידים.",
-    "a": "SELECT MIN(max_salary)\nFROM JOBS;",
-    "fixed": ""
-   },
-   {
-    "q": "מצא את שמות המשפחה של 5 העובדים שמשתכרים הכי גבוה בחברה.",
-    "a": "SELECT TOP 5 last_name\nFROM EMPLOYEES\nORDER BY salary DESC;",
-    "fixed": "תוקן ל-T-SQL: LIMIT 5 → TOP 5"
-   },
-   {
-    "q": "מצא את סכום כל המשכורות שהחברה משלמת לעובדים וכנה את העמודה TOTAL.",
-    "a": "SELECT SUM(salary) AS TOTAL\nFROM EMPLOYEES;",
-    "fixed": ""
-   },
-   {
-    "q": "מצא את תאריך סיום העבודה ומספר המחלקה של כל העובדים שמסיימים לעבוד השנה.",
-    "a": "SELECT end_date, department_id\nFROM JOB_HISTORY\nWHERE YEAR(end_date) = YEAR(GETDATE());",
-    "fixed": "השנה הקבועה 2021 הוחלפה בשנה הנוכחית"
-   },
-   {
-    "q": "מצא את שם המחלקה וקוד המדינה עבור מחלקות שממוקמות בעיר ברצלונה.",
-    "a": "SELECT D.department_name, L.country_id\nFROM DEPARTMENTS AS D\nINNER JOIN LOCATIONS AS L ON D.location_id = L.location_id\nWHERE L.city = 'Barcelona';",
-    "fixed": "תוקן שם העמודה locatin_id"
-   },
-   {
-    "q": "מצא את מספר העובד, העמלה שהוא מקבל, ומספר ושם המחלקה שהוא מנהל, רק עבור מנהלים בפועל.",
-    "a": "SELECT E.employee_id, E.commission_pct, D.department_id, D.department_name\nFROM DEPARTMENTS AS D\nINNER JOIN EMPLOYEES AS E ON D.manager_id = E.employee_id;",
-    "fixed": "הוחלף הפתרון: מנהל בפועל הוא העובד שמופיע ב-DEPARTMENTS.manager_id"
    }
   ]
  }

@@ -164,7 +164,7 @@ def L_auto(s, sp, top):
     mode = 'full'
     if vis and texts:
         wide = any((f[0] == 'table' and (len(f[1][0]) >= 5 or tbl_need(f[1], 99, 13)[1] > 5.0)) or
-                   (f[0] == 'img' and f[2] > 1.9) for f in vis)
+                   (f[0] == 'img' and f[2] > 1.5) for f in vis)
         mode = 'stack' if wide else 'side'
     elif vis:
         mode = 'visonly'

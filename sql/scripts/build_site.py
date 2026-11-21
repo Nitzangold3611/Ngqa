@@ -137,7 +137,7 @@ src = re.sub(r'<span class="ver">גרסה <bdi dir="ltr">[^<]*</bdi></span>',
 # home boxes: reference material + summary exercises
 boxes = '''<div class="xbx">
       <a class="xb" href="ref/"><span class="xi" aria-hidden="true">🧰</span><span><b>חומר עזר</b><small>מדריך התקנה (SQL Server 2025 + SSMS 22), שחזור Northwind, סרטון הדגמה, תרשים המסד ודף פקודות</small></span></a>
-      <a class="xb" href="summary/"><span class="xi" aria-hidden="true">🏁</span><span><b>תרגילים מסכמים</b><small>College · Party · Human Resources, עם קובצי הקמה ופתרונות</small></span></a>
+      <a class="xb" href="summary/"><span class="xi" aria-hidden="true">🏁</span><span><b>תרגילים מסכמים</b><small>College · Party, עם קובצי הקמה ופתרונות</small></span></a>
     </div>
     <div class="hsr">'''
 src = src.replace('<div class="hsr">', boxes, 1)
@@ -292,7 +292,7 @@ for s in SUM:
     body += (f'<section id="{s["id"]}"><h2>{esc(s["title"])}</h2><p class="sub">{esc(s["sub"])} · {len(s["items"])} שאלות</p>'
              f'<p>{esc(s["about"])}</p>{tb}{dl}{cr}{qa(s["items"])}</section>')
 page(f'{OUT}/summary/index.html', 'תרגילים מסכמים',
-     'שלושה תרגילים שמסכמים את כל הקורס. מקימים את הטבלאות מקובץ ההקמה, פותרים לבד, ורק אז פותחים את הפתרון.', body)
+     'תרגילים שמסכמים את כל הקורס. מקימים את הטבלאות מקובץ ההקמה, פותרים לבד, ורק אז פותחים את הפתרון.', body)
 
 # reference page
 CMD = [

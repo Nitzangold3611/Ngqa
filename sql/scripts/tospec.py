@@ -75,6 +75,33 @@ def _o26(flow):
                      ['note', [['סרטון הדגמה של השחזור, שלב אחר שלב, נמצא בלשונית "חומר עזר" באתר הקורס', 'x']]]]}
 
 
+SS = '/home/claude/sql/ssms/'
+
+
+def _ss(n, img, text=None, t2=None):
+    def f(flow):
+        fl = [x for x in flow if x[0] not in ('img', 'note')] if text is None else text
+        im = Image.open(SS + img + '.png')
+        r = {'flow': fl + [['img', SS + img + '.png', im.width / im.height]]}
+        if t2:
+            r['t2'] = t2
+        return r
+    OVR[n] = f
+
+
+_o23_text = [['p', [['פותחים את תפריט Start ומקלידים SSMS', 'b'], ['בוחרים ב-SQL Server Management Studio 22', 'b'],
+                    ['טיפ: מומלץ להצמיד את SSMS לשורת המשימות', 's']]]]
+OVR[23] = lambda flow: _o23_text
+_ss(24, 'connect', [['p', [['בחלון Connect to Server מזינים את הפרטים הבאים:', 'b'],
+                           ['Server type: Database Engine', 'd'], ['Server name: localhost\\SQLEXPRESS', 'd'],
+                           ['Authentication: Windows Authentication', 'd'],
+                           ['מסמנים Trust server certificate', 'd'], ['לוחצים Connect', 'd']]]])
+_ss(25, 'oe_nw', [['p', [['ב-Object Explorer פותחים את Databases', 'b'], ['ובוחרים ב-Northwind', 'b']]]])
+_ss(34, 'oe_nw', None, 'ב-SSMS 22')
+_ss(35, 'newq', None, 'ב-SSMS 22')
+_ss(36, 'editor', None, 'ב-SSMS 22')
+_ss(37, 'exec', None, 'ב-SSMS 22')
+
 for _n in (27, 28):
     OVR[_n] = lambda flow: None
 
@@ -238,7 +265,7 @@ def build_chapter(N, a, b):
                     sp['goal'] = 'לכתוב את השאילתות לפי השאלות בדף התרגיל, להריץ אותן ב-SSMS על מסד הנתונים Northwind ולהשוות לפתרון'
                 else:
                     sp['meta'].insert(0, ['תרגול', 'תרגילים מסכמים'])
-                    sp['goal'] = ('לתרגל את נושאי הפרק בתרגילים המסכמים (College · HR · Party) '
+                    sp['goal'] = ('לתרגל את נושאי הפרק בתרגילים המסכמים (College · Party) '
                                   'שבעמוד הבית של הקורס')
                 specs.append(sp)
                 continue

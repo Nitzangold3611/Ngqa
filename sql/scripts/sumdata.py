@@ -55,20 +55,12 @@ for k, q in enumerate(PQ, 1):
     a, note = PF.get(k, (pretty(PS[k]), ''))
     P.append((q, a, note))
 SUM = [
- {'id': 'college', 'title': 'College', 'sub': 'סטודנטים, קורסים וציונים', 'credit': 'מחבר השאלון: קובי יונסי',
+ {'id': 'college', 'title': 'College', 'sub': 'סטודנטים, קורסים וציונים', 'credit': '',
   'about': 'שלוש טבלאות: Student (ID, First, Last), Course (Code, Title) ו-Grade (ID, Code, Grade). מריצים את קובץ ההקמה במסד נתונים חדש ופותרים.',
   'setup': 'college_setup.sql', 'tables': ['Student', 'Course', 'Grade'], 'items': C},
  {'id': 'party', 'title': 'Party', 'sub': 'מסיבת החברה · טבלה אחת', 'credit': '',
   'about': 'טבלה אחת, Party, עם רשימת המוזמנים: עיר, מחלקה, גיל, מין, אמצעי הגעה, ארוחה ושני משקאות. שימו לב לערכים חסרים (NULL ומחרוזת ריקה).',
   'setup': 'party_setup.sql', 'tables': ['Party'], 'items': P},
- {'id': 'hr', 'title': 'Human Resources', 'sub': 'מסד HR: עובדים, מחלקות, תפקידים ומיקומים', 'credit': 'מחבר השאלון: קובי יונסי',
-  'about': 'תרגיל על הסכמה של מסד HR (בלי קובץ הקמה): REGIONS, COUNTRIES, LOCATIONS, DEPARTMENTS, JOBS, EMPLOYEES ו-JOB_HISTORY. כותבים את השאילתות לפי מבנה הטבלאות.',
-  'setup': '', 'tables': ['REGIONS (region_id, region_name)', 'COUNTRIES (country_id, country_name, region_id)',
-                          'LOCATIONS (location_id, street_address, postal_code, city, state_province, country_id)',
-                          'DEPARTMENTS (department_id, department_name, manager_id, location_id)',
-                          'JOBS (job_id, job_title, min_salary, max_salary)',
-                          'EMPLOYEES (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)',
-                          'JOB_HISTORY (employee_id, start_date, end_date, job_id, department_id)'], 'items': H},
 ]
 for s in SUM:
     s['items'] = [{'q': q, 'a': a, 'fixed': n} for q, a, n in s['items']]
