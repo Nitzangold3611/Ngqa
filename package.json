@@ -1,0 +1,9 @@
+{
+  "name": "ngqa-courses",
+  "private": true,
+  "description": "NGQA course site – QA suite (the site itself has no build step)",
+  "scripts": {
+    "test": "bash tests/run.sh",
+    "test:live": "BASE_URL=https://courses.ngqa.net bash tests/run.sh"
+  }
+}

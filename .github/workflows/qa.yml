@@ -1,0 +1,42 @@
+name: QA
+
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Run the live checks against this URL (optional)"
+        required: false
+  deployment_status:
+
+jobs:
+  local-suite:
+    if: github.event_name != 'deployment_status'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install pytest playwright && python -m playwright install --with-deps chromium
+      - name: Full QA suite
+        run: bash tests/run.sh
+        env:
+          BASE_URL: ${{ github.event.inputs.base_url }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: qa-report, path: "tests/reports/" }
+
+  live-checks:
+    # Netlify reports each Deploy Preview to GitHub; run the read-only live checks against it
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install pytest
+      - run: python -m pytest tests/preview -v
+        env:
+          BASE_URL: ${{ github.event.deployment_status.environment_url }}
