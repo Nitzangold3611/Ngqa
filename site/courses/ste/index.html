@@ -553,7 +553,7 @@ let fpT=0;addEventListener('scroll',()=>{if(!document.body.classList.contains('f
 
 /* ---- search ---- */
 
-async function srchCourses(){const all=[{id:'ctfl',name:'CTFL 4.0'},{id:'genai',name:'CT-GenAI'},{id:'sql',name:'SQL'},{id:'ste',name:'CT-STE'}];
+async function srchCourses(){const all=[{id:'ctfl',name:'CTFL 4.0'},{id:'genai',name:'CT-GenAI'},{id:'sql',name:'SQL'},{id:'ste',name:'CT-STE'},{id:'ai',name:'CT-AI'},{id:'mat',name:'CT-MAT'}];
   try{const A=window.NGQAAuth;if(A&&await A.isEnabled()){const i=A.info(await A.session());return all.filter(x=>A.can(i,x.id))}}catch(e){}return all}
 async function openSearch(){if(document.fullscreenElement)document.exitFullscreen();pfs(false);openToc(false);
   const inView=$('viewer').style.display==='block'&&cur;

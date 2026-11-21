@@ -1,0 +1,46 @@
+{
+ "name": "CT-AI",
+ "nch": 10,
+ "chx": {
+  "10": "מבחן לדוגמא — 40 שאלות"
+ },
+ "sub": {
+  "1": "Introduction to AI",
+  "2": "Quality Characteristics for AI-Based Systems",
+  "3": "Machine Learning (ML) — Overview",
+  "4": "ML — Data",
+  "5": "ML Functional Performance Metrics",
+  "6": "ML — Neural Networks and Testing",
+  "7": "Testing AI-Based Systems Overview",
+  "8": "Testing AI-Specific Quality Characteristics",
+  "9": "Methods and Techniques for the Testing of AI-Based Systems",
+  "10": "Sample Exam · שקף שאלה ושקף תשובה"
+ },
+ "lab": {
+  "10": "מבחן"
+ },
+ "desc": "מצגות ומבחן לדוגמא לקורס ISTQB CT-AI – בדיקות מערכות בינה מלאכותית של NGQA ייעוץ והדרכה בבדיקות תוכנה.",
+ "ogdesc": "כל פרקי קורס CT-AI והמבחן לדוגמא במקום אחד.",
+ "tag": "ISTQB® Certified Tester · AI Testing",
+ "h1": "בדיקות מערכות AI – CT-AI",
+ "lead": "כל פרקי הקורס והמבחן לדוגמא במקום אחד. בוחרים פרק, עוברים על השקופיות ומורידים את המצגת כ-PDF.",
+ "boxes": [
+  [
+   10,
+   "📝",
+   "מבחן לדוגמא",
+   "40 שאלות בסגנון ISTQB – לכל שאלה שקף שאלה ושקף תשובה עם הסבר"
+  ]
+ ],
+ "pdocs_title": "סילבוס הקורס",
+ "docs": [
+  [
+   "ISTQB-CT-AI-Syllabus-v1.0-Heb.pdf",
+   "📘 סילבוס CT-AI בעברית (PDF)"
+  ],
+  [
+   "ISTQB-CT-AI-Syllabus-v2.0-Eng.pdf",
+   "📗 ISTQB CT-AI Syllabus v2.0 (English)"
+  ]
+ ]
+}

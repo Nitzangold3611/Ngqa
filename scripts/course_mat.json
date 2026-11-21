@@ -1,0 +1,54 @@
+{
+ "name": "CT-MAT",
+ "nch": 7,
+ "chx": {
+  "6": "מבחן לדוגמא — 40 שאלות"
+ },
+ "sub": {
+  "1": "Understanding Business and Technology Drivers in the Mobile World",
+  "2": "Mobile Application Test Types",
+  "3": "Common Test Types and Test Process for Mobile Applications",
+  "4": "Mobile Application Platforms, Tools and Environment",
+  "5": "Automating the Test Execution",
+  "6": "Sample Exam · שקף שאלה ושקף תשובה",
+  "7": "Final Project · Mobile Test Plan"
+ },
+ "lab": {
+  "6": "מבחן",
+  "7": "פרויקט"
+ },
+ "desc": "מצגות, מבחן לדוגמא ופרויקט גמר לקורס ISTQB CT-MAT – בדיקות אפליקציות מובייל של NGQA ייעוץ והדרכה בבדיקות תוכנה.",
+ "ogdesc": "כל פרקי קורס CT-MAT, המבחן לדוגמא ופרויקט הגמר במקום אחד.",
+ "tag": "ISTQB® Certified Tester · Mobile Application Testing",
+ "h1": "בדיקות אפליקציות מובייל – CT-MAT",
+ "lead": "כל פרקי הקורס, המבחן לדוגמא ופרויקט הגמר במקום אחד. בוחרים פרק, עוברים על השקופיות ומורידים את המצגת כ-PDF.",
+ "boxes": [
+  [
+   6,
+   "📝",
+   "מבחן לדוגמא",
+   "40 שאלות בסגנון ISTQB – לכל שאלה שקף שאלה ושקף תשובה עם הסבר"
+  ],
+  [
+   7,
+   "🎓",
+   "פרויקט גמר",
+   "תוכנית בדיקות (STP) ו-Test Design לאפליקציית מובייל אמיתית"
+  ]
+ ],
+ "pdocs_title": "מסמכי הפרויקט וחומר עזר",
+ "docs": [
+  [
+   "project-guidelines.pdf",
+   "📄 הנחיות לפרויקט גמר (PDF)"
+  ],
+  [
+   "project-guidelines.docx",
+   "📝 הנחיות לפרויקט גמר (Word)"
+  ],
+  [
+   "ISTQB-CT-MAT-Syllabus-v1.0.pdf",
+   "📘 סילבוס ISTQB CT-MAT v1.0"
+  ]
+ ]
+}
