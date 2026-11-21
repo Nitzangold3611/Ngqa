@@ -79,7 +79,7 @@ for k, id_, title, sub, ic in NEW:
     a = open(f'{SRC}/{k}_answers.sql').read()
     parts = re.split(r'(?m)^-- Question (\d+)\s*$', a)[1:]
     ans = {int(n): b.strip().replace('-- Verify:', '-- בדיקה:') for n, b in zip(parts[0::2], parts[1::2])}
-    setup = open(f'{SRC}/{k}_setup.sql').read()
+    setup = open(f'{SRC}/{k}_setup.sql').read().replace('; setup and solutions also use SQLite-compatible syntax', '')
     tabs = [f"{n} ({', '.join(c.strip().split()[0] for c in body.split(',\n') if c.strip() and not c.strip().upper().startswith(('PRIMARY', 'FOREIGN')))})"
             for n, body in re.findall(r'CREATE TABLE (\w+)\s*\((.*?)\n\);', setup, re.S)]
     open(f'/home/claude/sql/sum/dl/{id_}_setup.sql', 'w').write(setup)

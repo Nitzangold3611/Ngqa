@@ -6,6 +6,7 @@
 
 | קורס | נתיב באתר | מקור |
 |---|---|---|
+| v3.3.1 | 21.11.2026 | SQL: ניקוי הערת SQLite מקובצי ההקמה של התרגילים המסכמים. SQL v1.0.1 |
 | ISTQB CTFL 4.0 | `/courses/ctfl/` | `site/courses/ctfl/`, `ctfl/scripts/` |
 | CT-GenAI – בינה מלאכותית יוצרת בבדיקות תוכנה | `/courses/genai/` | `site/courses/genai/`, `genai/scripts/`, `genai/spec/` |
 | SQL לבודקי תוכנה | `/courses/sql/` | `site/courses/sql/`, `sql/scripts/` |

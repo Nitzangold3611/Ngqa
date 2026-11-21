@@ -1,5 +1,5 @@
 -- SQL practice: 01_veterinary
--- Dialect: SQL Server (T-SQL); setup and solutions also use SQLite-compatible syntax.
+-- Dialect: SQL Server (T-SQL).
 -- Run in a dedicated empty practice database. No existing tables are deleted.
 -- Execute each question independently against the initial data.
 -- To undo an individual exercise in SQL Server: BEGIN TRANSACTION; ... ROLLBACK;
