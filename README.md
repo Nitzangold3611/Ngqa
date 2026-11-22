@@ -7,7 +7,7 @@
 | קורס | נתיב באתר | מקור |
 |---|---|---|
 | ISTQB CTFL 4.0 | `/courses/ctfl/` | `site/courses/ctfl/`, `ctfl/scripts/` |
-| CT-GenAI – בינה מלאכותית יוצרת בבדיקות תוכנה | `/courses/genai/` | `site/courses/genai/`, `genai/scripts/`, `genai/spec/` |
+| CT-GenAI – בינה מלאכותית יוצרת בבדיקות תוכנה | `/courses/genai/` | `site/courses/genai/`, `genai/scripts/` (כולל `add_exam.py`), `genai/spec/`, `genai/exam/` |
 | SQL לבודקי תוכנה | `/courses/sql/` | `site/courses/sql/`, `sql/scripts/` |
 | CT-STE – אבטחת מידע וסייבר (Security Test Engineer) | `/courses/ste/` | `site/courses/ste/`, `ste/scripts/`, `ste/spec/` |
 | CT-AI – בדיקות מערכות בינה מלאכותית (AI Testing) | `/courses/ai/` | `site/courses/ai/`, `ai/scripts/`, `scripts/build_course.py`, `scripts/course_ai.json` |
@@ -19,6 +19,7 @@
 
 | גרסה | תאריך | מה כוללת |
 |---|---|---|
+| v3.8 | 22.11.2026 | CT-GenAI: מבחן לדוגמא – 40 שאלות, שקף שאלה ושקף תשובה עם הסבר לכל אחת מהתשובות. CT-GenAI v1.4 |
 | v3.7 | 22.11.2026 | סדנת מחפשי עבודה (/courses/jobs/): 4 מצגות – קורות חיים, לינקדאין, ראיונות עבודה ושאלות מראיונות – ו-7 מסמכי קישורים להורדה. הרשאת `jobs`. עמוד ראשי: 4 קורסים בשורה. Jobs v1.0 |
 | v3.6 | 21.11.2026 | קורסים חדשים: CT-AI – בדיקות מערכות AI (9 מצגות פרק, מבחן לדוגמא 40 שאלות, סילבוס בעברית ובאנגלית להורדה) ו-CT-MAT – בדיקות אפליקציות מובייל (5 מצגות פרק, מבחן לדוגמא 40 שאלות, מצגת פרויקט גמר והנחיות להורדה). הרשאות `ai` ו-`mat` בדף הניהול. CT-AI v1.0 · CT-MAT v1.0 |
 | v3.5 | 21.11.2026 | קורס חדש: CT-STE – אבטחת מידע וסייבר (ISTQB Security Test Engineer) – 9 מצגות פרק בעיצוב NGQA, מבחן לדוגמא (40 שאלות, שקף שאלה ושקף תשובה עם הסבר), מצגת פרויקט הקורס, מסמכי הפרויקט ואפיון ShopOnline להורדה. הרשאת `ste` בדף הניהול. CT-STE v1.0 |

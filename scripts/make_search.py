@@ -5,7 +5,7 @@ import json, re, subprocess, glob, os
 SKILL = glob.glob('/root/.claude/skills/synced/*/pptx')[0]
 SITE = '/home/claude/ngqa/site'
 SRC = {'ctfl': [f'/home/claude/work/d{n}_toc.pptx' for n in range(1, 7)],
-       'genai': [f'/home/claude/genai/out/g{n}.pptx' for n in range(1, 6)],
+       'genai': [f'/home/claude/genai/out/g{n}.pptx' for n in range(1, 6)] + ['/home/claude/gx/out/ch6.pptx'],
        'sql': [f'/home/claude/sql/out/ch{n}.pptx' for n in range(1, 12)],
        'ste': [f'/home/claude/ste/out/ch{n}.pptx' for n in range(1, 12)],
        'ai': [f'/home/claude/ai/out/ch{n}.pptx' for n in range(1, 11)],
