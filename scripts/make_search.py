@@ -4,7 +4,7 @@ usage: make_search.py  (paths below)"""
 import json, re, subprocess, glob, os
 SKILL = glob.glob('/root/.claude/skills/synced/*/pptx')[0]
 SITE = '/home/claude/ngqa/site'
-SRC = {'ctfl': [f'/home/claude/work/d{n}_toc.pptx' for n in range(1, 7)],
+SRC = {'ctfl': [f'/home/claude/work/d{n}_toc.pptx' for n in range(1, 7)] + [f'/home/claude/cfx/out/ch{n}.pptx' for n in range(7, 11)],
        'genai': [f'/home/claude/genai/out/g{n}.pptx' for n in range(1, 6)] + ['/home/claude/gx/out/ch6.pptx'],
        'sql': [f'/home/claude/sql/out/ch{n}.pptx' for n in range(1, 12)],
        'ste': [f'/home/claude/ste/out/ch{n}.pptx' for n in range(1, 12)],
@@ -17,7 +17,7 @@ def clean(block):
     block = block.split('### Notes:')[0]
     out = []
     for l in block.splitlines():
-        l = l.strip()
+        l = re.sub(r'[\u200e\u200f\u202a-\u202e]', '', l).strip()
         if not l or l.startswith('![') or re.match(r'^\|?\s*-{3}', l): continue
         l = re.sub(r'^#+\s*', '', l)
         if l.startswith('|'): l = ' '.join(c.strip() for c in l.strip('|').split('|') if c.strip())

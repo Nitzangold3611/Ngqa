@@ -125,4 +125,5 @@
     }
   };
   window.NGQAAuth = Auth;
+  if (location.pathname.startsWith('/courses/')) { const w = document.createElement('script'); w.src = '/wm.js'; w.defer = true; document.head.appendChild(w); }
 })();
