@@ -9,7 +9,8 @@ SRC = {'ctfl': [f'/home/claude/work/d{n}_toc.pptx' for n in range(1, 7)],
        'sql': [f'/home/claude/sql/out/ch{n}.pptx' for n in range(1, 12)],
        'ste': [f'/home/claude/ste/out/ch{n}.pptx' for n in range(1, 12)],
        'ai': [f'/home/claude/ai/out/ch{n}.pptx' for n in range(1, 11)],
-       'mat': [f'/home/claude/mat/out/ch{n}.pptx' for n in range(1, 8)]}
+       'mat': [f'/home/claude/mat/out/ch{n}.pptx' for n in range(1, 8)],
+       'jobs': [f'/home/claude/jobs/out/ch{n}.pptx' for n in range(1, 5)]}
 DROP = re.compile(r'^(\d+\s*/\s*\d+|☰?\s*תוכן עניינים|כל הזכויות שמורות.*|לתרגיל .*←|לפתיחת התרגיל.*)$')
 
 def clean(block):

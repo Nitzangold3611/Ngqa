@@ -74,8 +74,8 @@ main{max-width:1000px;margin:0 auto;padding:20px max(3vw,12px) 60px;display:grid
 <script>
 {
 const A=window.NGQAAuth,$=id=>document.getElementById(id);
-const NAMES={ctfl:'CTFL 4.0',genai:'CT-GenAI',sql:'SQL',ste:'CT-STE',ai:'CT-AI',mat:'CT-MAT'};
-let users=[],courses=['ctfl','genai','sql','ste','ai','mat'],meEmail='',q='';
+const NAMES={ctfl:'CTFL 4.0',genai:'CT-GenAI',sql:'SQL',ste:'CT-STE',ai:'CT-AI',mat:'CT-MAT',jobs:'מחפשי עבודה'};
+let users=[],courses=['ctfl','genai','sql','ste','ai','mat','jobs'],meEmail='',q='';
 const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let tt=0;function toast(t,bad){const e=$('toast');e.textContent=t;e.classList.toggle('err',!!bad);e.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('on'),3200)}
 async function api(method,body){

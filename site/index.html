@@ -28,29 +28,31 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Heebo,Arial,s
 :focus-visible{outline:3px solid var(--orange);outline-offset:2px}
 .hero{background:var(--navy);color:#fff;position:relative;overflow:hidden;padding:clamp(28px,5vw,64px) max(5vw,16px)}
 .hero svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.hero .in{position:relative;max-width:1100px;margin:auto;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(20px,4vw,56px);align-items:center}
+.hero .in{position:relative;max-width:1320px;margin:auto;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(20px,4vw,56px);align-items:center}
 .hero img{width:clamp(150px,22vw,250px);height:auto;display:block}
 .tag{color:var(--teal);font-weight:700;margin-bottom:10px;display:block}
 h1{font-size:clamp(32px,5vw,52px);line-height:1.05;margin:0 0 12px;font-weight:800;text-wrap:balance}
 .hero p{margin:0;color:#c9cbf0;font-size:17px;max-width:46ch}
-main{max-width:1100px;margin:auto;padding:clamp(28px,4vw,56px) max(5vw,16px)}
+main{max-width:1320px;margin:auto;padding:clamp(28px,4vw,56px) max(5vw,16px)}
 h2{font-size:24px;margin:0 0 18px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
 .course{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;color:inherit;text-decoration:none;transition:transform .2s,box-shadow .2s}
 .course:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(18,17,51,.2)}
 .course .th{aspect-ratio:16/9;background:var(--navy);position:relative}
 .course .th img{width:100%;height:100%;object-fit:cover;display:block}
 .course .badge{position:absolute;top:12px;inset-inline-start:12px;background:var(--orange);color:#fff;font-weight:800;border-radius:999px;padding:4px 12px;font-size:14px;direction:ltr}
-.course .bd{padding:18px 20px 20px;display:flex;flex-direction:column;gap:6px;flex:1}
-.course b{font-size:22px;line-height:1.25}
-.course small{color:var(--mute);font-size:14px}
+.course .bd{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.course b{font-size:18px;line-height:1.25}
+.course small{color:var(--mute);font-size:13px}
 .course .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
-.chip{border-radius:999px;padding:3px 10px;background:light-dark(#eef0f8,#26255a);font-size:13px}
+.chip{border-radius:999px;padding:2px 9px;background:light-dark(#eef0f8,#26255a);font-size:12px}
 .course .go{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:10px;background:var(--navy);color:#fff;font-weight:700}
 .course:hover .go{background:var(--teal-d)}
 .course + .course .go{}
 footer{color:var(--mute);font-size:13px;text-align:center;padding:24px 16px 36px}
 .ver{display:block;font-size:11px;opacity:.75;margin-top:6px}
+@media(max-width:1150px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:880px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.hero{padding:22px 16px 26px}.hero .in{grid-template-columns:1fr}.hero img{order:-1;width:120px}.hero svg{display:none}h1{font-size:30px}.grid{grid-template-columns:1fr;gap:14px}main{padding:22px 12px}}
 @media(prefers-reduced-motion:reduce){.course{transition:none}}
 
@@ -69,7 +71,7 @@ footer{color:var(--mute);font-size:13px;text-align:center;padding:24px 16px 36px
 .lock span{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.3)}
 .lock svg{width:30px;height:30px;fill:none;stroke:var(--navy);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .course.locked .go{background:var(--orange)}
-.notice{max-width:1100px;margin:0 auto;padding:12px 16px;border-radius:12px;background:light-dark(#fff4e6,#3a2a12);border:1px solid #f3c58a;color:var(--ink);display:none;margin-bottom:16px}
+.notice{max-width:1320px;margin:0 auto;padding:12px 16px;border-radius:12px;background:light-dark(#fff4e6,#3a2a12);border:1px solid #f3c58a;color:var(--ink);display:none;margin-bottom:16px}
 .notice.on{display:block}
 dialog{border:0;border-radius:18px;padding:0;width:min(440px,94vw);background:var(--card);color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.45)}
 dialog::backdrop{background:rgba(11,10,36,.6)}
@@ -148,9 +150,14 @@ dialog::backdrop{background:rgba(11,10,36,.6)}
       <span class="bd"><b>בדיקות אפליקציות מובייל</b><small>ISTQB Certified Tester – Mobile Application Testing</small>
       <span class="meta"></span><span class="go">כניסה לקורס ←</span></span>
     </a>
+    <a class="course" href="/courses/jobs/" data-c="jobs">
+      <span class="th"><img src="/covers/jobs.jpg?v=1" alt="" loading="lazy"><span class="badge">סדנה</span><span class="lock" aria-hidden="true"><span><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span></span></span>
+      <span class="bd"><b>סדנת מחפשי עבודה</b><small>קורות חיים, לינקדאין, ראיונות עבודה ושאלות מראיונות</small>
+      <span class="meta"></span><span class="go">כניסה לסדנה ←</span></span>
+    </a>
   </div>
 </main>
-<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.6 · 21.11.2026</bdi></span></footer>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.7 · 22.11.2026</bdi></span></footer>
 <script>
 {const g=document.getElementById('traces');let s='';const col=i=>i%4===2?'#F38911':'#14DACD';
 for(let i=0;i<9;i++){const y=380-i*24,a=60+((i*97)%220),b=20+((i*53)%50),c=30+((i*71)%140);
@@ -158,7 +165,7 @@ for(let i=0;i<9;i++){const y=380-i*24,a=60+((i*97)%220),b=20+((i*53)%50),c=30+((
 g.innerHTML=s;
 fetch('/courses.json').then(r=>r.json()).then(all=>document.querySelectorAll('.course').forEach(el=>{const x=all[el.dataset.c];if(!x)return;
   const d={length:x.chapters},sl=x.slides,ex=x.exercises;
-  el.querySelector('.meta').innerHTML=`<span class="chip">${d.length} פרקים</span><span class="chip">${sl} שקופיות</span>${ex?`<span class="chip">${ex} ${x.exlabel||'תרגילים מעשיים'}</span>`:''}`})).catch(()=>{})}
+  el.querySelector('.meta').innerHTML=`<span class="chip">${d.length} ${x.unit||'פרקים'}</span><span class="chip">${sl} שקופיות</span>${ex?`<span class="chip">${ex} ${x.exlabel||'תרגילים מעשיים'}</span>`:''}`})).catch(()=>{})}
 </script>
 
 <dialog id="dlg" aria-labelledby="dlgT">
@@ -262,7 +269,7 @@ document.querySelectorAll('.course').forEach(c=>c.addEventListener('click',async
   if(!i){next=c.getAttribute('href');viewLogin()}else notice('אין לך גישה לקורס '+c.querySelector('b').textContent+'. אם זו טעות, פנו לניצן: 052-6718757 או nitzan@ngqa.info');
 }));
 async function hubSearch(){
-  const all=[{id:'ctfl',name:'CTFL 4.0'},{id:'genai',name:'CT-GenAI'},{id:'sql',name:'SQL'},{id:'ste',name:'CT-STE'},{id:'ai',name:'CT-AI'},{id:'mat',name:'CT-MAT'}];let cs=all;
+  const all=[{id:'ctfl',name:'CTFL 4.0'},{id:'genai',name:'CT-GenAI'},{id:'sql',name:'SQL'},{id:'ste',name:'CT-STE'},{id:'ai',name:'CT-AI'},{id:'mat',name:'CT-MAT'},{id:'jobs',name:'מחפשי עבודה'}];let cs=all;
   if(on){const i=A.info(await A.session());if(!i){next=null;viewLogin('התחברו כדי לחפש בקורסים שלכם.');return}cs=all.filter(x=>A.can(i,x.id));
     if(!cs.length){notice('עדיין לא נפתחו לך קורסים לחיפוש.');return}}
   NGQASearch.open({courses:cs,scope:'all',onPick:r=>{location.href=`/courses/${r.course}/#`+(r.kind==='ex'?`ch${r.c}/ex/${r.id}`:`ch${r.c}/${r.s}`)}})}
