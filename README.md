@@ -12,12 +12,14 @@
 | CT-STE – אבטחת מידע וסייבר (Security Test Engineer) | `/courses/ste/` | `site/courses/ste/`, `ste/scripts/`, `ste/spec/` |
 | CT-AI – בדיקות מערכות בינה מלאכותית (AI Testing) | `/courses/ai/` | `site/courses/ai/`, `ai/scripts/`, `scripts/build_course.py`, `scripts/course_ai.json` |
 | CT-MAT – בדיקות אפליקציות מובייל (Mobile Application Testing) | `/courses/mat/` | `site/courses/mat/`, `mat/scripts/`, `scripts/build_course.py`, `scripts/course_mat.json` |
+| סדנת מחפשי עבודה | `/courses/jobs/` | `site/courses/jobs/`, `jobs/scripts/` (כולל `links.py` למסמכי הקישורים), `scripts/course_jobs.json` |
 
 ## גרסאות
 כל גרסה מתועדת כאן בקצרה, ובפירוט ב-[CHANGELOG.md](CHANGELOG.md). הקומיט של כל גרסה נקרא `Release vX.Y.Z`.
 
 | גרסה | תאריך | מה כוללת |
 |---|---|---|
+| v3.7 | 22.11.2026 | סדנת מחפשי עבודה (/courses/jobs/): 4 מצגות – קורות חיים, לינקדאין, ראיונות עבודה ושאלות מראיונות – ו-7 מסמכי קישורים להורדה. הרשאת `jobs`. עמוד ראשי: 4 קורסים בשורה. Jobs v1.0 |
 | v3.6 | 21.11.2026 | קורסים חדשים: CT-AI – בדיקות מערכות AI (9 מצגות פרק, מבחן לדוגמא 40 שאלות, סילבוס בעברית ובאנגלית להורדה) ו-CT-MAT – בדיקות אפליקציות מובייל (5 מצגות פרק, מבחן לדוגמא 40 שאלות, מצגת פרויקט גמר והנחיות להורדה). הרשאות `ai` ו-`mat` בדף הניהול. CT-AI v1.0 · CT-MAT v1.0 |
 | v3.5 | 21.11.2026 | קורס חדש: CT-STE – אבטחת מידע וסייבר (ISTQB Security Test Engineer) – 9 מצגות פרק בעיצוב NGQA, מבחן לדוגמא (40 שאלות, שקף שאלה ושקף תשובה עם הסבר), מצגת פרויקט הקורס, מסמכי הפרויקט ואפיון ShopOnline להורדה. הרשאת `ste` בדף הניהול. CT-STE v1.0 |
 | v3.4 | 21.11.2026 | SQL v1.1: דף פקודות להורדה כ-PDF, תרגילים ופתרונות כמסמך PDF, נתוני הפתיחה בתרגילים המסכמים, כפתור חזרה למעלה בולט, שם התת-נושא בשקפי המעבר |

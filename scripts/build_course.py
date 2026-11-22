@@ -118,7 +118,10 @@ src = re.sub(r'<span class="ver">גרסה <bdi dir="ltr">[^<]*</bdi></span>',
 boxes = '<div class="xbx">\n'
 for b in CFG['boxes']:
     boxes += f'      <a class="xb" href="#ch{b[0]}"><span class="xi" aria-hidden="true">{b[1]}</span><span><b>{b[2]}</b><small>{b[3]}</small></span></a>\n'
-boxes += '    </div>\n    <div class="pdocs"><b>' + CFG['pdocs_title'] + '</b>\n'
+boxes += '    </div>\n'
+if not CFG['boxes']:
+    boxes = ''
+boxes += '    <div class="pdocs"><b>' + CFG['pdocs_title'] + '</b>\n'
 for d in CFG['docs']:
     att = 'download' if d[0].endswith('.docx') else 'target="_blank" rel="noopener"'
     boxes += f'      <a href="dl/{d[0]}" {att}>{d[1]}</a>\n'
@@ -137,6 +140,8 @@ css = '''.xbx{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16p
 @media(max-width:700px){.xbx{grid-template-columns:1fr}}
 '''
 src = src.replace('/* ---- tabs & exercises (CT-GenAI) ---- */', css + '/* ---- tabs ---- */', 1)
+for a, b in CFG.get('terms', []):
+    src = src.replace(a, b)
 open(f'{OUT}/index.html', 'w', encoding='utf-8').write(src)
 print('slides', total)
 json.dump({'slides': total}, open(f'/tmp/{C}_total.json', 'w'))

@@ -10,7 +10,8 @@
     { id: 'sql', name: 'SQL', path: '/courses/sql/' },
     { id: 'ste', name: 'CT-STE', path: '/courses/ste/' },
     { id: 'ai', name: 'CT-AI', path: '/courses/ai/' },
-    { id: 'mat', name: 'CT-MAT', path: '/courses/mat/' }
+    { id: 'mat', name: 'CT-MAT', path: '/courses/mat/' },
+    { id: 'jobs', name: 'סדנת מחפשי עבודה', path: '/courses/jobs/' }
   ];
   let enabled = null; // null = unknown, true/false after probe
 

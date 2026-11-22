@@ -25,9 +25,12 @@ def cards(k, t, items, t2=None, lead=None, note=None, tm=None):
     if t2: d['t2'] = t2
     if lead: d['lead'] = {'h': lead[0], 'x': lead[1]}
     add(d, note, tm)
-def ld(k, t, items, tip=None, t2=None, note=None, tm=None, flow=None):
+def ld(k, t, items, tip=None, t2=None, note=None, tm=None, flow=None, img=None):
     d = {'L': 'list_dia', 'k': k, 't': t, 'items': [{'h': it[0], 'x': it[1] if len(it) > 1 else '', 'ic': _i(it[2] if len(it) > 2 else None)} for it in items]}
-    if flow: d['dia'] = {'kind': 'vflow', 'nodes': flow}
+    if img:
+        d['dia'] = {'kind': 'img', 'src': img}
+        if tip and not note: note = (tip[0], tip[1])
+    elif flow: d['dia'] = {'kind': 'vflow', 'nodes': flow}
     elif tip: d['dia'] = {'kind': 'tip', 'lab': tip[0], 'x': tip[1]}
     else: d['dia'] = {'kind': 'tip', 'lab': 'בקצרה', 'x': t}
     if t2: d['t2'] = t2
@@ -45,12 +48,15 @@ def steps(k, t, st, t2=None, note=None, tm=None):
     d = {'L': 'steps', 'k': k, 't': t, 'steps': [list(s) for s in st]}
     if t2: d['t2'] = t2
     add(d, note, tm)
-def blocks(k, t, bl, flow=None, tip=None, t2=None, note=None, tm=None):
+def blocks(k, t, bl, flow=None, tip=None, t2=None, note=None, tm=None, img=None):
     B = []
     for b in bl:
         B.append({'h': b[0], 'pills': b[1]} if isinstance(b[1], list) else {'h': b[0], 'x': b[1]})
     d = {'L': 'blocks', 'k': k, 't': t, 'blocks': B}
-    if flow: d['dia'] = {'kind': 'vflow', 'nodes': flow}
+    if img:
+        d['dia'] = {'kind': 'img', 'src': img}
+        if tip and not note: note = (tip[0], tip[1])
+    elif flow: d['dia'] = {'kind': 'vflow', 'nodes': flow}
     elif tip: d['dia'] = {'kind': 'tip', 'lab': tip[0], 'x': tip[1]}
     if t2: d['t2'] = t2
     add(d, note, tm)
@@ -60,3 +66,15 @@ def save(path):
     for j, s in enumerate(S, 1): s['i'] = j
     open(path, 'w').write('\n'.join(json.dumps(s, ensure_ascii=False) for s in S) + '\n')
     print(path, len(S))
+def pic(k, t, lines, img, t2=None, note=None):
+    from PIL import Image as _I
+    im = _I.open(img); ar = im.width / im.height
+    flow = []
+    if lines:
+        flow.append(['p', [[x, 'b'] if isinstance(x, str) else list(x) for x in lines]])
+    if note:
+        flow.append(['note', [[note, 'b']]])
+    flow.append(['img', img, ar])
+    d = {'L': 'auto', 'k': k, 't': t, 'flow': flow}
+    if t2: d['t2'] = t2
+    S.append(d)

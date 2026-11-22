@@ -11,9 +11,11 @@ https://ngqa-ctfl40.netlify.app/*  https://courses.ngqa.net/:splat  301!
 /courses/ste/*    /courses/ste/:splat    200!  Role=ste,admin
 /courses/ai/*     /courses/ai/:splat     200!  Role=ai,admin
 /courses/mat/*    /courses/mat/:splat    200!  Role=mat,admin
+/courses/jobs/*   /courses/jobs/:splat   200!  Role=jobs,admin
 /courses/ctfl/*   /?login=1&next=/courses/ctfl/   302!
 /courses/genai/*  /?login=1&next=/courses/genai/  302!
 /courses/sql/*    /?login=1&next=/courses/sql/    302!
 /courses/ste/*    /?login=1&next=/courses/ste/    302!
 /courses/ai/*     /?login=1&next=/courses/ai/     302!
 /courses/mat/*    /?login=1&next=/courses/mat/    302!
+/courses/jobs/*   /?login=1&next=/courses/jobs/   302!
