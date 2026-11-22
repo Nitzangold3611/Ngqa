@@ -90,6 +90,7 @@ json.dump(decks, open(f'{OUT}/decks.json', 'w'), ensure_ascii=False)
 
 # ---------------------------------------------------------------- index (from the CT-GenAI page)
 src = open(f'{GEN}/index.html', encoding='utf-8').read()
+src = re.sub(r'const CHAPTERS=\[[\d,]+\]\.map', 'const CHAPTERS=[1,2,3,4,5].map', src, count=1)
 rep = [
     ("NGQAAuth.guard('genai')", f"NGQAAuth.guard('{C}')"),
     ("const COURSE='genai';", f"const COURSE='{C}';"),
@@ -97,11 +98,12 @@ rep = [
     ("document.title='NGQA · CT-GenAI'", f"document.title='NGQA · {NAME}'"),
     ('const CHAPTERS=[1,2,3,4,5].map(n=>({num:n}));', f'const CHAPTERS={list(range(1, NCH + 1))}.map(n=>({{num:n}}));'),
     ("pdf/NGQA-CT-GenAI-ch${cur.num}.pdf", f"pdf/NGQA-{NAME}-ch${{cur.num}}.pdf"),
-    ("`NGQA CT-GenAI פרק ${cur.num}.pdf`", f"`NGQA {NAME} ${{cur.lab}}.pdf`"),
+    (("`NGQA CT-GenAI פרק ${cur.num}.pdf`", "`NGQA CT-GenAI ${cur.lab}.pdf`"), f"`NGQA {NAME} ${{cur.lab}}.pdf`"),
     ("${d.ex.length?` · ${d.ex.length} תרגילים`:''}", ""),
 ]
 for a, b in rep:
-    assert a in src, a
+    a = next((x for x in (a if isinstance(a, tuple) else (a,)) if x in src), a)
+    assert isinstance(a, str) and a in src, a
     src = src.replace(a, b)
 # chapter label ("פרק 3" / "מבחן" / "פרויקט")
 for v in ('cur', 'd', 'n'):
