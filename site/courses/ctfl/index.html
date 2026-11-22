@@ -252,7 +252,7 @@ body.feed .stage>.nextch{display:none!important}
     <div class="hsr"><h2>פרקי הקורס</h2><button type="button" class="hsb" id="hsrch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>חיפוש בקורס</button></div>
     <div class="grid" id="grid"></div>
   </div></main>
-  <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.3 · 21.11.2026</bdi></span></footer>
+  <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.4 · 22.11.2026</bdi></span></footer>
 </div>
 
 <div id="viewer">
@@ -300,7 +300,11 @@ const CHAPTERS=[
  {num:3,title:'בדיקות סטטיות',sub:'Static Testing'},
  {num:4,title:'טכניקות בדיקה',sub:'Test Analysis and Design'},
  {num:5,title:'ניהול בדיקות',sub:'Managing the Test Activities'},
- {num:6,title:'כלי בדיקה',sub:'Test Tools'}];
+ {num:6,title:'כלי בדיקה',sub:'Test Tools'},
+ {num:7,badge:'A',title:'מבחן לדוגמא A',sub:'Sample Exam A · שקף שאלה ושקף תשובה'},
+ {num:8,badge:'B',title:'מבחן לדוגמא B',sub:'Sample Exam B · שקף שאלה ושקף תשובה'},
+ {num:9,badge:'C',title:'מבחן לדוגמא C',sub:'Sample Exam C · שקף שאלה ושקף תשובה'},
+ {num:10,badge:'D',title:'מבחן לדוגמא D',sub:'Sample Exam D · שקף שאלה ושקף תשובה'}];
 let decks=[],cur=null,idx=0;
 const $=id=>document.getElementById(id);
 
@@ -327,7 +331,7 @@ function remember(){if(!cur)return;const id=cur.id,i=idx,n=cur.slides.length;cle
 function renderGrid(){
   $('grid').innerHTML=CHAPTERS.map(c=>{const d=decks.find(x=>x.num===c.num);
     return `<button class="ch" type="button" ${d?`data-id="${d.id}"`:'disabled'}>
-      <span class="th">${d?`<img src="${d.cover}" alt="" loading="lazy">`:''}<span class="num">${c.num}</span></span>
+      <span class="th">${d?`<img src="${d.cover}" alt="" loading="lazy">`:''}<span class="num">${c.badge||c.num}</span></span>
       <span class="bd"><b>${c.title}</b><small>${c.sub}</small><br>
       ${d?`<small>${d.slides.length} שקופיות</small>${(()=>{const p=Progress.get(d.id);return p&&p.i>0?`<br><span class="prog">המשך משקף ${Math.min(p.i+1,d.slides.length)}</span>`:''})()}`:'<span class="soon">בקרוב</span>'}</span></button>`}).join('');
 }
@@ -349,7 +353,7 @@ function show(n){
 }
 
 function nextInfo(){const k=decks.indexOf(cur),n=decks[k+1];
-  return n?{href:'#'+n.id,html:`<span><small>סיימתם את פרק ${cur.num}</small>לפרק הבא: פרק ${n.num} · ${n.title}</span><span class="ar" aria-hidden="true">←</span>`,lab:`מעבר לפרק ${n.num}: ${n.title}`}
+  return n?{href:'#'+n.id,html:`<span><small>סיימתם את ${cur.lab}</small>הבא בתור: ${n.lab} · ${n.title}</span><span class="ar" aria-hidden="true">←</span>`,lab:`מעבר ל${n.lab}: ${n.title}`}
           :{href:'#home',html:`<span><small>סיימתם את כל הפרקים 🎉</small>חזרה לכל הפרקים</span><span class="ar" aria-hidden="true">⌂</span>`,lab:'חזרה לכל הפרקים'}}
 function setNext(){if(!cur)return;const x=nextInfo(),last=idx===cur.slides.length-1;
   ['nextch','nextchf'].forEach(id=>{const a=$(id);a.href=x.href;a.innerHTML=x.html;a.setAttribute('aria-label',x.lab);a.classList.toggle('on',last)})}
@@ -358,7 +362,7 @@ function route(){
   const [id,sp]=location.hash.slice(1).split('/');const d=decks.find(x=>x.id===id);
   if(d){cur=d;$('home').style.display='none';$('viewer').style.display='block';
     $('frame').style.aspectRatio=d.ratio;{const [a,b]=d.ratio.split('/').map(Number);$('frame').style.setProperty('--r',a/b);$('frame').style.setProperty('--ar',d.ratio)}
-    $('vt').textContent=`פרק ${d.num} · ${d.title}`;$('pdf').href=`pdf/NGQA-ISTQB-ch${d.num}.pdf`;$('pdf').setAttribute('download',`NGQA ISTQB פרק ${d.num}.pdf`);document.title=`פרק ${d.num} · ${d.title} | NGQA`;
+    $('vt').textContent=`${d.lab} · ${d.title}`;$('pdf').href=`pdf/NGQA-ISTQB-ch${d.num}.pdf`;$('pdf').setAttribute('download',`NGQA ISTQB ${d.lab}.pdf`);document.title=`${d.lab} · ${d.title} | NGQA`;
     $('rail').style.setProperty('--ar',d.ratio);
     $('rail').innerHTML=d.slides.map((s,i)=>`<button type="button" data-i="${i}" aria-label="שקופית ${i+1}"><span class="sl" data-bg="${s.img}" style="background-position:0 ${s.k*100/(d.per-1)}%"></span></button>`).join('');
     lazy($('rail'),$('rail'));buildToc();
@@ -378,7 +382,7 @@ window.addEventListener('afterprint',()=>{document.body.classList.remove('printi
 let dlApi=null;try{if(window.claude&&claude.use)claude.use('downloads').then(a=>{dlApi=a}).catch(()=>{})}catch(e){}
 $('pdf').addEventListener('click',async e=>{if(!dlApi||!cur)return;e.preventDefault();const b=$('pdf');
   try{b.classList.add('busy');const r=await fetch(b.getAttribute('href'));const blob=await r.blob();
-    await dlApi.save({filename:`NGQA ISTQB פרק ${cur.num}.pdf`,data:blob})}catch(err){}finally{b.classList.remove('busy')}});
+    await dlApi.save({filename:`NGQA ISTQB ${cur.lab}.pdf`,data:blob})}catch(err){}finally{b.classList.remove('busy')}});
 $('grid').addEventListener('click',e=>{const b=e.target.closest('[data-id]');if(b)location.hash=b.dataset.id});
 $('rail').addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(b)show(+b.dataset.i)});
 $('tocb').onclick=()=>openToc(true);$('tocx').onclick=()=>openToc(false);$('tocbg').onclick=()=>openToc(false);
@@ -430,7 +434,7 @@ $('feed').addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(
 function goTo(n,instant){if(!cur)return;n=Math.max(0,Math.min(cur.slides.length-1,n));
   if(feedOn()){idx=n;const el=$('f'+n);if(el){const y=el.getBoundingClientRect().top+scrollY-($('viewer').querySelector('.vbar').offsetHeight+8);window.scrollTo({top:y,behavior:instant?'auto':'smooth'})}markToc()}else show(n)}
 $('tstart').onclick=()=>{openToc(false);goTo(0,true)};
-function buildToc(){const t=cur.toc||[];$('tocsub').textContent=`פרק ${cur.num} · ${cur.title}`;
+function buildToc(){const t=cur.toc||[];$('tocsub').textContent=`${cur.lab} · ${cur.title}`;
   $('tocl').innerHTML=t.map(e=>`<li class="l${e.lvl}"><button type="button" data-s="${e.slide}">${e.num?`<span class="n">${e.num}</span>`:''}<span>${e.label}</span><span class="pg">${e.slide}</span></button></li>`).join('')||'<li>אין תוכן עניינים לפרק זה</li>'}
 function markToc(){if(!cur||!cur.toc)return;let best=-1;cur.toc.forEach((e,k)=>{if(e.slide-1<=idx)best=k});
   $('tocl').querySelectorAll('button').forEach((b,k)=>b.setAttribute('aria-current',k===best))}

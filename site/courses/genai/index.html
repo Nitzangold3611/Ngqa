@@ -292,7 +292,7 @@ a.chip:hover{background:light-dark(#dff5f3,#2f2e6a)}
     <div class="hsr"><h2>פרקי הקורס</h2><button type="button" class="hsb" id="hsrch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>חיפוש בקורס</button></div>
     <div class="grid" id="grid"></div>
   </div></main>
-  <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v1.3.2 · 21.11.2026</bdi></span></footer>
+  <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v1.4 · 22.11.2026</bdi></span></footer>
 </div>
 
 <div id="viewer">
@@ -340,7 +340,7 @@ a.chip:hover{background:light-dark(#dff5f3,#2f2e6a)}
 </aside>
 <script>
 {
-const CHAPTERS=[1,2,3,4,5].map(n=>({num:n}));
+const CHAPTERS=[1,2,3,4,5,6].map(n=>({num:n}));
 const COURSE='genai';
 let decks=[],cur=null,idx=0;
 const $=id=>document.getElementById(id);
@@ -390,7 +390,7 @@ function show(n){
 }
 
 function nextInfo(){const k=decks.indexOf(cur),n=decks[k+1];
-  return n?{href:'#'+n.id,html:`<span><small>סיימתם את פרק ${cur.num}</small>לפרק הבא: פרק ${n.num} · ${n.title}</span><span class="ar" aria-hidden="true">←</span>`,lab:`מעבר לפרק ${n.num}: ${n.title}`}
+  return n?{href:'#'+n.id,html:`<span><small>סיימתם את פרק ${cur.num}</small>לפרק הבא: ${n.lab} · ${n.title}</span><span class="ar" aria-hidden="true">←</span>`,lab:`מעבר ל${n.lab}: ${n.title}`}
           :{href:'#home',html:`<span><small>סיימתם את כל הפרקים 🎉</small>חזרה לכל הפרקים</span><span class="ar" aria-hidden="true">⌂</span>`,lab:'חזרה לכל הפרקים'}}
 function setNext(){if(!cur)return;const x=nextInfo(),last=idx===cur.slides.length-1;
   ['nextch','nextchf'].forEach(id=>{const a=$(id);a.href=x.href;a.innerHTML=x.html;a.setAttribute('aria-label',x.lab);a.classList.toggle('on',last)})}
@@ -400,7 +400,7 @@ function route(){
   if(d&&cur===d&&$('viewer').style.display==='block'){routeIn(sp,exid);return}
   if(d){cur=d;$('home').style.display='none';$('viewer').style.display='block';
     $('frame').style.aspectRatio=d.ratio;{const [a,b]=d.ratio.split('/').map(Number);$('frame').style.setProperty('--r',a/b);$('frame').style.setProperty('--ar',d.ratio)}
-    $('vt').textContent=`פרק ${d.num} · ${d.title}`;deckPdf();document.title=`פרק ${d.num} · ${d.title} | NGQA`;
+    $('vt').textContent=`${d.lab} · ${d.title}`;deckPdf();document.title=`${d.lab} · ${d.title} | NGQA`;
     $('rail').style.setProperty('--ar',d.ratio);
     $('rail').innerHTML=d.slides.map((s,i)=>`<button type="button" data-i="${i}" aria-label="שקופית ${i+1}"><span class="sl" data-bg="${s.img}" style="background-position:0 ${s.k*100/(d.per-1)}%"></span></button>`).join('');
     lazy($('rail'),$('rail'));buildToc();
@@ -472,7 +472,7 @@ $('feed').addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(
 function goTo(n,instant){if(!cur)return;n=Math.max(0,Math.min(cur.slides.length-1,n));
   if(feedOn()){idx=n;const el=$('f'+n);if(el){const y=el.getBoundingClientRect().top+scrollY-($('viewer').querySelector('.vbar').offsetHeight+8);window.scrollTo({top:y,behavior:instant?'auto':'smooth'})}markToc()}else show(n)}
 $('tstart').onclick=()=>{openToc(false);goTo(0,true)};
-function buildToc(){const t=cur.toc||[];$('tocsub').textContent=`פרק ${cur.num} · ${cur.title}`;
+function buildToc(){const t=cur.toc||[];$('tocsub').textContent=`${cur.lab} · ${cur.title}`;
   $('tocl').innerHTML=t.map(e=>`<li class="l${e.lvl}"><button type="button" data-s="${e.slide}">${e.num?`<span class="n">${e.num}</span>`:''}<span>${e.label}</span><span class="pg">${e.slide}</span></button></li>`).join('')||'<li>אין תוכן עניינים לפרק זה</li>'}
 function markToc(){if(!cur||!cur.toc)return;let best=-1;cur.toc.forEach((e,k)=>{if(e.slide-1<=idx)best=k});
   $('tocl').querySelectorAll('button').forEach((b,k)=>b.setAttribute('aria-current',k===best))}
@@ -503,15 +503,15 @@ function exHot(l){const e=exOf(l.ex);return `<a class="hot exh" href="#${cur.id}
 function exBtns(L){const seen=new Set();return L.filter(l=>l.ex&&!seen.has(l.ex)&&seen.add(l.ex)).map(l=>{const e=exOf(l.ex);return e?`<a class="exb" href="#${cur.id}/ex/${l.ex}" data-ex="${l.ex}">📝 לתרגיל ${e.label}</a>`:''}).join('')}
 document.addEventListener('click',e=>{const a=e.target.closest('[data-ex]');if(!a||!cur)return;
   const c=a.closest('[data-i]');exFrom={id:a.dataset.ex,slide:(c&&c.classList.contains('fcard')?+c.dataset.i:idx)+1}},true);
-function deckPdf(){$('pdf').href=`pdf/NGQA-CT-GenAI-ch${cur.num}.pdf`;$('pdf').setAttribute('download',`NGQA CT-GenAI פרק ${cur.num}.pdf`)}
+function deckPdf(){$('pdf').href=`pdf/NGQA-CT-GenAI-ch${cur.num}.pdf`;$('pdf').setAttribute('download',`NGQA CT-GenAI ${cur.lab}.pdf`)}
 function setTab(mode){document.body.classList.toggle('m-list',mode==='list');document.body.classList.toggle('m-ex',mode==='ex');
   $('tabS').setAttribute('aria-selected',mode==='slides');$('tabE').setAttribute('aria-selected',mode!=='slides')}
 function routeIn(sp,exid,fresh){
   if(sp==='ex'){pfs(false);openToc(false);
-    if(exid&&exOf(exid)){setTab('ex');showEx(exOf(exid))}else{setTab('list');deckPdf();document.title=`תרגילים · פרק ${cur.num} | NGQA`}
+    if(exid&&exOf(exid)){setTab('ex');showEx(exOf(exid))}else{setTab('list');deckPdf();document.title=`תרגילים · ${cur.lab} | NGQA`}
     window.scrollTo(0,0);return}
   const was=document.body.classList.contains('m-list')||document.body.classList.contains('m-ex');
-  setTab('slides');deckPdf();document.title=`פרק ${cur.num} · ${cur.title} | NGQA`;
+  setTab('slides');deckPdf();document.title=`${cur.lab} · ${cur.title} | NGQA`;
   if(sp&&+sp>0)idx=Math.min(cur.slides.length,+sp)-1;
   if(fresh||was){window.scrollTo(0,0);setMode(true)}else if(sp&&+sp>0)goTo(idx)}
 function backSlide(e){if(exFrom&&exFrom.id===e.id)return exFrom.slide;return e.slides.length?e.slides[e.slides.length-1]:0}
