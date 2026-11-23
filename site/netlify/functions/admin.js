@@ -1,6 +1,11 @@
-// Admin API for /admin – list / invite / set course roles / block / reset password / delete users.
+// Admin API for /admin – list / invite / set course roles / block / reset password / delete users,
+// phone number and access lock date (app_metadata.phone, app_metadata.expires = YYYY-MM-DD, enforced by edge-functions/expiry.js).
 // Only callable by an admin (role "admin" or an e-mail listed in ADMIN_EMAILS).
 const { COURSE_ROLES, ALL_ROLES, isAdmin } = require('./_common');
+// Israeli numbers 05x… → 9725x…; others: digits only, with country code
+const normPhone = v => { let d = String(v || '').replace(/[^\d+]/g, '').replace(/^\+/, '').replace(/^00/, ''); if (/^0\d{8,9}$/.test(d)) d = '972' + d.slice(1); return d; };
+const okPhone = d => d === '' || /^\d{10,15}$/.test(d);
+const okDate = d => d === '' || (/^\d{4}-\d{2}-\d{2}$/.test(d) && !isNaN(Date.parse(d)));
 const out = (statusCode, body) => ({ statusCode, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }, body: JSON.stringify(body) });
 
 exports.handler = async (event, context) => {
@@ -20,6 +25,7 @@ exports.handler = async (event, context) => {
     roles: ((u.app_metadata && u.app_metadata.roles) || []).filter(r => ALL_ROLES.includes(r)),
     blocked: !!(u.app_metadata && u.app_metadata.blocked),
     provider: (u.app_metadata && u.app_metadata.provider) || 'email',
+    phone: (u.app_metadata && u.app_metadata.phone) || '', expires: (u.app_metadata && u.app_metadata.expires) || '',
     confirmed: !!u.confirmed_at, invited_at: u.invited_at || null, created_at: u.created_at, last_login: u.last_sign_in_at || null,
     owner: isAdmin({ email: u.email, app_metadata: {} })
   });
@@ -43,9 +49,13 @@ exports.handler = async (event, context) => {
       case 'invite': {
         const email = String(b.email || '').trim().toLowerCase();
         if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return out(400, { error: 'כתובת מייל לא תקינה' });
+        const phone = normPhone(b.phone), expires = String(b.expires || '');
+        if (!okPhone(phone)) return out(400, { error: 'מספר טלפון לא תקין' });
+        if (!okDate(expires)) return out(400, { error: 'תאריך לא תקין' });
         const u = await api('/invite', 'POST', { email, data: { full_name: String(b.name || '').trim() } });
         const roles = cleanRoles(b.roles).filter(r => r !== 'admin');
-        const done = roles.length ? await setMeta(u.id, { roles }) : shape(u);
+        const patch = {}; if (roles.length) patch.roles = roles; if (phone) patch.phone = phone; if (expires) patch.expires = expires;
+        const done = Object.keys(patch).length ? await setMeta(u.id, patch) : shape(u);
         return out(200, { user: done });
       }
       case 'roles': {
@@ -53,6 +63,16 @@ exports.handler = async (event, context) => {
         let roles = cleanRoles(b.roles);
         if (u.email === me.email && !roles.includes('admin')) roles.push('admin'); // never lock yourself out
         return out(200, { user: await setMeta(b.id, { roles }) });
+      }
+      case 'details': {
+        const phone = normPhone(b.phone), expires = String(b.expires || '');
+        if (!okPhone(phone)) return out(400, { error: 'מספר טלפון לא תקין' });
+        if (!okDate(expires)) return out(400, { error: 'תאריך לא תקין' });
+        const u = await getUser(b.id);
+        if (u.email === me.email && expires) return out(400, { error: 'אי אפשר להגדיר תאריך נעילה לעצמך' });
+        const body = { app_metadata: { ...(u.app_metadata || {}), phone, expires } };
+        if (typeof b.name === 'string') body.user_metadata = { ...(u.user_metadata || {}), full_name: b.name.trim() };
+        return out(200, { user: shape(await api('/admin/users/' + encodeURIComponent(b.id), 'PUT', body)) });
       }
       case 'block': {
         const u = await getUser(b.id);

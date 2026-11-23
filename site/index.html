@@ -157,7 +157,7 @@ dialog::backdrop{background:rgba(11,10,36,.6)}
     </a>
   </div>
 </main>
-<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.8 · 22.11.2026</bdi></span></footer>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.9 · 23.11.2026</bdi></span></footer>
 <script>
 {const g=document.getElementById('traces');let s='';const col=i=>i%4===2?'#F38911':'#14DACD';
 for(let i=0;i<9;i++){const y=380-i*24,a=60+((i*97)%220),b=20+((i*53)%50),c=30+((i*71)%140);
@@ -281,7 +281,7 @@ document.addEventListener('keydown',e=>{if(NGQASearch.isOpen()||dlg.open)return;
   const h=await A.handleHash();
   const q=new URLSearchParams(location.search);next=q.get('next');
   if(next&&/^#(ch\d|home)/.test(location.hash))next+=location.hash;
-  if(q.has('login')||q.has('denied')||q.has('next'))history.replaceState(null,'','/');
+  if(q.has('login')||q.has('denied')||q.has('next')||q.has('expired'))history.replaceState(null,'','/');
   if(next&&!h){const i=A.info(await A.fresh()),nc=(next.match(/^\/courses\/([a-z0-9-]+)\//)||[])[1];
     if(i&&nc&&A.can(i,nc)){
       /* loop guard: the server sent us back here although the browser thinks access is allowed */
@@ -295,6 +295,8 @@ document.addEventListener('keydown',e=>{if(NGQASearch.isOpen()||dlg.open)return;
   else if(h&&h.type==='confirmation'){try{await A.confirm(h.token);await afterLogin('החשבון אושר.')}catch(x){notice(A.he(x.message))}}
   else if(h&&h.type==='external')await afterLogin();
   else if(h&&h.type==='error')notice(A.he(h.message));
+  else if(q.has('expired')||(A.info(await A.session())||{}).expired){const ex=q.get('expired')||(A.info(await A.session())||{}).expires||'';
+    notice('תקופת הגישה שלך לאתר הסתיימה'+(/^\d{4}-\d{2}-\d{2}$/.test(ex)?' ב-'+ex.split('-').reverse().join('/'):'')+'. לחידוש הגישה פנו לניצן: 052-6718757 או nitzan@ngqa.info')}
   else if(q.has('denied')){const c=A.COURSES.find(c=>c.id===q.get('denied'));notice('אין לך גישה לקורס '+(c?c.name:'')+'. אם זו טעות, פנו לניצן: 052-6718757 או nitzan@ngqa.info')}
   else if(q.has('login')){const i=A.info(await A.session()),nc=next&&(next.match(/^\/courses\/([a-z0-9-]+)\//)||[])[1];
     if(i&&nc){const c=A.COURSES.find(x=>x.id===nc);notice('אין לך גישה לקורס '+(c?c.name:'')+'. אם זו טעות, פנו לניצן: 052-6718757 או nitzan@ngqa.info')}else if(!i)viewLogin()}

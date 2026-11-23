@@ -63,7 +63,8 @@
       const u = await req('/user', { headers: { Authorization: 'Bearer ' + s.access_token } });
       const tok = decode(s.access_token) || {};
       const same = JSON.stringify((tok.app_metadata || {}).roles || []) === JSON.stringify((u.app_metadata || {}).roles || [])
-                && !!(tok.app_metadata || {}).blocked === !!(u.app_metadata || {}).blocked;
+                && !!(tok.app_metadata || {}).blocked === !!(u.app_metadata || {}).blocked
+                && ((tok.app_metadata || {}).expires || '') === ((u.app_metadata || {}).expires || '');
       if (!same) s = await storeTokens(await req('/token', form({ grant_type: 'refresh_token', refresh_token: s.refresh_token })));
       else { s.user = u; save(s); }
     } catch (e) { if (e.status === 401) { save(null); return null; } }
@@ -74,9 +75,13 @@
     const c = decode(s.access_token) || {}; const u = s.user || {};
     const am = u.app_metadata || c.app_metadata || {}; const um = u.user_metadata || c.user_metadata || {};
     const roles = am.roles || [];
-    return { email: c.email || u.email, name: um.full_name || um.name || '', roles, admin: roles.includes('admin'), blocked: !!am.blocked };
+    const admin = roles.includes('admin'), expires = am.expires || '';
+    return { email: c.email || u.email, name: um.full_name || um.name || '', roles, admin, blocked: !!am.blocked,
+             expires, expired: !admin && !!expires && today() >= expires };
   }
-  const can = (i, course) => !!i && !i.blocked && (i.admin || i.roles.includes(course));
+  /* access lock date (v3.9): YYYY-MM-DD in app_metadata.expires, counted in Israel time; also enforced on the server */
+  const today = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jerusalem' }).format(new Date());
+  const can = (i, course) => !!i && !i.blocked && !i.expired && (i.admin || i.roles.includes(course));
 
   const Auth = {
     COURSES, isEnabled, session, fresh, info, can,
@@ -108,7 +113,7 @@
       if (!(await isEnabled())) return true;
       const i = info(await fresh());
       if (can(i, course)) return true;
-      location.replace('/?' + (i ? 'denied=' + course : 'login=1&next=' + encodeURIComponent(location.pathname + location.hash)));
+      location.replace('/?' + (i ? (i.expired ? 'expired=' + i.expires : 'denied=' + course) : 'login=1&next=' + encodeURIComponent(location.pathname + location.hash)));
       return false;
     },
     inApp: () => /FBAN|FBAV|Instagram|WhatsApp|Line\/|; wv\)|TikTok|Snapchat|LinkedInApp/i.test(navigator.userAgent),
