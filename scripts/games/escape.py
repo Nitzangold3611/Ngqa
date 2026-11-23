@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
-"""Build the CT-GenAI escape room page (answers as salted SHA-256) and the solutions guide PDF."""
-import hashlib, json, re, pathlib, asyncio, sys
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from content import *
-
-R = pathlib.Path(__file__).resolve().parent
-SITE = R.parents[1] / 'site' / 'courses' / 'genai'
-VER, DATE = '1.0', '23.11.2026'
-SOL = 'NGQA-CT-GenAI-escape-solutions.pdf'
+"""Generic NGQA escape-room builder. Usage: python3 escape.py <course-id> <LABEL> <content.py> [VER] [DATE]
+Builds site/courses/<id>/escape/index.html (answers as salted SHA-256) and pdf/NGQA-<LABEL>-escape-solutions.pdf."""
+import hashlib, json, re, pathlib, asyncio, sys, importlib.util
+CID, LABEL, SRC = sys.argv[1], sys.argv[2], pathlib.Path(sys.argv[3]).resolve()
+VER = sys.argv[4] if len(sys.argv) > 4 else '1.0'
+DATE = sys.argv[5] if len(sys.argv) > 5 else '23.11.2026'
+_spec = importlib.util.spec_from_file_location('content', SRC); _m = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_m)
+TITLE, INTRO, ROOMS, FINAL_LOCK, FINAL = _m.TITLE, _m.INTRO, _m.ROOMS, _m.FINAL_LOCK, _m.FINAL
+MINUTES, PENALTY = getattr(_m, 'MINUTES', 75), getattr(_m, 'PENALTY', 3)
+CERT = getattr(_m, 'CERT', 'סקרתם, אימתתם ותיקנתם — בדיוק כמו שבודק תוכנה עושה.')
+CERT_TITLE = getattr(_m, 'CERT_TITLE', 'יצאתם מהחדר! 🎉')
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+R = SRC.parent
+SITE = ROOT / 'site' / 'courses' / CID
+SOL = f'NGQA-{LABEL}-escape-solutions.pdf'
 
 norm = lambda s: re.sub(r'[^A-Z0-9]', '', s.upper())
 h = lambda i, a: hashlib.sha256(f'ngqa-er|{i}|{norm(a)}'.encode()).hexdigest()
@@ -93,7 +99,7 @@ footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}footer .v
 '''
 
 JS = r'''
-const D=__DATA__,KEY='ngqa-escape-genai-v1',$=id=>document.getElementById(id);
+const D=__DATA__,KEY='ngqa-escape-__CID__-v1',$=id=>document.getElementById(id);
 let S;try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
 S.solved=S.solved||{};S.hints=S.hints||{};S.vals=S.vals||{};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
@@ -148,10 +154,10 @@ page = f'''<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <script src="/auth.js"></script>
-<script>document.documentElement.style.visibility='hidden';NGQAAuth.guard('genai').then(ok=>{{if(ok)document.documentElement.style.visibility=''}}).catch(()=>{{document.documentElement.style.visibility=''}});</script>
+<script>document.documentElement.style.visibility='hidden';NGQAAuth.guard('{CID}').then(ok=>{{if(ok)document.documentElement.style.visibility=''}}).catch(()=>{{document.documentElement.style.visibility=''}});</script>
 <script>try{{const t=localStorage.getItem('ngqa-theme');if(t)document.documentElement.dataset.theme=t}}catch(e){{}}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>חדר בריחה · CT-GenAI | NGQA</title>
+<title>חדר בריחה · {LABEL} | NGQA</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/png" href="../favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -159,19 +165,19 @@ page = f'''<!DOCTYPE html>
 <style>{CSS}</style>
 </head>
 <body>
-<div class="bar"><b>חדר בריחה · CT-GenAI</b><span class="clock" id="clock" title="זמן שנותר (כולל קנס רמזים)">75:00</span><button type="button" id="reset">איפוס</button><a href="../">חזרה לקורס</a></div>
+<div class="bar"><b>חדר בריחה · {LABEL}</b><span class="clock" id="clock" title="זמן שנותר (כולל קנס רמזים)">{MINUTES}:00</span><button type="button" id="reset">איפוס</button><a href="../">חזרה לקורס</a></div>
 <div class="wrap">
 <div class="hero"><h1>{TITLE}</h1>{INTRO}<button type="button" class="go" id="go">מתחילים — השעון רץ</button></div>
 <div class="slots" id="slots" aria-label="סיסמת השחרור"></div>
 <div class="rooms" id="rooms"></div>
 <div class="panel" id="panel" style="display:none"></div>
-<div class="cert" id="cert"><div>NGQA · CT-GenAI</div><h2>הגרסה שוחררה! 🎉</h2><div>תעודת בריחה מחדר ORACLE-7</div><div class="nm" id="cn"></div>
+<div class="cert" id="cert"><div>NGQA · {LABEL}</div><h2>{CERT_TITLE}</h2><div>תעודת בריחה · {TITLE}</div><div class="nm" id="cn"></div>
 <div class="row"><span>זמן כולל: <b id="ct" dir="ltr"></b></span><span>רמזים: <b id="ch"></b></span><span>תאריך: <b id="cd"></b></span></div>
-<p>סקרתם, אימתתם ותיקנתם את מה שה-AI "כבר בדק". זה בדיוק התפקיד של בודק התוכנה.</p><button type="button" id="cprint">הדפסת התעודה</button></div>
+<p>{CERT}</p><button type="button" id="cprint">הדפסת התעודה</button></div>
 <div class="solbox" id="solbox" style="display:none"><p>מדריך הפתרונות המלא — כל תשובה עם ההסבר שלה. הוא נפתח אחרי שמשתחררים מהחדר או כשהזמן נגמר.</p><a href="../pdf/{SOL}" download="{SOL}">הורדת מדריך הפתרונות</a></div>
 </div>
 <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">חדר בריחה <bdi dir="ltr">v{VER} · {DATE}</bdi></span></footer>
-<script>{JS.replace('__DATA__', json.dumps(data, ensure_ascii=False))}</script>
+<script>{JS.replace('__DATA__', json.dumps(data, ensure_ascii=False)).replace('__CID__', CID)}</script>
 </body>
 </html>
 '''
@@ -195,7 +201,7 @@ section{{break-before:page}}section h2{{color:#0E9F97;font-size:18pt;margin:0}}.
 .rw{{font-weight:700;background:#eef9f8;border-radius:10px;padding:8px 12px}}
 .frags div,.codebox,.cfg,.req,.runs,.fields,.doc{{break-inside:avoid}}
 </style></head><body>
-<div class="cv"><h1>מדריך פתרונות — {TITLE}</h1><p>NGQA · CT-GenAI · חדר בריחה v{VER} · {DATE}</p><p>לכל מנעול: התשובה, הדרך אליה, והקשר לחומר הקורס. מומלץ לקרוא אחרי המשחק.</p></div>
+<div class="cv"><h1>מדריך פתרונות — {TITLE}</h1><p>NGQA · {LABEL} · חדר בריחה v{VER} · {DATE}</p><p>לכל מנעול: התשובה, הדרך אליה, והקשר לחומר הקורס. מומלץ לקרוא אחרי המשחק.</p></div>
 <h2>איך משחקים</h2>{INTRO}<p>החדרים פתוחים בכל סדר. כל חדר שנפרץ חושף אות ואת מיקומה בסיסמת השחרור. אפשר להשתמש בשלושה רמזים לכל מנעול, וכל רמז מוסיף {PENALTY} דקות. ההתקדמות נשמרת בדפדפן.</p>
 <div class="rw">תקציר התשובות: {" · ".join(f"{l['id'].upper()}: {l['ans']}" for r in ROOMS for l in r["locks"])} · סיסמה: {FINAL}</div>
 {rooms_html}
@@ -211,7 +217,7 @@ async def pdf():
         await pg.goto((R / 'build' / 'solutions.html').as_uri(), wait_until='networkidle')
         await pg.pdf(path=str(SITE / 'pdf' / SOL), format='A4', print_background=True, display_header_footer=True,
                      header_template='<div></div>',
-                     footer_template='<div style="width:100%;font:9px Arial;color:#888;text-align:center">NGQA · CT-GenAI Escape Room · <span class="pageNumber"></span>/<span class="totalPages"></span></div>',
+                     footer_template='<div style="width:100%;font:9px Arial;color:#888;text-align:center">NGQA · '+LABEL+' Escape Room · <span class="pageNumber"></span>/<span class="totalPages"></span></div>',
                      margin={'top': '15mm', 'bottom': '16mm', 'left': '14mm', 'right': '14mm'})
         await b.close()
 asyncio.run(pdf())

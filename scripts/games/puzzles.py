@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
-"""Build the CT-GenAI crossword (תשבץ) + cryptic crossword (תשחץ) page: site/courses/genai/puzzles/index.html"""
-import json, base64, pathlib, sys
+"""Generic NGQA crossword (תשבץ) + cryptic crossword (תשחץ) builder.
+Usage: python3 puzzles.py <course-id> <LABEL> <words.py> [VER] [DATE]  ->  site/courses/<id>/puzzles/index.html"""
+import json, base64, pathlib, sys, importlib.util
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from words import CROSS, CRYPTIC
 from gen import layout
-
-R = pathlib.Path(__file__).resolve().parent
-OUT = R.parents[1] / 'site' / 'courses' / 'genai' / 'puzzles'
-VER, DATE = '1.1', '23.11.2026'
+CID, LABEL, SRC = sys.argv[1], sys.argv[2], pathlib.Path(sys.argv[3]).resolve()
+VER = sys.argv[4] if len(sys.argv) > 4 else '1.0'
+DATE = sys.argv[5] if len(sys.argv) > 5 else '23.11.2026'
+_spec = importlib.util.spec_from_file_location('words', SRC); _m = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_m)
+CROSS, CRYPTIC = _m.CROSS, _m.CRYPTIC
+IC = getattr(_m, 'INTRO_CROSS', 'תשבץ הגדרות: התשובות הן המונחים המקצועיים באנגלית, כפי שהם מופיעים בקורס. התשבץ נקרא משמאל לימין.')
+IY = getattr(_m, 'INTRO_CRYPTIC', 'תשחץ: הגדרות היגיון, עם משחקי מילים ומשמעות כפולה. גם כאן התשובות הן מונחים באנגלית — חשבו פעמיים לפני שאתם כותבים!')
+OUT = pathlib.Path(__file__).resolve().parents[2] / 'site' / 'courses' / CID / 'puzzles'
 
 def pack(L):
     # answers are lightly obfuscated so they are not readable at a glance in the page source
@@ -76,7 +80,7 @@ footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}footer .v
 '''
 
 JS = r'''
-const P=__DATA__,$=id=>document.getElementById(id),KEY='ngqa-xw-genai-v1';
+const P=__DATA__,$=id=>document.getElementById(id),KEY='ngqa-xw-__CID__-v1';
 let St;try{St=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){St={}}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(St))}catch(e){}};
 const dec=s=>[...atob(s)].reverse().join('');
@@ -103,8 +107,8 @@ function build(){const p=P[cur];St[cur]=St[cur]||{v:{},rev:{}};const v=St[cur].v
       else if(e.key==='ArrowRight'){e.preventDefault();mv(0,1)}else if(e.key==='ArrowLeft'){e.preventDefault();mv(0,-1)}
       else if(e.key==='ArrowDown'){e.preventDefault();mv(1,0)}else if(e.key==='ArrowUp'){e.preventDefault();mv(-1,0)}
       else if(e.key==='Enter'||e.key===' '){e.preventDefault();if(G.cells[k].w.length>1){dir=dir==='A'?'D':'A';hl()}}}});
-  status();$('intro').innerHTML=cur==='cross'?'תשבץ הגדרות: התשובות הן המונחים המקצועיים באנגלית, כפי שהם מופיעים בקורס. התשבץ נקרא משמאל לימין.':'תשחץ: הגדרות היגיון, עם משחקי מילים ומשמעות כפולה. גם כאן התשובות הן מונחים באנגלית — חשבו פעמיים לפני שאתם כותבים!';
-  $('ptitle').textContent=(cur==='cross'?'תשבץ':'תשחץ')+' CT-GenAI · NGQA'}
+  status();$('intro').innerHTML=cur==='cross'?__IC__:__IY__;
+  $('ptitle').textContent=(cur==='cross'?'תשבץ':'תשחץ')+' __LABEL__ · NGQA'}
 const q=k=>document.querySelector(`.cell[data-k="${k}"] input`);
 function set(k,ch){St[cur].v[k]=ch;if(!ch)delete St[cur].v[k];const c=q(k).parentNode;c.classList.remove('bad','good');save();status()}
 function word(){return G.words.find(w=>w.d===dir&&w.cells.some(([r,c])=>r===sel[0]&&c===sel[1]))}
@@ -138,10 +142,10 @@ page = f'''<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <script src="/auth.js"></script>
-<script>document.documentElement.style.visibility='hidden';NGQAAuth.guard('genai').then(ok=>{{if(ok)document.documentElement.style.visibility=''}}).catch(()=>{{document.documentElement.style.visibility=''}});</script>
+<script>document.documentElement.style.visibility='hidden';NGQAAuth.guard('{CID}').then(ok=>{{if(ok)document.documentElement.style.visibility=''}}).catch(()=>{{document.documentElement.style.visibility=''}});</script>
 <script>try{{const t=localStorage.getItem('ngqa-theme');if(t)document.documentElement.dataset.theme=t}}catch(e){{}}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>תשבץ ותשחץ · CT-GenAI | NGQA</title>
+<title>תשבץ ותשחץ · {LABEL} | NGQA</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/png" href="../favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -149,7 +153,7 @@ page = f'''<!DOCTYPE html>
 <style>{CSS}</style>
 </head>
 <body>
-<div class="bar"><b>תשבץ ותשחץ · CT-GenAI</b><a href="../">חזרה לקורס</a></div>
+<div class="bar"><b>תשבץ ותשחץ · {LABEL}</b><a href="../">חזרה לקורס</a></div>
 <div class="wrap">
 <div class="tabs" role="tablist"><button type="button" role="tab" data-t="cross" aria-selected="true">תשבץ — מונחי הקורס</button><button type="button" role="tab" data-t="cryptic" aria-selected="false">תשחץ — הגדרות היגיון</button></div>
 <p class="intro" id="intro"></p>
@@ -162,7 +166,7 @@ page = f'''<!DOCTYPE html>
 </div>
 </div>
 <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">תשבץ ותשחץ <bdi dir="ltr">v{VER} · {DATE}</bdi></span></footer>
-<script>{JS.replace('__DATA__', json.dumps(P, ensure_ascii=False))}</script>
+<script>{JS.replace('__DATA__', json.dumps(P, ensure_ascii=False)).replace('__IC__', json.dumps(IC, ensure_ascii=False)).replace('__IY__', json.dumps(IY, ensure_ascii=False)).replace('__LABEL__', LABEL).replace('__CID__', CID)}</script>
 </body>
 </html>
 '''
