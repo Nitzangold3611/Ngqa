@@ -1,4 +1,4 @@
-/* NGQA – personal watermark on PDF downloads and printing (v3.8)
+/* NGQA – personal watermark on PDF downloads and printing (v3.9: print overlay also shows when course pages print slides via body.printing)
    Every PDF link on the course pages is downloaded through the browser, stamped on each page
    with the full name of the signed-in user (pdf-lib, the name drawn as an image so Hebrew renders correctly),
    and then saved / opened. Printing a course page shows the same name across the page. */
@@ -81,7 +81,7 @@
   who().then(name => {
     if (!name) return;
     const st = document.createElement('style');
-    st.textContent = '#ngqa-wm{display:none}@media print{#ngqa-wm{display:flex;position:fixed;inset:0;z-index:2147483647;pointer-events:none;align-items:center;justify-content:center}#ngqa-wm span{transform:rotate(-35deg);font:bold 64px Arial,sans-serif;color:rgba(90,98,117,.16);white-space:nowrap}}';
+    st.textContent = '#ngqa-wm{display:none}@media print{#ngqa-wm{display:flex;position:fixed;inset:0;z-index:2147483647;pointer-events:none;align-items:center;justify-content:center}html body.printing>div#ngqa-wm{display:flex!important}#ngqa-wm span{transform:rotate(-35deg);font:bold 64px Arial,sans-serif;color:rgba(90,98,117,.16);white-space:nowrap}}';
     const d = document.createElement('div'); d.id = 'ngqa-wm'; const sp = document.createElement('span'); sp.textContent = name; d.appendChild(sp);
     const add = () => { document.head.appendChild(st); document.body.appendChild(d); };
     document.body ? add() : document.addEventListener('DOMContentLoaded', add);

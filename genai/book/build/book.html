@@ -1,0 +1,1842 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ספר מסכם · CT-GenAI | NGQA</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;
+--bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960);--soft:light-dark(#eef9f8,#14304a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.75 Heebo,Arial,sans-serif;overflow-x:clip}
+a{color:inherit}
+.bar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;gap:10px;align-items:center;padding:10px max(3vw,14px);flex-wrap:wrap}
+.bar b{flex:1;font-size:17px}
+.bar a,.bar button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:7px 14px;font:inherit;font-size:15px;text-decoration:none;cursor:pointer;white-space:nowrap}
+.bar a:hover,.bar button:hover{background:rgba(255,255,255,.2)}
+.bar .pri{background:var(--orange);border-color:var(--orange)}
+.lay{display:grid;grid-template-columns:290px minmax(0,1fr);gap:32px;max-width:1240px;margin:auto;padding:28px max(3vw,14px)}
+@media(max-width:900px){.lay{grid-template-columns:1fr}.side{position:static!important;max-height:none!important}}
+.side{position:sticky;top:70px;align-self:start;max-height:calc(100vh - 90px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.side h3{margin:0 0 8px;font-size:16px}
+.side ol{list-style:none;margin:0 0 10px;padding:0}
+.side li a{display:block;text-decoration:none;padding:3px 6px;border-radius:6px;font-size:14px;line-height:1.4}
+.side li a:hover,.side li a.on{background:var(--soft);color:var(--teal-d)}
+.side li.l1 a{font-weight:800;font-size:15px;margin-top:6px}
+.side li.l3 a{padding-inline-start:20px;color:var(--mute)}
+article{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,4vw,48px)}
+.cover{background:var(--navy);color:#fff;border-radius:18px;padding:clamp(28px,6vw,64px);margin-bottom:28px;position:relative;overflow:hidden}
+.cover img{width:150px;display:block;margin-bottom:18px}
+.cover h1{font-size:clamp(30px,5vw,46px);line-height:1.15;margin:0 0 10px;color:#fff;border:0;padding:0}
+.cover .tag{color:var(--teal);font-weight:700}
+.cover p{color:#c9cbf0;margin:6px 0;max-width:60ch}
+.cover .ed{margin-top:18px;font-size:14px;color:#a9abda}
+.how{border:1px dashed var(--line);border-radius:14px;padding:14px 18px;margin-bottom:28px;font-size:15.5px}
+.how b{color:var(--orange)}
+section.ch{margin-bottom:56px}
+h1{font-size:30px;line-height:1.25;margin:0 0 4px;color:var(--ink);border-bottom:4px solid var(--teal);padding-bottom:10px}
+p.en{margin:6px 0 18px;color:var(--mute);direction:ltr;text-align:right;font-style:italic}
+h2{font-size:24px;margin:36px 0 10px;color:var(--teal-d)}
+h3{font-size:20px;margin:26px 0 8px}
+h4{font-size:17.5px;margin:20px 0 6px;color:var(--mute)}
+p,li{margin:8px 0}
+ul,ol{padding-inline-start:24px}
+strong{color:light-dark(#0c0b33,#fff)}
+code{direction:ltr;unicode-bidi:isolate;background:var(--soft);padding:1px 6px;border-radius:5px;font-size:.9em}
+.tw{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:15.5px;line-height:1.5}
+th{background:var(--navy);color:#fff;text-align:start;padding:9px 12px;font-weight:700}
+td{border-bottom:1px solid var(--line);padding:8px 12px;vertical-align:top}
+tr:nth-child(even) td{background:light-dark(#f8f9fd,#1d1c48)}
+.exam{background:light-dark(#fff4e6,#3a2a12);border-inline-start:5px solid var(--orange);border-radius:10px;padding:10px 16px;margin:14px 0;font-weight:500}
+.exam::before{content:"דגש לבחינה · ";font-weight:800;color:var(--orange)}
+.plain{background:var(--soft);border-inline-start:5px solid var(--teal);border-radius:12px;padding:6px 20px;font-size:17.5px}
+h2[id]+.plain{margin-top:6px}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}
+footer .ver{display:block;margin-top:4px}
+@media print{
+  @page{size:A4;margin:16mm 15mm 18mm}
+  :root{color-scheme:light}
+  body{background:#fff;color:#121133;font-size:11.5pt;line-height:1.6;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .bar,.side,.how,footer{display:none!important}
+  .lay{display:block;padding:0;max-width:none}
+  article{border:0;padding:0;border-radius:0;background:#fff}
+  .cover{border-radius:0;margin:0 0 0;min-height:250mm;display:flex;flex-direction:column;justify-content:center;break-after:page}
+  .ptoc{display:block!important;break-after:page}
+  section.ch{break-before:page;margin:0}
+  h1,h2,h3,h4{break-after:avoid}
+  table,.exam,.plain,tr{break-inside:avoid}
+  .tw{overflow:visible}
+  a{text-decoration:none}
+}
+.ptoc{display:none}
+.ptoc h2{margin-top:0}
+.ptoc ol{list-style:none;padding:0;margin:0 0 8px}
+.ptoc li{margin:2px 0;font-size:11pt}
+.ptoc li.l1{font-weight:800;margin-top:10px;font-size:12.5pt}
+.ptoc li.l3{padding-inline-start:18px;color:#5d5c7c}
+.ptoc a{text-decoration:none}
+</style>
+</head>
+<body>
+<div class="bar"><b>ספר מסכם · CT-GenAI</b>
+  <a href="../">חזרה לקורס</a>
+  <button type="button" id="prt">הדפסה</button>
+  <a class="pri" href="../pdf/NGQA-CT-GenAI-book.pdf" download="NGQA-CT-GenAI-book.pdf">הורדת PDF</a>
+</div>
+<div class="lay">
+<nav class="side" aria-label="תוכן העניינים"><h3>תוכן העניינים</h3><ol><li class="l1"><a href="#c1-1">פרק 1 — מבוא לבינה מלאכותית יוצרת בבדיקות תוכנה</a></li><li class="l2"><a href="#c1-2">1.1 יסודות ה-GenAI ומושגי מפתח</a></li><li class="l3"><a href="#c1-13">1.1.1 ספקטרום הבינה המלאכותית</a></li><li class="l3"><a href="#c1-14">1.1.2 LLM לעומת SLM</a></li><li class="l3"><a href="#c1-15">1.1.3 שלושת סוגי מודלי השפה</a></li><li class="l3"><a href="#c1-16">1.1.4 מודלים רב-מודאליים</a></li><li class="l2"><a href="#c1-17">1.2 מינוף GenAI בבדיקות תוכנה</a></li><li class="l3"><a href="#c1-18">1.2.1 יכולות הליבה של LLM למשימות בדיקה</a></li><li class="l3"><a href="#c1-19">1.2.2 צ&#x27;אטבוט לעומת אפליקציה מבוססת LLM</a></li><li class="l2"><a href="#c1-20">דגשים לבחינה</a></li><li class="l2"><a href="#c1-21">מושגים והסברים</a></li><li class="l2"><a href="#c1-22">בקצרה — במילים פשוטות</a></li></ol><ol><li class="l1"><a href="#c2-1">פרק 2 — הנדסת פרומפטים לבדיקות תוכנה</a></li><li class="l2"><a href="#c2-2">2.1 פיתוח פרומפטים אפקטיביים</a></li><li class="l3"><a href="#c2-4">2.1.1 מבנה הפרומפט — ששת הרכיבים</a></li><li class="l3"><a href="#c2-5">2.1.2 טכניקות פרומפטינג</a></li><li class="l3"><a href="#c2-10">2.1.3 פרומפט מערכת לעומת פרומפט משתמש</a></li><li class="l2"><a href="#c2-12">2.2 יישום הנדסת פרומפטים במשימות בדיקה</a></li><li class="l3"><a href="#c2-13">2.2.1 ניתוח בדיקות עם פרומפטים רב-מודאליים</a></li><li class="l3"><a href="#c2-14">2.2.2 עיצוב ויישום בדיקות</a></li><li class="l3"><a href="#c2-15">2.2.3 ניתוח בדיקות רגרסיה</a></li><li class="l3"><a href="#c2-16">2.2.4 ניטור ובקרה — מדדים</a></li><li class="l3"><a href="#c2-17">2.2.5 בחירת טכניקת הפרומפטינג המתאימה</a></li><li class="l2"><a href="#c2-18">דגשים לבחינה</a></li><li class="l2"><a href="#c2-19">מושגים והסברים</a></li><li class="l2"><a href="#c2-20">בקצרה — במילים פשוטות</a></li></ol><ol><li class="l1"><a href="#c3-1">פרק 3 — ניהול הסיכונים של GenAI בבדיקות תוכנה</a></li><li class="l2"><a href="#c3-2">3.1 סיכוני האיכות בפלט של GenAI</a></li><li class="l3"><a href="#c3-4">3.1.1 הזיות, שגיאות הסקה והטיות</a></li><li class="l3"><a href="#c3-8">3.1.2 זיהוי הסיכונים</a></li><li class="l3"><a href="#c3-12">3.1.3 טכניקות לצמצום הסיכונים (Mitigation)</a></li><li class="l3"><a href="#c3-13">3.1.4 התנהגות לא-דטרמיניסטית</a></li><li class="l2"><a href="#c3-14">3.2 סיכוני פרטיות ואבטחה</a></li><li class="l2"><a href="#c3-18">3.3 צריכת אנרגיה והשפעה סביבתית</a></li><li class="l2"><a href="#c3-19">3.4 רגולציה ותקנים</a></li><li class="l2"><a href="#c3-20">דגשים לבחינה</a></li><li class="l2"><a href="#c3-21">מושגים והסברים</a></li><li class="l2"><a href="#c3-22">בקצרה — במילים פשוטות</a></li></ol><ol><li class="l1"><a href="#c4-1">פרק 4 — תשתיות בדיקות מבוססות מודלי שפה גדולים</a></li><li class="l2"><a href="#c4-2">4.1 ארכיטקטורה של תשתית בדיקות מבוססת LLM</a></li><li class="l3"><a href="#c4-4">4.1.1 הרכיבים המרכזיים</a></li><li class="l3"><a href="#c4-7">4.1.2 RAG — Retrieval-Augmented Generation</a></li><li class="l3"><a href="#c4-10">4.1.3 סוכני AI ‏(AI Agents)</a></li><li class="l2"><a href="#c4-13">4.2 Fine-Tuning ו-LLMOps</a></li><li class="l3"><a href="#c4-14">4.2.1 Fine-Tuning — כוונון עדין</a></li><li class="l3"><a href="#c4-15">4.2.2 LLMOps — תפעול מודלי שפה</a></li><li class="l2"><a href="#c4-17">דגשים לבחינה</a></li><li class="l2"><a href="#c4-18">מושגים והסברים</a></li><li class="l2"><a href="#c4-19">בקצרה — במילים פשוטות</a></li></ol><ol><li class="l1"><a href="#c5-1">פרק 5 — פריסה ושילוב של GenAI בארגוני בדיקות</a></li><li class="l2"><a href="#c5-2">5.1 מפת דרכים לאימוץ GenAI בבדיקות</a></li><li class="l3"><a href="#c5-3">5.1.1 Shadow AI — בינה מלאכותית נסתרת</a></li><li class="l3"><a href="#c5-4">5.1.2 ההיבטים המרכזיים באסטרטגיית GenAI</a></li><li class="l3"><a href="#c5-5">5.1.3 בחירת LLM או SLM למשימות בדיקה</a></li><li class="l3"><a href="#c5-6">5.1.4 שלבי האימוץ</a></li><li class="l2"><a href="#c5-7">5.2 ניהול שינוי באימוץ GenAI</a></li><li class="l3"><a href="#c5-8">5.2.1 מיומנויות חיוניות</a></li><li class="l3"><a href="#c5-9">5.2.2 בניית יכולות בצוותי הבדיקות</a></li><li class="l3"><a href="#c5-10">5.2.3 התפתחות תהליכי הבדיקה והתפקידים</a></li><li class="l2"><a href="#c5-11">דגשים לבחינה</a></li><li class="l2"><a href="#c5-12">מושגים והסברים</a></li><li class="l2"><a href="#c5-13">בקצרה — במילים פשוטות</a></li></ol></nav>
+<article>
+<div class="cover"><img src="/home/claude/ngqa/site/courses/genai/logo.png" alt="NGQA">
+<span class="tag">CT-GenAI · ISTQB Certified Tester – Testing with Generative AI</span>
+<h1>ספר מסכם — בינה מלאכותית יוצרת בבדיקות תוכנה</h1>
+<p>סיכום מלא של כל חמשת פרקי הקורס לפי פרקים ותתי-פרקים, עם דגשים לבחינה, מושגים והסברים בסוף כל פרק, וסיכום במילים פשוטות.</p>
+<p class="ed">מהדורה 1.0 · 23.11.2026 · NGQA ייעוץ והדרכה בבדיקות תוכנה</p></div>
+<div class="how">איך להשתמש בספר: כל פרק בנוי כמו המצגות — תתי-פרקים, טבלאות ודוגמאות. <b>דגש לבחינה</b> מסמן נקודות שחוזרות בשאלות, ובסוף כל פרק יש <b>דגשים לבחינה</b>, טבלת <b>מושגים והסברים</b> ו<b>סיכום במילים פשוטות</b>.</div>
+<div class="ptoc"><h2>תוכן העניינים</h2><ol><li class="l1"><a href="#c1-1">פרק 1 — מבוא לבינה מלאכותית יוצרת בבדיקות תוכנה</a></li><li class="l2"><a href="#c1-2">1.1 יסודות ה-GenAI ומושגי מפתח</a></li><li class="l3"><a href="#c1-13">1.1.1 ספקטרום הבינה המלאכותית</a></li><li class="l3"><a href="#c1-14">1.1.2 LLM לעומת SLM</a></li><li class="l3"><a href="#c1-15">1.1.3 שלושת סוגי מודלי השפה</a></li><li class="l3"><a href="#c1-16">1.1.4 מודלים רב-מודאליים</a></li><li class="l2"><a href="#c1-17">1.2 מינוף GenAI בבדיקות תוכנה</a></li><li class="l3"><a href="#c1-18">1.2.1 יכולות הליבה של LLM למשימות בדיקה</a></li><li class="l3"><a href="#c1-19">1.2.2 צ&#x27;אטבוט לעומת אפליקציה מבוססת LLM</a></li><li class="l2"><a href="#c1-20">דגשים לבחינה</a></li><li class="l2"><a href="#c1-21">מושגים והסברים</a></li><li class="l2"><a href="#c1-22">בקצרה — במילים פשוטות</a></li></ol><ol><li class="l1"><a href="#c2-1">פרק 2 — הנדסת פרומפטים לבדיקות תוכנה</a></li><li class="l2"><a href="#c2-2">2.1 פיתוח פרומפטים אפקטיביים</a></li><li class="l3"><a href="#c2-4">2.1.1 מבנה הפרומפט — ששת הרכיבים</a></li><li class="l3"><a href="#c2-5">2.1.2 טכניקות פרומפטינג</a></li><li class="l3"><a href="#c2-10">2.1.3 פרומפט מערכת לעומת פרומפט משתמש</a></li><li class="l2"><a href="#c2-12">2.2 יישום הנדסת פרומפטים במשימות בדיקה</a></li><li class="l3"><a href="#c2-13">2.2.1 ניתוח בדיקות עם פרומפטים רב-מודאליים</a></li><li class="l3"><a href="#c2-14">2.2.2 עיצוב ויישום בדיקות</a></li><li class="l3"><a href="#c2-15">2.2.3 ניתוח בדיקות רגרסיה</a></li><li class="l3"><a href="#c2-16">2.2.4 ניטור ובקרה — מדדים</a></li><li class="l3"><a href="#c2-17">2.2.5 בחירת טכניקת הפרומפטינג המתאימה</a></li><li class="l2"><a href="#c2-18">דגשים לבחינה</a></li><li class="l2"><a href="#c2-19">מושגים והסברים</a></li><li class="l2"><a href="#c2-20">בקצרה — במילים פשוטות</a></li></ol><ol><li class="l1"><a href="#c3-1">פרק 3 — ניהול הסיכונים של GenAI בבדיקות תוכנה</a></li><li class="l2"><a href="#c3-2">3.1 סיכוני האיכות בפלט של GenAI</a></li><li class="l3"><a href="#c3-4">3.1.1 הזיות, שגיאות הסקה והטיות</a></li><li class="l3"><a href="#c3-8">3.1.2 זיהוי הסיכונים</a></li><li class="l3"><a href="#c3-12">3.1.3 טכניקות לצמצום הסיכונים (Mitigation)</a></li><li class="l3"><a href="#c3-13">3.1.4 התנהגות לא-דטרמיניסטית</a></li><li class="l2"><a href="#c3-14">3.2 סיכוני פרטיות ואבטחה</a></li><li class="l2"><a href="#c3-18">3.3 צריכת אנרגיה והשפעה סביבתית</a></li><li class="l2"><a href="#c3-19">3.4 רגולציה ותקנים</a></li><li class="l2"><a href="#c3-20">דגשים לבחינה</a></li><li class="l2"><a href="#c3-21">מושגים והסברים</a></li><li class="l2"><a href="#c3-22">בקצרה — במילים פשוטות</a></li></ol><ol><li class="l1"><a href="#c4-1">פרק 4 — תשתיות בדיקות מבוססות מודלי שפה גדולים</a></li><li class="l2"><a href="#c4-2">4.1 ארכיטקטורה של תשתית בדיקות מבוססת LLM</a></li><li class="l3"><a href="#c4-4">4.1.1 הרכיבים המרכזיים</a></li><li class="l3"><a href="#c4-7">4.1.2 RAG — Retrieval-Augmented Generation</a></li><li class="l3"><a href="#c4-10">4.1.3 סוכני AI ‏(AI Agents)</a></li><li class="l2"><a href="#c4-13">4.2 Fine-Tuning ו-LLMOps</a></li><li class="l3"><a href="#c4-14">4.2.1 Fine-Tuning — כוונון עדין</a></li><li class="l3"><a href="#c4-15">4.2.2 LLMOps — תפעול מודלי שפה</a></li><li class="l2"><a href="#c4-17">דגשים לבחינה</a></li><li class="l2"><a href="#c4-18">מושגים והסברים</a></li><li class="l2"><a href="#c4-19">בקצרה — במילים פשוטות</a></li></ol><ol><li class="l1"><a href="#c5-1">פרק 5 — פריסה ושילוב של GenAI בארגוני בדיקות</a></li><li class="l2"><a href="#c5-2">5.1 מפת דרכים לאימוץ GenAI בבדיקות</a></li><li class="l3"><a href="#c5-3">5.1.1 Shadow AI — בינה מלאכותית נסתרת</a></li><li class="l3"><a href="#c5-4">5.1.2 ההיבטים המרכזיים באסטרטגיית GenAI</a></li><li class="l3"><a href="#c5-5">5.1.3 בחירת LLM או SLM למשימות בדיקה</a></li><li class="l3"><a href="#c5-6">5.1.4 שלבי האימוץ</a></li><li class="l2"><a href="#c5-7">5.2 ניהול שינוי באימוץ GenAI</a></li><li class="l3"><a href="#c5-8">5.2.1 מיומנויות חיוניות</a></li><li class="l3"><a href="#c5-9">5.2.2 בניית יכולות בצוותי הבדיקות</a></li><li class="l3"><a href="#c5-10">5.2.3 התפתחות תהליכי הבדיקה והתפקידים</a></li><li class="l2"><a href="#c5-11">דגשים לבחינה</a></li><li class="l2"><a href="#c5-12">מושגים והסברים</a></li><li class="l2"><a href="#c5-13">בקצרה — במילים פשוטות</a></li></ol></div>
+<section class="ch" id="ch1"><h1 id="c1-1">פרק 1 — מבוא לבינה מלאכותית יוצרת בבדיקות תוכנה</h1>
+<p class="en">Introduction to Generative AI for Software Testing</p>
+
+<p>הפרק הראשון מניח את היסודות: מה זו בינה מלאכותית יוצרת (GenAI), איך מודל שפה גדול (LLM) "קורא" טקסט ומייצר תשובה, מאילו שלבים התפתח התחום, ואילו סוגי מודלים קיימים. בסוף הפרק נראה איך כל זה מתחבר לעבודה היומיומית של בודק התוכנה.</p>
+<h2 id="c1-2">1.1 יסודות ה-GenAI ומושגי מפתח</h2>
+<h3 id="c1-3">מהי בינה מלאכותית יוצרת?</h3>
+<p><strong>בינה מלאכותית יוצרת (Generative AI)</strong> היא תחום בבינה מלאכותית שמשתמש במודלים גדולים שאומנו מראש (Pre-Trained Models) כדי ליצור <strong>תוכן חדש</strong>: טקסט, קוד, תמונות, קול, וידאו ומסמכים. בניגוד למערכות שרק מסווגות או חוזות, מודל יוצר מייצר תוצר שלא היה קיים קודם.</p>
+<p>דוגמה מעולם הבדיקות: מזינים דרישת מערכת למודל, ומקבלים ממנו טיוטה של מקרי בדיקה.</p>
+<h3 id="c1-4">מהו LLM?</h3>
+<p><strong>LLM (Large Language Model — מודל שפה גדול)</strong> הוא מודל בינה מלאכותית שאומן על כמויות עצומות של טקסט — ספרים, אתרים, קוד ומסמכים — כדי להבין שפה טבעית ולייצר אותה. מודל כזה יודע להבין שפה, ליצור טקסט, לענות על שאלות, לכתוב קוד ולסכם מידע.</p>
+<p>דוגמאות מוכרות: ChatGPT של OpenAI, ‏Claude של Anthropic, ‏Gemini של Google ו-Copilot של Microsoft.</p>
+<h3 id="c1-5">איך LLM עובד?</h3>
+<p>תהליך הליבה שבו מודל מעבד קלט ומייצר פלט עובר חמישה שלבים:</p>
+<ol>
+<li><strong>Prompt (הנחיה)</strong> — הטקסט שהמשתמש שולח למודל.</li>
+<li><strong>Tokenization (טוקניזציה)</strong> — פירוק הטקסט ליחידות קטנות.</li>
+<li><strong>Embeddings (ייצוגים מספריים)</strong> — הפיכת כל יחידה לווקטור של מספרים.</li>
+<li><strong>Transformer Model</strong> — עיבוד הווקטורים והבנת ההקשר.</li>
+<li><strong>Generated Response (תגובה)</strong> — המודל מייצר את התשובה, יחידה אחר יחידה.</li>
+</ol>
+<h3 id="c1-6">GenAI בעולם הבדיקות</h3>
+<p>מודל שפה יכול לקבל סיפור משתמש או דרישה ולהחזיר מקרי בדיקה וקריטריוני קבלה. השימושים המרכזיים בתהליכי QA:
+- <strong>ניתוח דרישות</strong> — איתור עמימות, חוסרים וסתירות.
+- <strong>יצירת מקרי בדיקה</strong> ו<strong>יצירת נתוני בדיקה</strong>.
+- <strong>כתיבת תסריטי בדיקה</strong> לאוטומציה.
+- <strong>ניתוח תקלות</strong> — סיווג, סיכום ואיתור דפוסים.
+- <strong>יצירת בודקה (Testware)</strong> — תוכניות, דוחות ומסמכים נלווים.</p>
+<h3 id="c1-7">מושגי היסוד</h3>
+<h4 id="c1-8">טוקניזציה (Tokenization)</h4>
+<p>טוקניזציה היא פירוק טקסט ליחידות קטנות שנקראות <strong>Tokens</strong> — יחידות העיבוד הבסיסיות של המודל. לדוגמה, המשפט ‎"Generate test cases for login page"‎ מתפרק ל-6 טוקנים, וכל אחד מהם מעובד בנפרד. כל מילה, סימן פיסוק ואפילו רווח יכולים להפוך לטוקן.</p>
+<p>למה זה חשוב?
+- <strong>עלות</strong> — ככל שיש יותר טוקנים, השימוש יקר יותר.
+- <strong>מהירות</strong> — מספר הטוקנים משפיע על זמן התגובה; פחות טוקנים = עיבוד מהיר יותר.
+- <strong>מגבלה</strong> — לכל פנייה יש תקרה של טוקנים.</p>
+<div class="exam">LLM עובד על Tokens — לא על מילים שלמות.</div>
+
+<h4 id="c1-9">ייצוגים מספריים (Embeddings)</h4>
+<p><strong>Embedding</strong> הוא ייצוג מתמטי של טוקן כווקטור מספרי. כל מילה מקבלת מיקום ב"מרחב סמנטי" רב-ממדי, והמיקום מבטא את המשמעות שלה. מילים עם משמעות קרובה — למשל Car, ‏Vehicle ו-Automobile, או Test Case, ‏Test Script ו-Test Scenario — מקבלות ווקטורים קרובים. מילה רחוקה במשמעות, כמו Database, נמצאת רחוק מהן. כך המודל מבין קשרים ומשמעויות, ולא רק מילים בודדות.</p>
+<h4 id="c1-10">מודל הטרנספורמר (Transformer)</h4>
+<p><strong>Transformer</strong> היא ארכיטקטורת הליבה של רוב מודלי השפה המודרניים. היא:
+- מבינה את <strong>ההקשר הכולל</strong> של המשפט, לא רק מילה בודדת;
+- מזהה <strong>קשרים בין מילים</strong> גם כשהן רחוקות זו מזו;
+- <strong>מייצרת תוכן</strong> — טקסט, קוד ומסמכים — על בסיס ההקשר.</p>
+<p>בלב הטרנספורמר נמצא <strong>מנגנון הקשב (Attention Mechanism)</strong>, שקובע לאילו חלקים בקלט "לשים לב" בכל שלב של יצירת התשובה.</p>
+<h4 id="c1-11">התנהגות לא-דטרמיניסטית</h4>
+<p>אותו Prompt עשוי להחזיר תשובות שונות בכל הרצה. המודל אינו מחשבון שמחזיר תוצאה קבועה, אלא <strong>מערכת הסתברותית</strong>: בכל שלב הוא בוחר את ההמשך מתוך כמה אפשרויות סבירות. לבודקים זה חשוב במיוחד — צריך לבדוק את הפלט ולא להניח שהוא יחזור על עצמו.</p>
+<h4 id="c1-12">חלון ההקשר (Context Window)</h4>
+<p><strong>Context Window</strong> הוא כמות הטוקנים המקסימלית שהמודל יכול לקחת בחשבון בבת אחת — הקלט, ההיסטוריה של השיחה והפלט יחד. לדוגמה, מסמך דרישות, יומן תקלות ודוח בדיקות יכולים להיכנס יחד לחלון אחד, והמודל ינתח אותם במשותף.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>חלון הקשר גדול — יתרונות</th>
+<th>חלון הקשר גדול — חסרונות</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ניתוח מסמכים ארוכים בבת אחת</td>
+<td>עלות גבוהה יותר (יותר טוקנים)</td>
+</tr>
+<tr>
+<td>הבנה עמוקה יותר של תלויות ומשמעויות</td>
+<td>זמן עיבוד ארוך יותר</td>
+</tr>
+<tr>
+<td>תשובות מדויקות יותר, פחות אי-הבנות</td>
+<td>מורכבות חישובית ודרישות משאבים גבוהות</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="c1-13">1.1.1 ספקטרום הבינה המלאכותית</h3>
+<p>GenAI הוא שיאו של תהליך שנמשך עשורים, וכל שלב נבנה על קודמו:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>תקופה</th>
+<th>שלב</th>
+<th>עיקרון</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1950–1980</td>
+<td>בינה מלאכותית סימבולית (Symbolic AI)</td>
+<td>חוקים שכתבו מומחים (Rule-Based)</td>
+</tr>
+<tr>
+<td>1980–2010</td>
+<td>למידת מכונה קלאסית (Machine Learning)</td>
+<td>מודלים שלומדים מנתונים</td>
+</tr>
+<tr>
+<td>2010 ואילך</td>
+<td>למידה עמוקה (Deep Learning)</td>
+<td>רשתות עצביות</td>
+</tr>
+<tr>
+<td>2020 ואילך</td>
+<td>בינה מלאכותית יוצרת (GenAI)</td>
+<td>יצירת תוכן חדש</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Symbolic AI</strong> — מערכת שמבוססת על חוקים מוגדרים מראש, למשל: "אם אורך הסיסמה קטן מ-8 — דחה אותה", "אם היו יותר מ-3 ניסיונות כניסה — נעל את החשבון". היתרון: <strong>שקיפות מלאה</strong> — אפשר לעקוב אחרי כל החלטה. החיסרון: קושי להתמודד עם מידע מורכב, לא מובנה או מצבים לא צפויים.</p>
+<p><strong>למידת מכונה קלאסית</strong> — שלושה שלבים: הכנת נתונים (איסוף, ניקוי ועיצוב), בחירת מאפיינים (המשתנים שהכי משפיעים על החיזוי), ואימון המודל. דוגמה מהבדיקות: חיזוי אילו רכיבים צפויים להיכשל בגרסה הבאה, על סמך נתוני עבר.</p>
+<p><strong>למידה עמוקה</strong> — מבוססת על <strong>רשתות עצביות</strong> (שכבת קלט, שכבות נסתרות ושכבת פלט) שמחקות באופן גס את מבנה המוח. היא מטפלת בטקסט, תמונות, קול ווידאו, והיא הבסיס שעליו נבנה ה-GenAI.</p>
+<p><strong>GenAI</strong> — השלב המתקדם ביותר: רשתות עצביות עמוקות שמייצרות תוכן חדש ומורכב. אין צורך לאמן מודל חדש לכל משימה — <strong>מודל אחד, שימושים רבים</strong>.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>קריטריון</th>
+<th>Symbolic AI</th>
+<th>ML</th>
+<th>Deep Learning</th>
+<th>GenAI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>תלות בחוקים</td>
+<td>גבוהה</td>
+<td>נמוכה</td>
+<td>נמוכה</td>
+<td>נמוכה</td>
+</tr>
+<tr>
+<td>תלות בנתונים</td>
+<td>נמוכה</td>
+<td>גבוהה</td>
+<td>גבוהה מאוד</td>
+<td>גבוהה מאוד</td>
+</tr>
+<tr>
+<td>יצירת תוכן</td>
+<td>✗</td>
+<td>✗</td>
+<td>מוגבלת</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>שימוש ב-QA</td>
+<td>מוגבל</td>
+<td>בינוני</td>
+<td>גבוה</td>
+<td>גבוה מאוד</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="c1-14">1.1.2 LLM לעומת SLM</h3>
+<p>לצד מודלי השפה הגדולים קיימים גם <strong>מודלי שפה קטנים (SLM — Small Language Models)</strong>: ממוקדים, יעילים וקלים.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>LLM — מודל שפה גדול</th>
+<th>SLM — מודל שפה קטן</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>גודל</td>
+<td>גדול</td>
+<td>קטן</td>
+</tr>
+<tr>
+<td>ביצועים</td>
+<td>גבוהים ורחבים</td>
+<td>ממוקדים ומהירים</td>
+</tr>
+<tr>
+<td>עלות</td>
+<td>גבוהה</td>
+<td>נמוכה</td>
+</tr>
+<tr>
+<td>משאבים</td>
+<td>רבים ומורכבים</td>
+<td>מעטים</td>
+</tr>
+<tr>
+<td>מתאים ל-</td>
+<td>משימות מורכבות ורחבות</td>
+<td>פריסה מהירה וחסכונית, משימה מוגדרת</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>תרגיל 1.1.2 — טוקניזציה והערכת משאבים:</strong> בעזרת OpenAI Tokenizer בודקים כמה טוקנים יש במשפט בעברית ובמשפט באנגלית, משווים טקסטים ("QA Engineer", ‏"Quality Assurance Engineer", ‏"מהנדס בדיקות תוכנה") ובוחנים איך אורך הפרומפט משפיע על העלות. המסקנות: לא כל מילה היא טוקן אחד; עברית "צורכת" לרוב יותר טוקנים מאנגלית; ופרומפט ארוך יותר לא תמיד נותן תוצאה טובה יותר — צריך לאזן בין איכות לעלות.</p>
+<h3 id="c1-15">1.1.3 שלושת סוגי מודלי השפה</h3>
+<p>התפתחות המודלים עוברת שלושה סוגים: <strong>Foundation ← Instruction-Tuned ← Reasoning</strong>.</p>
+<p><strong>מודלי יסוד (Foundation Models)</strong> — אומנו על מאגרי מידע עצומים (ספרים, אתרים, קוד, מאמרים) בלי משימה ספציפית אחת. הם כלליים, גמישים ורב-תחומיים, ומשמשים בסיס לשאר המודלים — אבל כדי לבצע משימה מסוימת בצורה מיטבית הם דורשים <strong>כוונון נוסף (Fine-Tuning)</strong>.</p>
+<p><strong>מודלים מכווננים להוראות (Instruction-Tuned)</strong> — מודלי יסוד שעברו Fine-Tuning על דוגמאות של הוראות ותשובות. הם מבינים פקודות בשפה טבעית ומגיבים בצורה עקבית ומובנית, ולכן מתאימים לשימוש מעשי מיידי — למשל: "צור מקרי בדיקה לפונקציית ההתחברות".</p>
+<p><strong>מודלי הסקה (Reasoning Models)</strong> — מתמחים בחשיבה מורכבת: מפרקים בעיה לשלבים לוגיים עוקבים (Chain of Thought), מסיקים מסקנות מהקשר חלקי ומזהים אנומליות. מתאימים במיוחד לתכנון בדיקות, לניתוח שורש תקלה (Root Cause Analysis) ולניתוח סיכונים.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>מאפיין</th>
+<th>Foundation</th>
+<th>Instruction-Tuned</th>
+<th>Reasoning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>כלליות</td>
+<td><strong>גבוהה</strong></td>
+<td>בינונית</td>
+<td>נמוכה</td>
+</tr>
+<tr>
+<td>הבנת הוראות</td>
+<td>בינונית</td>
+<td><strong>גבוהה</strong></td>
+<td>גבוהה</td>
+</tr>
+<tr>
+<td>פתרון בעיות מורכבות</td>
+<td>בינוני</td>
+<td>בינוני</td>
+<td><strong>גבוה</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="c1-16">1.1.4 מודלים רב-מודאליים</h3>
+<p><strong>מודל רב-מודאלי (Multimodal)</strong> מעבד ומשלב כמה סוגי מידע בו-זמנית: טקסט, תמונה, קול ווידאו.</p>
+<p><strong>Vision-Language Models</strong> משלבים הבנת תמונה עם הבנת שפה:
+- <strong>קלט חזותי</strong> — צילומי מסך, שרטוטי ממשק (Wireframes) ואבות-טיפוס (Mockups); המודל מזהה כפתורים, שדות ופריסה.
+- <strong>קלט טקסטואלי</strong> — סיפורי משתמש, דרישות ומפרטים; המודל מבין את ההקשר העסקי.
+- <strong>פלט</strong> — מקרי בדיקה לממשק, מועמדים לתקלות (Defect Candidates) וקריטריוני קבלה משופרים.</p>
+<p>דוגמה: מזינים סיפור משתמש ושרטוט של המסך יחד, והמודל מחזיר קריטריוני קבלה, מקרי בדיקה ורשימת תקלות אפשריות (למשל שדה שמופיע בדרישה וחסר בשרטוט).</p>
+<h2 id="c1-17">1.2 מינוף GenAI בבדיקות תוכנה</h2>
+<p>מודלי שפה מסייעים לאורך כל מחזור חיי הבדיקות: יצירת תוכן בדיקות, ניתוח מידע ותקלות, הבנת דרישות והקשר, המלצות לשיפור תהליכים, תרגום בין שפות ופורמטים, וסיכום תוצאות ודוחות.</p>
+<h3 id="c1-18">1.2.1 יכולות הליבה של LLM למשימות בדיקה</h3>
+<ul>
+<li>ניתוח דרישות מערכת;</li>
+<li>יצירת מקרי בדיקה והגדרת <strong>תוצאות צפויות</strong>;</li>
+<li>יצירת נתוני בדיקה;</li>
+<li>בניית חומרי בדיקה (בודקה);</li>
+<li>ניתוח תוצאות בדיקה;</li>
+<li>תמיכה באוטומציה — כתיבה ותחזוקה של תסריטים.</li>
+</ul>
+<h3 id="c1-19">1.2.2 צ'אטבוט לעומת אפליקציה מבוססת LLM</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>צ'אטבוט</th>
+<th>אפליקציה מבוססת LLM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ממשק שיחה</td>
+<td>כן</td>
+<td>לא בהכרח</td>
+</tr>
+<tr>
+<td>שימוש ידני</td>
+<td>כן</td>
+<td>חלקי</td>
+</tr>
+<tr>
+<td>אוטומציה</td>
+<td>נמוכה</td>
+<td>גבוהה</td>
+</tr>
+<tr>
+<td>אינטגרציה</td>
+<td>מוגבלת</td>
+<td>גבוהה — משולבת בתהליכים, ב-APIs ובמערכות QA</td>
+</tr>
+</tbody>
+</table></div>
+<div class="exam">צ'אטבוט הוא ממשק; אפליקציה מבוססת LLM היא מערכת שלמה.</div>
+
+<h2 id="c1-20">דגשים לבחינה</h2>
+<ul>
+<li>GenAI מבוסס על Deep Learning, ו-Transformer הוא הבסיס לרוב ה-LLMs.</li>
+<li>LLM עובד באמצעות Tokens; ‏Embeddings מייצגים משמעות באופן מספרי — אל תתבלבלו ביניהם.</li>
+<li>חלון ההקשר מוגבל בגודלו.</li>
+<li>סדר ההתפתחות: Foundation ← Instruction-Tuned ← Reasoning.</li>
+<li>מודלים רב-מודאליים משלבים טקסט, תמונה ומידע נוסף.</li>
+<li>טעויות נפוצות: לחשוב ש-LLM תמיד מחזיר אותה תשובה, או שהוא תמיד צודק.</li>
+</ul>
+<h2 id="c1-21">מושגים והסברים</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>מושג</th>
+<th>הסבר</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Generative AI — בינה מלאכותית יוצרת</td>
+<td>בינה מלאכותית שמייצרת תוכן חדש (טקסט, קוד, תמונות) בעזרת מודלים שאומנו מראש</td>
+</tr>
+<tr>
+<td>LLM — מודל שפה גדול</td>
+<td>מודל שאומן על כמויות עצומות של טקסט כדי להבין ולייצר שפה טבעית</td>
+</tr>
+<tr>
+<td>SLM — מודל שפה קטן</td>
+<td>מודל שפה קטן וממוקד: זול ומהיר יותר, מתאים למשימות מוגדרות</td>
+</tr>
+<tr>
+<td>Prompt — הנחיה</td>
+<td>הטקסט שנשלח למודל: הוראה, שאלה או קלט</td>
+</tr>
+<tr>
+<td>Token — טוקן</td>
+<td>יחידת העיבוד הבסיסית של המודל: חלק ממילה, מילה או סימן</td>
+</tr>
+<tr>
+<td>Tokenization — טוקניזציה</td>
+<td>פירוק טקסט לטוקנים לפני העיבוד</td>
+</tr>
+<tr>
+<td>Embedding — ייצוג מספרי</td>
+<td>ווקטור מספרי שמייצג את משמעות הטוקן; משמעויות קרובות = ווקטורים קרובים</td>
+</tr>
+<tr>
+<td>Transformer</td>
+<td>ארכיטקטורת הליבה של מודלי השפה, שמבינה הקשר בעזרת מנגנון קשב</td>
+</tr>
+<tr>
+<td>Attention Mechanism — מנגנון קשב</td>
+<td>הרכיב שקובע לאילו חלקים בקלט המודל "שם לב" בכל שלב</td>
+</tr>
+<tr>
+<td>Context Window — חלון הקשר</td>
+<td>כמות הטוקנים המקסימלית שהמודל מעבד בבת אחת</td>
+</tr>
+<tr>
+<td>Non-Deterministic — לא-דטרמיניסטי</td>
+<td>אותה הנחיה עשויה להחזיר תשובות שונות בכל הרצה</td>
+</tr>
+<tr>
+<td>Symbolic AI</td>
+<td>בינה מלאכותית מבוססת חוקים שנכתבו ידנית; שקופה אך לא גמישה</td>
+</tr>
+<tr>
+<td>Machine Learning — למידת מכונה</td>
+<td>מודלים שלומדים דפוסים מנתונים</td>
+</tr>
+<tr>
+<td>Deep Learning — למידה עמוקה</td>
+<td>למידת מכונה בעזרת רשתות עצביות רב-שכבתיות</td>
+</tr>
+<tr>
+<td>Foundation Model — מודל יסוד</td>
+<td>מודל כללי שאומן על מידע עצום; בסיס למודלים אחרים</td>
+</tr>
+<tr>
+<td>Fine-Tuning — כוונון</td>
+<td>אימון נוסף של מודל קיים על דוגמאות ממוקדות למשימה</td>
+</tr>
+<tr>
+<td>Instruction-Tuned Model</td>
+<td>מודל שכוונן להבין ולבצע הוראות בשפה טבעית</td>
+</tr>
+<tr>
+<td>Reasoning Model — מודל הסקה</td>
+<td>מודל שמפרק בעיות מורכבות לשלבים ומסיק מסקנות</td>
+</tr>
+<tr>
+<td>Multimodal Model — מודל רב-מודאלי</td>
+<td>מודל שמעבד כמה סוגי מידע: טקסט, תמונה, קול, וידאו</td>
+</tr>
+<tr>
+<td>Vision-Language Model</td>
+<td>מודל רב-מודאלי שמשלב הבנת תמונה והבנת שפה</td>
+</tr>
+<tr>
+<td>Testware — בודקה</td>
+<td>כל התוצרים של תהליך הבדיקות: תוכניות, מקרי בדיקה, נתונים, תסריטים ודוחות</td>
+</tr>
+<tr>
+<td>LLM-Powered Application</td>
+<td>מערכת שמשלבת מודל שפה בתהליכים ובכלים, מעבר לממשק שיחה</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="c1-22">בקצרה — במילים פשוטות</h2>
+<div class="plain">
+<p>בינה מלאכותית יוצרת היא תוכנה שלמדה מכמות עצומה של טקסטים, ולכן היא יודעת "לכתוב" בעצמה — תשובות, קוד, מקרי בדיקה ועוד. כדי לעשות את זה היא מפרקת כל טקסט לחתיכות קטנות (טוקנים), הופכת אותן למספרים שמייצגים משמעות, ומחשבת מה הכי סביר שיבוא אחר כך.</p>
+<p>כמה דברים כדאי לזכור: לכל מודל יש גבול לכמות הטקסט שהוא "רואה" בבת אחת; הוא לא תמיד עונה אותו דבר על אותה שאלה; והוא לא תמיד צודק. יש מודלים כלליים, מודלים שמבינים הוראות, ומודלים ש"חושבים" צעד אחר צעד — ויש גם מודלים שמבינים תמונות, למשל צילום מסך של אפליקציה.</p>
+<p>לבודק, כל זה אומר עוזר חזק: אפשר לבקש ממנו לנתח דרישות, להציע מקרי בדיקה ונתוני בדיקה ולסכם תקלות. אבל התוצרים שלו הם טיוטה — הבודק עדיין אחראי לבדוק ולאשר אותם.</p>
+</div></section><section class="ch" id="ch2"><h1 id="c2-1">פרק 2 — הנדסת פרומפטים לבדיקות תוכנה</h1>
+<p class="en">Prompt Engineering for Effective Software Testing</p>
+
+<p>התוצאה שמקבלים ממודל שפה טובה רק כמו ההנחיה שנותנים לו. הפרק עוסק בבניית פרומפטים מקצועיים: ממה מורכב פרומפט טוב, אילו טכניקות קיימות, מה ההבדל בין פרומפט מערכת לפרומפט משתמש, ואיך מיישמים את כל זה במשימות בדיקה אמיתיות — מניתוח דרישות ועד דוחות ניהוליים.</p>
+<h2 id="c2-2">2.1 פיתוח פרומפטים אפקטיביים</h2>
+<h3 id="c2-3">מהי הנדסת פרומפטים?</h3>
+<p><strong>הנדסת פרומפטים (Prompt Engineering)</strong> היא תכנון, ניסוח ושיפור של הנחיות למודל, כדי לקבל תשובות <strong>מדויקות, רלוונטיות, עקביות ושימושיות</strong>. התהליך פשוט: המשתמש כותב פרומפט, המודל מעבד אותו ומחזיר תוצאה — ואיכות התוצאה תלויה במידה רבה באיכות הפרומפט.</p>
+<p>בבדיקות תוכנה, פרומפט טוב מוביל ל<strong>כיסוי בדיקות טוב יותר</strong>, <strong>דיוק גבוה יותר</strong> ו<strong>פחות "הזיות"</strong> (תשובות שנשמעות נכונות אבל מומצאות). פרומפט חלש מוביל לתשובה חלקית, להחמצת דרישות קריטיות ולמקרי בדיקה לא רלוונטיים.</p>
+<div class="exam">איכות הפלט תלויה במידה רבה באיכות הפרומפט.</div>
+
+<h3 id="c2-4">2.1.1 מבנה הפרומפט — ששת הרכיבים</h3>
+<p>פרומפט מובנה ומקצועי כולל שישה רכיבים. כדאי לזכור את כולם:</p>
+<p><strong>1. תפקיד (Role)</strong> — מגדיר למודל מי הוא ואיזו נקודת מבט מקצועית לאמץ: מהנדס אוטומציה, מנהל בדיקות, מהנדס איכות או אנליסט בדיקות. לדוגמה: ‎"Act as a Senior Test Analyst"‎. התפקיד משנה את אופן החשיבה: אותה בקשה מ"מהנדס QA" תניב מקרי בדיקה, תרחישי שגיאה ומקרי קצה, ומ"מפתח" — דגש על מבנה קוד, יעילות ופתרון טכני.</p>
+<p><strong>2. הקשר (Context)</strong> — מידע רקע על המערכת והתחום: מערכת בנקאית, אתר מסחר, אפליקציה לנייד. הקשר טוב מתאר את המערכת בבירור, מגדיר מי המשתמשים ומציין את הפעולה המרכזית. לדוגמה: "המערכת היא בנק מקוון שבו לקוחות מעבירים כסף בין חשבונות באופן מאובטח". הקשר מקטין את אי-הוודאות של המודל ומשפר את הרלוונטיות.</p>
+<p><strong>3. הוראות (Instructions)</strong> — לב הפרומפט: מה בדיוק המודל צריך לעשות. ככל שההוראה ספציפית יותר — הפלט טוב יותר.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>הוראה טובה</th>
+<th>הוראה חלשה</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"צור 20 מקרי בדיקה פונקציונליים למסך ההתחברות" — ספציפית ומדידה</td>
+<td>"בדוק התחברות" — כללית מדי</td>
+</tr>
+<tr>
+<td>"צור תרחישי תשלום חיוביים ושליליים" — סוג בדיקה ברור</td>
+<td>"תבדוק תשלומים" — לא ברור מה לבדוק</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>4. נתוני קלט (Input Data)</strong> — החומר שעליו המודל עובד: סיפורי משתמש, דרישות, צילומי מסך, קוד מקור או מקרי בדיקה קיימים. כאן חל העיקרון <strong>"זבל נכנס — זבל יוצא" (Garbage In, Garbage Out)</strong>: קלט מפורט וברור מוביל למקרי בדיקה מקיפים ושימושיים; קלט עמום מוביל לפלט חלקי ולא רלוונטי.</p>
+<p><strong>5. מגבלות (Constraints)</strong> — כללים שהמודל חייב לפעול לפיהם, והם מצמצמים את מרחב התשובות: "השתמש במינוח ISTQB בלבד", "לכל היותר 20 מקרי בדיקה", "אל תחזור על תרחישים זהים". בלי מגבלות, הפלט עלול להיות רחב מדי או לא ממוקד.</p>
+<p><strong>6. פורמט פלט (Output Format)</strong> — המבנה שבו תוחזר התשובה: טבלה, JSON לאינטגרציות, CSV לייצוא, או תחביר Given/When/Then (‏Gherkin) לבדיקות BDD. הגדרת הפורמט מונעת תשובות שאי אפשר להשתמש בהן.</p>
+<p><strong>דוגמה לפרומפט מלא:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>רכיב</th>
+<th>תוכן</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>תפקיד</td>
+<td>Act as a Senior Test Analyst</td>
+</tr>
+<tr>
+<td>הקשר</td>
+<td>אתר מסחר עם עגלת קניות, קופה ותשלום</td>
+</tr>
+<tr>
+<td>הוראות</td>
+<td>צור מקרי בדיקה פונקציונליים לתהליך הקופה</td>
+</tr>
+<tr>
+<td>נתוני קלט</td>
+<td>סיפור משתמש: כלקוח, אני רוצה להשלים רכישה בכרטיס אשראי</td>
+</tr>
+<tr>
+<td>מגבלות</td>
+<td>כסה זרימות חיוביות ושליליות; מינוח ISTQB; עד 20 מקרי בדיקה</td>
+</tr>
+<tr>
+<td>פורמט פלט</td>
+<td>טבלה עם העמודות: מזהה, תיאור, צעדים, תוצאה צפויה</td>
+</tr>
+</tbody>
+</table></div>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>רכיב</th>
+<th>מטרה</th>
+<th>תרומה ייחודית</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Role</td>
+<td>נקודת המבט של המודל</td>
+<td>משפיע על אופן החשיבה והתגובה</td>
+</tr>
+<tr>
+<td>Context</td>
+<td>רקע על המערכת</td>
+<td>מקטין אי-ודאות ומשפר דיוק</td>
+</tr>
+<tr>
+<td>Instructions</td>
+<td>המשימה לביצוע</td>
+<td>קובע את כיוון הפלט ואיכותו</td>
+</tr>
+<tr>
+<td>Input Data</td>
+<td>המידע שעליו עובדים</td>
+<td>Garbage In → Garbage Out</td>
+</tr>
+<tr>
+<td>Constraints</td>
+<td>גבולות גזרה</td>
+<td>מונע כפילויות ושומר על סטנדרט</td>
+</tr>
+<tr>
+<td>Output Format</td>
+<td>מבנה התשובה</td>
+<td>טבלה, Markdown, ‏JSON או Gherkin</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>תרגיל HO-2.1.1:</strong> ניתוח רכיבי פרומפט — משווים פרומפט חלש לפרומפט מובנה, מזהים אילו רכיבים חסרים ומשפרים אותו.</p>
+<h3 id="c2-5">2.1.2 טכניקות פרומפטינג</h3>
+<p>שלוש טכניקות מרכזיות, וכל אחת מתאימה למשימה אחרת.</p>
+<h4 id="c2-6">שרשור פרומפטים (Prompt Chaining)</h4>
+<p>פירוק משימה מורכבת לסדרת שלבים, כשהפלט של כל שלב הוא הקלט לשלב הבא. דוגמה לעבודה על דרישות:
+1. זיהוי עמימויות בדרישות;
+2. בדיקת יכולת הבדיקה (Testability) של כל דרישה;
+3. ניסוח קריטריוני קבלה;
+4. יצירת מקרי בדיקה מפורטים על בסיס הקריטריונים.</p>
+<p>היתרונות: כל שלב מתמקד במשימה אחת ולכן מדויק יותר; אפשר לבדוק ולאמת כל שלב לפני שממשיכים; משימות ארוכות מתפרקות לחלקים קטנים; והבודק יכול להתערב ולתקן בכל נקודה.</p>
+<div class="exam">שרשור פרומפטים היא הטכניקה המתאימה ביותר למשימות מורכבות.</div>
+
+<h4 id="c2-7">פרומפטינג עם דוגמאות (Few-Shot Prompting)</h4>
+<p>מכניסים לפרומפט <strong>2–5 דוגמאות</strong>, והמודל לומד מהן את הפורמט והסגנון הרצויים — לא רק מההוראות. לדוגמה: נותנים תרחיש Gherkin אחד למסך ההתחברות, ומבקשים תרחיש לסיפור "איפוס סיסמה"; המודל יחזיר אותו באותו מבנה בדיוק.</p>
+<p>היתרונות: פלט עקבי בכל הרצה, שכפול מדויק של המבנה, פחות פרשנויות שגויות, ורף ציפיות ברור. ככל שהדוגמאות איכותיות יותר — הפלט טוב יותר.</p>
+<h4 id="c2-8">מטה-פרומפטינג (Meta Prompting)</h4>
+<p>במקום לבקש מהמודל לבצע את המשימה, <strong>מבקשים ממנו לכתוב פרומפט</strong> למשימה. לדוגמה: "צור את הפרומפט הטוב ביותר ליצירת מקרי בדיקה ל-API". המודל יחזיר פרומפט מובנה עם תפקיד, הקשר, הוראות, מגבלות ופורמט — ואותו מריצים אחר כך.</p>
+<p>היתרונות: חוסך זמן ניסוח, מייצר פרומפטים מדויקים, לא דורש ניסיון מוקדם בהנדסת פרומפטים, ויוצר <strong>תבניות (Prompt Templates)</strong> לשימוש חוזר.</p>
+<div class="exam">Meta Prompting = מבקשים מהמודל ליצור פרומפט, לא לבצע את המשימה.</div>
+
+<div class="tw"><table>
+<thead>
+<tr>
+<th>מאפיין</th>
+<th>Prompt Chaining</th>
+<th>Few-Shot</th>
+<th>Meta Prompting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>משימות מורכבות</td>
+<td><strong>גבוה</strong></td>
+<td>נמוך</td>
+<td>בינוני</td>
+</tr>
+<tr>
+<td>פורמט קבוע ועקבי</td>
+<td>בינוני</td>
+<td><strong>גבוה</strong></td>
+<td>נמוך</td>
+</tr>
+<tr>
+<td>יצירת פרומפט</td>
+<td>נמוך</td>
+<td>נמוך</td>
+<td><strong>גבוה</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="c2-9">עבודה איטרטיבית עם המודל</h4>
+<p>העבודה עם המודל היא מעגל: הבודק שולח פרומפט, מקבל תוצאה, <strong>בוחן ומאמת</strong> אותה, משפר את הפרומפט — וחוזר חלילה, עד שהתוצאה עונה על הצורך.</p>
+<p><strong>תרגיל HO-2.1.2:</strong> שרשור פרומפטים על הדרישה "משתמש מתחבר עם מייל וסיסמה; אחרי שלושה ניסיונות כושלים החשבון ננעל ל-15 דקות" — מאזורי בדיקה, דרך תרחישים, ועד מקרי בדיקה מפורטים; ותרגיל זיהוי: לאיזו טכניקה שייך כל פרומפט נתון.</p>
+<h3 id="c2-10">2.1.3 פרומפט מערכת לעומת פרומפט משתמש</h3>
+<p><strong>פרומפט מערכת (System Prompt)</strong> נכתב על ידי מי שבנה את הכלי (מפתח, בודק או מעצב), <strong>נשאר קבוע לאורך כל השיחה</strong>, ומגדיר את ההתנהגות, הסגנון והמגבלות. לדוגמה: "אתה בודק תוכנה מקצועי. השתמש במינוח ISTQB. השב באופן רשמי ומובנה".</p>
+<p><strong>פרומפט משתמש (User Prompt)</strong> הוא הבקשה הספציפית שהמשתמש כותב — <strong>משתנה בכל פנייה</strong>. לדוגמה: "צור מקרי בדיקה לערכי גבול עבור בדיקת גיל".</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>מאפיין</th>
+<th>System Prompt</th>
+<th>User Prompt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>קבוע לאורך השיחה</td>
+<td>✓</td>
+<td>✗</td>
+</tr>
+<tr>
+<td>גלוי למשתמש</td>
+<td>בדרך כלל לא</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>מגדיר את התנהגות המודל</td>
+<td>✓</td>
+<td>—</td>
+</tr>
+<tr>
+<td>מגדיר את המשימה הספציפית</td>
+<td>חלקית</td>
+<td>✓</td>
+</tr>
+</tbody>
+</table></div>
+<p>המודל מעבד את שני הפרומפטים יחד: פרומפט המערכת קובע <strong>איך</strong> לענות, ופרומפט המשתמש קובע <strong>על מה</strong>. השילוב הנכון ביניהם מוביל לתשובה מדויקת ורלוונטית.</p>
+<h3 id="c2-11">שיטות עבודה מומלצות</h3>
+<ul>
+<li>להגדיר תפקיד ברור לפני כל משימה.</li>
+<li>לספק רקע רלוונטי על המערכת הנבדקת.</li>
+<li>לנסח הוראות ספציפיות ולהימנע מניסוחים כלליים.</li>
+<li>לקבוע מגבלות: מספר מקרי בדיקה, שפה ומינוח.</li>
+<li>להגדיר את מבנה הפלט: טבלה, JSON ועוד.</li>
+<li>להוסיף דוגמאות כשהפורמט חייב להיות אחיד.</li>
+</ul>
+<h2 id="c2-12">2.2 יישום הנדסת פרומפטים במשימות בדיקה</h2>
+<p>בתת-פרק הזה מיישמים את הטכניקות על משימות אמיתיות לאורך תהליך הבדיקות. כל נושא מלווה בתרגיל מעשי.</p>
+<h3 id="c2-13">2.2.1 ניתוח בדיקות עם פרומפטים רב-מודאליים</h3>
+<p>משלבים קלט טקסטואלי וחזותי — למשל סיפור משתמש ("כמשתמש רשום, אני רוצה להתחבר עם המייל שלי כדי לגשת לחשבון") יחד עם שרטוט של מסך ההתחברות — ומבקשים מהמודל קריטריוני קבלה מקיפים. המודל משווה בין מה שכתוב לבין מה שמשורטט, ומצביע על פערים (תרגיל HO-2.2.1a).</p>
+<h3 id="c2-14">2.2.2 עיצוב ויישום בדיקות</h3>
+<ul>
+<li><strong>מקרי בדיקה פונקציונליים</strong> — מסיפור משתמש של רכישה בחנות מקוונת יוצרים מקרי בדיקה, <strong>מטריצת עקיבות (Traceability Matrix)</strong> בין דרישות לבדיקות, ותרחיש מקצה לקצה (E2E) (תרגיל HO-2.2.2a).</li>
+<li><strong>תרחישי Gherkin עקביים</strong> — בעזרת Few-Shot מקבלים תרחישי Given-When-Then באותו סגנון, ומעריכים אותם בטבלת הערכה (תרגיל HO-2.2.2).</li>
+<li><strong>תעדוף לפי סיכון</strong> — המודל עוזר לדרג מקרי בדיקה לפי סיכון, השפעה עסקית, הסתברות כשל, תלויות וכיסוי דרישות. התוצאה עוברת <strong>אימות אנושי</strong> (תרגיל 2.2.2c).</li>
+</ul>
+<h3 id="c2-15">2.2.3 ניתוח בדיקות רגרסיה</h3>
+<p>בהינתן תוצאות של ריצת רגרסיה רחבה (לדוגמה: 100 בדיקות, 6 מודולים, 14 תקלות), המודל מזהה מגמות, מקבץ תקלות דומות (<strong>Bug Clusters</strong>) ומפיק דוח ניהולי. גם כאן הבודק מאמת את המסקנות (תרגיל 2.2.3).</p>
+<h3 id="c2-16">2.2.4 ניטור ובקרה — מדדים</h3>
+<p>המודל ממיר נתוני בדיקות גולמיים לתובנות מדידות ול<strong>מדדי KPI</strong> ניהוליים — שיעורי הצלחה, מגמות תקלות והתקדמות מול התוכנית (תרגיל HO-2.2.4).</p>
+<h3 id="c2-17">2.2.5 בחירת טכניקת הפרומפטינג המתאימה</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>טכניקה</th>
+<th>מתי להשתמש</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standard Prompting — פרומפט רגיל</td>
+<td>משימות פשוטות וישירות</td>
+</tr>
+<tr>
+<td>Structured Prompting — פרומפט מובנה</td>
+<td>כשצריך פלט מוגדר ומובנה</td>
+</tr>
+<tr>
+<td>Few-Shot Prompting</td>
+<td>כשנדרש סגנון עקבי או תבנית קבועה</td>
+</tr>
+<tr>
+<td>Prompt Chaining</td>
+<td>משימות מורכבות שמתחלקות לשלבים</td>
+</tr>
+<tr>
+<td>Meta Prompting</td>
+<td>יצירה או שיפור של פרומפטים</td>
+</tr>
+<tr>
+<td>Multimodal Prompting</td>
+<td>כשהקלט כולל טקסט ותמונות, כמו שרטוטי ממשק</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="c2-18">דגשים לבחינה</h2>
+<ul>
+<li>פרומפט מובנה כולל שישה רכיבים: תפקיד, הקשר, הוראות, נתוני קלט, מגבלות ופורמט פלט.</li>
+<li>התפקיד משפיע על אופן החשיבה; אותו פרומפט עם תפקיד שונה יניב תוצאה שונה.</li>
+<li>Garbage In → Garbage Out: קלט חלקי מוביל לפלט חלקי.</li>
+<li>Chaining — למשימות מורכבות; Few-Shot — לפורמט עקבי; Meta — ליצירת פרומפטים.</li>
+<li>System Prompt קבוע לאורך השיחה; User Prompt משתנה בכל פנייה.</li>
+</ul>
+<h2 id="c2-19">מושגים והסברים</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>מושג</th>
+<th>הסבר</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prompt Engineering — הנדסת פרומפטים</td>
+<td>תכנון, ניסוח ושיפור הנחיות למודל לקבלת תוצאות איכותיות</td>
+</tr>
+<tr>
+<td>Role — תפקיד</td>
+<td>נקודת המבט המקצועית שהמודל מתבקש לאמץ</td>
+</tr>
+<tr>
+<td>Context — הקשר</td>
+<td>מידע רקע על המערכת והתחום</td>
+</tr>
+<tr>
+<td>Instructions — הוראות</td>
+<td>תיאור המשימה שהמודל צריך לבצע</td>
+</tr>
+<tr>
+<td>Input Data — נתוני קלט</td>
+<td>החומר שעליו המודל עובד: דרישות, סיפורים, צילומי מסך, קוד</td>
+</tr>
+<tr>
+<td>Constraints — מגבלות</td>
+<td>כללים שמגבילים את התשובה: היקף, מינוח, הימנעות מכפילויות</td>
+</tr>
+<tr>
+<td>Output Format — פורמט פלט</td>
+<td>המבנה שבו תוחזר התשובה: טבלה, JSON, ‏CSV, ‏Gherkin</td>
+</tr>
+<tr>
+<td>Garbage In, Garbage Out</td>
+<td>עיקרון: איכות הפלט תלויה באיכות הקלט</td>
+</tr>
+<tr>
+<td>Hallucination — הזיה</td>
+<td>תשובה שנשמעת סבירה אך שגויה או מומצאת</td>
+</tr>
+<tr>
+<td>Prompt Chaining — שרשור פרומפטים</td>
+<td>פירוק משימה לשלבים, כשהפלט של שלב הוא הקלט לבא</td>
+</tr>
+<tr>
+<td>Few-Shot Prompting</td>
+<td>הכללת 2–5 דוגמאות בפרומפט כדי ללמד את המודל פורמט וסגנון</td>
+</tr>
+<tr>
+<td>Meta Prompting — מטה-פרומפטינג</td>
+<td>בקשה מהמודל לכתוב או לשפר פרומפט</td>
+</tr>
+<tr>
+<td>Prompt Template — תבנית פרומפט</td>
+<td>פרומפט מובנה שנשמר לשימוש חוזר במשימות דומות</td>
+</tr>
+<tr>
+<td>System Prompt — פרומפט מערכת</td>
+<td>הנחיה קבועה שמגדירה את התנהגות המודל לאורך כל השיחה</td>
+</tr>
+<tr>
+<td>User Prompt — פרומפט משתמש</td>
+<td>הבקשה הספציפית של המשתמש בכל פנייה</td>
+</tr>
+<tr>
+<td>Gherkin / BDD</td>
+<td>תחביר Given-When-Then לתיאור התנהגות; משמש בפיתוח מונחה התנהגות</td>
+</tr>
+<tr>
+<td>Traceability Matrix — מטריצת עקיבות</td>
+<td>טבלה שמקשרת בין דרישות למקרי הבדיקה שמכסים אותן</td>
+</tr>
+<tr>
+<td>Bug Cluster — אשכול תקלות</td>
+<td>קבוצת תקלות דומות שמצביעות על בעיה משותפת</td>
+</tr>
+<tr>
+<td>KPI — מדד ביצוע מרכזי</td>
+<td>מדד מספרי שמשמש את ההנהלה לניטור התקדמות ואיכות</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="c2-20">בקצרה — במילים פשוטות</h2>
+<div class="plain">
+<p>מודל שפה עונה בדיוק על מה ששואלים אותו — ולכן כדאי לשאול נכון. פרומפט טוב אומר למודל מי הוא (למשל "בודק מנוסה"), על איזו מערכת מדובר, מה בדיוק לעשות, על איזה חומר לעבוד, מה מותר ומה אסור, ובאיזו צורה להחזיר את התשובה.</p>
+<p>יש כמה "טריקים": לפרק משימה גדולה לכמה שאלות קטנות ברצף; לתת למודל דוגמה או שתיים כדי שיחקה את הסגנון; או אפילו לבקש ממנו לכתוב בעצמו את הפרומפט הטוב ביותר. בכלים מקצועיים יש גם הנחיה קבועה "מאחורי הקלעים" שקובעת איך המודל מתנהג, ובנוסף הבקשה שהמשתמש כותב בכל פעם.</p>
+<p>בפועל, הבודק יכול להיעזר במודל כמעט בכל שלב: לנתח דרישות ושרטוטי מסך, לכתוב מקרי בדיקה ותרחישים, לתעדף לפי סיכון, לנתח תוצאות רגרסיה ולהפיק דוחות. אבל תמיד — הבודק בודק את מה שהמודל כתב לפני שמשתמשים בזה.</p>
+</div></section><section class="ch" id="ch3"><h1 id="c3-1">פרק 3 — ניהול הסיכונים של GenAI בבדיקות תוכנה</h1>
+<p class="en">Managing Risks of Generative AI in Software Testing</p>
+
+<p>מודלי שפה הם כלי חזק, אבל לא מושלם. הפרק עוסק במה שעלול להשתבש — הזיות, שגיאות הסקה, הטיות, התנהגות לא צפויה — בסיכוני פרטיות ואבטחה, בהשפעה הסביבתית, ובתקנים ובחוקים שמסדירים את התחום. הרעיון המרכזי: הבודק נשאר האחראי, וה-AI הוא כלי.</p>
+<h2 id="c3-2">3.1 סיכוני האיכות בפלט של GenAI</h2>
+<h3 id="c3-3">שלושת הסיכונים המרכזיים</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>סיכון</th>
+<th>מהו</th>
+<th>דוגמה</th>
+<th>השפעה</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>הזיה (Hallucination)</strong></td>
+<td>המודל ממציא מידע שלא קיים במקור</td>
+<td>מקרה בדיקה ל-OTP שלא מופיע בדרישות</td>
+<td>מקרי בדיקה לא רלוונטיים, כיסוי מדומה</td>
+</tr>
+<tr>
+<td><strong>שגיאת הסקה (Reasoning Error)</strong></td>
+<td>טעות לוגית בתהליך "החשיבה"</td>
+<td>תעדוף שגוי — בדיקה בסיכון בינוני לפני בדיקה קריטית</td>
+<td>עדיפות שגויה, החמצת תקלות קריטיות</td>
+</tr>
+<tr>
+<td><strong>הטיה (Bias)</strong></td>
+<td>העדפה לא מכוונת שנובעת מנתוני האימון</td>
+<td>התמקדות בבדיקות פונקציונליות בלבד</td>
+<td>כיסוי חסר</td>
+</tr>
+</tbody>
+</table></div>
+<p>למה זה חשוב לבודקים? הפלט עלול לכלול תרחישים שלא קשורים לדרישות, להשמיט תחומים קריטיים, לתת לבדיקות חשובות דירוג נמוך — ובסופו של דבר להשאיר באגים אמיתיים מחוץ לבדיקה.</p>
+<div class="exam">הבודק חייב לאמת את תוצאות ה-AI, ולא לקבל אותן כמובנות מאליהן.</div>
+
+<h3 id="c3-4">3.1.1 הזיות, שגיאות הסקה והטיות</h3>
+<h4 id="c3-5">הזיות (Hallucinations)</h4>
+<p>הזיה היא מידע שנשמע משכנע ונכון, אבל <strong>לא מבוסס על עובדות ולא על הקלט</strong> שסופק — "נשמע נכון, אבל לא". דוגמה: הדרישה אומרת "המשתמש מתחבר עם מייל וסיסמה", והמודל מוסיף מקרה בדיקה "בדוק התחברות באמצעות OTP" — דבר שלא הוגדר בכלל.</p>
+<p>בבדיקות, הזיה יכולה להופיע כבדיקות שלא קשורות לדרישות, כפונקציונליות שמעולם לא תוכננה, כקריטריוני קבלה או כללים עסקיים מומצאים, או כהפניה ל-Endpoints שלא קיימים.</p>
+<h4 id="c3-6">שגיאות הסקה (Reasoning Errors)</h4>
+<p>שגיאת הסקה היא כשל בשרשרת ההיגיון: התוצאה לא נובעת מהנתונים. דוגמה: הקלט מגדיר בבירור ש-TC3 קריטי, TC1 בסיכון גבוה ו-TC2 בסיכון בינוני, והמודל מחזיר את הסדר TC2, ‏TC1, ‏TC3 — הפוך לגמרי. הסדר הנכון הוא TC3, ‏TC1, ‏TC2.</p>
+<p>למה זה קורה? המודל <strong>מזהה דפוסים</strong> ומנבא את המילה הבאה לפי הסתברות; הוא לא מבין סיבה ותוצאה כמו אדם.</p>
+<div class="exam">זיהוי דפוסים (Pattern Recognition) אינו הסקה אמיתית: LLM לא "חושב", הוא מנבא.</div>
+
+<h4 id="c3-7">הטיות (Biases)</h4>
+<p>הטיה היא נטייה לא מכוונת לכיוון מסוים, שנובעת מהנתונים שעליהם המודל אומן — הם קובעים את "עולם הראייה" שלו. הטיה אינה באג, אלא תוצר של נתוני האימון. דוגמאות:
+- <strong>הטיית שפה</strong> — העדפה לאנגלית; פלט באנגלית גם כשהבקשה בעברית.
+- <strong>הטיית תחום</strong> — נטייה לתחומים נפוצים כמו פיננסים ומסחר; למשל הנחת הקשר פיננסי בפרויקט רפואי.
+- <strong>הטיית בדיקות</strong> — התמקדות בבדיקות פונקציונליות והתעלמות מביצועים ואבטחה.</p>
+<h3 id="c3-8">3.1.2 זיהוי הסיכונים</h3>
+<h4 id="c3-9">זיהוי הזיות — שלוש טכניקות</h4>
+<ul>
+<li><strong>אימות צולב (Cross Validation)</strong> — השוואת הפלט למסמכי הבסיס: דרישות, סיפורי משתמש, קריטריוני קבלה ומסמכי עיצוב. שאלת המפתח: האם כל מקרה בדיקה נובע ישירות מהדרישות?</li>
+<li><strong>סקירת מומחה (Expert Review)</strong> — בודק מנוסה בוחן דיוק, רלוונטיות ושלמות: האם הפלט נכון? האם הוא קשור לתוכן האמיתי? האם כל הדרישות מכוסות? כלים אוטומטיים עלולים לפספס טעויות עדינות.</li>
+<li><strong>בדיקת עקביות (Consistency Check)</strong> — האם אותו פרומפט בזמנים שונים מחזיר תשובות דומות? האם הפלט לא סותר את עצמו? האם הוא מתיישב עם הדרישות? שימו לב: <strong>עקביות אינה נכונות</strong> — פלט עקבי שסותר דרישה עדיין שגוי.</li>
+</ul>
+<h4 id="c3-10">זיהוי שגיאות הסקה</h4>
+<ul>
+<li><strong>אימות לוגי (Logical Validation)</strong> — האם המסקנה נובעת מהנתונים? בודקים סיבה ותוצאה, סדר הצעדים, תעדוף (האם הפריטים הקריטיים קיבלו עדיפות) ודיוק חישובים.</li>
+<li><strong>בדיקת פלט (Output Testing)</strong> — השוואה בין תוצאות המודל לתוצאות ידועות מראש.</li>
+</ul>
+<h4 id="c3-11">זיהוי הטיות</h4>
+<p>שואלים: האם כל <strong>סוגי המשתמשים</strong> מיוצגים (מנהל, אורח, משתמש עם הגבלות — ולא רק משתמש רגיל)? האם כל <strong>השפות</strong> הרלוונטיות מטופלות? האם יש גם <strong>בדיקות שליליות, גבוליות ולא-פונקציונליות</strong>, ולא רק בדיקות חיוביות?</p>
+<p><strong>תרגיל HO-3.1.2 — התנסות בהזיות:</strong> מנסים לגרום למודל להזות במשימת בדיקה, מזהים את ההזיה ומשפרים את הפרומפט. המסקנות: אי אפשר למנוע הזיות לחלוטין — הן חלק מאופי מודלי השפה; פרומפט ממוקד ומוגדר היטב מצמצם אותן משמעותית; ותוצאות AI דורשות תמיד בדיקה אנושית.</p>
+<h3 id="c3-12">3.1.3 טכניקות לצמצום הסיכונים (Mitigation)</h3>
+<ul>
+<li><strong>הקשר מלא (Full Context)</strong> — לספק סיפור משתמש, דרישות, כללים עסקיים וקריטריוני קבלה. יותר הקשר = פחות הזיות. סיפור משתמש בלבד, בלי הקשר, מוביל לפלט שגוי ולא מבוסס.</li>
+<li><strong>שרשור פרומפטים</strong> — פירוק המשימה לשלבים ואימות כל שלב, כך שטעות בשלב מוקדם נתפסת לפני שהיא משפיעה על השלב הבא.</li>
+<li><strong>פורמט פלט ברור</strong> — הגדרת המבנה המצופה מראש.</li>
+<li><strong>בחירת מודל מתאים</strong> — התאמת המודל לסוג המשימה ולתחום.</li>
+<li><strong>אימות בין-מודלי (Multi-Model Validation)</strong> — שולחים את אותו פרומפט לכמה מודלים (למשל GPT, ‏Claude ו-Gemini) ומשווים. כשהמודלים מסכימים — הסיכוי לנכונות גבוה יותר; <strong>כשהם חלוקים — זה סימן לבדיקה אנושית</strong>.</li>
+</ul>
+<h3 id="c3-13">3.1.4 התנהגות לא-דטרמיניסטית</h3>
+<p>אותו פרומפט אינו מבטיח את אותה תשובה: שלוש הרצות יכולות להחזיר שלוש תוצאות שונות. הסיבה: המודל בוחר כל טוקן לפי הסתברות, ואין בו חוקים קשיחים. זו <strong>תכונה מובנית, לא באג</strong> — אבל היא פוגעת ביכולת לשחזר תוצאות בדיקה.</p>
+<p>שני כלים לשליטה:
+- <strong>Temperature (טמפרטורה)</strong> — פרמטר ששולט ברמת האקראיות (בדרך כלל בין 0 ל-2). <strong>טמפרטורה נמוכה</strong> = פלט עקבי וצפוי, פחות יצירתי — <strong>מומלצת לבדיקות ולתיעוד</strong>. טמפרטורה גבוהה = פלט מגוון ויצירתי — מתאימה לסיעור מוחות.
+- <strong>Seed (זרע אקראיות)</strong> — קיבוע ערך ההתחלה של האקראיות: אותו קלט + אותו Seed = אותה תוצאה, וכך אפשר לשחזר. לא כל מודל תומך בכך.</p>
+<h2 id="c3-14">3.2 סיכוני פרטיות ואבטחה</h2>
+<p>מערכות GenAI מעבדות מידע עסקי, אישי ורגיש — וזה יוצר סיכונים שצריך לנהל.</p>
+<h3 id="c3-15">סיכוני פרטיות</h3>
+<ul>
+<li><strong>חשיפת מידע לא מכוונת</strong> — מידע עסקי או אישי עלול להיחשף כששולחים אותו למודל.</li>
+<li><strong>חוסר שליטה בנתונים</strong> — אחרי שהמידע נשלח, אין שליטה מלאה על אחסונו ועל השימוש בו.</li>
+<li><strong>סיכוני ציות</strong> — שימוש בנתונים עלול להפר את ה-GDPR ותקנות פרטיות נוספות.</li>
+</ul>
+<h3 id="c3-16">סיכוני אבטחה ווקטורי תקיפה</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>וקטור תקיפה</th>
+<th>דוגמה</th>
+<th>השפעה</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>דליפת מידע (Data Leakage)</strong></td>
+<td>מידע עסקי רגיש נחשף לצד שלישי דרך פרומפטים או תגובות</td>
+<td>פגיעה בסודיות ובאמון</td>
+</tr>
+<tr>
+<td><strong>מניפולציה על פרומפטים (Prompt Manipulation)</strong></td>
+<td>קלט מתוחכם שמשנה את הוראות המודל</td>
+<td>פגיעה בשלמות הפלט; התנהגות לא מורשית</td>
+</tr>
+<tr>
+<td><strong>הרעלת נתונים (Data Poisoning)</strong></td>
+<td>הזרקת נתונים פגומים לשלב האימון</td>
+<td>פגיעה בדיוק המודל</td>
+</tr>
+<tr>
+<td><strong>יצירת קוד זדוני</strong></td>
+<td>המודל מייצר קוד עם דלת אחורית (Backdoor)</td>
+<td>סיכון אבטחה קריטי</td>
+</tr>
+</tbody>
+</table></div>
+<p>כל וקטור דורש הגנה נפרדת — אין פתרון אחד לכולם.</p>
+<div class="exam">מניפולציה על פרומפטים היא וקטור תקיפה ייחודי ל-GenAI: היא משנה את התנהגות המודל, לא רק את הקלט.</div>
+
+<h3 id="c3-17">שיטות הגנה</h3>
+<ul>
+<li><strong>צמצום נתונים (Data Minimization)</strong> — להעביר רק את המידע ההכרחי למשימה. במקום מספרי זהות אמיתיים — <strong>נתונים סינתטיים (מדומים)</strong>; מספרי כרטיסי אשראי — לא להעביר בכלל.</li>
+<li><strong>התממה (Anonymization)</strong> — הסרת פרטים מזהים לפני השימוש במודל.</li>
+<li><strong>הצפנה (Encryption)</strong> — הגנה על נתונים בהעברה ובאחסון.</li>
+<li><strong>בקרת גישה (Access Control)</strong> — הרשאות והגבלת גישה.</li>
+<li><strong>סקירה אנושית (Human Review)</strong> — קריאה ביקורתית של כל פלט: האם הוא הגיוני ורלוונטי? האם הוא תואם את הדרישות ואת מה שהתכוונו לבנות?</li>
+</ul>
+<div class="exam">GenAI הוא כלי עזר; האחריות הסופית תמיד אצל הבודק האנושי.</div>
+
+<h2 id="c3-18">3.3 צריכת אנרגיה והשפעה סביבתית</h2>
+<p>מודלי שפה גדולים צורכים הרבה אנרגיה: חשמל וקירור רציפים, עיבוד מקבילי אינטנסיבי (GPU) באימון ובהפעלה, אחסון מסיבי ותעבורת נתונים גבוהה. שימוש מוגבר ב-AI ← צריכת חשמל גבוהה ← <strong>פליטות CO₂</strong>. לפי הערכות, אימון מודל גדול אחד יכול לפלוט כמו טיסה טרנס-אטלנטית.</p>
+<p>איך מצמצמים?
+- לנסח בצורה ממוקדת וברורה — פחות ניסיונות, פחות אנרגיה.
+- להשתמש במודל הקטן ביותר שמתאים למשימה.
+- לא לחזור על בקשות ללא צורך.
+- לתכנן מראש ולאגד משימות כדי להפחית קריאות כפולות.</p>
+<h2 id="c3-19">3.4 רגולציה ותקנים</h2>
+<p>רגולציה אינה רק מגבלה — היא בסיס לאמון, להפחתת סיכונים ולהגנה על הפרטיות.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>מסגרת</th>
+<th>סוג</th>
+<th>מיקוד עיקרי</th>
+<th>דגש</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ISO/IEC 42001</strong></td>
+<td>תקן בינלאומי</td>
+<td><strong>מערכת ניהול</strong> ל-AI בארגון</td>
+<td>ממשל, אחריות, ניהול סיכונים וציות</td>
+</tr>
+<tr>
+<td><strong>ISO/IEC 23053</strong></td>
+<td>תקן בינלאומי</td>
+<td><strong>מחזור החיים</strong> של מערכות AI</td>
+<td>איכות נתונים, שקיפות ועמידות (Robustness)</td>
+</tr>
+<tr>
+<td><strong>EU AI Act</strong></td>
+<td><strong>חוק</strong> מחייב באיחוד האירופי</td>
+<td>רגולציה לפי רמת סיכון</td>
+<td>שקיפות, אחריות וצמצום הטיות</td>
+</tr>
+<tr>
+<td><strong>NIST AI RMF</strong></td>
+<td><strong>מסגרת עבודה</strong> (ארה״ב ועולמית)</td>
+<td>ניהול סיכוני AI</td>
+<td>הוגנות, אבטחה, שקיפות ואמינות</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>EU AI Act</strong> מסווג מערכות AI לארבע רמות סיכון:
+- <strong>סיכון בלתי קביל</strong> — אסור לשימוש;
+- <strong>סיכון גבוה</strong> — חובות מחמירות;
+- <strong>סיכון מוגבל</strong> — חובות שקיפות (למשל לגלות שמדובר ב-AI);
+- <strong>סיכון מינימלי</strong> — שימוש חופשי.</p>
+<p>בנוסף, החוק מחייב שקיפות והסבר להחלטות, אחריות של ספקים ומפעילים לתוצאות, ובדיקה פעילה של הטיות במערכות בסיכון גבוה.</p>
+<div class="exam">NIST = מסגרת עבודה · ISO = תקן · EU AI Act = חוק (רגולציה). ‏ISO 42001 עוסק בניהול ארגוני, ו-ISO 23053 במחזור החיים של מערכת ה-AI.</div>
+
+<h2 id="c3-20">דגשים לבחינה</h2>
+<ul>
+<li>מידע מומצא = הזיה; לוגיקה שגויה = שגיאת הסקה; נטייה מנתוני האימון = הטיה. לא לבלבל בין הזיה להטיה.</li>
+<li>הקשר מלא מפחית הזיות; שרשור פרומפטים מאפשר אימות שלב אחר שלב.</li>
+<li>טמפרטורה נמוכה = עקביות — מומלצת לבדיקות; ‏Seed מאפשר שחזור.</li>
+<li>צמצום נתונים הוא עיקרון מרכזי בפרטיות.</li>
+<li>ניהול סיכוני AI: ‏ISO 42001 ו-NIST AI RMF.</li>
+<li>טעויות נפוצות: לחשוב שכל תשובת AI נכונה, להתעלם מסיכוני פרטיות, ולחשוב שזיהוי דפוסים הוא הסקה.</li>
+</ul>
+<h2 id="c3-21">מושגים והסברים</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>מושג</th>
+<th>הסבר</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hallucination — הזיה</td>
+<td>מידע שנשמע נכון אבל מומצא ולא מבוסס על הקלט או על עובדות</td>
+</tr>
+<tr>
+<td>Reasoning Error — שגיאת הסקה</td>
+<td>מסקנה שגויה שאינה נובעת מהנתונים, כמו תעדוף הפוך</td>
+</tr>
+<tr>
+<td>Bias — הטיה</td>
+<td>נטייה לא מכוונת בפלט שנובעת מנתוני האימון</td>
+</tr>
+<tr>
+<td>Pattern Recognition — זיהוי דפוסים</td>
+<td>האופן שבו המודל עובד: ניבוי לפי דפוסים, לא הבנה לוגית</td>
+</tr>
+<tr>
+<td>Cross Validation — אימות צולב</td>
+<td>השוואת הפלט למסמכי הבסיס (דרישות, סיפורים, קריטריונים)</td>
+</tr>
+<tr>
+<td>Expert Review — סקירת מומחה</td>
+<td>בדיקת הפלט על ידי בודק מנוסה</td>
+</tr>
+<tr>
+<td>Consistency Check — בדיקת עקביות</td>
+<td>בדיקה שהפלט יציב, לא סותר את עצמו ותואם את הדרישות</td>
+</tr>
+<tr>
+<td>Logical Validation — אימות לוגי</td>
+<td>בדיקה שהמסקנות נובעות מהנתונים: סדר, תעדוף, חישובים</td>
+</tr>
+<tr>
+<td>Mitigation — מיתון סיכונים</td>
+<td>פעולות שמקטינות את הסבירות או את ההשפעה של סיכון</td>
+</tr>
+<tr>
+<td>Full Context — הקשר מלא</td>
+<td>מתן כל המידע הרלוונטי בפרומפט כדי לצמצם הזיות</td>
+</tr>
+<tr>
+<td>Multi-Model Validation — אימות בין-מודלי</td>
+<td>השוואת תשובות של כמה מודלים לאותו פרומפט</td>
+</tr>
+<tr>
+<td>Temperature — טמפרטורה</td>
+<td>פרמטר שקובע את מידת האקראיות; נמוך = עקבי</td>
+</tr>
+<tr>
+<td>Seed — זרע אקראיות</td>
+<td>ערך שמקבע את האקראיות ומאפשר לשחזר תוצאה</td>
+</tr>
+<tr>
+<td>Data Leakage — דליפת מידע</td>
+<td>חשיפת מידע רגיש דרך פרומפטים או תגובות</td>
+</tr>
+<tr>
+<td>Prompt Manipulation / Injection</td>
+<td>קלט מתוחכם שמשנה את התנהגות המודל</td>
+</tr>
+<tr>
+<td>Data Poisoning — הרעלת נתונים</td>
+<td>החדרת נתונים פגומים לאימון כדי לשבש את המודל</td>
+</tr>
+<tr>
+<td>Data Minimization — צמצום נתונים</td>
+<td>שימוש רק במידע ההכרחי למשימה</td>
+</tr>
+<tr>
+<td>Anonymization — התממה</td>
+<td>הסרת פרטים מזהים מנתונים</td>
+</tr>
+<tr>
+<td>Synthetic Data — נתונים סינתטיים</td>
+<td>נתונים מדומים שמחליפים מידע אמיתי ורגיש</td>
+</tr>
+<tr>
+<td>GDPR</td>
+<td>תקנת הגנת המידע של האיחוד האירופי</td>
+</tr>
+<tr>
+<td>ISO/IEC 42001</td>
+<td>תקן בינלאומי למערכת ניהול של AI בארגון</td>
+</tr>
+<tr>
+<td>ISO/IEC 23053</td>
+<td>תקן בינלאומי למחזור החיים של מערכות AI</td>
+</tr>
+<tr>
+<td>EU AI Act</td>
+<td>חוק ה-AI של האיחוד האירופי, מבוסס רמות סיכון</td>
+</tr>
+<tr>
+<td>NIST AI RMF</td>
+<td>מסגרת עבודה לניהול סיכוני AI של NIST האמריקאי</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="c3-22">בקצרה — במילים פשוטות</h2>
+<div class="plain">
+<p>מודל שפה יכול לטעות בשלוש דרכים עיקריות: להמציא דברים שלא היו (הזיה), להסיק מסקנה לא הגיונית (שגיאת הסקה), או לנטות לכיוון מסוים בגלל מה שלמד (הטיה). בנוסף, הוא עלול לענות אחרת בכל פעם. לכן תמיד משווים את מה שהוא כתב לדרישות, נותנים לבודק מנוסה לעבור על זה, וכשצריך תוצאות יציבות — מורידים את ה"טמפרטורה".</p>
+<p>כדי להקטין את הטעויות: נותנים למודל את כל ההקשר, מפרקים משימות לשלבים ובודקים כל שלב, ולפעמים שואלים כמה מודלים ומשווים.</p>
+<p>צריך גם להיזהר עם מידע: לא שולחים למודל פרטים אישיים או סודיים, משתמשים בנתונים מדומים, ושמים לב לניסיונות לתמרן את המודל. וחשוב לזכור שכל שאלה למודל צורכת חשמל, ושיש חוקים ותקנים (כמו חוק ה-AI האירופי) שמסדירים את התחום. בשורה התחתונה: ה-AI עוזר, אבל הבודק הוא האחראי.</p>
+</div></section><section class="ch" id="ch4"><h1 id="c4-1">פרק 4 — תשתיות בדיקות מבוססות מודלי שפה גדולים</h1>
+<p class="en">LLM-Powered Test Infrastructure for Software Testing</p>
+
+<p>עד עכשיו עבדנו עם מודל השפה "ישירות", דרך פרומפטים. הפרק הזה מסתכל על התמונה הגדולה: איך בונים מערכת בדיקות שלמה סביב LLM — מאילו רכיבים היא מורכבת, איך מחברים אליה את הידע של הארגון (RAG), איך נותנים לה לפעול בעצמה (AI Agents), איך מתאימים את המודל לארגון (Fine-Tuning) ואיך מתפעלים את כל זה לאורך זמן (LLMOps).</p>
+<h2 id="c4-2">4.1 ארכיטקטורה של תשתית בדיקות מבוססת LLM</h2>
+<p>תשתית בדיקות מבוססת LLM היא מערכת שמשתמשת במודל שפה כדי <strong>להסיק, להבין וליצור</strong> על בסיס דרישות, קוד ומקרי בדיקה — במטרה להפוך לאוטומטיים ניתוח, הסקה וקבלת החלטות בתהליכי הבדיקה.</p>
+<h3 id="c4-3">שתי גישות ארכיטקטוניות</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>מאפיין</th>
+<th>צ'אטבוט מבוסס AI</th>
+<th>כלי בדיקות ייעודי מבוסס AI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>שיחה עם משתמש</td>
+<td>כן</td>
+<td>חלקית</td>
+</tr>
+<tr>
+<td>יצירת מקרי בדיקה</td>
+<td>מוגבלת</td>
+<td>כן</td>
+</tr>
+<tr>
+<td>ניתוח דרישות</td>
+<td>מוגבל</td>
+<td>כן</td>
+</tr>
+<tr>
+<td>ניהול תהליכי בדיקה</td>
+<td>לא</td>
+<td>כן</td>
+</tr>
+<tr>
+<td>אופי</td>
+<td>כלי כללי, מענה לשאלות</td>
+<td>ייעודי לבדיקות תוכנה</td>
+</tr>
+</tbody>
+</table></div>
+<div class="exam">צ'אטבוט ≠ כלי בדיקות — אלו שתי גישות שונות לחלוטין.</div>
+
+<h3 id="c4-4">4.1.1 הרכיבים המרכזיים</h3>
+<p>המסלול: <strong>ממשק לקוח ← שרת ← מודל שפה ← מקורות נתונים</strong>.</p>
+<ul>
+<li><strong>צד הלקוח (Client Side)</strong> — ממשק המשתמש, נקודת הכניסה של הבודק. כאן הבודק מקליד שאלות, דרישות ומשימות, מנסח הוראות ממוקדות, ורואה את הפלט.</li>
+<li><strong>צד השרת (Server Side)</strong> — לב המערכת, שמנהל את הלוגיקה בין המשתמש למודל: <strong>אימות</strong> המשתמש, <strong>הרשאות</strong> לפי תפקיד, <strong>שליפת מידע</strong> רלוונטי ממקורות הנתונים, <strong>הרכבת הפרומפט</strong> המלא, ו<strong>תקשורת</strong> עם ה-LLM (שליחה וקבלת תשובה).</li>
+<li><strong>מודל השפה (LLM)</strong> — מבצע את ההסקה ויוצר את התשובות. שתי אפשרויות:</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>שירות חיצוני</th>
+<th>מודל פנימי ארגוני</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>איך</td>
+<td>גישה דרך האינטרנט לספק (OpenAI, ‏Anthropic, ‏Google)</td>
+<td>מותקן ומופעל בתשתית הארגון</td>
+</tr>
+<tr>
+<td>יתרון</td>
+<td>מהיר להטמעה, ללא תחזוקת מודל</td>
+<td>שליטה מלאה בנתונים, פרטיות ואבטחה מרביות</td>
+</tr>
+<tr>
+<td>חיסרון</td>
+<td>שיקולי פרטיות ואבטחה</td>
+<td>דורש חומרה ומומחיות</td>
+</tr>
+</tbody>
+</table></div>
+<p>הבחירה תלויה בדרישות הארגון: עלות, פרטיות, שליטה ויכולת תחזוקה.</p>
+<ul>
+<li><strong>מקורות נתונים (Data Sources)</strong> — מה שמזין את התשתית: מקרי בדיקה, סיפורי משתמש, מסמכי דרישות, תוצאות בדיקות, דיווחי באגים וקוד מקור.</li>
+</ul>
+<h4 id="c4-5">במה זה שונה ממערכת Client-Server רגילה?</h4>
+<p>במערכת רגילה (Client ← Server ← Database) הנתונים מעובדים לפי <strong>חוקים קבועים</strong>, והתשובות מוגדרות מראש. במערכת מבוססת LLM ‏(Client ← Server ← LLM + Data Sources) יש <strong>הסקה דינמית</strong> ועיבוד סמנטי: ה-LLM לא מחזיר נתון קבוע — הוא <strong>מסיק</strong> תשובה לפי ההקשר.</p>
+<h4 id="c4-6">מסדי נתונים יחסיים ומסדי נתונים וקטוריים</h4>
+<ul>
+<li><strong>מסד נתונים יחסי (Relational DB)</strong> — מאחסן מידע בטבלאות עם שורות ועמודות לפי סכמה מוגדרת, ומתושאל בשפת SQL, למשל <code>SELECT * FROM test_cases WHERE status = 'FAIL'</code>. מתאים לנתונים מובנים — לא לחיפוש לפי משמעות.</li>
+<li><strong>מסד נתונים וקטורי (Vector DB)</strong> — מאחסן <strong>Embeddings</strong>: כל מסמך או קטע הופך לווקטור מספרי שמייצג את משמעותו. החיפוש הוא לפי <strong>קרבה במשמעות</strong>, לא לפי מילות מפתח מדויקות.</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Vector Database</th>
+<th>Relational Database</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>מאחסן Embeddings (וקטורים מספריים)</td>
+<td>מאחסן נתונים בטבלאות (שורות ועמודות)</td>
+</tr>
+<tr>
+<td>חיפוש לפי דמיון סמנטי (Similarity Search)</td>
+<td>חיפוש לפי התאמה מדויקת (Exact Match)</td>
+</tr>
+<tr>
+<td>מתאים ל-RAG, ‏LLM וחיפוש ידע</td>
+<td>מתאים ל-ERP, ‏CRM, בנקים ומסחר</td>
+</tr>
+<tr>
+<td>מדדי Cosine Similarity / Euclidean Distance</td>
+<td>SQL ואינדקסים מסורתיים</td>
+</tr>
+<tr>
+<td>מוצא מידע גם כשהניסוח שונה</td>
+<td>מחזיר רק רשומות שעומדות בתנאי</td>
+</tr>
+<tr>
+<td>לנתונים לא-מובנים (טקסט, מסמכים, תמונות)</td>
+<td>לנתונים מובנים ומוגדרים היטב</td>
+</tr>
+</tbody>
+</table></div>
+<div class="exam">Vector DB מאחסן Embeddings — לא טבלאות SQL. והוא אינו מחליף מסד נתונים רגיל: לכל אחד תפקיד משלו.</div>
+
+<h3 id="c4-7">4.1.2 RAG — Retrieval-Augmented Generation</h3>
+<p><strong>RAG</strong> היא גישה שמשלבת <strong>אחזור מידע</strong> ממקורות חיצוניים (הידע הארגוני) עם <strong>יכולת היצירה</strong> של מודל השפה — ומאפשרת תשובות מדויקות, עדכניות ומותאמות לארגון.</p>
+<p><strong>למה צריך RAG?</strong> מודל רגיל מבוסס רק על נתוני האימון שלו: הידע שלו "קפוא" בזמן האימון, ואין לו גישה למידע פנימי או עדכני של הארגון. RAG מכניס את המידע הרלוונטי <strong>ישירות לתוך הפרומפט</strong> בזמן אמת — וכך יש פחות הזיות ויותר דיוק.</p>
+<h4 id="c4-8">תהליך RAG בשלושה שלבים</h4>
+<ol>
+<li><strong>הכנה ואחסון:</strong> מסמכים מקוריים ← <strong>Chunking</strong> (פירוק לקטעים) ← <strong>Embeddings</strong> (ייצוג וקטורי) ← <strong>Vector DB</strong> (אחסון).</li>
+<li><strong>אחזור (Retrieval):</strong> שאילתת המשתמש מקודדת ל-Embedding ‏(Query Encoding) ← <strong>חיפוש דמיון</strong> במסד הווקטורי ← <strong>Top-K</strong> — אחזור הקטעים הרלוונטיים ביותר (למשל לפי מרחק קוסינוס). האחזור מבוסס על משמעות, לא על התאמת מילים.</li>
+<li><strong>יצירה (Generation):</strong> המודל מקבל שני קלטים — ההקשר שאוחזר והידע המובנה שלו — ויוצר תשובה שמבוססת על ההקשר הספציפי.</li>
+</ol>
+<p><strong>Chunking</strong> — פירוק מסמכים ארוכים (למשל מפרט דרישות של 500 עמודים) לקטעים קטנים, בדרך כלל 256–512 טוקנים. קטעים קטנים = אחזור מדויק יותר, וכל קטע הופך ל-Embedding.</p>
+<div class="exam">Chunking מתבצע לפני שלב האחזור — לא אחריו. וההקשר שאוחזר הוא קלט למודל, לא הפלט: המודל יוצר את התשובה בעצמו.</div>
+
+<h4 id="c4-9">יתרונות RAG</h4>
+<ul>
+<li><strong>ידע עדכני</strong> — גישה למידע עדכני מהארגון, מעבר למה שנלמד באימון.</li>
+<li><strong>פחות הזיות</strong> — עיגון התשובה במסמכים אמיתיים.</li>
+<li><strong>התאמה ארגונית</strong> — המודל עונה לפי הדרישות, התיעוד והתהליכים של הארגון.</li>
+<li><strong>איכות פלט גבוהה יותר</strong> — בזכות הקשר רלוונטי.</li>
+</ul>
+<p><strong>RAG בבדיקות תוכנה:</strong> אחזור מדרישות, מקרי בדיקה קיימים, קוד מקור ותיעוד — כדי ליצור מקרי בדיקה מדויקים שמבוססים על הדרישות העדכניות ביותר.</p>
+<div class="exam">RAG אינו מאמן מחדש את המודל — הוא מספק לו הקשר בזמן אמת.</div>
+
+<p><strong>תרגיל HO-4.1.2 — התנסות ב-RAG:</strong> מבצעים משימת בדיקה עם RAG ובלעדיו ומשווים: אילו מקרי בדיקה הופיעו רק עם RAG? האם בלי RAG המודל המציא דרישות? האם נשארו פערים גם עם RAG? המסקנה: RAG מאפשר למודל להתבסס על מידע אמיתי ממסמכי הדרישות — כל דרישה מקבלת ייצוג, ויש פחות הזיות.</p>
+<h3 id="c4-10">4.1.3 סוכני AI ‏(AI Agents)</h3>
+<p><strong>AI Agent</strong> הוא יישום AI שמשתמש במודל שפה כדי <strong>לבצע פעולות</strong> במערכות שונות. הוא לא רק עונה על שאלות — הוא פועל באופן עצמאי, מקבל החלטות ומשתמש בכלים חיצוניים.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>מאפיין</th>
+<th>Chatbot — מגיב לשאלות</th>
+<th>Agent — מבצע ופועל</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>שיחה עם משתמש</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>ביצוע פעולות</td>
+<td>✗</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>שימוש בכלים</td>
+<td>✗</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>אוטונומיה</td>
+<td>נמוכה</td>
+<td>גבוהה</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>כלים (Tools)</strong> — פונקציות שהסוכן מפעיל בעצמו: קריאות <strong>API</strong> לשירותים, <strong>שאילתות למסדי נתונים</strong>, גישה ועדכון של מקרי בדיקה במערכת ניהול הבדיקות (<strong>TMS</strong>), וחיפוש ועדכון באגים ומשימות ב-<strong>Jira</strong>. סוכן יכול לשלב כמה כלים בפעולה אחת.</p>
+<h4 id="c4-11">סוגי סוכנים</h4>
+<ul>
+<li><strong>סוכן אוטונומי (Autonomous Agent)</strong> — מבצע משימות מורכבות עם מינימום מעורבות אנושית, ללא אישור. דוגמה: יוצר מקרי בדיקה ← מעדכן Jira ← שולח דוח ← מסיים.</li>
+<li><strong>סוכן חצי-אוטונומי (Semi-Autonomous Agent)</strong> — <strong>מציע</strong> פעולה ו<strong>ממתין לאישור אנושי</strong> לפני הביצוע. מתאים לפעולות רגישות: מחיקת נתונים, שינוי סביבת ייצור, פריסת גרסה. "הסוכן מציע — האדם מאשר".</li>
+<li><strong>מערכת מרובת סוכנים (Multi-Agent System)</strong> — כמה סוכנים משתפים פעולה, כל אחד בתפקיד: סוכן דרישות (ניתוח דרישות, זיהוי פערים וסתירות), סוכן תכנון בדיקות (יצירת מקרי בדיקה), סוכן נתוני בדיקה (יצירה וניהול נתונים), וסוכן דיווח (איסוף תוצאות ודוחות).</li>
+</ul>
+<p><strong>Orchestration (תזמור)</strong> — המנגנון שמנהל את התקשורת, חלוקת המשימות והתיאום בין הסוכנים: מקצה כל משימה לסוכן המתאים, מנהל את הסדר והתלויות בין השלבים, ומאחד את התוצאות לתשובה אחת. את זה עושה הסוכן המתאם — ה-<strong>Orchestrator</strong>.</p>
+<div class="exam">Multi-Agent דורש Orchestration. סוכן חצי-אוטונומי = סוכן + שלב אישור אנושי.</div>
+
+<h4 id="c4-12">הסיכונים של סוכנים — ואיך מצמצמים אותם</h4>
+<p>לסוכנים יש אותם סיכונים של LLM — <strong>הזיות, הטיות ושגיאות הסקה</strong> — אבל ההשפעה חמורה יותר: בסוכן פעיל, טעות עלולה להפוך ל<strong>פעולה</strong> שגויה, ושגיאות הסקה בולטות במיוחד במשימות רב-שלביות.</p>
+<p>דרכי מיתון: <strong>בקרה אנושית</strong> לפני פעולות קריטיות, <strong>כללי ולידציה אוטומטיים</strong> לסינון תוצאות שגויות, ו<strong>מצב חצי-אוטונומי</strong> למשימות רגישות.</p>
+<div class="exam">מיתון לא מבטל את הסיכון — הוא מקטין אותו. בקרה אנושית (Human Review) היא הכלי החזק ביותר.</div>
+
+<p><strong>תרגיל HO-4.1.3 — סוכן LLM לאוטומציה של בדיקות:</strong> צפייה בסוכן שמתכנן ומבצע משימת בדיקה חוזרת — מה נכנס, מה קורה בפנים ומה יוצא. המטרה: להבין את תהליך קבלת ההחלטות של הסוכן, את היתרונות, המגבלות והסיכונים — ומתי סוכן באמת מוסיף ערך, ולמה עדיין נדרש פיקוח מקצועי.</p>
+<h2 id="c4-13">4.2 Fine-Tuning ו-LLMOps</h2>
+<h3 id="c4-14">4.2.1 Fine-Tuning — כוונון עדין</h3>
+<p><strong>Fine-Tuning</strong> הוא אימון נוסף של מודל שפה קיים על נתונים ממוקדים, כדי להתאים אותו למשימה ספציפית. המודל <strong>שומר את הידע הכללי</strong> ורוכש התמחות חדשה. המסלול: מודל בסיס (Pre-Trained) + נתוני אימון ממוקדים ← תהליך כוונון ← מודל מכוונן שמותאם לארגון או לתחום.</p>
+<p><strong>למה לכוונן?</strong> המודל לומד את הידע של תחום הבדיקות, מכיר מונחים פנימיים, שמות מוצרים ואת שפת הארגון, ומייצר פלט שתואם את מתודולוגיות הבדיקה של הארגון. דוגמה: מודל מכוונן מקבל סיפור משתמש ומחזיר מקרי בדיקה <strong>בסגנון ובטרמינולוגיה של הארגון</strong>, כי למד מדוגמאות ארגוניות.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>LLM — מודל שפה גדול</th>
+<th>SLM — מודל שפה קטן</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>יכולות</td>
+<td>כלליות ורחבות</td>
+<td>ממוקדות במשימה</td>
+</tr>
+<tr>
+<td>משאבי חישוב</td>
+<td>גבוהים</td>
+<td>נמוכים יותר</td>
+</tr>
+<tr>
+<td>מתאים ל</td>
+<td>משימות מגוונות ומורכבות</td>
+<td>סביבות ארגוניות מוגבלות</td>
+</tr>
+<tr>
+<td>דוגמאות</td>
+<td>GPT-4, ‏Claude, ‏Gemini</td>
+<td>Phi-3, ‏Mistral, ‏Llama</td>
+</tr>
+</tbody>
+</table></div>
+<p>הבחירה תלויה במשאבים, בדרישות הדיוק ובסביבת ההטמעה.</p>
+<p><strong>יתרונות:</strong> דיוק גבוה במשימה הספציפית, היכרות עם הטרמינולוגיה והתהליכים של הארגון, ותוצאות טובות יותר ממודל כללי במשימות מוגדרות.</p>
+<p><strong>אתגרים:</strong>
+- <strong>איכות נתונים (Data Quality)</strong> — נתונים לקויים = מודל לקוי ("Garbage In, Garbage Out").
+- <strong>התאמת יתר (Overfitting)</strong> — המודל "שינן" את נתוני האימון: מצוין עליהם, גרוע על נתונים חדשים. זה הסיכון המרכזי.
+- <strong>עלות חישוב</strong> — דורש GPU/TPU יקרים ותשתית מתאימה.
+- <strong>יכולת הסבר (Explainability)</strong> — קשה להסביר למה המודל המכוונן מחליט כפי שהוא מחליט.</p>
+<div class="exam">Fine-Tuning ≠ RAG: ‏Fine-Tuning משנה את המודל עצמו; RAG מוסיף לו מידע חיצוני בזמן אמת. ו-Overfitting הוא הסיכון המרכזי ב-Fine-Tuning.</div>
+
+<p><strong>תרגיל HO-4.2.1 — הדגמת Fine-Tuning:</strong> ארבעה שלבים — בחירת מודל בסיס, הכנת מערך נתונים, ביצוע הכוונון והערכת הביצועים — והשוואה בין המודל המקורי למכוונן. הלקח: איכות נתוני האימון קובעת את איכות התוצאות.</p>
+<h3 id="c4-15">4.2.2 LLMOps — תפעול מודלי שפה</h3>
+<p><strong>LLMOps ‏(Large Language Model Operations)</strong> הוא התחום שעוסק בניהול התפעולי המלא של מודלי שפה בסביבת ייצור — מהפריסה ועד התחזוקה השוטפת והאופטימיזציה. הוא מקביל ל-MLOps, אבל מותאם לאתגרים של LLMs. מחזור החיים: <strong>פיתוח ← פריסה ← ניטור ← תחזוקה ← אופטימיזציה</strong>.</p>
+<div class="exam">LLMOps ≠ Fine-Tuning: ‏LLMOps עוסק בתפעול, לא באימון. והוא אינו רק פריסה — הוא מכסה את כל מחזור החיים.</div>
+
+<h4 id="c4-16">שלוש אסטרטגיות הטמעה</h4>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>אסטרטגיה</th>
+<th>יתרונות</th>
+<th>חסרונות</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>צ'אטבוט (Chatbot)</strong></td>
+<td>מהיר להטמעה, עלות נמוכה, נגיש לכל בודק</td>
+<td>פרטיות ואבטחה מוגבלות (נתונים יוצאים לשרת חיצוני), תלות בספק, ידע כללי ולא ייעודי</td>
+</tr>
+<tr>
+<td><strong>כלי בדיקות מבוסס AI</strong></td>
+<td>התמחות בתהליכי QA, אינטגרציה עם כלים קיימים (TMS), פריסה מהירה יחסית</td>
+<td>עלויות רישוי, תלות בספק (Vendor Lock-in), שליטה מוגבלת במודל</td>
+</tr>
+<tr>
+<td><strong>פלטפורמה פנימית</strong></td>
+<td>שליטה מלאה בנתונים ובמודל, פרטיות, התאמה מלאה</td>
+<td>עלות הקמה ותחזוקה גבוהה, צורך במומחיות AI פנימית, זמן הטמעה ארוך</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>גישה היברידית (Hybrid Approach)</strong> — שילוב של כמה גישות בו-זמנית: צ'אטבוט לשאלות יומיומיות, כלי ייעודי לתהליכי הבדיקה, ופלטפורמה פנימית למידע רגיש. Hybrid = שילוב, לא בחירה.</p>
+<p><strong>שילוב RAG ו-Fine-Tuning</strong> — הם לא מתחרים. Fine-Tuning נותן למודל את הטרמינולוגיה ודפוסי הבדיקה של הארגון, ו-RAG נותן לו את המידע העדכני (דרישות, מקרי בדיקה, תיעוד). יחד: מודל חכם + מידע עדכני = דיוק גבוה, פחות הזיות והתאמה ארגונית מלאה.</p>
+<h2 id="c4-17">דגשים לבחינה</h2>
+<ul>
+<li>RAG = Retrieval + Generation; ‏RAG אינו מאמן מחדש את המודל.</li>
+<li>Vector DB מאחסן Embeddings, ואינו מחליף מסד נתונים רגיל.</li>
+<li>Chunking מתבצע לפני האחזור.</li>
+<li>Agent מבצע פעולות ומשתמש בכלים — לא רק עונה. Chatbot ≠ Agent.</li>
+<li>Multi-Agent דורש Orchestration.</li>
+<li>Fine-Tuning מתאים מודל למשימה ספציפית; Overfitting הוא הסיכון המרכזי.</li>
+<li>LLMOps עוסק בפריסה, ניטור, תחזוקה ואופטימיזציה.</li>
+<li>Fine-Tuning ו-RAG הן טכנולוגיות שונות — ואפשר לשלב ביניהן.</li>
+</ul>
+<h2 id="c4-18">מושגים והסברים</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>מושג</th>
+<th>הסבר</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LLM-Based Test Infrastructure</td>
+<td>מערכת בדיקות שמשתמשת במודל שפה להסקה, ניתוח ויצירה</td>
+</tr>
+<tr>
+<td>Client Side — צד לקוח</td>
+<td>ממשק המשתמש שבו הבודק מזין בקשות ורואה תוצאות</td>
+</tr>
+<tr>
+<td>Server Side — צד שרת</td>
+<td>מנהל אימות, הרשאות, שליפת מידע, הרכבת פרומפט ותקשורת עם המודל</td>
+</tr>
+<tr>
+<td>Data Sources — מקורות נתונים</td>
+<td>דרישות, סיפורי משתמש, מקרי בדיקה, תוצאות, באגים וקוד</td>
+</tr>
+<tr>
+<td>Dynamic Inference — הסקה דינמית</td>
+<td>תשובה שהמודל מסיק לפי ההקשר, לעומת חוקים קבועים</td>
+</tr>
+<tr>
+<td>Relational DB — מסד נתונים יחסי</td>
+<td>טבלאות עם שורות ועמודות, שאילתות SQL והתאמה מדויקת</td>
+</tr>
+<tr>
+<td>Vector DB — מסד נתונים וקטורי</td>
+<td>אחסון Embeddings וחיפוש לפי דמיון במשמעות</td>
+</tr>
+<tr>
+<td>Embedding</td>
+<td>ייצוג מספרי (וקטור) של משמעות הטקסט</td>
+</tr>
+<tr>
+<td>Similarity Search — חיפוש דמיון</td>
+<td>מציאת הקטעים הקרובים במשמעות, למשל לפי Cosine Similarity</td>
+</tr>
+<tr>
+<td>RAG</td>
+<td>אחזור מידע רלוונטי והכנסתו לפרומפט לפני שהמודל יוצר תשובה</td>
+</tr>
+<tr>
+<td>Chunking</td>
+<td>פירוק מסמכים לקטעים קטנים (כ-256–512 טוקנים) לפני יצירת Embeddings</td>
+</tr>
+<tr>
+<td>Top-K Retrieval</td>
+<td>אחזור K הקטעים הרלוונטיים ביותר לשאילתה</td>
+</tr>
+<tr>
+<td>AI Agent — סוכן AI</td>
+<td>יישום שמשתמש ב-LLM כדי לפעול, להחליט ולהפעיל כלים</td>
+</tr>
+<tr>
+<td>Tools — כלים</td>
+<td>פונקציות שהסוכן מפעיל: API, מסדי נתונים, TMS, ‏Jira</td>
+</tr>
+<tr>
+<td>Autonomous Agent</td>
+<td>סוכן שפועל עצמאית בלי אישור אנושי</td>
+</tr>
+<tr>
+<td>Semi-Autonomous Agent</td>
+<td>סוכן שמציע פעולה וממתין לאישור אנושי</td>
+</tr>
+<tr>
+<td>Multi-Agent System</td>
+<td>כמה סוכנים ייעודיים שעובדים יחד</td>
+</tr>
+<tr>
+<td>Orchestration / Orchestrator</td>
+<td>ניהול ותיאום בין הסוכנים; הסוכן המתאם</td>
+</tr>
+<tr>
+<td>Fine-Tuning — כוונון עדין</td>
+<td>אימון נוסף של מודל קיים על נתונים ממוקדים</td>
+</tr>
+<tr>
+<td>SLM — מודל שפה קטן</td>
+<td>מודל קטן וממוקד, זול יותר בחישוב</td>
+</tr>
+<tr>
+<td>Overfitting — התאמת יתר</td>
+<td>המודל שינן את נתוני האימון ומתקשה עם נתונים חדשים</td>
+</tr>
+<tr>
+<td>Explainability — יכולת הסבר</td>
+<td>היכולת להסביר למה המודל החליט כפי שהחליט</td>
+</tr>
+<tr>
+<td>LLMOps</td>
+<td>תפעול מודלי שפה: פריסה, ניטור, תחזוקה ואופטימיזציה</td>
+</tr>
+<tr>
+<td>Vendor Lock-in — תלות בספק</td>
+<td>קושי לעבור לפתרון אחר בגלל תלות בספק</td>
+</tr>
+<tr>
+<td>Hybrid Approach — גישה היברידית</td>
+<td>שילוב כמה אסטרטגיות הטמעה בו-זמנית</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="c4-19">בקצרה — במילים פשוטות</h2>
+<div class="plain">
+<p>מערכת בדיקות "חכמה" בנויה כמו כל מערכת: מסך שבו הבודק כותב, שרת שמנהל הכול, ומודל שפה שחושב — ועוד מקורות מידע של הארגון (דרישות, באגים, קוד). ההבדל ממערכת רגילה: המודל לא שולף תשובה מוכנה, אלא מנסח אותה לפי ההקשר.</p>
+<p>כדי שהמודל ידע את מה שהארגון יודע, משתמשים ב-RAG: מפרקים את המסמכים לקטעים, שומרים אותם לפי משמעות, ובכל שאלה שולפים את הקטעים הרלוונטיים ומצרפים אותם לפרומפט. כך התשובות מדויקות יותר ופחות "ממציאות".</p>
+<p>סוכן AI הוא מודל שלא רק מדבר אלא גם עושה — פותח באג ב-Jira, מריץ שאילתה, שולח דוח. אפשר לתת לו לפעול לבד, או לדרוש אישור לפני פעולות רגישות; וכמה סוכנים יכולים לעבוד יחד בניהול של "מתאם".</p>
+<p>אפשר גם ללמד את המודל את השפה של הארגון (Fine-Tuning) — אבל צריך נתונים טובים ולהיזהר שלא "ישנן". ובסוף, צריך לתפעל את כל זה לאורך זמן (LLMOps), ולבחור בין צ'אטבוט, כלי ייעודי ופלטפורמה פנימית — או לשלב ביניהם.</p>
+</div></section><section class="ch" id="ch5"><h1 id="c5-1">פרק 5 — פריסה ושילוב של GenAI בארגוני בדיקות</h1>
+<p class="en">Deployment and Integration of Generative AI in Test Organizations</p>
+
+<p>הפרק האחרון עובר מהטכנולוגיה לארגון: איך מכניסים GenAI לצוות בדיקות בצורה מסודרת — עם אסטרטגיה, מדיניות, בחירת מודל נכונה, חישוב עלויות ואימוץ הדרגתי — ואיך מנהלים את השינוי באנשים, בתפקידים ובתהליכים.</p>
+<h2 id="c5-2">5.1 מפת דרכים לאימוץ GenAI בבדיקות</h2>
+<p><strong>מפת דרכים (Roadmap)</strong> היא תוכנית הדרגתית לשילוב GenAI בתהליכי הבדיקות, בשישה צעדים:
+1. <strong>מטרות בדיקה ברורות</strong> (Clear Testing Goals)
+2. <strong>בחירת מודל מתאים</strong> (Model Selection)
+3. <strong>ניהול נתוני הקלט</strong> (Input Data Management)
+4. <strong>עמידה בתקנים ורגולציה</strong> (Compliance &amp; Regulations)
+5. <strong>ניטור התקדמות</strong> (Progress Monitoring)
+6. <strong>מדידת תועלת</strong> (Value Measurement)</p>
+<p><strong>למה צריך אסטרטגיה?</strong> בלי אסטרטגיה ברורה, השימוש ב-GenAI עלול להיות לא עקבי, לא מבוקר, מסוכן לפרטיות, יקר ובלתי ניתן למדידה.</p>
+<div class="exam">GenAI בארגון אינו רק כלי — הוא שינוי בתהליך העבודה.</div>
+
+<h3 id="c5-3">5.1.1 Shadow AI — בינה מלאכותית נסתרת</h3>
+<p><strong>Shadow AI</strong> הוא שימוש של עובדים בכלי AI שלא אושרו, מחוץ למדיניות הארגון וללא ידיעת ההנהלה. דוגמה: בודק מעלה את מסמך הדרישות החסוי של הארגון לכלי AI אישי.</p>
+<p>הסיכונים: <strong>פרצות אבטחה</strong>, <strong>פגיעה בפרטיות</strong>, <strong>אי-עמידה ברגולציה</strong>, <strong>חשיפת מידע עסקי</strong> ו<strong>בעיות קניין רוחני</strong>.</p>
+<p><strong>קניין רוחני (Intellectual Property)</strong> — מידע, תוכן, קוד, מסמכים ותוצרים ששייכים לארגון או מוגנים בזכויות יוצרים. העלאת קוד מקור לכלי AI ציבורי עלולה ליצור חשיפה משפטית ולהפר הסכמי סודיות. הגנה על קניין רוחני = הגנה על הארגון.</p>
+<div class="exam">Shadow AI הוא סיכון ארגוני — לא רק טכנולוגי.</div>
+
+<h3 id="c5-4">5.1.2 ההיבטים המרכזיים באסטרטגיית GenAI</h3>
+<p>שמונה רכיבים: <strong>מטרות מדידות</strong>, <strong>בחירת מודל</strong>, <strong>איכות נתונים</strong>, <strong>הכשרת הצוות</strong>, <strong>שקיפות</strong>, <strong>בקרות איכות</strong>, <strong>מדיניות שימוש</strong> ו<strong>מדדים</strong>.</p>
+<ul>
+<li><strong>מטרות מדידות</strong> — מטרות טובות הן ספציפיות, מדידות ורלוונטיות לתהליך הבדיקות: קיצור זמן כתיבת הבדיקות, שיפור כיסוי הדרישות, שיפור איכות דוחות הבדיקה, צמצום עבודה ידנית חוזרת, ושיפור העקביות בתוצרים.</li>
+<li><strong>איכות נתונים</strong> — איכות התוצר תלויה באיכות הקלט: דרישות ברורות, הקשר מלא, נתונים עדכניים, פורמט מובנה, והסרת מידע רגיש. קלט ← סינון והכנה ← תוצר איכותי.</li>
+</ul>
+<div class="exam">Garbage In → Garbage Out: פרומפט לקוי יניב תוצר לקוי.</div>
+
+<ul>
+<li><strong>מדיניות שימוש ב-AI ‏(AI Usage Policy)</strong> — חמש שאלות שכל ארגון צריך לענות עליהן לפני השימוש:
+  1. איזה מידע מותר להזין?
+  2. אילו כלים מאושרים?
+  3. מי מאשר שימוש ב-AI?
+  4. איך מתבצעת הסקירה האנושית?
+  5. איך מסמנים תוצרים שנוצרו בעזרת AI?</li>
+<li><strong>שקיפות (Transparency)</strong> — חובה לדעת ולציין מתי תוצר נוצר בעזרת GenAI. דוגמה להערה בתוצר: "Test Cases generated with GenAI and reviewed by QA Engineer". כך מסמנים כל תוצר שנוצר ב-AI ועבר סקירה אנושית.</li>
+</ul>
+<h3 id="c5-5">5.1.3 בחירת LLM או SLM למשימות בדיקה</h3>
+<p>בחירת המודל משפיעה ישירות על איכות התוצרים, על העלות ועל היכולת לשלב AI בתהליכים. הקריטריונים: <strong>רב-מודאליות</strong> (Multimodal), <strong>יכולת הסקה</strong>, <strong>גודל חלון ההקשר</strong>, <strong>ביצועים</strong>, <strong>תמיכה וקהילה</strong>, <strong>פוטנציאל ל-Fine-Tuning</strong>, <strong>רישוי</strong> ו<strong>עלות</strong>.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>מאפיין</th>
+<th>LLM</th>
+<th>SLM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>גודל המודל</td>
+<td>גדול מאוד</td>
+<td>קטן ויעיל</td>
+</tr>
+<tr>
+<td>עלות הפעלה</td>
+<td>גבוהה</td>
+<td>נמוכה</td>
+</tr>
+<tr>
+<td>משאבי חומרה</td>
+<td>רבים — ענן חזק</td>
+<td>מעטים — אפשר להריץ מקומית</td>
+</tr>
+<tr>
+<td>משימות כלליות</td>
+<td>מתאים מאוד</td>
+<td>מוגבל</td>
+</tr>
+<tr>
+<td>משימה ממוקדת</td>
+<td>טוב</td>
+<td>טוב מאוד</td>
+</tr>
+</tbody>
+</table></div>
+<p>הבחירה תלויה במשימה — לא בגודל בלבד.</p>
+<ul>
+<li><strong>ביצועים</strong> — מעריכים את המודל לפי <strong>משימות בדיקה אמיתיות</strong>, לא לפי פופולריות: יצירת מקרי בדיקה, חידוד קריטריוני קבלה, ניתוח דוחות, יצירת נתוני בדיקה ותעדוף בדיקות.</li>
+<li><strong>פוטנציאל לכוונון</strong> — האם אפשר להתאים את המודל לסגנון ולמינוח של הארגון, לפורמטים קבועים, להקשר של המוצר ולעקביות לאורך זמן? Fine-Tuning מאפשר למודל "לדבר בשפת הארגון".</li>
+<li><strong>קהילה ותמיכה</strong> — תמיכה מקצועית, תיעוד ברור, עדכונים שוטפים, פתרון תקלות וקהילה פעילה — קריטיים לשימוש ארגוני יציב.</li>
+<li><strong>עלות חוזרת (Recurring Cost)</strong> — העלות אינה חד-פעמית; היא מצטברת בכל הרצה. מרכיביה: טוקנים בקלט, טוקנים בפלט, מספר ההרצות, מספר המשתמשים, רישוי (מנוי או API) ותפעול (תחזוקה, אינטגרציה ותמיכה).</li>
+</ul>
+<div class="exam">עלות חוזרת = טוקנים × הרצות × משתמשים + רישוי + תפעול. מחשבים את העלות החודשית לפני שבוחרים מודל.</div>
+
+<p><strong>תרגיל HO-5.1.3 — הערכת עלויות:</strong> מחשבים את העלות החודשית של יצירת מקרי בדיקה ב-GenAI בתרחיש עבודה רציף: כמה טוקנים בפרומפט? כמה בתשובה הצפויה? כמה פעמים בחודש מריצים? ומה העלות אצל שלושה ספקים שונים? המסקנות: לחשב קלט ופלט לכל הרצה, לחשוב בתדירות (יומית, שבועית, חודשית), להשוות מודלים מסחריים לקוד פתוח — ולזכור שגם מודל "חינמי" בקוד פתוח עולה כסף: GPU, תחזוקה וניטור.</p>
+<h3 id="c5-6">5.1.4 שלבי האימוץ</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>שלב</th>
+<th>מה עושים</th>
+<th>דוגמה</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. גילוי (Discovery)</strong></td>
+<td>מודעות, הכשרה, סדנאות Prompt Engineering, ניסויים מובנים עם משימות אמיתיות — כדי להפחית חשש ולבנות ביטחון</td>
+<td>סדנה שבה בודקים כותבים פרומפטים ראשונים למקרי בדיקה</td>
+</tr>
+<tr>
+<td><strong>2. הגדרת מקרי שימוש (Start and Define Use Cases)</strong></td>
+<td>איתור משימות שבהן GenAI תורם, תעדוף לפי השפעה ומורכבות, השוואת כלים, ובדיקת התאמה לתהליכים הקיימים</td>
+<td>שימוש ראשון: יצירת מקרי בדיקה אוטומטית מסיפורי משתמש</td>
+</tr>
+<tr>
+<td><strong>3. שימוש ואיטרציה (Use and Iterate)</strong></td>
+<td>ה-AI כבר משולב — עכשיו מנטרים שימוש, מודדים ערך, משפרים פרומפטים ומרחיבים לשימושים נוספים</td>
+<td>שיפור מתמיד</td>
+</tr>
+</tbody>
+</table></div>
+<p>כל שלב נשען על הקודם — האימוץ הדרגתי ומבוקר.</p>
+<p><strong>אימוץ מקבילי (Parallel Adoption)</strong> — לא כל מקרי השימוש מתקדמים באותו קצב. בו-זמנית, ניתוח דוחות בדיקה יכול להיות בשלב מתקדם, יצירת אוטומציה בשלב מוקדם ויצירת נתוני בדיקה עדיין בניסוי. האימוץ מקבילי, לא לינארי.</p>
+<h2 id="c5-7">5.2 ניהול שינוי באימוץ GenAI</h2>
+<p>הטמעת GenAI דורשת שינוי בחמישה תחומים: <strong>תרבות</strong>, <strong>מדדים</strong>, <strong>תהליכים</strong>, <strong>תפקידים</strong> ו<strong>מיומנויות</strong>.</p>
+<p><strong>למה ניהול שינוי חשוב?</strong> עם ניהול שינוי: אימוץ אחיד של הכלים, פחות התנגדות, שמירה על פרטיות ואבטחה, תוצרים איכותיים ועקביים ושיפור מתמיד. בלעדיו: העובדים לא יאמצו את הכלים, השימוש לא יהיה אחיד, ההתנגדות תגבר, ויהיו סיכוני פרטיות ותוצרים חלשים.</p>
+<h3 id="c5-8">5.2.1 מיומנויות חיוניות</h3>
+<p>שש מיומנויות: <strong>הנדסת פרומפטים</strong>, <strong>סקירת תוצרי AI</strong>, <strong>הבנת חלון ההקשר</strong>, <strong>מודעות לסיכונים</strong>, <strong>פרטיות מידע</strong> ו<strong>הערכת מודלים</strong>.</p>
+<p><strong>הבודק המודרני</strong> נמצא בחיתוך של שלושה תחומי ידע: <strong>בדיקות תוכנה</strong> (עקרונות, שיטות ותהליכים), <strong>הדומיין העסקי</strong> (הקשר, דרישות וחוק) ו<strong>הבנת GenAI</strong> (פרומפטים, מודלים ומגבלות) — ומוסיף להם אימות תוצרים וחשיבה ביקורתית.</p>
+<p><strong>סקירת תוצרי AI</strong> — שש שאלות לפני שמאשרים תוצר:
+1. האם הוא <strong>נכון</strong>?
+2. האם יש בו <strong>תוכן מומצא או שגוי</strong>?
+3. האם יש <strong>הטיה לא מכוונת</strong>?
+4. האם <strong>הפורמט והמבנה</strong> תקינים?
+5. האם הוא <strong>מכסה את הדרישות</strong>?
+6. האם <strong>נדרש תיקון</strong>?</p>
+<p><strong>מיומנויות אבטחה ופרטיות</strong> — היכרות עם מדיניות הארגון, הבנת סיכוני דליפת מידע, <strong>פסאודונימיזציה</strong> (החלפת מזהים בכינויים), <strong>התממה</strong> (הסרת המזהים), ו<strong>לא להזין מידע רגיש</strong>. בודק אחראי לא מעלה מידע עסקי, קוד או נתוני לקוחות לכלי AI ציבורי — גם אם הכלי נראה בטוח.</p>
+<p><strong>מודעות סביבתית</strong> — מודלים גדולים צורכים יותר אנרגיה. שואלים אם הערך מצדיק את המשאבים, לא שולחים בקשות כפולות, ומשתמשים ב-SLM למשימות פשוטות. מודל קטן ומדויק עדיף על מודל גדול ובזבזני.</p>
+<h3 id="c5-9">5.2.2 בניית יכולות בצוותי הבדיקות</h3>
+<ul>
+<li><strong>מסלולי למידה</strong> לפי תפקיד: בודק, מנהל, אוטומציה.</li>
+<li><strong>תרגול מעשי</strong> עם מודלים שונים ומשימות בדיקה אמיתיות.</li>
+<li><strong>שיתוף ידע</strong> — קהילות פנימיות, פורומים ולקחים בין צוותים.</li>
+<li><strong>ספריות פרומפטים</strong> — מאגר תבניות ארגוני לשימוש חוזר.</li>
+</ul>
+<p><strong>תבנית פרומפט (Prompt Template)</strong> — מבנה קבוע לשימוש חוזר, שמנחה את ה-AI לייצר תוצר בפורמט הנדרש. דוגמה ליצירת מקרי בדיקה מסיפור משתמש:
+- <strong>תפקיד:</strong> אתה מהנדס בדיקות בכיר.
+- <strong>הקשר:</strong> User Story: [סיפור המשתמש].
+- <strong>משימה:</strong> צור מקרי בדיקה בפורמט Gherkin.
+- <strong>פורמט:</strong> Given / When / Then — לפחות 5 מקרים.</p>
+<p>התבנית מבטיחה שכל בודק בצוות יקבל פלט באותו פורמט: חיסכון בזמן, עקביות ושימוש חוזר.</p>
+<p><strong>ספריית פרומפטים (Prompt Library)</strong> — מאגר ארגוני מרכזי שכולל תבניות מוכנות למשימות שכיחות, דוגמאות לפרומפטים שהוכחו כיעילים, הנחיות שימוש, <strong>ניהול גרסאות</strong> (Version Control) והערות איכות ומגבלות ידועות. היא מפחיתה עבודה כפולה ומבטיחה עקביות בצוות.</p>
+<p><strong>קהילות ידע פנימיות (Communities of Practice)</strong> — שיתוף פרומפטים מוצלחים ולקחים, דיון באתגרים, יצירת סטנדרטים פנימיים ושיפור מתמיד.</p>
+<h3 id="c5-10">5.2.3 התפתחות תהליכי הבדיקה והתפקידים</h3>
+<p><strong>שינוי התפקיד:</strong> מבודק ש<strong>כותב</strong> תוצרים בעצמו — לבודק ש<strong>מנחה, מאמת ומשפר</strong> תוצרים שה-AI יצר.</p>
+<p><strong>הבודק בעידן ה-AI ‏(AI-Assisted Tester):</strong> כותב פרומפטים ברורים ומדויקים, סוקר תוצרי AI מול הדרישות ומאתר הזיות, משפר פרומפטים באופן שוטף, מתחזק את ספריית הפרומפטים, ומזהה סיכונים (הטיה, הזיות, פרטיות). <strong>הבודק אינו מוחלף — תפקידו מתפתח</strong> ("AI-Assisted, Human-Led").</p>
+<p><strong>מנהל הבדיקות בעידן ה-AI ‏(AI-Aware Test Manager):</strong> אחראי על אסטרטגיית GenAI, ניהול סיכונים, מדידת אפקטיביות, מדיניות השימוש ב-AI, והאיזון בין אדם ל-AI.</p>
+<p><strong>צוותים היברידיים</strong> — בודקים אנושיים, כלי GenAI, סוכני AI ותהליכים חצי-אוטונומיים שעובדים יחד. ניהול בדיקות מתרחב לניהול שיתוף הפעולה בין אנשים לכלי AI.</p>
+<div class="exam">מנהל בדיקות מודרני מנהל גם אנשים וגם פתרונות AI — לא רק תהליכים.</div>
+
+<h2 id="c5-11">דגשים לבחינה</h2>
+<ul>
+<li>Shadow AI יוצר סיכוני אבטחה, פרטיות, רגולציה וקניין רוחני.</li>
+<li>אסטרטגיית GenAI חייבת לכלול מטרות מדידות.</li>
+<li>בחירת מודל תלויה בביצועים, עלות, יכולות, רישוי ותמיכה — לא בפופולריות.</li>
+<li>שלבי האימוץ: Discovery ← הגדרת Use Cases ← שימוש ואיטרציה.</li>
+<li>תבניות פרומפטים וספריות פרומפטים תומכות באחידות ובשיפור מתמיד.</li>
+<li>בודקים אינם מוחלפים — התפקיד מתפתח; מנהלים מנהלים גם אנשים וגם AI.</li>
+<li>טעויות נפוצות: לחשוב שכל צוות יכול להשתמש בכל כלי AI בלי מדיניות, לבחור מודל לפי פופולריות, ולהתעלם מעלויות חוזרות של טוקנים, רישוי ותפעול.</li>
+</ul>
+<h2 id="c5-12">מושגים והסברים</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>מושג</th>
+<th>הסבר</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Roadmap — מפת דרכים</td>
+<td>תוכנית הדרגתית לשילוב GenAI בתהליכי הבדיקות</td>
+</tr>
+<tr>
+<td>Shadow AI — בינה מלאכותית נסתרת</td>
+<td>שימוש בכלי AI לא מאושרים, מחוץ למדיניות הארגון</td>
+</tr>
+<tr>
+<td>Intellectual Property — קניין רוחני</td>
+<td>קוד, מסמכים ותוצרים ששייכים לארגון או מוגנים בזכויות יוצרים</td>
+</tr>
+<tr>
+<td>Measurable Goals — מטרות מדידות</td>
+<td>מטרות ספציפיות שאפשר למדוד, כמו קיצור זמן כתיבת בדיקות</td>
+</tr>
+<tr>
+<td>Data Quality — איכות נתונים</td>
+<td>קלט ברור, מלא, עדכני ומובנה, ללא מידע רגיש</td>
+</tr>
+<tr>
+<td>Garbage In, Garbage Out</td>
+<td>קלט גרוע מוביל לפלט גרוע</td>
+</tr>
+<tr>
+<td>AI Usage Policy — מדיניות שימוש</td>
+<td>כללים: איזה מידע, אילו כלים, מי מאשר, איך סוקרים ואיך מסמנים</td>
+</tr>
+<tr>
+<td>Transparency — שקיפות</td>
+<td>ציון מפורש שתוצר נוצר בעזרת AI ועבר סקירה</td>
+</tr>
+<tr>
+<td>Multimodal — רב-מודאלי</td>
+<td>מודל שמטפל בכמה סוגי קלט: טקסט, תמונה, קול</td>
+</tr>
+<tr>
+<td>Recurring Cost — עלות חוזרת</td>
+<td>עלות שמצטברת בכל הרצה: טוקנים, משתמשים, רישוי ותפעול</td>
+</tr>
+<tr>
+<td>Discovery — גילוי</td>
+<td>שלב האימוץ הראשון: מודעות, הכשרה והתנסות</td>
+</tr>
+<tr>
+<td>Use Case — מקרה שימוש</td>
+<td>משימת בדיקה ספציפית שבה GenAI מוסיף ערך</td>
+</tr>
+<tr>
+<td>Use and Iterate — שימוש ואיטרציה</td>
+<td>שלב שבו מנטרים, מודדים ומשפרים באופן מתמיד</td>
+</tr>
+<tr>
+<td>Parallel Adoption — אימוץ מקבילי</td>
+<td>מקרי שימוש שונים נמצאים בשלבי אימוץ שונים בו-זמנית</td>
+</tr>
+<tr>
+<td>Change Management — ניהול שינוי</td>
+<td>ניהול השינוי בתרבות, במדדים, בתהליכים, בתפקידים ובמיומנויות</td>
+</tr>
+<tr>
+<td>AI Output Review — סקירת תוצרי AI</td>
+<td>בדיקת נכונות, המצאות, הטיה, פורמט, כיסוי וצורך בתיקון</td>
+</tr>
+<tr>
+<td>Pseudonymization — פסאודונימיזציה</td>
+<td>החלפת פרטים מזהים בכינויים או בקודים</td>
+</tr>
+<tr>
+<td>Prompt Template — תבנית פרומפט</td>
+<td>מבנה פרומפט קבוע לשימוש חוזר ולתוצרים עקביים</td>
+</tr>
+<tr>
+<td>Prompt Library — ספריית פרומפטים</td>
+<td>מאגר ארגוני של תבניות, דוגמאות, הנחיות וגרסאות</td>
+</tr>
+<tr>
+<td>Community of Practice — קהילת ידע</td>
+<td>קהילה פנימית לשיתוף פרומפטים, לקחים וסטנדרטים</td>
+</tr>
+<tr>
+<td>AI-Assisted Tester</td>
+<td>בודק שמנחה, מאמת ומשפר תוצרי AI</td>
+</tr>
+<tr>
+<td>AI-Aware Test Manager</td>
+<td>מנהל בדיקות שמנהל גם אנשים וגם פתרונות AI</td>
+</tr>
+<tr>
+<td>Hybrid Team — צוות היברידי</td>
+<td>צוות שמשלב בודקים, כלי GenAI וסוכני AI</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="c5-13">בקצרה — במילים פשוטות</h2>
+<div class="plain">
+<p>אי אפשר פשוט "להוריד ChatGPT" ולצפות שהצוות ישתפר. צריך תוכנית: לקבוע מה רוצים להשיג ואיך מודדים את זה, לבחור מודל שמתאים למשימה (ולא את המפורסם ביותר), לחשב כמה זה יעלה כל חודש, ולכתוב כללים — מה מותר להעלות, באילו כלים, ואיך מסמנים תוצר שנכתב בעזרת AI.</p>
+<p>הסכנה הגדולה היא עובדים שמשתמשים לבד בכלים לא מאושרים ומעלים אליהם מסמכים של החברה (Shadow AI). לכן מדיניות ברורה והדרכה הם חובה.</p>
+<p>מכניסים את ה-AI בהדרגה: קודם לומדים ומתנסים, אחר כך בוחרים שימוש ראשון, ואז משפרים ומרחיבים — וכל שימוש מתקדם בקצב שלו. בדרך משקיעים באנשים: מלמדים לכתוב פרומפטים ולבדוק את מה שה-AI כתב, ובונים ספריית פרומפטים משותפת.</p>
+<p>בסוף, הבודק לא מוחלף — הוא הופך למי שמכוון את ה-AI, בודק אותו ומשפר אותו; והמנהל מנהל צוות שבו עובדים יחד אנשים וכלים חכמים.</p>
+</div></section>
+</article>
+</div>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה · החומר לשימוש אישי של משתתפי הקורס בלבד<span class="ver">ספר מסכם <bdi dir="ltr">v1.0 · 23.11.2026</bdi></span></footer>
+<script>
+document.getElementById('prt').onclick=()=>window.print();
+if(/[?&]print=1/.test(location.search))(document.fonts?document.fonts.ready:Promise.resolve()).then(()=>setTimeout(()=>window.print(),600));
+const links=[...document.querySelectorAll('.side a')],map=new Map(links.map(a=>[a.getAttribute('href').slice(1),a]));
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('on'));const a=map.get(e.target.id);if(a){a.classList.add('on');a.scrollIntoView({block:'nearest'})}}})},{rootMargin:'-80px 0px -70% 0px'});
+document.querySelectorAll('article h1[id],article h2[id],article h3[id]').forEach(h=>{if(map.has(h.id))io.observe(h)});
+</script>
+</body>
+</html>
