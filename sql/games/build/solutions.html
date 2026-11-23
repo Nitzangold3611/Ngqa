@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;--red:#e5484d;--green:#1fb57a;
+--bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960);--soft:light-dark(#eef9f8,#14304a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 Heebo,Arial,sans-serif}
+button,input{font:inherit}
+.bar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;gap:10px;align-items:center;padding:10px max(3vw,14px);flex-wrap:wrap}
+.bar b{flex:1;font-size:17px}
+.bar a,.bar button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 14px;text-decoration:none;cursor:pointer;font-size:15px}
+.clock{font:700 20px/1 ui-monospace,Consolas,monospace;direction:ltr;background:#000a;border-radius:10px;padding:8px 12px;color:var(--teal)}
+.clock.late{color:var(--orange)}
+.wrap{max-width:1100px;margin:auto;padding:26px max(3vw,14px)}
+.hero{background:var(--navy);color:#fff;border-radius:18px;padding:clamp(22px,4vw,40px);margin-bottom:22px}
+.hero h1{margin:0 0 8px;font-size:clamp(26px,4vw,40px);line-height:1.15}
+.hero p{color:#c9cbf0;margin:8px 0;max-width:75ch}.hero q{color:#fff}
+.hero .go{margin-top:12px;background:var(--orange);color:#fff;border:0;border-radius:12px;padding:10px 22px;font-weight:700;font-size:17px;cursor:pointer}
+.slots{display:flex;gap:8px;direction:ltr;justify-content:center;margin:0 0 22px}
+.slots span{width:52px;height:60px;border-radius:12px;border:2px dashed var(--line);display:grid;place-items:center;font:800 28px Heebo,Arial;position:relative;background:var(--card)}
+.slots span small{position:absolute;bottom:2px;font-size:11px;color:var(--mute);font-weight:500}
+.slots span.on{border:2px solid var(--teal);color:var(--teal-d)}
+.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px}
+@media(max-width:800px){.rooms{grid-template-columns:1fr 1fr}}@media(max-width:520px){.rooms{grid-template-columns:1fr}}
+.rm{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;text-align:start;cursor:pointer;color:inherit;position:relative}
+.rm:hover{border-color:var(--teal)}.rm.cur{border:2px solid var(--orange)}
+.rm .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;margin-inline-end:8px}
+.rm b{font-size:17.5px}.rm small{display:block;color:var(--mute);font-size:13.5px;margin-top:4px}
+.rm .st{position:absolute;inset-block-start:12px;inset-inline-end:14px;font-size:13px;font-weight:700;color:var(--mute)}
+.rm.done .st{color:var(--green)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,32px);margin-bottom:22px}
+.panel h2{margin:0;font-size:26px}.panel .sub{color:var(--teal-d);font-weight:700;margin-bottom:12px}
+q{quotes:"\201D" "\201C"}
+.codebox,.cfg,.req,.runs,.fields{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0}
+.codebox div{display:flex;gap:12px;align-items:center;margin:6px 0}
+code{direction:ltr;unicode-bidi:isolate;font:15.5px ui-monospace,Consolas,monospace;background:var(--soft);padding:2px 8px;border-radius:6px}
+pre{margin:0;font:14.5px/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap}
+.lab{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:8px;background:var(--orange);color:#fff;font-weight:800;font-size:15px;margin-inline-end:8px;flex:none}
+.frags{display:grid;gap:8px;margin:12px 0}.frags div{border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:flex;align-items:flex-start;background:light-dark(#fffdf8,#1b1a44)}
+.cases{padding-inline-start:26px}.cases li{margin:6px 0}
+.runs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}@media(max-width:700px){.runs{grid-template-columns:1fr}}
+.runs ol{margin:4px 0;padding-inline-start:20px;font-size:14.5px}
+.doc{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 16px;padding-inline-start:40px;font-size:15px}
+.fields{display:flex;flex-wrap:wrap;gap:8px}.fields span{border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card)}
+.req ul{margin:6px 0;padding-inline-start:22px}
+.tw{overflow-x:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:15px}th{background:var(--navy);color:#fff;padding:7px 10px;text-align:start}td{border-bottom:1px solid var(--line);padding:7px 10px}
+.lock{border-top:2px dashed var(--line);margin-top:18px;padding-top:16px}
+.lock .q{font-weight:700}.lock .fmt{color:var(--mute);font-size:14px}
+.lock form{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.lock input{flex:1;min-width:180px;border:2px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--bg);color:var(--ink);direction:ltr;text-align:center;font:700 18px ui-monospace,Consolas,monospace;letter-spacing:2px}
+.lock button.try{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:8px 20px;font-weight:700;cursor:pointer}
+:root[data-theme=dark] .lock button.try{background:var(--teal-d)}
+.lock .msg{min-height:1.4em;font-weight:700}.msg.bad{color:var(--red)}.msg.ok{color:var(--green)}
+.lock.solved input{border-color:var(--green);background:light-dark(#ecfbf4,#123a2c)}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.hints{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hints button{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:3px 12px;font-size:14px;cursor:pointer}
+.hints button:disabled{opacity:.45;cursor:default}
+.hint{background:light-dark(#fff4e6,#3a2a12);border-inline-start:4px solid var(--orange);border-radius:8px;padding:6px 12px;margin:6px 0;font-size:15px}
+.reward{margin-top:14px;background:var(--soft);border-radius:12px;padding:10px 14px;font-weight:700}
+.final{border:2px solid var(--orange)}
+.cert{display:none;text-align:center;border:6px double var(--teal);border-radius:18px;padding:30px;background:var(--card);margin-bottom:22px}
+.cert h2{font-size:32px;margin:6px 0}.cert .nm{font-size:28px;font-weight:800;color:var(--teal-d)}
+.cert .row{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin:14px 0;font-size:18px}
+.cert button,.solbox a{background:var(--orange);color:#fff;border:0;border-radius:10px;padding:8px 18px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.solbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin-bottom:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.solbox p{margin:0;flex:1;color:var(--mute)}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}footer .ver{display:block}
+@media print{.bar,.rooms,.panel,.slots,.hero,.solbox,footer{display:none!important}body{background:#fff}.cert{display:block!important;margin-top:40mm}}
+
+body{background:#fff;color:#121133;font-size:11pt;line-height:1.6}
+@page{size:A4;margin:15mm}
+.cv{background:#121133;color:#fff;border-radius:14px;padding:26px 30px;margin-bottom:16px}.cv h1{margin:0 0 6px;font-size:26pt}.cv p{color:#c9cbf0;margin:4px 0}
+section{break-before:page}section h2{color:#0E9F97;font-size:18pt;margin:0}.sub{color:#5d5c7c;font-weight:700;margin-bottom:8px}
+.lk{border:2px solid #14DACD;border-radius:12px;padding:10px 14px;margin:12px 0;break-inside:avoid;background:#f3fdfc}
+.lk .q{font-weight:700}.ans{font-size:13pt;margin:6px 0}.ans b{background:#F38911;color:#fff;border-radius:6px;padding:1px 10px;font-family:Consolas,monospace;letter-spacing:1px}
+.rw{font-weight:700;background:#eef9f8;border-radius:10px;padding:8px 12px}
+.frags div,.codebox,.cfg,.req,.runs,.fields,.doc{break-inside:avoid}
+</style></head><body>
+<div class="cv"><h1>מדריך פתרונות — חדר בריחה: היהלום שנעלם</h1><p>NGQA · SQL · חדר בריחה v1.0 · 23.11.2026</p><p>לכל מנעול: התשובה, הדרך אליה, והקשר לחומר הקורס. מומלץ לקרוא אחרי המשחק.</p></div>
+<h2>איך משחקים</h2><p>בוקר שבת, 21.11.2026. יהלום "Blue Star" נעלם מאולם האבנים היקרות במוזיאון. המשטרה עוד בדרך, ומנהלת המוזיאון סגרה את כל הדלתות. המפתח היחיד לחדר הבקרה נמצא אצלכם: גישה למסד הנתונים של המוזיאון.</p>
+<p><b>לפני שמתחילים:</b> הורידו את <a href="../dl/escape_setup.sql" download>escape_setup.sql</a>, פתחו אותו ב-SSMS בתוך מסד נתונים ריק לתרגול, והריצו אותו. נוצרות ארבע טבלאות: <code>Halls</code>, ‏<code>Exhibits</code>, ‏<code>Staff</code> ו-<code>AccessLog</code>. כל התשובות מגיעות מהרצת שאילתות. אפשר גם לפתור על הנייר, אבל זה הרבה יותר קשה.</p>
+<p>יש לכם <b>75 דקות</b>. בכל מנעול יש 3 רמזים, וכל רמז מוסיף 3 דקות. כל חדר שתפרצו יחשוף אות ואת מיקומה בסיסמה הסופית.</p><p>החדרים פתוחים בכל סדר. כל חדר שנפרץ חושף אות ואת מיקומה בסיסמת השחרור. אפשר להשתמש בשלושה רמזים לכל מנעול, וכל רמז מוסיף 3 דקות. ההתקדמות נשמרת בדפדפן.</p>
+<div class="rw">תקציר התשובות: R1A: 4 · R1B: PERETZ · R2A: 4 · R2B: 5 · R3A: IT · R3B: 3480000 · R4A: 3 · R4B: 30800 · R5A: SHAPIRO · R6A: 411 · סיסמה: SELECT</div>
+<section><h2>חדר 1 · חדר כוח האדם</h2><div class="sub">פרקים 1–2 · SELECT, ‏WHERE ו-ORDER BY</div><p>הבלש מבקש להתחיל מרשימת העובדים. כל העובדים נמצאים בטבלה <code>Staff</code>.</p><div class="lk"><div class="q">כמה עובדים יש במחלקת האבטחה (Security)?</div><div class="ans">תשובה: <b dir="ltr">4</b></div><p>SELECT COUNT(*) FROM Staff WHERE Department = 'Security'; — מחזירה 4 (Cohen, ‏Levi, ‏Ben-David, ‏Peretz).</p></div><div class="lk"><div class="q">מה שם המשפחה של העובד שהתקבל לעבודה אחרון?</div><div class="ans">תשובה: <b dir="ltr">PERETZ</b></div><p>SELECT TOP 1 LastName FROM Staff ORDER BY HireDate DESC; — מחזירה Peretz, שהתקבל ב-5.1.2025.</p></div><div class="rw">פרס החדר: האות <b>E</b> במיקום <b>2</b></div></section><section><h2>חדר 2 · חדר המוצגים</h2><div class="sub">פרק 3 · BETWEEN, ‏IN ו-LIKE</div><p>חברת הביטוח רוצה לדעת אילו מוצגים "בטווח הסיכון" שלה, ומה עוד עלול להיעלם.</p><div class="lk"><div class="q">כמה מוצגים שווים בין 400,000 ל-1,000,000 (כולל), והסטטוס שלהם הוא OnDisplay או Restoration?</div><div class="ans">תשובה: <b dir="ltr">4</b></div><p>המוצגים: Night Harbor ‏(650,000), ‏Golden Owl ‏(920,000), ‏Emerald Ring ‏(760,000, ‏Restoration) ו-Sunset Field ‏(410,000). ‏Ruby Crown יקר מדי ו-Marble Runner זול מדי. סה"כ 4.</p></div><div class="lk"><div class="q">בכמה שמות משפחה של עובדים מופיעה האות a (בכל מקום בשם)?</div><div class="ans">תשובה: <b dir="ltr">5</b></div><p>SELECT COUNT(*) FROM Staff WHERE LastName LIKE '%a%'; — ‏Azulai, ‏Ben-David, ‏Shapiro, ‏Golan, ‏Katz. סה"כ 5.</p></div><div class="rw">פרס החדר: האות <b>L</b> במיקום <b>3</b></div></section><section><h2>חדר 3 · חדר הכספים</h2><div class="sub">פרקים 4–5 · פונקציות מוכללות, GROUP BY ושאילתות משולבות</div><p>המשטרה בודקת מניעים כלכליים. ההנהלה מבקשת תמונת מצב כספית.</p><div class="lk"><div class="q">לאיזו מחלקה יש את השכר הממוצע הגבוה ביותר?</div><div class="ans">תשובה: <b dir="ltr">IT</b></div><p>הממוצעים: IT ‏16,500 · ‏Curatorial ‏14,650 · ‏Security ‏10,450 · ‏Maintenance ‏9,000. התשובה: IT.</p></div><div class="lk"><div class="q">מה שווי הביטוח הכולל של המוצגים שנשארו באולם Gems (בלי המוצג שנעלם)?</div><div class="ans">תשובה: <b dir="ltr">3480000</b></div><p>באולם H2 ‏(Gems) נשארו Ruby Crown ‏(1,800,000), ‏Golden Owl ‏(920,000) ו-Emerald Ring ‏(760,000). הסכום: 3,480,000.</p></div><div class="rw">פרס החדר: האות <b>T</b> במיקום <b>6</b></div></section><section><h2>חדר 4 · חדר יומן הכניסות</h2><div class="sub">פרק 6 · JOIN</div><p>המצלמה באולם Gems הייתה מושבתת בין <b>22:00 ל-23:30</b> ב-20.11.2026. כל כניסה דרך הדלת <code>D-GEMS</code> נרשמה בטבלה <code>AccessLog</code>, אבל שם יש רק מספרי עובדים — את השמות צריך להביא מ-<code>Staff</code>.</p><div class="lk"><div class="q">כמה עובדים שונים נכנסו בדלת D-GEMS בחלון הזמן 22:00–23:30 (לפי שעת הכניסה)?</div><div class="ans">תשובה: <b dir="ltr">3</b></div><p>SELECT s.FirstName, s.LastName FROM AccessLog a JOIN Staff s ON s.StaffID = a.StaffID WHERE a.Door = 'D-GEMS' AND a.EntryTime BETWEEN '2026-11-20T22:00:00' AND '2026-11-20T23:30:00'; — שלושה חשודים: Yael Golan ‏(22:10), ‏Ron Azulai ‏(22:50) ו-Noa Shapiro ‏(23:10). ‏Avi Levi נכנס לפני החלון, ו-Lior Ben-David אחריו.</p></div><div class="lk"><div class="q">מה סכום המשכורות של שלושת החשודים?</div><div class="ans">תשובה: <b dir="ltr">30800</b></div><p>SUM(s.Salary) על אותו JOIN: ‏7,600 + 10,400 + 12,800 = 30,800.</p></div><div class="rw">פרס החדר: האות <b>S</b> במיקום <b>1</b></div></section><section><h2>חדר 5 · חדר החקירה</h2><div class="sub">פרק 7 · שאילתות משנה</div><p>מנהלת המוזיאון נזכרת: <q>הכספת עם המפתח הרזרבי של תיבת היהלום נמצאת בארכיון. מי שגנב חייב היה לעבור קודם בארכיון — באותו ערב.</q> הדלת של הארכיון היא <code>D-ARCH</code>.</p><div class="lk"><div class="q">מה שם המשפחה של העובד שנכנס ל-D-GEMS בחלון הזמן, וגם נכנס ל-D-ARCH ב-20.11.2026?</div><div class="ans">תשובה: <b dir="ltr">SHAPIRO</b></div><p>SELECT LastName FROM Staff WHERE StaffID IN (SELECT StaffID FROM AccessLog WHERE Door = 'D-GEMS' AND EntryTime BETWEEN '2026-11-20T22:00:00' AND '2026-11-20T23:30:00') AND StaffID IN (SELECT StaffID FROM AccessLog WHERE Door = 'D-ARCH' AND EntryTime >= '2026-11-20T00:00:00' AND EntryTime < '2026-11-21T00:00:00'); — מחזירה Shapiro. ‏Klein נכנסה לארכיון יום קודם, ולכן לא עונה על התנאי.</p></div><div class="rw">פרס החדר: האות <b>C</b> במיקום <b>5</b></div></section><section><h2>חדר 6 · חדר השינויים</h2><div class="sub">פרקים 8–11 · DML, ‏DDL, ‏Views ופרוצדורות</div><p>לפני שהמשטרה מגיעה, מישהו מנסה "לנקות" את המסד. מצאתם שתי פקודות שמוכנות להרצה:</p>
+<div class="cfg"><pre dir="ltr">-- (1)
+UPDATE Staff
+SET Salary = Salary * 1.05
+WHERE Department IN (SELECT Department FROM Staff
+                     GROUP BY Department
+                     HAVING COUNT(*) &gt;= 3);
+
+-- (2)
+DELETE FROM AccessLog
+WHERE ExitTime &lt; '2026-11-20T00:00:00';</pre></div>
+<p>עדיף לבדוק בתוך <code>BEGIN TRANSACTION; … ROLLBACK;</code> כדי לא לאבד ראיות.</p><div class="lk"><div class="q">כמה שורות תעדכן פקודה (1)? ואחרי פקודה (2), כמה שורות יישארו ב-AccessLog? (על הנתונים המקוריים)</div><div class="ans">תשובה: <b dir="ltr">411</b></div><p>(1): שאילתת המשנה מחזירה רק את Security ‏(4 עובדים), ולכן מתעדכנות 4 שורות. (2): רק כניסה 9 (Klein, ‏19.11) יצאה לפני 20.11, ולכן נמחקת שורה אחת ונשארות 11. התשובה: 4 ואז 11 — ‏411.</p></div><div class="rw">פרס החדר: האות <b>E</b> במיקום <b>4</b></div></section>
+<section><h2>דלת השחרור</h2><div class="lk"><div class="q">הרכיבו את הסיסמה הסופית מששת האותיות, כל אחת במיקום שלה.</div><div class="ans">תשובה: <b dir="ltr">SELECT</b></div><p>S(1) E(2) L(3) E(4) C(5) T(6) — SELECT. והגנבת: Noa Shapiro.</p></div></section>
+</body></html>

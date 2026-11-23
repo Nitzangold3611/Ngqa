@@ -1,0 +1,151 @@
+<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;--red:#e5484d;--green:#1fb57a;
+--bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960);--soft:light-dark(#eef9f8,#14304a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 Heebo,Arial,sans-serif}
+button,input{font:inherit}
+.bar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;gap:10px;align-items:center;padding:10px max(3vw,14px);flex-wrap:wrap}
+.bar b{flex:1;font-size:17px}
+.bar a,.bar button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 14px;text-decoration:none;cursor:pointer;font-size:15px}
+.clock{font:700 20px/1 ui-monospace,Consolas,monospace;direction:ltr;background:#000a;border-radius:10px;padding:8px 12px;color:var(--teal)}
+.clock.late{color:var(--orange)}
+.wrap{max-width:1100px;margin:auto;padding:26px max(3vw,14px)}
+.hero{background:var(--navy);color:#fff;border-radius:18px;padding:clamp(22px,4vw,40px);margin-bottom:22px}
+.hero h1{margin:0 0 8px;font-size:clamp(26px,4vw,40px);line-height:1.15}
+.hero p{color:#c9cbf0;margin:8px 0;max-width:75ch}.hero q{color:#fff}
+.hero .go{margin-top:12px;background:var(--orange);color:#fff;border:0;border-radius:12px;padding:10px 22px;font-weight:700;font-size:17px;cursor:pointer}
+.slots{display:flex;gap:8px;direction:ltr;justify-content:center;margin:0 0 22px}
+.slots span{width:52px;height:60px;border-radius:12px;border:2px dashed var(--line);display:grid;place-items:center;font:800 28px Heebo,Arial;position:relative;background:var(--card)}
+.slots span small{position:absolute;bottom:2px;font-size:11px;color:var(--mute);font-weight:500}
+.slots span.on{border:2px solid var(--teal);color:var(--teal-d)}
+.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px}
+@media(max-width:800px){.rooms{grid-template-columns:1fr 1fr}}@media(max-width:520px){.rooms{grid-template-columns:1fr}}
+.rm{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;text-align:start;cursor:pointer;color:inherit;position:relative}
+.rm:hover{border-color:var(--teal)}.rm.cur{border:2px solid var(--orange)}
+.rm .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;margin-inline-end:8px}
+.rm b{font-size:17.5px}.rm small{display:block;color:var(--mute);font-size:13.5px;margin-top:4px}
+.rm .st{position:absolute;inset-block-start:12px;inset-inline-end:14px;font-size:13px;font-weight:700;color:var(--mute)}
+.rm.done .st{color:var(--green)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,32px);margin-bottom:22px}
+.panel h2{margin:0;font-size:26px}.panel .sub{color:var(--teal-d);font-weight:700;margin-bottom:12px}
+q{quotes:"\201D" "\201C"}
+.codebox,.cfg,.req,.runs,.fields{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0}
+.codebox div{display:flex;gap:12px;align-items:center;margin:6px 0}
+code{direction:ltr;unicode-bidi:isolate;font:15.5px ui-monospace,Consolas,monospace;background:var(--soft);padding:2px 8px;border-radius:6px}
+pre{margin:0;font:14.5px/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap}
+.lab{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:8px;background:var(--orange);color:#fff;font-weight:800;font-size:15px;margin-inline-end:8px;flex:none}
+.frags{display:grid;gap:8px;margin:12px 0}.frags div{border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:flex;align-items:flex-start;background:light-dark(#fffdf8,#1b1a44)}
+.cases{padding-inline-start:26px}.cases li{margin:6px 0}
+.runs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}@media(max-width:700px){.runs{grid-template-columns:1fr}}
+.runs ol{margin:4px 0;padding-inline-start:20px;font-size:14.5px}
+.doc{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 16px;padding-inline-start:40px;font-size:15px}
+.fields{display:flex;flex-wrap:wrap;gap:8px}.fields span{border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card)}
+.req ul{margin:6px 0;padding-inline-start:22px}
+.tw{overflow-x:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:15px}th{background:var(--navy);color:#fff;padding:7px 10px;text-align:start}td{border-bottom:1px solid var(--line);padding:7px 10px}
+.lock{border-top:2px dashed var(--line);margin-top:18px;padding-top:16px}
+.lock .q{font-weight:700}.lock .fmt{color:var(--mute);font-size:14px}
+.lock form{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.lock input{flex:1;min-width:180px;border:2px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--bg);color:var(--ink);direction:ltr;text-align:center;font:700 18px ui-monospace,Consolas,monospace;letter-spacing:2px}
+.lock button.try{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:8px 20px;font-weight:700;cursor:pointer}
+:root[data-theme=dark] .lock button.try{background:var(--teal-d)}
+.lock .msg{min-height:1.4em;font-weight:700}.msg.bad{color:var(--red)}.msg.ok{color:var(--green)}
+.lock.solved input{border-color:var(--green);background:light-dark(#ecfbf4,#123a2c)}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.hints{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hints button{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:3px 12px;font-size:14px;cursor:pointer}
+.hints button:disabled{opacity:.45;cursor:default}
+.hint{background:light-dark(#fff4e6,#3a2a12);border-inline-start:4px solid var(--orange);border-radius:8px;padding:6px 12px;margin:6px 0;font-size:15px}
+.reward{margin-top:14px;background:var(--soft);border-radius:12px;padding:10px 14px;font-weight:700}
+.final{border:2px solid var(--orange)}
+.cert{display:none;text-align:center;border:6px double var(--teal);border-radius:18px;padding:30px;background:var(--card);margin-bottom:22px}
+.cert h2{font-size:32px;margin:6px 0}.cert .nm{font-size:28px;font-weight:800;color:var(--teal-d)}
+.cert .row{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin:14px 0;font-size:18px}
+.cert button,.solbox a{background:var(--orange);color:#fff;border:0;border-radius:10px;padding:8px 18px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.solbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin-bottom:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.solbox p{margin:0;flex:1;color:var(--mute)}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}footer .ver{display:block}
+@media print{.bar,.rooms,.panel,.slots,.hero,.solbox,footer{display:none!important}body{background:#fff}.cert{display:block!important;margin-top:40mm}}
+
+body{background:#fff;color:#121133;font-size:11pt;line-height:1.6}
+@page{size:A4;margin:15mm}
+.cv{background:#121133;color:#fff;border-radius:14px;padding:26px 30px;margin-bottom:16px}.cv h1{margin:0 0 6px;font-size:26pt}.cv p{color:#c9cbf0;margin:4px 0}
+section{break-before:page}section h2{color:#0E9F97;font-size:18pt;margin:0}.sub{color:#5d5c7c;font-weight:700;margin-bottom:8px}
+.lk{border:2px solid #14DACD;border-radius:12px;padding:10px 14px;margin:12px 0;break-inside:avoid;background:#f3fdfc}
+.lk .q{font-weight:700}.ans{font-size:13pt;margin:6px 0}.ans b{background:#F38911;color:#fff;border-radius:6px;padding:1px 10px;font-family:Consolas,monospace;letter-spacing:1px}
+.rw{font-weight:700;background:#eef9f8;border-radius:10px;padding:8px 12px}
+.frags div,.codebox,.cfg,.req,.runs,.fields,.doc{break-inside:avoid}
+</style></head><body>
+<div class="cv"><h1>מדריך פתרונות — חדר בריחה: ליל השחרור של גרסה 4.0</h1><p>NGQA · CTFL · חדר בריחה v1.0 · 23.11.2026</p><p>לכל מנעול: התשובה, הדרך אליה, והקשר לחומר הקורס. מומלץ לקרוא אחרי המשחק.</p></div>
+<h2>איך משחקים</h2><p>23:15. בעוד פחות משעתיים אמורה לעלות גרסה 4.0 של אפליקציית ההזמנות "FlyNow". מנהל הבדיקות נתקע בפקק, ובמשרד נשארתם רק אתם. מערכת ה-CI/CD נעלה את כפתור השחרור מאחורי שישה מנעולים, וכל אחד מהם דורש החלטה של בודק מוסמך.</p>
+<p>יש לכם <b>75 דקות</b>. מותר להשתמש במצגות, בסילבוס ובמחשבון. בכל מנעול יש 3 רמזים מדורגים, וכל רמז מוסיף 3 דקות לזמן. כל חדר שתפרצו יחשוף אות ואת המיקום שלה בסיסמת השחרור.</p><p>החדרים פתוחים בכל סדר. כל חדר שנפרץ חושף אות ואת מיקומה בסיסמת השחרור. אפשר להשתמש בשלושה רמזים לכל מנעול, וכל רמז מוסיף 3 דקות. ההתקדמות נשמרת בדפדפן.</p>
+<div class="rw">תקציר התשובות: R1A: ZWKH · R1B: 5472 · R2A: PGMA · R2B: CR · R3A: WNIT · R3B: 379 · R4A: 58 · R4B: 12 · R5A: DBJF · R5B: 10 · R6A: ACBD · R6B: 3 · סיסמה: TESTER</div>
+<section><h2>חדר 1 · חדר התחקיר</h2><div class="sub">פרק 1 · טעות, פגם, כשל ושבעת העקרונות</div><p>על הלוח תלוי תחקיר של תקלה מהגרסה הקודמת. ארבעה פתקים, כל אחד מסומן באות:</p>
+<div class="frags">
+<div><span class="lab">K</span>בשורת הקוד נכתב <code>age &gt; 18</code> במקום <code>age &gt;= 18</code>.</div>
+<div><span class="lab">H</span>לקוח בן 18 בדיוק לא קיבל את הנחת הסטודנט באפליקציה.</div>
+<div><span class="lab">Z</span>הצוות עבד שלושה שבועות בלחץ זמנים קיצוני, בלי סקירות קוד.</div>
+<div><span class="lab">W</span>המפתח הבין מהדרישה ש"מעל גיל 18" לא כולל את גיל 18 עצמו.</div>
+</div>
+<p>לידו מודבקים ארבעה ציטוטים מישיבת הצוות:</p>
+<ol class="doc">
+<li>"אנחנו מריצים את אותה חבילת רגרסיה כבר שנתיים, והיא לא מוצאת כלום — אבל המשתמשים כן."</li>
+<li>"‏80% מהבאגים שנמצאו השנה היו במודול התשלומים."</li>
+<li>"האפליקציה עברה את כל הבדיקות בלי אף פגם, ובכל זאת אף לקוח לא משתמש בה, כי היא לא עונה על הצורך שלו."</li>
+<li>"המנהל ביקש לבדוק את כל הצירופים האפשריים של 10 השדות בטופס."</li>
+</ol>
+<p>על הקיר רשימת שבעת עקרונות הבדיקה לפי הסילבוס:</p>
+<ol class="doc"><li>בדיקות מראות נוכחות של פגמים, לא היעדרם.</li><li>בדיקה ממצה בלתי אפשרית.</li><li>בדיקה מוקדמת חוסכת זמן וכסף.</li><li>פגמים מתקבצים.</li><li>בדיקות נשחקות.</li><li>הבדיקות תלויות הקשר.</li><li>כשל היעדר הפגמים.</li></ol><div class="lk"><div class="q">סדרו את ארבעת הפתקים לפי שרשרת הסיבתיות: סיבת שורש ← טעות (Error) ← פגם (Defect) ← כשל (Failure).</div><div class="ans">תשובה: <b dir="ltr">ZWKH</b></div><p>Z (לחץ זמנים בלי סקירות) הוא סיבת השורש. W היא הטעות האנושית — הבנה שגויה של הדרישה. K הוא הפגם בקוד. H הוא הכשל שנצפה בזמן ריצה. הסדר: Z W K H.</p></div><div class="lk"><div class="q">איזה עיקרון מתאים לכל ציטוט? כתבו את מספרי העקרונות לפי סדר הציטוטים 1–4.</div><div class="ans">תשובה: <b dir="ltr">5472</b></div><p>1 — בדיקות נשחקות (5): אותן בדיקות מפסיקות למצוא פגמים חדשים. 2 — פגמים מתקבצים (4). 3 — כשל היעדר הפגמים (7): מערכת בלי פגמים שלא עונה על הצורך. 4 — בדיקה ממצה בלתי אפשרית (2). התשובה: 5472.</p></div><div class="rw">פרס החדר: האות <b>S</b> במיקום <b>3</b></div></section><section><h2>חדר 2 · חדר מחזור החיים</h2><div class="sub">פרק 2 · רמות בדיקה, סוגי בדיקה ובדיקות תחזוקה</div><p>ביומן הבדיקות של הגרסה מופיעות חמש פעילויות. ליד כל אחת יש אות:</p>
+<div class="frags">
+<div><span class="lab">P</span>המפתח בודק את הפונקציה <code>calcDiscount()</code> בבידוד, עם Stub במקום מסד הנתונים.</div>
+<div><span class="lab">A</span>נציגי חברת התעופה מאשרים שהאפליקציה עונה על התהליך העסקי שלהם לפני שהם חותמים.</div>
+<div><span class="lab">G</span>בודקים שהממשק בין מודול ההזמנות לשירות התשלומים החיצוני מעביר את הנתונים נכון.</div>
+<div><span class="lab">M</span>צוות הבדיקות מריץ תרחישים מקצה לקצה על המערכת השלמה, בסביבה דומה לייצור.</div>
+</div>
+<p>בנוסף, ביום שלישי תוקן באג BUG-311 (חישוב מטבע). ביום רביעי בוצעו שתי פעולות:</p>
+<ol class="doc"><li>הרצה חוזרת של מקרה הבדיקה שנכשל בגלל BUG-311.</li><li>הרצת 120 בדיקות של מודולים אחרים כדי לוודא שהתיקון לא שבר דבר.</li></ol><div class="lk"><div class="q">סדרו את ארבע הפעילויות לפי רמות הבדיקה, מהנמוכה לגבוהה: רכיב ← אינטגרציה ← מערכת ← קבלה.</div><div class="ans">תשובה: <b dir="ltr">PGMA</b></div><p>P — בדיקת רכיב (פונקציה בבידוד עם Stub). G — בדיקת אינטגרציה (ממשק בין מודולים ושירות חיצוני). M — בדיקת מערכת (מקצה לקצה על המערכת השלמה). A — בדיקת קבלה (המשתמשים העסקיים מאשרים). התשובה: PGMA.</p></div><div class="lk"><div class="q">איך נקראות שתי הפעולות של יום רביעי? כתבו את האות הראשונה של שם הבדיקה באנגלית לכל פעולה, לפי הסדר.</div><div class="ans">תשובה: <b dir="ltr">CR</b></div><p>הפעולה הראשונה היא בדיקת אישור (Confirmation Testing): מוודאים שהפגם תוקן. השנייה היא בדיקת רגרסיה (Regression Testing): מוודאים שהשינוי לא גרם לתקלות חדשות במקומות אחרים. התשובה: CR.</p></div><div class="rw">פרס החדר: האות <b>T</b> במיקום <b>1</b></div></section><section><h2>חדר 3 · חדר הסקירה</h2><div class="sub">פרק 3 · בדיקות סטטיות, סוגי סקירה ותפקידים</div><p>בחדר מונחים ארבעה תיאורים של סקירות שנערכו השנה:</p>
+<ol class="doc">
+<li>הכותב מוביל את הישיבה ומציג את המסמך; המטרה העיקרית היא להגיע להבנה משותפת ולאסוף משוב.</li>
+<li>סקירה רשמית מאוד: יש תהליך מוגדר, תפקידים מוגדרים, איסוף מדדים, ומטרה למצוא כמה שיותר פגמים. הכותב אינו מנחה את הישיבה.</li>
+<li>עמית שולח הערות בצ'אט על מסמך הדרישות, בלי תהליך מתועד.</li>
+<li>מומחים טכניים סוקרים עיצוב ארכיטקטוני כדי להגיע לקונצנזוס ולהחליט על פתרון טכני.</li>
+</ol>
+<p>וקטע הקוד הזה עבר סקירה סטטית, בלי להריץ אותו:</p>
+<div class="cfg"><pre dir="ltr">int fee(int days) {
+    int total;                 // line 2
+    int unused = 7;            // line 3
+    if (days &gt; 0) {
+        total = days * 40;
+        return total;
+        total = total + 5;     // line 7
+    }
+    return total;              // line 9
+}</pre></div><div class="lk"><div class="q">התאימו סוג סקירה לכל תיאור, לפי הסדר 1–4. השתמשו בקודים: I = בלתי פורמלית · W = Walkthrough · T = סקירה טכנית · N = Inspection.</div><div class="ans">תשובה: <b dir="ltr">WNIT</b></div><p>1 — Walkthrough (W): הכותב מוביל, מטרה של הבנה משותפת. 2 — Inspection (N): הפורמלית ביותר, תפקידים ומדדים. 3 — בלתי פורמלית (I). 4 — סקירה טכנית (T): קונצנזוס והחלטה טכנית. התשובה: WNIT.</p></div><div class="lk"><div class="q">בקוד יש שלוש בעיות שניתנות לגילוי בניתוח סטטי. כתבו את מספרי השורות שלהן בסדר עולה.</div><div class="ans">תשובה: <b dir="ltr">379</b></div><p>שורה 3: משתנה שמוגדר ולא בשימוש (unused). שורה 7: קוד שלא ניתן להגיע אליו (Unreachable) — הוא אחרי return. שורה 9: מוחזר משתנה שלא אותחל כש-days ≤ 0. ניתוח סטטי מוצא את כל אלה בלי להריץ את הקוד. התשובה: 379.</p></div><div class="rw">פרס החדר: האות <b>R</b> במיקום <b>6</b></div></section><section><h2>חדר 4 · חדר הטכניקות</h2><div class="sub">פרק 4 · מחלקות שקילות, ערכי גבול, כיסוי משפטים והסתעפויות</div><p>דרישה REQ-88 של FlyNow:</p>
+<div class="req"><b>REQ-88 · כבודה</b><ul><li>משקל מזוודה (ק"ג, מספר שלם): 1–5 — חינם · 6–20 — ‏40 ₪ · 21–32 — ‏120 ₪.</li><li>כל משקל אחר נדחה.</li></ul></div>
+<p>ולצדה פונקציה שעברה בדיקות יחידה:</p>
+<div class="cfg"><pre dir="ltr">discount = 0
+if (age &gt;= 65) {
+    discount = 15
+}
+if (isMember) {
+    discount = discount + 5
+}
+return discount</pre></div><div class="lk"><div class="q">כמה מחלקות שקילות יש למשקל (כולל הלא-חוקיות), וכמה ערכי גבול לפי ניתוח ערכי גבול בשני ערכים (2-value BVA)?</div><div class="ans">תשובה: <b dir="ltr">58</b></div><p>המחלקות: ‎<1 (לא חוקי), 1–5, 6–20, 21–32, ‎>32 (לא חוקי) — 5 מחלקות. ערכי הגבול: 0, 1, 5, 6, 20, 21, 32, 33 — 8 ערכים. התשובה: 58.</p></div><div class="lk"><div class="q">מהו מספר מקרי הבדיקה המינימלי ל-100% כיסוי משפטים (Statement Coverage), ומהו המינימום ל-100% כיסוי הסתעפויות (Branch Coverage)?</div><div class="ans">תשובה: <b dir="ltr">12</b></div><p>מקרה אחד (גיל 70, חבר) מריץ את כל המשפטים, כולל שני גופי ה-if — לכן 1 לכיסוי משפטים. לכיסוי הסתעפויות צריך גם את ענפי ה-false של שני התנאים; מקרה שני (גיל 30, לא חבר) מכסה את שניהם — לכן 2. התשובה: 12. כיסוי הסתעפויות של 100% מבטיח גם כיסוי משפטים של 100%, אבל לא להפך.</p></div><div class="rw">פרס החדר: האות <b>E</b> במיקום <b>2</b></div></section><section><h2>חדר 5 · חדר ניהול הבדיקות</h2><div class="sub">פרק 5 · סיכונים, הערכת מאמץ ודיווח פגמים</div><p>לפני השחרור, מנהל הבדיקות השאיר טבלת סיכונים (סבירות ו-השפעה בסולם 1–5):</p>
+<div class="tw"><table><tr><th>סיכון</th><th>תיאור</th><th>סבירות</th><th>השפעה</th></tr>
+<tr><td>B</td><td>כשל בסליקת אשראי</td><td>2</td><td>5</td></tr>
+<tr><td>D</td><td>טעות בהצגת שעות טיסה באזור זמן אחר</td><td>4</td><td>4</td></tr>
+<tr><td>F</td><td>תמונת פרופיל לא נטענת</td><td>5</td><td>1</td></tr>
+<tr><td>J</td><td>איטיות בחיפוש טיסות בשעות עומס</td><td>3</td><td>2</td></tr></table></div>
+<p>ולצדה הערכת מאמץ לבדיקות של מודול ההחזרים, לפי שלוש נקודות (בשעות): אופטימי 6, סביר 9, פסימי 18.</p><div class="lk"><div class="q">סדרו את הסיכונים לפי רמת הסיכון (סבירות × השפעה), מהגבוה לנמוך.</div><div class="ans">תשובה: <b dir="ltr">DBJF</b></div><p>D: ‏4×4=16. ‏B: ‏2×5=10. ‏J: ‏3×2=6. ‏F: ‏5×1=5. הסדר: D B J F. שימו לב ש-F הוא בעל הסבירות הגבוהה ביותר, אבל ההשפעה הנמוכה מורידה את רמת הסיכון שלו.</p></div><div class="lk"><div class="q">מהי הערכת המאמץ (בשעות) לפי שיטת שלוש הנקודות?</div><div class="ans">תשובה: <b dir="ltr">10</b></div><p>E = (6 + 4×9 + 18) / 6 = 60 / 6 = 10 שעות.</p></div><div class="rw">פרס החדר: האות <b>T</b> במיקום <b>4</b></div></section><section><h2>חדר 6 · חדר הכלים</h2><div class="sub">פרק 6 · כלי בדיקה, יתרונות וסיכונים באוטומציה</div><p>בארון הכלים ארבעה כלים עם תוויות שנפלו. התיאורים:</p>
+<ol class="doc">
+<li>מנהל את מקרי הבדיקה, מקשר אותם לדרישות ולפגמים ומפיק דוחות התקדמות.</li>
+<li>מנתח קוד בלי להריץ אותו ומתריע על הפרות של כללי קידוד ועל קוד מת.</li>
+<li>מדמה אלפי משתמשים בו-זמנית כדי למדוד זמני תגובה.</li>
+<li>מריץ תסריטים אוטומטיים שלוחצים על כפתורים בדפדפן ומשווים לתוצאה הצפויה.</li>
+</ol>
+<p>התוויות: ‏A · כלי ניהול בדיקות · B · כלי לבדיקות ביצועים ועומסים · C · כלי ניתוח סטטי · D · כלי להרצת בדיקות אוטומטיות.</p>
+<p>ומתחת לארון, פתק של סמנכ"ל: <q>קנינו כלי אוטומציה, אז מעכשיו לא צריך בודקים, הכלי יבדוק הכול לבד, והוא לא דורש תחזוקה.</q></p><div class="lk"><div class="q">כתבו את התווית המתאימה לכל תיאור, לפי הסדר 1–4.</div><div class="ans">תשובה: <b dir="ltr">ACBD</b></div><p>1 — ניהול בדיקות (A). 2 — ניתוח סטטי (C). 3 — ביצועים ועומסים (B). 4 — הרצת בדיקות אוטומטיות (D). התשובה: ACBD.</p></div><div class="lk"><div class="q">כמה סיכונים של אוטומציה, מתוך הרשימה בסילבוס, מגולמים בפתק של הסמנכ"ל? (ציפיות לא מציאותיות · הערכת חסר של מאמץ התחזוקה · הסתמכות יתר על הכלי)</div><div class="ans">תשובה: <b dir="ltr">3</b></div><p>"לא צריך בודקים" — הסתמכות יתר על הכלי. "יבדוק הכול לבד" — ציפיות לא מציאותיות. "לא דורש תחזוקה" — הערכת חסר של מאמץ התחזוקה. שלושה סיכונים, כולם מהרשימה בסילבוס.</p></div><div class="rw">פרס החדר: האות <b>E</b> במיקום <b>5</b></div></section>
+<section><h2>דלת השחרור</h2><div class="lk"><div class="q">הרכיבו את סיסמת השחרור מששת האותיות, כל אחת במיקום שלה.</div><div class="ans">תשובה: <b dir="ltr">TESTER</b></div><p>T(1) E(2) S(3) T(4) E(5) R(6) — TESTER.</p></div></section>
+</body></html>

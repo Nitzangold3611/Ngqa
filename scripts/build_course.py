@@ -90,6 +90,8 @@ json.dump(decks, open(f'{OUT}/decks.json', 'w'), ensure_ascii=False)
 
 # ---------------------------------------------------------------- index (from the CT-GenAI page)
 src = open(f'{GEN}/index.html', encoding='utf-8').read()
+sys.path.insert(0, REPO + '/scripts/games'); import add_aux
+src = add_aux.strip(src)  # genai-only support box; re-added per course by scripts/games/add_aux.py
 src = re.sub(r'const CHAPTERS=\[[\d,]+\]\.map', 'const CHAPTERS=[1,2,3,4,5].map', src, count=1)
 rep = [
     ("NGQAAuth.guard('genai')", f"NGQAAuth.guard('{C}')"),
@@ -145,5 +147,6 @@ src = src.replace('/* ---- tabs & exercises (CT-GenAI) ---- */', css + '/* ---- 
 for a, b in CFG.get('terms', []):
     src = src.replace(a, b)
 open(f'{OUT}/index.html', 'w', encoding='utf-8').write(src)
+add_aux.apply(C)
 print('slides', total)
 json.dump({'slides': total}, open(f'/tmp/{C}_total.json', 'w'))

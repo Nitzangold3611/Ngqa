@@ -1,0 +1,149 @@
+<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;--red:#e5484d;--green:#1fb57a;
+--bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960);--soft:light-dark(#eef9f8,#14304a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 Heebo,Arial,sans-serif}
+button,input{font:inherit}
+.bar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;gap:10px;align-items:center;padding:10px max(3vw,14px);flex-wrap:wrap}
+.bar b{flex:1;font-size:17px}
+.bar a,.bar button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 14px;text-decoration:none;cursor:pointer;font-size:15px}
+.clock{font:700 20px/1 ui-monospace,Consolas,monospace;direction:ltr;background:#000a;border-radius:10px;padding:8px 12px;color:var(--teal)}
+.clock.late{color:var(--orange)}
+.wrap{max-width:1100px;margin:auto;padding:26px max(3vw,14px)}
+.hero{background:var(--navy);color:#fff;border-radius:18px;padding:clamp(22px,4vw,40px);margin-bottom:22px}
+.hero h1{margin:0 0 8px;font-size:clamp(26px,4vw,40px);line-height:1.15}
+.hero p{color:#c9cbf0;margin:8px 0;max-width:75ch}.hero q{color:#fff}
+.hero .go{margin-top:12px;background:var(--orange);color:#fff;border:0;border-radius:12px;padding:10px 22px;font-weight:700;font-size:17px;cursor:pointer}
+.slots{display:flex;gap:8px;direction:ltr;justify-content:center;margin:0 0 22px}
+.slots span{width:52px;height:60px;border-radius:12px;border:2px dashed var(--line);display:grid;place-items:center;font:800 28px Heebo,Arial;position:relative;background:var(--card)}
+.slots span small{position:absolute;bottom:2px;font-size:11px;color:var(--mute);font-weight:500}
+.slots span.on{border:2px solid var(--teal);color:var(--teal-d)}
+.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px}
+@media(max-width:800px){.rooms{grid-template-columns:1fr 1fr}}@media(max-width:520px){.rooms{grid-template-columns:1fr}}
+.rm{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;text-align:start;cursor:pointer;color:inherit;position:relative}
+.rm:hover{border-color:var(--teal)}.rm.cur{border:2px solid var(--orange)}
+.rm .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;margin-inline-end:8px}
+.rm b{font-size:17.5px}.rm small{display:block;color:var(--mute);font-size:13.5px;margin-top:4px}
+.rm .st{position:absolute;inset-block-start:12px;inset-inline-end:14px;font-size:13px;font-weight:700;color:var(--mute)}
+.rm.done .st{color:var(--green)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,32px);margin-bottom:22px}
+.panel h2{margin:0;font-size:26px}.panel .sub{color:var(--teal-d);font-weight:700;margin-bottom:12px}
+q{quotes:"\201D" "\201C"}
+.codebox,.cfg,.req,.runs,.fields{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0}
+.codebox div{display:flex;gap:12px;align-items:center;margin:6px 0}
+code{direction:ltr;unicode-bidi:isolate;font:15.5px ui-monospace,Consolas,monospace;background:var(--soft);padding:2px 8px;border-radius:6px}
+pre{margin:0;font:14.5px/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap}
+.lab{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:8px;background:var(--orange);color:#fff;font-weight:800;font-size:15px;margin-inline-end:8px;flex:none}
+.frags{display:grid;gap:8px;margin:12px 0}.frags div{border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:flex;align-items:flex-start;background:light-dark(#fffdf8,#1b1a44)}
+.cases{padding-inline-start:26px}.cases li{margin:6px 0}
+.runs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}@media(max-width:700px){.runs{grid-template-columns:1fr}}
+.runs ol{margin:4px 0;padding-inline-start:20px;font-size:14.5px}
+.doc{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 16px;padding-inline-start:40px;font-size:15px}
+.fields{display:flex;flex-wrap:wrap;gap:8px}.fields span{border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card)}
+.req ul{margin:6px 0;padding-inline-start:22px}
+.tw{overflow-x:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:15px}th{background:var(--navy);color:#fff;padding:7px 10px;text-align:start}td{border-bottom:1px solid var(--line);padding:7px 10px}
+.lock{border-top:2px dashed var(--line);margin-top:18px;padding-top:16px}
+.lock .q{font-weight:700}.lock .fmt{color:var(--mute);font-size:14px}
+.lock form{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.lock input{flex:1;min-width:180px;border:2px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--bg);color:var(--ink);direction:ltr;text-align:center;font:700 18px ui-monospace,Consolas,monospace;letter-spacing:2px}
+.lock button.try{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:8px 20px;font-weight:700;cursor:pointer}
+:root[data-theme=dark] .lock button.try{background:var(--teal-d)}
+.lock .msg{min-height:1.4em;font-weight:700}.msg.bad{color:var(--red)}.msg.ok{color:var(--green)}
+.lock.solved input{border-color:var(--green);background:light-dark(#ecfbf4,#123a2c)}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.hints{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hints button{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:3px 12px;font-size:14px;cursor:pointer}
+.hints button:disabled{opacity:.45;cursor:default}
+.hint{background:light-dark(#fff4e6,#3a2a12);border-inline-start:4px solid var(--orange);border-radius:8px;padding:6px 12px;margin:6px 0;font-size:15px}
+.reward{margin-top:14px;background:var(--soft);border-radius:12px;padding:10px 14px;font-weight:700}
+.final{border:2px solid var(--orange)}
+.cert{display:none;text-align:center;border:6px double var(--teal);border-radius:18px;padding:30px;background:var(--card);margin-bottom:22px}
+.cert h2{font-size:32px;margin:6px 0}.cert .nm{font-size:28px;font-weight:800;color:var(--teal-d)}
+.cert .row{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin:14px 0;font-size:18px}
+.cert button,.solbox a{background:var(--orange);color:#fff;border:0;border-radius:10px;padding:8px 18px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.solbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin-bottom:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.solbox p{margin:0;flex:1;color:var(--mute)}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}footer .ver{display:block}
+@media print{.bar,.rooms,.panel,.slots,.hero,.solbox,footer{display:none!important}body{background:#fff}.cert{display:block!important;margin-top:40mm}}
+
+body{background:#fff;color:#121133;font-size:11pt;line-height:1.6}
+@page{size:A4;margin:15mm}
+.cv{background:#121133;color:#fff;border-radius:14px;padding:26px 30px;margin-bottom:16px}.cv h1{margin:0 0 6px;font-size:26pt}.cv p{color:#c9cbf0;margin:4px 0}
+section{break-before:page}section h2{color:#0E9F97;font-size:18pt;margin:0}.sub{color:#5d5c7c;font-weight:700;margin-bottom:8px}
+.lk{border:2px solid #14DACD;border-radius:12px;padding:10px 14px;margin:12px 0;break-inside:avoid;background:#f3fdfc}
+.lk .q{font-weight:700}.ans{font-size:13pt;margin:6px 0}.ans b{background:#F38911;color:#fff;border-radius:6px;padding:1px 10px;font-family:Consolas,monospace;letter-spacing:1px}
+.rw{font-weight:700;background:#eef9f8;border-radius:10px;padding:8px 12px}
+.frags div,.codebox,.cfg,.req,.runs,.fields,.doc{break-inside:avoid}
+</style></head><body>
+<div class="cv"><h1>מדריך פתרונות — חדר בריחה: מתקפה בלילה</h1><p>NGQA · STE · חדר בריחה v1.0 · 23.11.2026</p><p>לכל מנעול: התשובה, הדרך אליה, והקשר לחומר הקורס. מומלץ לקרוא אחרי המשחק.</p></div>
+<h2>איך משחקים</h2><p>02:13 בלילה. מערכת ההתראות של חברת הביטוח "SafeNest" זיהתה פעילות חשודה. מי שתקף נעל את חדר צוות התגובה (SOC) ושינה את הסיסמה. כדי לחזור ולטפל באירוע צריך לפרוץ שישה מנעולים, וכל אחד מהם בודק עיקרון אחר מעולם בדיקות האבטחה.</p>
+<p>יש לכם <b>75 דקות</b>. מותר להשתמש במצגות ובסילבוס. בכל מנעול יש 3 רמזים, וכל רמז מוסיף 3 דקות. כל חדר שתפרצו יחשוף אות ואת מיקומה בסיסמה החדשה.</p><p>החדרים פתוחים בכל סדר. כל חדר שנפרץ חושף אות ואת מיקומה בסיסמת השחרור. אפשר להשתמש בשלושה רמזים לכל מנעול, וכל רמז מוסיף 3 דקות. ההתקדמות נשמרת בדפדפן.</p>
+<div class="rw">תקציר התשובות: R1A: CIAC · R1B: ZNNZ · R2A: SRTEID · R2B: SDFI · R3A: BMKQX · R3B: 3142 · R4A: 3127 · R4B: 1423 · R5A: WHGYP · R5B: CPDA · R6A: LVFT2 · R6B: WBG · סיסמה: SECURE</div>
+<section><h2>חדר 1 · חדר היסודות</h2><div class="sub">פרק 1 · CIA, אימות והרשאה</div><p>ביומן האירועים של השנה ארבעה אירועים:</p>
+<ol class="doc">
+<li>מאגר הלקוחות פורסם בפורום ברשת האפלה.</li>
+<li>תוקף שינה במסד הנתונים את מספר חשבון הבנק בחשבוניות של ספק.</li>
+<li>מתקפת DDoS השביתה את אתר החברה ליומיים.</li>
+<li>עובד במחלקת השיווק פתח את קובץ המשכורות של ההנהלה.</li>
+</ol>
+<p>ובקיר השני, ארבע בקשות שהגיעו לשרת:</p>
+<ol class="doc">
+<li>פקיד מנסה לאשר הלוואה של 80,000 ₪, ומקבל הודעה שהסמכות שלו היא עד 50,000 ₪.</li>
+<li>משתמשת מזינה סיסמה וקוד חד-פעמי שקיבלה ב-SMS.</li>
+<li>טביעת אצבע פותחת את אפליקציית הבנק בטלפון.</li>
+<li>קריאה ל-API של הזמנה של לקוח אחר מחזירה 403 Forbidden.</li>
+</ol><div class="lk"><div class="q">איזה רכיב של משולש CIA נפגע בכל אירוע ביומן? כתבו C, ‏I או A לפי הסדר 1–4.</div><div class="ans">תשובה: <b dir="ltr">CIAC</b></div><p>1 — סודיות (C): מידע נחשף. 2 — שלמות (I): הנתונים שונו. 3 — זמינות (A): השירות הושבת. 4 — סודיות (C): גישה למידע בלי הרשאה. התשובה: CIAC.</p></div><div class="lk"><div class="q">עבור כל בקשה בקיר השני: האם היא עוסקת באימות זהות (N — Authentication) או בהרשאה (Z — Authorization)? לפי הסדר 1–4.</div><div class="ans">תשובה: <b dir="ltr">ZNNZ</b></div><p>1 — הרשאה (Z): הזהות ידועה, אבל אין סמכות. 2 — אימות (N): סיסמה + OTP ‏(MFA). 3 — אימות (N): ביומטריה. 4 — הרשאה (Z): המשתמש מזוהה, אבל אסור לו לגשת להזמנה של אחר. התשובה: ZNNZ.</p></div><div class="rw">פרס החדר: האות <b>C</b> במיקום <b>3</b></div></section><section><h2>חדר 2 · חדר מודל האיומים</h2><div class="sub">פרק 2 · STRIDE ו-SAST, ‏DAST, ‏IAST</div><p>הצוות ממפה איומים על אפליקציית הביטוח לפי STRIDE. שישה תרחישים:</p>
+<ol class="doc">
+<li>תוקף גנב עוגיית Session ונכנס למערכת בתור לקוח אחר.</li>
+<li>לקוח מכחיש שביצע העברה, ואין שום לוג שמוכיח שכן.</li>
+<li>תוקף שינה את המחיר בשדה נסתר בטופס ההזמנה.</li>
+<li>משתמש רגיל קרא ל-API של מנהלים וקיבל הרשאות מנהל.</li>
+<li>דף שגיאה מציג Stack Trace עם מחרוזת החיבור למסד הנתונים.</li>
+<li>הצפה של בקשות הפילה את שירות ההתחברות.</li>
+</ol>
+<p>ולצד זה, ארבע שיטות בדיקה שהצוות שוקל:</p>
+<ol class="doc">
+<li>ניתוח קוד המקור בלי להריץ אותו.</li>
+<li>תקיפת האפליקציה הרצה מבחוץ, כמו תוקף.</li>
+<li>שליחת אלפי קלטים אקראיים ופגומים כדי לגרום לקריסה.</li>
+<li>סוכן שמותקן בתוך האפליקציה הרצה ומנטר את זרימת הנתונים בזמן בדיקה.</li>
+</ol><div class="lk"><div class="q">כתבו את האות של קטגוריית STRIDE לכל תרחיש, לפי הסדר 1–6.</div><div class="ans">תשובה: <b dir="ltr">SRTEID</b></div><p>1 — Spoofing. 2 — Repudiation. 3 — Tampering. 4 — Elevation of Privilege. 5 — Information Disclosure. 6 — Denial of Service. התשובה: SRTEID.</p></div><div class="lk"><div class="q">איזו שיטה כל תיאור? S = ‏SAST · D = ‏DAST · I = ‏IAST · F = ‏Fuzzing. לפי הסדר 1–4.</div><div class="ans">תשובה: <b dir="ltr">SDFI</b></div><p>1 — SAST: ניתוח סטטי של הקוד. 2 — DAST: בדיקה דינמית מבחוץ. 3 — Fuzzing: קלטים אקראיים ופגומים. 4 — IAST: סוכן בתוך האפליקציה. התשובה: SDFI.</p></div><div class="rw">פרס החדר: האות <b>S</b> במיקום <b>1</b></div></section><section><h2>חדר 3 · חדר בדיקת החדירות</h2><div class="sub">פרק 3 · תהליך בדיקות האבטחה ואבטחה ב-SDLC</div><p>תוכנית בדיקת החדירות של הצוות נקרעה, ונשארו חמישה כרטיסים:</p>
+<div class="frags">
+<div><span class="lab">K</span>ניצול חולשה והשגת גישה (Exploitation).</div>
+<div><span class="lab">B</span>איסוף מידע על היעד ממקורות גלויים (Reconnaissance).</div>
+<div><span class="lab">X</span>כתיבת דוח ממצאים והמלצות לתיקון.</div>
+<div><span class="lab">M</span>סריקת פורטים, שירותים וחולשות ידועות (Scanning).</div>
+<div><span class="lab">Q</span>בדיקה אם אפשר להישאר במערכת ולהרחיב את הגישה (Post-Exploitation).</div>
+</div>
+<p>ובמחברת של ראש הצוות — איזו פעילות אבטחה שייכת לאיזה שלב ב-SDLC:</p>
+<ol class="doc"><li>סקירת קוד מאובטח והרצת SAST.</li><li>הגדרת דרישה שכל המשתמשים יתחברו עם MFA.</li><li>בדיקה שמשתמש רגיל לא יכול לגשת למסכי מנהל.</li><li>מידול איומים עם STRIDE ותרשימי זרימת נתונים.</li></ol>
+<p>השלבים: ‏1 · Requirements ‏2 · Design ‏3 · Development ‏4 · Testing ‏5 · Deployment ‏6 · Maintenance.</p><div class="lk"><div class="q">סדרו את חמשת הכרטיסים לפי סדר השלבים בבדיקת חדירות.</div><div class="ans">תשובה: <b dir="ltr">BMKQX</b></div><p>B (Reconnaissance) ← M (Scanning) ← K (Exploitation) ← Q (Post-Exploitation) ← X (Reporting). התשובה: BMKQX.</p></div><div class="lk"><div class="q">כתבו את מספר שלב ה-SDLC של כל פעילות במחברת, לפי הסדר 1–4.</div><div class="ans">תשובה: <b dir="ltr">3142</b></div><p>1 — סקירת קוד ו-SAST שייכים לפיתוח (3 — Development). 2 — דרישת MFA היא דרישת אבטחה (1 — Requirements). 3 — בדיקת גישה למסכי מנהל היא בדיקת אבטחה (4 — Testing). 4 — STRIDE ו-DFD הם מידול איומים (2 — Design). התשובה: 3142. אבטחה צריכה להיות בכל שלב.</p></div><div class="rw">פרס החדר: האות <b>E</b> במיקום <b>6</b></div></section><section><h2>חדר 4 · חדר התקנים</h2><div class="sub">פרק 4 · OWASP Top 10 ותקנים</div><p>ארבעה ממצאים מבדיקה קודמת, וליד כל אחד מקום ריק לקטגוריית OWASP Top 10 ‏(2021):</p>
+<ol class="doc">
+<li>הזנת <code>' OR '1'='1</code> בשדה החיפוש מחזירה את כל המשתמשים.</li>
+<li>שינוי <code>?invoice=124</code> ל-<code>?invoice=125</code> מציג חשבונית של לקוח אחר.</li>
+<li>הסיסמאות שמורות במסד כ-MD5 בלי Salt.</li>
+<li>אין נעילה אחרי ניסיונות התחברות כושלים, כך שאפשר לנחש סיסמאות ללא הגבלה.</li>
+</ol>
+<p>ובמגירה, ארבעה תקנים ומסגרות:</p>
+<ol class="doc"><li>דרישות למערכת ניהול אבטחת מידע (ISMS) בארגון.</li><li>תקן לאבטחת נתוני כרטיסי אשראי.</li><li>רשימת עשרת סיכוני האבטחה הנפוצים ביותר באפליקציות ווב.</li><li>מדריך לבקרות אבטחת מידע שמפרט איך ליישם אותן.</li></ol><div class="lk"><div class="q">כתבו את מספר הקטגוריה ב-OWASP Top 10 ‏(2021) לכל ממצא, לפי הסדר 1–4.</div><div class="ans">תשובה: <b dir="ltr">3127</b></div><p>1 — A03 Injection (SQL Injection). 2 — A01 Broken Access Control ‏(IDOR). 3 — A02 Cryptographic Failures: אחסון סיסמאות חלש. 4 — A07 Identification and Authentication Failures: אין הגנה מניחוש. התשובה: 3127.</p></div><div class="lk"><div class="q">התאימו תיאור לכל מסגרת, בסדר הזה: ISO/IEC 27001 ← ISO/IEC 27002 ← PCI DSS ← OWASP Top 10.</div><div class="ans">תשובה: <b dir="ltr">1423</b></div><p>ISO/IEC 27001 — דרישות ל-ISMS (1). ‏ISO/IEC 27002 — הנחיות ליישום בקרות (4). ‏PCI DSS — נתוני כרטיסי אשראי (2). ‏OWASP Top 10 — עשרת סיכוני הווב (3). התשובה: 1423.</p></div><div class="rw">פרס החדר: האות <b>R</b> במיקום <b>5</b></div></section><section><h2>חדר 5 · חדר הארגון</h2><div class="sub">פרקים 5–7 · DevSecOps ו-ISMS</div><p>הצוות בונה צינור DevSecOps. חמישה שלבים מבולבלים:</p>
+<div class="frags">
+<div><span class="lab">G</span>DAST על סביבת Staging אחרי הפריסה האוטומטית.</div>
+<div><span class="lab">W</span>מידול איומים בתכנון הפיצ'ר.</div>
+<div><span class="lab">P</span>ניטור והתראות בייצור (Monitoring).</div>
+<div><span class="lab">H</span>SAST ובדיקת תלויות (SCA) בכל Commit.</div>
+<div><span class="lab">Y</span>בדיקת חדירות לפני שחרור גרסה גדולה.</div>
+</div>
+<p>ובתיקיית ה-ISMS ארבע פעילויות, כל אחת שייכת לשלב אחר במעגל PDCA:</p>
+<ol class="doc"><li>ביקורת פנימית על הבקרות.</li><li>הגדרת תוכנית לטיפול בסיכונים.</li><li>יישום הבקרות שנבחרו.</li><li>פעולות מתקנות אחרי ממצאי הביקורת.</li></ol><div class="lk"><div class="q">סדרו את חמשת השלבים לפי סדרם בצינור, מהמוקדם למאוחר.</div><div class="ans">תשובה: <b dir="ltr">WHGYP</b></div><p>W (מידול איומים בתכנון) ← H (SAST ו-SCA בכל Commit) ← G (DAST ב-Staging) ← Y (בדיקת חדירות לפני שחרור) ← P (ניטור בייצור). התשובה: WHGYP.</p></div><div class="lk"><div class="q">כתבו את שלב ה-PDCA של כל פעילות (P, ‏D, ‏C או A), לפי הסדר 1–4.</div><div class="ans">תשובה: <b dir="ltr">CPDA</b></div><p>1 — Check (ביקורת). 2 — Plan (תוכנית טיפול בסיכונים). 3 — Do (יישום בקרות). 4 — Act (פעולות מתקנות). התשובה: CPDA.</p></div><div class="rw">פרס החדר: האות <b>U</b> במיקום <b>4</b></div></section><section><h2>חדר 6 · חדר הדוח</h2><div class="sub">פרקים 8–9 · דירוג ממצאים (CVSS) וכלים</div><p>הדוח מוכן כמעט. חסר רק דירוג החומרה של ארבעה ממצאים לפי ציון CVSS v3:</p>
+<div class="tw"><table><tr><th>ממצא</th><th>תיאור</th><th>CVSS</th></tr>
+<tr><td>F</td><td>XSS מאוחסן בדף הפרופיל</td><td>5.4</td></tr>
+<tr><td>L</td><td>הרצת קוד מרחוק (RCE) בשירות ההעלאה</td><td>9.8</td></tr>
+<tr><td>T</td><td>חשיפת גרסת השרת בכותרת HTTP</td><td>3.1</td></tr>
+<tr><td>V</td><td>עקיפת אימות ב-API פנימי</td><td>8.1</td></tr></table></div>
+<p>ובנוסף, שלושה תרחישי בדיקה שצריך לסווג לפי גישת הכלי:</p>
+<ol class="doc"><li>הבודק מקבל את קוד המקור, את קובצי התצורה ואת הארכיטקטורה.</li><li>הבודק מקבל רק את כתובת האתר, בלי שום מידע פנימי.</li><li>הבודק מקבל משתמש בדיקה ואת תרשים הארכיטקטורה, ובודק מערכת רצה.</li></ol><div class="lk"><div class="q">סדרו את הממצאים מהחמור לקל, ואחר כך כתבו כמה מהם מדורגים High או Critical.</div><div class="ans">תשובה: <b dir="ltr">LVFT2</b></div><p>L ‏(9.8, ‏Critical) ← V ‏(8.1, ‏High) ← F ‏(5.4, ‏Medium) ← T ‏(3.1, ‏Low). שני ממצאים הם High או Critical. התשובה: LVFT2.</p></div><div class="lk"><div class="q">סווגו את שלושת התרחישים: W = ‏White Box · B = ‏Black Box · G = ‏Grey Box. לפי הסדר 1–3.</div><div class="ans">תשובה: <b dir="ltr">WBG</b></div><p>1 — White Box: קוד מקור, תצורות וארכיטקטורה. 2 — Black Box: רק מבחוץ. 3 — Grey Box: מידע חלקי ומערכת רצה. התשובה: WBG.</p></div><div class="rw">פרס החדר: האות <b>E</b> במיקום <b>2</b></div></section>
+<section><h2>דלת השחרור</h2><div class="lk"><div class="q">הרכיבו את הסיסמה החדשה לחדר ה-SOC מששת האותיות, כל אחת במיקום שלה.</div><div class="ans">תשובה: <b dir="ltr">SECURE</b></div><p>S(1) E(2) C(3) U(4) R(5) E(6) — SECURE.</p></div></section>
+</body></html>

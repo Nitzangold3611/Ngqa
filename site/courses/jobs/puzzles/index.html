@@ -1,23 +1,17 @@
-#!/usr/bin/env python3
-"""Build the CT-GenAI crossword (תשבץ) + cryptic crossword (תשחץ) page: site/courses/genai/puzzles/index.html"""
-import json, base64, pathlib, sys
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from words import CROSS, CRYPTIC
-from gen import layout
-
-R = pathlib.Path(__file__).resolve().parent
-OUT = R.parents[1] / 'site' / 'courses' / 'genai' / 'puzzles'
-VER, DATE = '1.1', '23.11.2026'
-
-def pack(L):
-    # answers are lightly obfuscated so they are not readable at a glance in the page source
-    e = [dict(n=x['n'], d=x['d'], r=x['r'], c=x['c'], len=len(x['ans']), clue=x['clue'],
-              a=base64.b64encode(x['ans'][::-1].encode()).decode()) for x in L['entries']]
-    return dict(H=L['H'], W=L['W'], entries=e)
-
-P = dict(cross=pack(layout(CROSS)), cryptic=pack(layout(CRYPTIC)))
-
-CSS = r'''
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<script src="/auth.js"></script>
+<script>document.documentElement.style.visibility='hidden';NGQAAuth.guard('jobs').then(ok=>{if(ok)document.documentElement.style.visibility=''}).catch(()=>{document.documentElement.style.visibility=''});</script>
+<script>try{const t=localStorage.getItem('ngqa-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>תשבץ ותשחץ · Jobs | NGQA</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
 :root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;--red:#e5484d;--green:#1fb57a;
 --bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960);--soft:light-dark(#eef9f8,#14304a)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
@@ -73,10 +67,24 @@ footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}footer .v
   .clues li{padding:1px 4px;font-size:9.5pt;text-decoration:none!important;color:#121133!important;background:none!important}
   .clues{break-inside:auto}
 }
-'''
-
-JS = r'''
-const P=__DATA__,$=id=>document.getElementById(id),KEY='ngqa-xw-genai-v1';
+</style>
+</head>
+<body>
+<div class="bar"><b>תשבץ ותשחץ · Jobs</b><a href="../">חזרה לקורס</a></div>
+<div class="wrap">
+<div class="tabs" role="tablist"><button type="button" role="tab" data-t="cross" aria-selected="true">תשבץ — מונחי הקורס</button><button type="button" role="tab" data-t="cryptic" aria-selected="false">תשחץ — הגדרות היגיון</button></div>
+<p class="intro" id="intro"></p>
+<h2 class="ponly" id="ptitle"></h2>
+<div class="tools"><button type="button" id="bchk">בדיקה</button><button type="button" id="blet">חשיפת אות</button><button type="button" id="bwrd">חשיפת מילה</button><button type="button" id="ball">פתרון מלא</button><button type="button" id="bclr">ניקוי</button><button type="button" id="bprt">הדפסה</button><button type="button" id="bsol">הדפסת פתרון</button><span class="st" id="st"></span></div>
+<div class="done-msg" id="done">🎉 כל הכבוד — פתרתם את כל התשבץ!</div>
+<div class="lay">
+<div><div class="cur" id="cur">בחרו תא או הגדרה כדי להתחיל.</div><div class="gwrap"><div class="grid" id="grid"></div></div></div>
+<div class="clues"><div><h3>מאוזן <small>(משמאל לימין)</small></h3><ol id="ca"></ol></div><div><h3>מאונך</h3><ol id="cd"></ol></div></div>
+</div>
+</div>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">תשבץ ותשחץ <bdi dir="ltr">v1.0 · 23.11.2026</bdi></span></footer>
+<script>
+const P={"cross": {"H": 17, "W": 19, "entries": [{"n": 3, "d": "A", "r": 1, "c": 2, "len": 9, "clue": "ממליץ — מישהו שעבד איתכם ומוכן לספר", "a": "RUNORVJFRkVS"}, {"n": 4, "d": "A", "r": 2, "c": 13, "len": 6, "clue": "בתחילת הדרך — בלי הרבה ניסיון", "a": "Uk9JTlVK"}, {"n": 6, "d": "A", "r": 4, "c": 5, "len": 9, "clue": "ראיון עבודה", "a": "V0VJVlJFVE5J"}, {"n": 7, "d": "A", "r": 5, "c": 1, "len": 3, "clue": "מסמך תכנון הבדיקות — Software Test Description (ראשי תיבות)", "a": "RFRT"}, {"n": 8, "d": "A", "r": 6, "c": 4, "len": 6, "clue": "שכר — בדקו את טבלת השכר לפני השיחה", "a": "WVJBTEFT"}, {"n": 10, "d": "A", "r": 7, "c": 14, "len": 3, "clue": "תוכנית הבדיקות — Software Test Plan (ראשי תיבות)", "a": "UFRT"}, {"n": 12, "d": "A", "r": 8, "c": 6, "len": 8, "clue": "הרשת המקצועית — כרטיס הביקור שלכם להייטק", "a": "TklERUtOSUw="}, {"n": 13, "d": "A", "r": 9, "c": 0, "len": 6, "clue": "קורות חיים באנגלית אמריקאית", "a": "RU1VU0VS"}, {"n": 15, "d": "A", "r": 10, "c": 6, "len": 11, "clue": "המלצה על כישור בלינקדאין", "a": "VE5FTUVTUk9ETkU="}, {"n": 16, "d": "A", "r": 11, "c": 0, "len": 5, "clue": "ההצעה שמגיעה בסוף התהליך", "a": "UkVGRk8="}, {"n": 17, "d": "A", "r": 12, "c": 6, "len": 6, "clue": "כמה ימים במשרד וכמה מהבית", "a": "RElSQllI"}, {"n": 18, "d": "A", "r": 14, "c": 9, "len": 10, "clue": "בניית קשרים מקצועיים", "a": "R05JS1JPV1RFTg=="}, {"n": 1, "d": "D", "r": 0, "c": 7, "len": 11, "clue": "משא ומתן על התנאים", "a": "Tk9JVEFJVE9HRU4="}, {"n": 2, "d": "D", "r": 0, "c": 15, "len": 8, "clue": "חוזה העבודה", "a": "VENBUlROT0M="}, {"n": 3, "d": "D", "r": 1, "c": 2, "len": 6, "clue": "עבודה מרחוק", "a": "RVRPTUVS"}, {"n": 5, "d": "D", "r": 3, "c": 12, "len": 8, "clue": "השורה שמתחת לשם בלינקדאין, עם התפקיד והכלים", "a": "RU5JTERBRUg="}, {"n": 8, "d": "D", "r": 6, "c": 4, "len": 7, "clue": "התמצית בראש קורות החיים, וגם בפרופיל הלינקדאין", "a": "WVJBTU1VUw=="}, {"n": 9, "d": "D", "r": 7, "c": 10, "len": 9, "clue": "מגייס או מגייסת", "a": "UkVUSVVSQ0VS"}, {"n": 11, "d": "D", "r": 7, "c": 16, "len": 9, "clue": "אוסף פרויקטים שמראים מה אתם יודעים לעשות", "a": "T0lMT0ZUUk9Q"}, {"n": 14, "d": "D", "r": 9, "c": 14, "len": 8, "clue": "מילות מפתח שהמגייסים והמערכות מחפשים", "a": "U0RST1dZRUs="}]}, "cryptic": {"H": 18, "W": 18, "entries": [{"n": 1, "d": "A", "r": 0, "c": 6, "len": 3, "clue": "מה שמחפשים בבדיקות — וגם בשאלות בראיון", "a": "R1VC"}, {"n": 4, "d": "A", "r": 3, "c": 4, "len": 6, "clue": "מגיעים רבע שעה לפני — ככה זה בזמן (מילה אחת)", "a": "RU1JVE5P"}, {"n": 6, "d": "A", "r": 4, "c": 10, "len": 8, "clue": "מה שמבקשים גם כשלא התקבלתם", "a": "S0NBQkRFRUY="}, {"n": 8, "d": "A", "r": 6, "c": 3, "len": 10, "clue": "המסגרת הירוקה סביב התמונה (מילה אחת)", "a": "S1JPV09UTkVQTw=="}, {"n": 9, "d": "A", "r": 8, "c": 4, "len": 10, "clue": "מילה שחוקה לתקציר: שחקן קבוצתי (מילה אחת)", "a": "UkVZQUxQTUFFVA=="}, {"n": 11, "d": "A", "r": 8, "c": 15, "len": 3, "clue": "המצב הראשון של כל באג", "a": "V0VO"}, {"n": 12, "d": "A", "r": 10, "c": 7, "len": 6, "clue": "עשרים וחמישה, ורק שלושה הכי מהירים", "a": "U0VTUk9I"}, {"n": 14, "d": "A", "r": 12, "c": 3, "len": 6, "clue": "התמונה שלא שמים בפרופיל", "a": "RUlGTEVT"}, {"n": 15, "d": "A", "r": 14, "c": 2, "len": 5, "clue": "מה שרוצים לשמוע אחרי הראיון", "a": "REVSSUg="}, {"n": 17, "d": "A", "r": 16, "c": 0, "len": 4, "clue": "שלושה חיתוכים, שמונה חלקים שווים", "a": "RUtBQw=="}, {"n": 18, "d": "A", "r": 16, "c": 5, "len": 5, "clue": "אם היית ___, איזה רוטב היה לך?", "a": "REFMQVM="}, {"n": 2, "d": "D", "r": 0, "c": 7, "len": 9, "clue": "מה שאף פעם לא מציבים למעסיק", "a": "TVVUQU1JVExV"}, {"n": 3, "d": "D", "r": 1, "c": 4, "len": 4, "clue": "מתקרבים למראיין — בלי לצאת מהבית", "a": "TU9PWg=="}, {"n": 5, "d": "D", "r": 3, "c": 12, "len": 8, "clue": "השאלה הכי מפחידה: מה החולשה שלך?", "a": "U1NFTktBRVc="}, {"n": 7, "d": "D", "r": 4, "c": 16, "len": 6, "clue": "המצב האחרון במחזור החיים של באג", "a": "REVTT0xD"}, {"n": 10, "d": "D", "r": 8, "c": 8, "len": 5, "clue": "הסינון הראשון קורה דרכו", "a": "RU5PSFA="}, {"n": 13, "d": "D", "r": 11, "c": 5, "len": 6, "clue": "מציעים לך הכול כדי שתעבוד בכוכב שלהם", "a": "U05FSUxB"}, {"n": 14, "d": "D", "r": 12, "c": 3, "len": 5, "clue": "מה שלא שוכחים לעשות מול המצלמה", "a": "RUxJTVM="}, {"n": 16, "d": "D", "r": 15, "c": 9, "len": 3, "clue": "הפורמט שהעיצוב שלו נשמר בכל מחשב", "a": "RkRQ"}, {"n": 17, "d": "D", "r": 16, "c": 0, "len": 2, "clue": "שתי אותיות שמספרות את כל הקריירה", "a": "VkM="}]}},$=id=>document.getElementById(id),KEY='ngqa-xw-jobs-v1';
 let St;try{St=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){St={}}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(St))}catch(e){}};
 const dec=s=>[...atob(s)].reverse().join('');
@@ -103,8 +111,8 @@ function build(){const p=P[cur];St[cur]=St[cur]||{v:{},rev:{}};const v=St[cur].v
       else if(e.key==='ArrowRight'){e.preventDefault();mv(0,1)}else if(e.key==='ArrowLeft'){e.preventDefault();mv(0,-1)}
       else if(e.key==='ArrowDown'){e.preventDefault();mv(1,0)}else if(e.key==='ArrowUp'){e.preventDefault();mv(-1,0)}
       else if(e.key==='Enter'||e.key===' '){e.preventDefault();if(G.cells[k].w.length>1){dir=dir==='A'?'D':'A';hl()}}}});
-  status();$('intro').innerHTML=cur==='cross'?'תשבץ הגדרות: התשובות הן המונחים המקצועיים באנגלית, כפי שהם מופיעים בקורס. התשבץ נקרא משמאל לימין.':'תשחץ: הגדרות היגיון, עם משחקי מילים ומשמעות כפולה. גם כאן התשובות הן מונחים באנגלית — חשבו פעמיים לפני שאתם כותבים!';
-  $('ptitle').textContent=(cur==='cross'?'תשבץ':'תשחץ')+' CT-GenAI · NGQA'}
+  status();$('intro').innerHTML=cur==='cross'?"תשבץ הגדרות: התשובות הן מונחים באנגלית מעולם חיפוש העבודה והבדיקות, כפי שהם מופיעים בסדנה. התשבץ נקרא משמאל לימין.":"תשחץ: הגדרות היגיון ומשחקי מילים. גם כאן התשובות באנגלית — חשבו פעמיים לפני שאתם כותבים!";
+  $('ptitle').textContent=(cur==='cross'?'תשבץ':'תשחץ')+' Jobs · NGQA'}
 const q=k=>document.querySelector(`.cell[data-k="${k}"] input`);
 function set(k,ch){St[cur].v[k]=ch;if(!ch)delete St[cur].v[k];const c=q(k).parentNode;c.classList.remove('bad','good');save();status()}
 function word(){return G.words.find(w=>w.d===dir&&w.cells.some(([r,c])=>r===sel[0]&&c===sel[1]))}
@@ -131,41 +139,6 @@ $('bsol').onclick=()=>{document.body.classList.add('psol');const v=St[cur].v,kee
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{cur=b.dataset.t;document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));sel=null;$('cur').innerHTML='בחרו תא או הגדרה כדי להתחיל.';build();history.replaceState(null,'','#'+cur)});
 if(location.hash==='#cryptic')document.querySelector('[data-t=cryptic]').click();else build();
 addEventListener('resize',()=>{clearTimeout(window._r);window._r=setTimeout(build,200)});
-'''
-
-page = f'''<!DOCTYPE html>
-<html lang="he" dir="rtl">
-<head>
-<meta charset="utf-8">
-<script src="/auth.js"></script>
-<script>document.documentElement.style.visibility='hidden';NGQAAuth.guard('genai').then(ok=>{{if(ok)document.documentElement.style.visibility=''}}).catch(()=>{{document.documentElement.style.visibility=''}});</script>
-<script>try{{const t=localStorage.getItem('ngqa-theme');if(t)document.documentElement.dataset.theme=t}}catch(e){{}}</script>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>תשבץ ותשחץ · CT-GenAI | NGQA</title>
-<meta name="robots" content="noindex">
-<link rel="icon" type="image/png" href="../favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
-<style>{CSS}</style>
-</head>
-<body>
-<div class="bar"><b>תשבץ ותשחץ · CT-GenAI</b><a href="../">חזרה לקורס</a></div>
-<div class="wrap">
-<div class="tabs" role="tablist"><button type="button" role="tab" data-t="cross" aria-selected="true">תשבץ — מונחי הקורס</button><button type="button" role="tab" data-t="cryptic" aria-selected="false">תשחץ — הגדרות היגיון</button></div>
-<p class="intro" id="intro"></p>
-<h2 class="ponly" id="ptitle"></h2>
-<div class="tools"><button type="button" id="bchk">בדיקה</button><button type="button" id="blet">חשיפת אות</button><button type="button" id="bwrd">חשיפת מילה</button><button type="button" id="ball">פתרון מלא</button><button type="button" id="bclr">ניקוי</button><button type="button" id="bprt">הדפסה</button><button type="button" id="bsol">הדפסת פתרון</button><span class="st" id="st"></span></div>
-<div class="done-msg" id="done">🎉 כל הכבוד — פתרתם את כל התשבץ!</div>
-<div class="lay">
-<div><div class="cur" id="cur">בחרו תא או הגדרה כדי להתחיל.</div><div class="gwrap"><div class="grid" id="grid"></div></div></div>
-<div class="clues"><div><h3>מאוזן <small>(משמאל לימין)</small></h3><ol id="ca"></ol></div><div><h3>מאונך</h3><ol id="cd"></ol></div></div>
-</div>
-</div>
-<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">תשבץ ותשחץ <bdi dir="ltr">v{VER} · {DATE}</bdi></span></footer>
-<script>{JS.replace('__DATA__', json.dumps(P, ensure_ascii=False))}</script>
+</script>
 </body>
 </html>
-'''
-OUT.mkdir(parents=True, exist_ok=True)
-(OUT / 'index.html').write_text(page, encoding='utf-8')
-print('ok', {k: (v['H'], v['W'], len(v['entries'])) for k, v in P.items()})

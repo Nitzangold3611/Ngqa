@@ -111,7 +111,7 @@ function build(){const p=P[cur];St[cur]=St[cur]||{v:{},rev:{}};const v=St[cur].v
       else if(e.key==='ArrowRight'){e.preventDefault();mv(0,1)}else if(e.key==='ArrowLeft'){e.preventDefault();mv(0,-1)}
       else if(e.key==='ArrowDown'){e.preventDefault();mv(1,0)}else if(e.key==='ArrowUp'){e.preventDefault();mv(-1,0)}
       else if(e.key==='Enter'||e.key===' '){e.preventDefault();if(G.cells[k].w.length>1){dir=dir==='A'?'D':'A';hl()}}}});
-  status();$('intro').innerHTML=cur==='cross'?'תשבץ הגדרות: התשובות הן המונחים המקצועיים באנגלית, כפי שהם מופיעים בקורס. התשבץ נקרא משמאל לימין.':'תשחץ: הגדרות היגיון, עם משחקי מילים ומשמעות כפולה. גם כאן התשובות הן מונחים באנגלית — חשבו פעמיים לפני שאתם כותבים!';
+  status();$('intro').innerHTML=cur==='cross'?"תשבץ הגדרות: התשובות הן המונחים המקצועיים באנגלית, כפי שהם מופיעים בקורס. התשבץ נקרא משמאל לימין.":"תשחץ: הגדרות היגיון, עם משחקי מילים ומשמעות כפולה. גם כאן התשובות הן מונחים באנגלית — חשבו פעמיים לפני שאתם כותבים!";
   $('ptitle').textContent=(cur==='cross'?'תשבץ':'תשחץ')+' CT-GenAI · NGQA'}
 const q=k=>document.querySelector(`.cell[data-k="${k}"] input`);
 function set(k,ch){St[cur].v[k]=ch;if(!ch)delete St[cur].v[k];const c=q(k).parentNode;c.classList.remove('bad','good');save();status()}

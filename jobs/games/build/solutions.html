@@ -1,0 +1,128 @@
+<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;--red:#e5484d;--green:#1fb57a;
+--bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960);--soft:light-dark(#eef9f8,#14304a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 Heebo,Arial,sans-serif}
+button,input{font:inherit}
+.bar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;gap:10px;align-items:center;padding:10px max(3vw,14px);flex-wrap:wrap}
+.bar b{flex:1;font-size:17px}
+.bar a,.bar button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 14px;text-decoration:none;cursor:pointer;font-size:15px}
+.clock{font:700 20px/1 ui-monospace,Consolas,monospace;direction:ltr;background:#000a;border-radius:10px;padding:8px 12px;color:var(--teal)}
+.clock.late{color:var(--orange)}
+.wrap{max-width:1100px;margin:auto;padding:26px max(3vw,14px)}
+.hero{background:var(--navy);color:#fff;border-radius:18px;padding:clamp(22px,4vw,40px);margin-bottom:22px}
+.hero h1{margin:0 0 8px;font-size:clamp(26px,4vw,40px);line-height:1.15}
+.hero p{color:#c9cbf0;margin:8px 0;max-width:75ch}.hero q{color:#fff}
+.hero .go{margin-top:12px;background:var(--orange);color:#fff;border:0;border-radius:12px;padding:10px 22px;font-weight:700;font-size:17px;cursor:pointer}
+.slots{display:flex;gap:8px;direction:ltr;justify-content:center;margin:0 0 22px}
+.slots span{width:52px;height:60px;border-radius:12px;border:2px dashed var(--line);display:grid;place-items:center;font:800 28px Heebo,Arial;position:relative;background:var(--card)}
+.slots span small{position:absolute;bottom:2px;font-size:11px;color:var(--mute);font-weight:500}
+.slots span.on{border:2px solid var(--teal);color:var(--teal-d)}
+.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px}
+@media(max-width:800px){.rooms{grid-template-columns:1fr 1fr}}@media(max-width:520px){.rooms{grid-template-columns:1fr}}
+.rm{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;text-align:start;cursor:pointer;color:inherit;position:relative}
+.rm:hover{border-color:var(--teal)}.rm.cur{border:2px solid var(--orange)}
+.rm .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;margin-inline-end:8px}
+.rm b{font-size:17.5px}.rm small{display:block;color:var(--mute);font-size:13.5px;margin-top:4px}
+.rm .st{position:absolute;inset-block-start:12px;inset-inline-end:14px;font-size:13px;font-weight:700;color:var(--mute)}
+.rm.done .st{color:var(--green)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,32px);margin-bottom:22px}
+.panel h2{margin:0;font-size:26px}.panel .sub{color:var(--teal-d);font-weight:700;margin-bottom:12px}
+q{quotes:"\201D" "\201C"}
+.codebox,.cfg,.req,.runs,.fields{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0}
+.codebox div{display:flex;gap:12px;align-items:center;margin:6px 0}
+code{direction:ltr;unicode-bidi:isolate;font:15.5px ui-monospace,Consolas,monospace;background:var(--soft);padding:2px 8px;border-radius:6px}
+pre{margin:0;font:14.5px/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap}
+.lab{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:8px;background:var(--orange);color:#fff;font-weight:800;font-size:15px;margin-inline-end:8px;flex:none}
+.frags{display:grid;gap:8px;margin:12px 0}.frags div{border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:flex;align-items:flex-start;background:light-dark(#fffdf8,#1b1a44)}
+.cases{padding-inline-start:26px}.cases li{margin:6px 0}
+.runs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}@media(max-width:700px){.runs{grid-template-columns:1fr}}
+.runs ol{margin:4px 0;padding-inline-start:20px;font-size:14.5px}
+.doc{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 16px;padding-inline-start:40px;font-size:15px}
+.fields{display:flex;flex-wrap:wrap;gap:8px}.fields span{border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card)}
+.req ul{margin:6px 0;padding-inline-start:22px}
+.tw{overflow-x:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:15px}th{background:var(--navy);color:#fff;padding:7px 10px;text-align:start}td{border-bottom:1px solid var(--line);padding:7px 10px}
+.lock{border-top:2px dashed var(--line);margin-top:18px;padding-top:16px}
+.lock .q{font-weight:700}.lock .fmt{color:var(--mute);font-size:14px}
+.lock form{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.lock input{flex:1;min-width:180px;border:2px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--bg);color:var(--ink);direction:ltr;text-align:center;font:700 18px ui-monospace,Consolas,monospace;letter-spacing:2px}
+.lock button.try{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:8px 20px;font-weight:700;cursor:pointer}
+:root[data-theme=dark] .lock button.try{background:var(--teal-d)}
+.lock .msg{min-height:1.4em;font-weight:700}.msg.bad{color:var(--red)}.msg.ok{color:var(--green)}
+.lock.solved input{border-color:var(--green);background:light-dark(#ecfbf4,#123a2c)}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.hints{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hints button{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:3px 12px;font-size:14px;cursor:pointer}
+.hints button:disabled{opacity:.45;cursor:default}
+.hint{background:light-dark(#fff4e6,#3a2a12);border-inline-start:4px solid var(--orange);border-radius:8px;padding:6px 12px;margin:6px 0;font-size:15px}
+.reward{margin-top:14px;background:var(--soft);border-radius:12px;padding:10px 14px;font-weight:700}
+.final{border:2px solid var(--orange)}
+.cert{display:none;text-align:center;border:6px double var(--teal);border-radius:18px;padding:30px;background:var(--card);margin-bottom:22px}
+.cert h2{font-size:32px;margin:6px 0}.cert .nm{font-size:28px;font-weight:800;color:var(--teal-d)}
+.cert .row{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin:14px 0;font-size:18px}
+.cert button,.solbox a{background:var(--orange);color:#fff;border:0;border-radius:10px;padding:8px 18px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.solbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin-bottom:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.solbox p{margin:0;flex:1;color:var(--mute)}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}footer .ver{display:block}
+@media print{.bar,.rooms,.panel,.slots,.hero,.solbox,footer{display:none!important}body{background:#fff}.cert{display:block!important;margin-top:40mm}}
+
+body{background:#fff;color:#121133;font-size:11pt;line-height:1.6}
+@page{size:A4;margin:15mm}
+.cv{background:#121133;color:#fff;border-radius:14px;padding:26px 30px;margin-bottom:16px}.cv h1{margin:0 0 6px;font-size:26pt}.cv p{color:#c9cbf0;margin:4px 0}
+section{break-before:page}section h2{color:#0E9F97;font-size:18pt;margin:0}.sub{color:#5d5c7c;font-weight:700;margin-bottom:8px}
+.lk{border:2px solid #14DACD;border-radius:12px;padding:10px 14px;margin:12px 0;break-inside:avoid;background:#f3fdfc}
+.lk .q{font-weight:700}.ans{font-size:13pt;margin:6px 0}.ans b{background:#F38911;color:#fff;border-radius:6px;padding:1px 10px;font-family:Consolas,monospace;letter-spacing:1px}
+.rw{font-weight:700;background:#eef9f8;border-radius:10px;padding:8px 12px}
+.frags div,.codebox,.cfg,.req,.runs,.fields,.doc{break-inside:avoid}
+</style></head><body>
+<div class="cv"><h1>מדריך פתרונות — חדר בריחה: הראיון</h1><p>NGQA · Jobs · חדר בריחה v1.0 · 23.11.2026</p><p>לכל מנעול: התשובה, הדרך אליה, והקשר לחומר הקורס. מומלץ לקרוא אחרי המשחק.</p></div>
+<h2>איך משחקים</h2><p>יש לכם ראיון למשרת QA בחברת "TestWave" בעוד שעה. הרכזת שלחה לכם קישור ל"חדר המתנה דיגיטלי", ומתברר שזה חדר בריחה: חמש דלתות, וכל אחת בודקת שלב אחר בדרך לעבודה.</p>
+<p>יש לכם <b>45 דקות</b>. מותר להשתמש במצגות הסדנה. בכל מנעול יש 3 רמזים, וכל רמז מוסיף 3 דקות. כל דלת שתפתחו תחשוף אות ואת מיקומה במילה הסופית.</p><p>החדרים פתוחים בכל סדר. כל חדר שנפרץ חושף אות ואת מיקומה בסיסמת השחרור. אפשר להשתמש בשלושה רמזים לכל מנעול, וכל רמז מוסיף 3 דקות. ההתקדמות נשמרת בדפדפן.</p>
+<div class="rw">תקציר התשובות: R1A: PSTEXL · R1B: 2346 · R2A: ACE35 · R3A: GNK136 · R4A: NOATVC7 · R5A: FTTF · סיסמה: HIRED</div>
+<section><h2>חדר 1 · חדר קורות החיים</h2><div class="sub">חלק 1 · כתיבת קורות חיים</div><p>על השולחן מפוזרים שישה סעיפים של קורות חיים:</p>
+<div class="frags">
+<div><span class="lab">T</span>כלים ותוכנות, לפי קטגוריות.</div>
+<div><span class="lab">P</span>פרטים אישיים: שם, טלפון, מייל, אזור מגורים, לינקדאין.</div>
+<div><span class="lab">L</span>שירות צבאי ושפות.</div>
+<div><span class="lab">S</span>תמצית של 3–4 שורות עם מילות מפתח.</div>
+<div><span class="lab">X</span>ניסיון ופרויקטים.</div>
+<div><span class="lab">E</span>השכלה וקורסים.</div>
+</div>
+<p>ולצדם, קורות חיים של מועמד אחר. הרכזת סימנה שש שורות:</p>
+<ol class="doc">
+<li>שם הקובץ: Israel Israeli – QA Engineer CV.</li>
+<li>התמצית: תשע שורות על תחביבים.</li>
+<li>בסעיף ההשכלה: 2018 ואחריה 2021.</li>
+<li>הפרטים האישיים כוללים מספר תעודת זהות ומצב משפחתי.</li>
+<li>הכלים מחולקים לקטגוריות: מערכות הפעלה, ניהול בדיקות, אוטומציה.</li>
+<li>שש תכונות אופי: חרוץ, יצירתי, אחראי, סקרן, מסור, שאפתן.</li>
+</ol><div class="lk"><div class="q">סדרו את ששת הסעיפים לפי הסדר המומלץ בסדנה.</div><div class="ans">תשובה: <b dir="ltr">PSTEXL</b></div><p>פרטים אישיים (P) ← תמצית (S) ← כלים ותוכנות (T) ← השכלה וקורסים (E) ← ניסיון ופרויקטים (X) ← צבא ושפות (L). התשובה: PSTEXL.</p></div><div class="lk"><div class="q">אילו שורות שסימנה הרכזת הן טעויות? כתבו את המספרים בסדר עולה.</div><div class="ans">תשובה: <b dir="ltr">2346</b></div><p>2 — התמצית ארוכה מדי ולא מקצועית (3–4 שורות עם מילות מפתח). 3 — צריך סדר כרונולוגי הפוך: 2021 לפני 2018. 4 — לא כותבים ת"ז ומצב משפחתי. 6 — לא יותר מ-3 תכונות. שורות 1 ו-5 תקינות. התשובה: 2346.</p></div><div class="rw">פרס החדר: האות <b>R</b> במיקום <b>3</b></div></section><section><h2>חדר 2 · חדר הלינקדאין</h2><div class="sub">חלק 2 · פרופיל הלינקדאין</div><p>שש כתיבות של כלים מתוך פרופילים שונים:</p>
+<div class="fields"><span>A · jQuery</span><span>B · Jquery</span><span>C · MySQL</span><span>D · Mysql</span><span>E · WordPress</span><span>F · WORDPRESS</span></div>
+<p>וחמישה פרטים מהפרופיל של חברה מהקורס:</p>
+<ol class="doc">
+<li>הפרופיל כתוב בעברית.</li>
+<li>תמונת הפרופיל: סלפי מהחוף.</li>
+<li>הכותרת: QA Engineer | Selenium | SQL | API Testing.</li>
+<li>התקציר: highly motivated, team player, fast learner.</li>
+<li>האפשרות Open to Work מופעלת, עם תפקידים ומיקום מבוקשים.</li>
+</ol><div class="lk"><div class="q">אילו כתיבות נכונות? כתבו את האותיות שלהן, ואחר כך את מספרי הפרטים התקינים בפרופיל.</div><div class="ans">תשובה: <b dir="ltr">ACE35</b></div><p>הכתיבות הנכונות: jQuery ‏(A), ‏MySQL ‏(C), ‏WordPress ‏(E). הפרטים התקינים: 3 — כותרת עם תפקיד וכלים, ו-5 — ‏Open to Work. פרופיל בעברית, סלפי ותקציר בלי מילות מפתח — לא. התשובה: ACE35.</p></div><div class="rw">פרס החדר: האות <b>E</b> במיקום <b>4</b></div></section><section><h2>חדר 3 · חדר הראיון</h2><div class="sub">חלק 3 · ראיון טלפוני וראיון פרונטאלי</div><p>שלבי הראיון הפרונטאלי התערבבו:</p>
+<div class="frags">
+<div><span class="lab">K</span>רקע מקצועי: ידע, ניסיון ושאלות מקצועיות.</div>
+<div><span class="lab">G</span>רקע כללי: תיאור קצר של לימודים, משפחה ותחביבים.</div>
+<div><span class="lab">N</span>רקע אנושי: תיאור התפקיד, החברה ושעות העבודה.</div>
+</div>
+<p>ושש התנהגויות בראיון:</p>
+<ol class="doc"><li>לשאול על המוצר ועל המתחרים.</li><li>להתווכח עם המראיין על שיטת בדיקה.</li><li>להגיע לפחות 15 דקות לפני הזמן.</li><li>לקטוע את המראיין כדי להשלים משפט.</li><li>לתת למראיין עצות איך לשפר את המוצר.</li><li>להכין הצגה עצמית קצרה וחדה.</li></ol><div class="lk"><div class="q">סדרו את שלבי הראיון, ואחר כך כתבו את מספרי ההתנהגויות המומלצות בסדר עולה.</div><div class="ans">תשובה: <b dir="ltr">GNK136</b></div><p>השלבים: רקע כללי (G) ← רקע אנושי (N) ← רקע מקצועי (K). ההתנהגויות המומלצות: 1 — לשאול על המוצר והמתחרים, 3 — להגיע 15 דקות לפני, 6 — הצגה עצמית מוכנה. התשובה: GNK136.</p></div><div class="rw">פרס החדר: האות <b>H</b> במיקום <b>1</b></div></section><section><h2>חדר 4 · חדר השאלות</h2><div class="sub">חלק 4 · שאלות מראיונות עבודה</div><p>המראיין שולף שתי שאלות קלאסיות. הראשונה — מחזור החיים של באג. ששת המצבים התערבבו:</p>
+<div class="fields"><span>V · Verified</span><span>N · New</span><span>T · Test</span><span>C · Closed</span><span>O · Open</span><span>A · Assign</span></div>
+<p>השנייה — שאלת חשיבה: יש 25 סוסים ומסלול שבו רצים 5 סוסים בכל מרוץ. אין שעון — רק סדר ההגעה. מה מספר המרוצים המינימלי שצריך כדי למצוא את שלושת הסוסים המהירים ביותר?</p><div class="lk"><div class="q">סדרו את מחזור החיים של הבאג, ואחר כך הוסיפו את מספר המרוצים המינימלי.</div><div class="ans">תשובה: <b dir="ltr">NOATVC7</b></div><p>מחזור החיים: New ← Open ← Assign ← Test ← Verified ← Closed. הסוסים: 5 מרוצים של 5 סוסים, מרוץ שישי בין חמשת המנצחים (המנצח בו הוא המהיר ביותר), ומרוץ שביעי בין 5 המועמדים היחידים שיכולים להיות במקום 2 או 3. סה"כ 7. התשובה: NOATVC7.</p></div><div class="rw">פרס החדר: האות <b>D</b> במיקום <b>5</b></div></section><section><h2>חדר 5 · חדר ההצעה</h2><div class="sub">חלק 3 · הצעה, חוזה וראיון בזום</div><p>הגעתם לשלב האחרון. ארבע החלטות — נכון (T) או לא נכון (F)?</p>
+<ol class="doc">
+<li>קיבלתם הצעה כספית נמוכה? תציבו אולטימטום: "או 2,000 ₪ יותר, או שאני הולך".</li>
+<li>מבקשים מהרכזת הצעה מפורטת בכתב, כולל כל התנאים וההטבות.</li>
+<li>בראיון בזום מסתכלים למצלמה, ולא לתמונה של המראיין על המסך.</li>
+<li>בראיון בזום מניחים את המחשב על הברכיים, כדי לשבת בנוח.</li>
+</ol><div class="lk"><div class="q">כתבו T או F לכל החלטה, לפי הסדר 1–4.</div><div class="ans">תשובה: <b dir="ltr">FTTF</b></div><p>1 — לא נכון: אולטימטום הוא אף פעם. 2 — נכון: הצעה מפורטת מאפשרת לשפר את התנאים. 3 — נכון: כך נוצר קשר עין. 4 — לא נכון: המחשב על השולחן, במקום יציב. התשובה: FTTF.</p></div><div class="rw">פרס החדר: האות <b>I</b> במיקום <b>2</b></div></section>
+<section><h2>דלת השחרור</h2><div class="lk"><div class="q">הרכיבו את המילה הסופית מחמש האותיות, כל אחת במיקום שלה.</div><div class="ans">תשובה: <b dir="ltr">HIRED</b></div><p>H(1) I(2) R(3) E(4) D(5) — HIRED. בהצלחה!</p></div></section>
+</body></html>

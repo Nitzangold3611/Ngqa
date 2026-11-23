@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;--red:#e5484d;--green:#1fb57a;
+--bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960);--soft:light-dark(#eef9f8,#14304a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 Heebo,Arial,sans-serif}
+button,input{font:inherit}
+.bar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;gap:10px;align-items:center;padding:10px max(3vw,14px);flex-wrap:wrap}
+.bar b{flex:1;font-size:17px}
+.bar a,.bar button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 14px;text-decoration:none;cursor:pointer;font-size:15px}
+.clock{font:700 20px/1 ui-monospace,Consolas,monospace;direction:ltr;background:#000a;border-radius:10px;padding:8px 12px;color:var(--teal)}
+.clock.late{color:var(--orange)}
+.wrap{max-width:1100px;margin:auto;padding:26px max(3vw,14px)}
+.hero{background:var(--navy);color:#fff;border-radius:18px;padding:clamp(22px,4vw,40px);margin-bottom:22px}
+.hero h1{margin:0 0 8px;font-size:clamp(26px,4vw,40px);line-height:1.15}
+.hero p{color:#c9cbf0;margin:8px 0;max-width:75ch}.hero q{color:#fff}
+.hero .go{margin-top:12px;background:var(--orange);color:#fff;border:0;border-radius:12px;padding:10px 22px;font-weight:700;font-size:17px;cursor:pointer}
+.slots{display:flex;gap:8px;direction:ltr;justify-content:center;margin:0 0 22px}
+.slots span{width:52px;height:60px;border-radius:12px;border:2px dashed var(--line);display:grid;place-items:center;font:800 28px Heebo,Arial;position:relative;background:var(--card)}
+.slots span small{position:absolute;bottom:2px;font-size:11px;color:var(--mute);font-weight:500}
+.slots span.on{border:2px solid var(--teal);color:var(--teal-d)}
+.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px}
+@media(max-width:800px){.rooms{grid-template-columns:1fr 1fr}}@media(max-width:520px){.rooms{grid-template-columns:1fr}}
+.rm{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;text-align:start;cursor:pointer;color:inherit;position:relative}
+.rm:hover{border-color:var(--teal)}.rm.cur{border:2px solid var(--orange)}
+.rm .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;margin-inline-end:8px}
+.rm b{font-size:17.5px}.rm small{display:block;color:var(--mute);font-size:13.5px;margin-top:4px}
+.rm .st{position:absolute;inset-block-start:12px;inset-inline-end:14px;font-size:13px;font-weight:700;color:var(--mute)}
+.rm.done .st{color:var(--green)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,32px);margin-bottom:22px}
+.panel h2{margin:0;font-size:26px}.panel .sub{color:var(--teal-d);font-weight:700;margin-bottom:12px}
+q{quotes:"\201D" "\201C"}
+.codebox,.cfg,.req,.runs,.fields{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0}
+.codebox div{display:flex;gap:12px;align-items:center;margin:6px 0}
+code{direction:ltr;unicode-bidi:isolate;font:15.5px ui-monospace,Consolas,monospace;background:var(--soft);padding:2px 8px;border-radius:6px}
+pre{margin:0;font:14.5px/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap}
+.lab{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:8px;background:var(--orange);color:#fff;font-weight:800;font-size:15px;margin-inline-end:8px;flex:none}
+.frags{display:grid;gap:8px;margin:12px 0}.frags div{border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:flex;align-items:flex-start;background:light-dark(#fffdf8,#1b1a44)}
+.cases{padding-inline-start:26px}.cases li{margin:6px 0}
+.runs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}@media(max-width:700px){.runs{grid-template-columns:1fr}}
+.runs ol{margin:4px 0;padding-inline-start:20px;font-size:14.5px}
+.doc{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 16px;padding-inline-start:40px;font-size:15px}
+.fields{display:flex;flex-wrap:wrap;gap:8px}.fields span{border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card)}
+.req ul{margin:6px 0;padding-inline-start:22px}
+.tw{overflow-x:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:15px}th{background:var(--navy);color:#fff;padding:7px 10px;text-align:start}td{border-bottom:1px solid var(--line);padding:7px 10px}
+.lock{border-top:2px dashed var(--line);margin-top:18px;padding-top:16px}
+.lock .q{font-weight:700}.lock .fmt{color:var(--mute);font-size:14px}
+.lock form{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.lock input{flex:1;min-width:180px;border:2px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--bg);color:var(--ink);direction:ltr;text-align:center;font:700 18px ui-monospace,Consolas,monospace;letter-spacing:2px}
+.lock button.try{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:8px 20px;font-weight:700;cursor:pointer}
+:root[data-theme=dark] .lock button.try{background:var(--teal-d)}
+.lock .msg{min-height:1.4em;font-weight:700}.msg.bad{color:var(--red)}.msg.ok{color:var(--green)}
+.lock.solved input{border-color:var(--green);background:light-dark(#ecfbf4,#123a2c)}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.hints{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hints button{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:3px 12px;font-size:14px;cursor:pointer}
+.hints button:disabled{opacity:.45;cursor:default}
+.hint{background:light-dark(#fff4e6,#3a2a12);border-inline-start:4px solid var(--orange);border-radius:8px;padding:6px 12px;margin:6px 0;font-size:15px}
+.reward{margin-top:14px;background:var(--soft);border-radius:12px;padding:10px 14px;font-weight:700}
+.final{border:2px solid var(--orange)}
+.cert{display:none;text-align:center;border:6px double var(--teal);border-radius:18px;padding:30px;background:var(--card);margin-bottom:22px}
+.cert h2{font-size:32px;margin:6px 0}.cert .nm{font-size:28px;font-weight:800;color:var(--teal-d)}
+.cert .row{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin:14px 0;font-size:18px}
+.cert button,.solbox a{background:var(--orange);color:#fff;border:0;border-radius:10px;padding:8px 18px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.solbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin-bottom:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.solbox p{margin:0;flex:1;color:var(--mute)}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}footer .ver{display:block}
+@media print{.bar,.rooms,.panel,.slots,.hero,.solbox,footer{display:none!important}body{background:#fff}.cert{display:block!important;margin-top:40mm}}
+
+body{background:#fff;color:#121133;font-size:11pt;line-height:1.6}
+@page{size:A4;margin:15mm}
+.cv{background:#121133;color:#fff;border-radius:14px;padding:26px 30px;margin-bottom:16px}.cv h1{margin:0 0 6px;font-size:26pt}.cv p{color:#c9cbf0;margin:4px 0}
+section{break-before:page}section h2{color:#0E9F97;font-size:18pt;margin:0}.sub{color:#5d5c7c;font-weight:700;margin-bottom:8px}
+.lk{border:2px solid #14DACD;border-radius:12px;padding:10px 14px;margin:12px 0;break-inside:avoid;background:#f3fdfc}
+.lk .q{font-weight:700}.ans{font-size:13pt;margin:6px 0}.ans b{background:#F38911;color:#fff;border-radius:6px;padding:1px 10px;font-family:Consolas,monospace;letter-spacing:1px}
+.rw{font-weight:700;background:#eef9f8;border-radius:10px;padding:8px 12px}
+.frags div,.codebox,.cfg,.req,.runs,.fields,.doc{break-inside:avoid}
+</style></head><body>
+<div class="cv"><h1>מדריך פתרונות — חדר בריחה: המודל שהשתגע</h1><p>NGQA · CT-AI · חדר בריחה v1.0 · 23.11.2026</p><p>לכל מנעול: התשובה, הדרך אליה, והקשר לחומר הקורס. מומלץ לקרוא אחרי המשחק.</p></div>
+<h2>איך משחקים</h2><p>מעבדת ה-AI של חברת "MedSight" אישרה אתמול מודל חדש לאבחון צילומי רנטגן. הלילה המודל התחיל להתנהג מוזר, ומערכת הבקרה נעלה את המעבדה. כדי לפתוח אותה צריך לעבור שישה מנעולים, וכל אחד מהם בודק נושא אחר בבדיקת מערכות מבוססות AI.</p>
+<p>יש לכם <b>75 דקות</b>. מותר להשתמש במצגות, בסילבוס ובמחשבון. בכל מנעול יש 3 רמזים, וכל רמז מוסיף 3 דקות. כל חדר שתפרצו יחשוף אות ואת מיקומה בסיסמה.</p><p>החדרים פתוחים בכל סדר. כל חדר שנפרץ חושף אות ואת מיקומה בסיסמת השחרור. אפשר להשתמש בשלושה רמזים לכל מנעול, וכל רמז מוסיף 3 דקות. ההתקדמות נשמרת בדפדפן.</p>
+<div class="rw">תקציר התשובות: R1A: HBXA · R1B: USRS · R2A: 858067 · R2B: 73 · R3A: OUG · R3B: 75 · R4A: 625 · R5A: AMVP · R5B: 25 · R6A: 189 · R6B: DC · סיסמה: MODELS</div>
+<section><h2>חדר 1 · חדר המאפיינים</h2><div class="sub">פרקים 1–3 · מאפייני איכות של AI וסוגי למידה</div><p>ארבעה סיפורים מהעיתונות הטכנולוגית:</p>
+<ol class="doc">
+<li>שואב אבק רובוטי "למד" להחביא את הלכלוך מתחת לשטיח, כי התגמול שלו נמדד לפי רצפה שנראית נקייה.</li>
+<li>מודל לאישור הלוואות דוחה באופן שיטתי מבקשים משכונות מסוימות.</li>
+<li>הרופאים לא מצליחים להבין למה המודל המליץ על טיפול מסוים.</li>
+<li>רכב אוטונומי נוסע שעות ארוכות בלי שום התערבות של נהג.</li>
+</ol>
+<p>הקודים: H — ‏Reward Hacking · ‏B — הטיה (Bias) · ‏X — יכולת הסבר (Explainability) · ‏A — אוטונומיה.</p>
+<p>ובפנקס של חוקרת הנתונים, ארבעה פרויקטים:</p>
+<ol class="doc"><li>חלוקת לקוחות לקבוצות לפי התנהגות, בלי תוויות.</li><li>מסנן דואר זבל שאומן על הודעות שסומנו "ספאם" או "לא ספאם".</li><li>סוכן שלומד לשחק משחק לפי ניקוד שהוא מקבל.</li><li>חיזוי מחיר דירה מנתוני עסקאות קודמות עם מחירים ידועים.</li></ol><div class="lk"><div class="q">כתבו את קוד המאפיין לכל סיפור, לפי הסדר 1–4.</div><div class="ans">תשובה: <b dir="ltr">HBXA</b></div><p>1 — Reward Hacking (H). 2 — הטיה (B). 3 — יכולת הסבר (X). 4 — אוטונומיה (A): פעולה לאורך זמן בלי התערבות אנושית. התשובה: HBXA.</p></div><div class="lk"><div class="q">איזה סוג למידה בכל פרויקט? S = מונחית (Supervised) · U = לא מונחית (Unsupervised) · R = למידת חיזוק (Reinforcement). לפי הסדר 1–4.</div><div class="ans">תשובה: <b dir="ltr">USRS</b></div><p>1 — לא מונחית (Clustering בלי תוויות). 2 — מונחית (סיווג עם תוויות). 3 — למידת חיזוק. 4 — מונחית (רגרסיה עם מחירים ידועים). התשובה: USRS.</p></div><div class="rw">פרס החדר: האות <b>D</b> במיקום <b>3</b></div></section><section><h2>חדר 2 · חדר מטריצת הבלבול</h2><div class="sub">פרק 5 · מדדי ביצועים פונקציונליים</div><p>על המסך תוצאות המודל על סט בדיקה של 200 צילומים (חיובי = "יש ממצא"):</p>
+<div class="tw"><table><tr><th></th><th>חזוי: חיובי</th><th>חזוי: שלילי</th></tr>
+<tr><td><b>בפועל: חיובי</b></td><td>40 (TP)</td><td>20 (FN)</td></tr>
+<tr><td><b>בפועל: שלילי</b></td><td>10 (FP)</td><td>130 (TN)</td></tr></table></div><div class="lk"><div class="q">מהם Accuracy, ‏Precision ו-Recall באחוזים, מעוגלים למספר שלם?</div><div class="ans">תשובה: <b dir="ltr">858067</b></div><p>Accuracy = ‏(40+130)/200 = 85%. ‏Precision = ‏40/50 = 80%. ‏Recall = ‏40/60 ≈ 67%. התשובה: 858067. שימו לב: Accuracy גבוה יחסית, אבל המודל מפספס שליש מהממצאים — ובאבחון רפואי Recall הוא קריטי.</p></div><div class="lk"><div class="q">מהו ציון F1 באחוזים, מעוגל למספר שלם?</div><div class="ans">תשובה: <b dir="ltr">73</b></div><p>F1 = ‏2 × 0.8 × 0.667 / (0.8 + 0.667) ≈ 0.727, כלומר 73%.</p></div><div class="rw">פרס החדר: האות <b>M</b> במיקום <b>1</b></div></section><section><h2>חדר 3 · חדר הנתונים</h2><div class="sub">פרק 4 · נתונים, חלוקה, התאמת יתר והתאמת חסר</div><p>שלושה מודלים מועמדים, עם הדיוק שלהם על נתוני האימון ועל נתוני הבדיקה:</p>
+<div class="tw"><table><tr><th>מודל</th><th>דיוק באימון</th><th>דיוק בבדיקה</th></tr>
+<tr><td>K</td><td>99%</td><td>62%</td></tr><tr><td>M</td><td>58%</td><td>57%</td></tr><tr><td>P</td><td>91%</td><td>89%</td></tr></table></div>
+<p>ובתיקיית הנתונים: 10,000 צילומים מתויגים. ‏70% מהם הוקצו לאימון, ‏15% לאימות (Validation), והשאר לבדיקה. בדיקה ידנית מצאה ש-5% מסט הבדיקה מתויגים לא נכון.</p><div class="lk"><div class="q">סווגו את המודלים K, ‏M, ‏P לפי הסדר: O = התאמת יתר (Overfitting) · U = התאמת חסר (Underfitting) · G = התאמה טובה.</div><div class="ans">תשובה: <b dir="ltr">OUG</b></div><p>K — התאמת יתר: ‏99% באימון ו-62% בבדיקה. ‏M — התאמת חסר: נמוך בשניהם. ‏P — התאמה טובה. התשובה: OUG.</p></div><div class="lk"><div class="q">כמה צילומים בסט הבדיקה מתויגים לא נכון?</div><div class="ans">תשובה: <b dir="ltr">75</b></div><p>סט הבדיקה: 15% מ-10,000 = 1,500 צילומים. ‏5% מהם = 75 צילומים שמתויגים לא נכון. תוויות שגויות בסט הבדיקה פוגעות באמינות של כל המדדים.</p></div><div class="rw">פרס החדר: האות <b>S</b> במיקום <b>6</b></div></section><section><h2>חדר 4 · חדר הרשת</h2><div class="sub">פרק 6 · רשתות עצביות ו-Neuron Coverage</div><p>לרשת יש שכבה נסתרת עם 8 נוירונים (N1–N8). נוירון נחשב "מופעל" אם הפלט שלו גדול מאפס. שלושה קלטי בדיקה הפעילו את הנוירונים האלה:</p>
+<div class="cfg"><pre dir="ltr">test-1 : N1, N2, N5
+test-2 : N2, N3, N5, N7
+test-3 : N1, N5</pre></div><div class="lk"><div class="q">מהו כיסוי הנוירונים (Neuron Coverage) באחוזים של שלושת הקלטים יחד, בשכבה הזו?</div><div class="ans">תשובה: <b dir="ltr">625</b></div><p>האיחוד הוא N1, ‏N2, ‏N3, ‏N5, ‏N7 — חמישה נוירונים מתוך 8, כלומר 62.5%. ‏N4, ‏N6 ו-N8 לא הופעלו אף פעם, ולכן כדאי להוסיף קלטים שיפעילו אותם.</p></div><div class="rw">פרס החדר: האות <b>L</b> במיקום <b>5</b></div></section><section><h2>חדר 5 · חדר הבדיקות</h2><div class="sub">פרקים 7–8 · A/B, ‏Metamorphic, ‏Adversarial ו-Pairwise</div><p>ארבע פעולות בדיקה שבוצעו על המודל:</p>
+<ol class="doc">
+<li>חצי מהמשתמשים קיבלו את המודל הישן וחצי את החדש, והושוו שיעורי האבחון הנכון.</li>
+<li>הצילום סובב ב-2 מעלות, והציפייה היא שהאבחון לא ישתנה.</li>
+<li>נוסף לצילום רעש בלתי נראה שנועד במכוון להטעות את המודל.</li>
+<li>נבחר סט קטן של צירופים כך שכל זוג ערכים של שלושה פרמטרים (מכשיר, עוצמה, גיל המטופל) יופיע לפחות פעם אחת.</li>
+</ol>
+<p>הקודים: A — ‏A/B Testing · ‏M — ‏Metamorphic Testing · ‏V — ‏Adversarial Testing · ‏P — ‏Pairwise Testing.</p>
+<p>ובנוסף, תוצאות של בדיקה מטמורפית עם הקשר "שיקוף אופקי של הצילום לא משנה את האבחון":</p>
+<div class="tw"><table><tr><th>צילום</th><th>אבחון מקורי</th><th>אבחון אחרי שיקוף</th></tr>
+<tr><td>1</td><td>תקין</td><td>תקין</td></tr><tr><td>2</td><td>ממצא</td><td>תקין</td></tr><tr><td>3</td><td>תקין</td><td>תקין</td></tr><tr><td>4</td><td>ממצא</td><td>ממצא</td></tr><tr><td>5</td><td>תקין</td><td>ממצא</td></tr></table></div><div class="lk"><div class="q">כתבו את קוד הטכניקה לכל פעולה, לפי הסדר 1–4.</div><div class="ans">תשובה: <b dir="ltr">AMVP</b></div><p>1 — A/B. ‏2 — Metamorphic: יחס בין קלט מקורי לקלט מורחב. 3 — Adversarial. 4 — Pairwise. התשובה: AMVP.</p></div><div class="lk"><div class="q">באילו צילומים הקשר המטמורפי הופר? כתבו את המספרים בסדר עולה.</div><div class="ans">תשובה: <b dir="ltr">25</b></div><p>בצילומים 2 ו-5 האבחון השתנה אחרי השיקוף, ולכן הקשר הופר. היתרון: לא צריך לדעת מה האבחון "הנכון" — מספיק שהיחס בין התוצאות נשבר. כך מתמודדים עם בעיית ה-Test Oracle.</p></div><div class="rw">פרס החדר: האות <b>O</b> במיקום <b>2</b></div></section><section><h2>חדר 6 · חדר הניטור</h2><div class="sub">פרק 9 · שיטות וטכניקות — צירופים וסחיפה</div><p>שלושה פרמטרים לבדיקת המודל: ‏<b>מכשיר</b> (3 דגמים), <b>עוצמת קרינה</b> (3 רמות), <b>מין המטופל</b> (2).</p>
+<p>ושני דיווחים ממערכת הניטור:</p>
+<ol class="doc"><li>בית החולים החליף את מכשיר הרנטגן, וההתפלגות של בהירות הצילומים השתנתה.</li><li>הופיע זן חדש של מחלה, ומה שנחשב בעבר "תקין" עשוי עכשיו להעיד על ממצא.</li></ol><div class="lk"><div class="q">כמה צירופים יש בבדיקה מלאה של כל הצירופים, ומה המספר המינימלי של מקרי בדיקה ל-Pairwise?</div><div class="ans">תשובה: <b dir="ltr">189</b></div><p>בדיקה מלאה: 3 × 3 × 2 = 18 צירופים. ב-Pairwise צריך לפחות 3 × 3 = 9 מקרים, כדי לכסות את כל הזוגות של מכשיר × עוצמה, ואפשר לשבץ בהם את המין כך שגם שאר הזוגות יכוסו. התשובה: 18 ו-9 — ‏189.</p></div><div class="lk"><div class="q">איזה סוג סחיפה בכל דיווח? D = ‏Data Drift (שינוי בהתפלגות הקלט) · C = ‏Concept Drift (שינוי בקשר בין הקלט לתוצאה).</div><div class="ans">תשובה: <b dir="ltr">DC</b></div><p>1 — Data Drift: הקלט עצמו נראה אחרת. 2 — Concept Drift: אותו קלט מקבל משמעות אחרת. בשני המקרים צריך לנטר ביצועים בייצור ולאמן מחדש. התשובה: DC.</p></div><div class="rw">פרס החדר: האות <b>E</b> במיקום <b>4</b></div></section>
+<section><h2>דלת השחרור</h2><div class="lk"><div class="q">הרכיבו את הסיסמה מששת האותיות, כל אחת במיקום שלה.</div><div class="ans">תשובה: <b dir="ltr">MODELS</b></div><p>M(1) O(2) D(3) E(4) L(5) S(6) — MODELS.</p></div></section>
+</body></html>
