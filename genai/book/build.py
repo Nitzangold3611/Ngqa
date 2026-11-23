@@ -6,7 +6,7 @@ import re, html, pathlib, markdown
 ROOT = pathlib.Path(__file__).resolve().parent
 SITE = ROOT.parents[1] / 'site' / 'courses' / 'genai'
 OUT = SITE / 'book'
-VER, DATE = '1.0', '23.11.2026'
+VER, DATE = '1.1', '23.11.2026'
 PDF = '../pdf/NGQA-CT-GenAI-book.pdf'
 
 def render(md_text, n):
@@ -45,14 +45,15 @@ CSS = r'''
 body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.75 Heebo,Arial,sans-serif;overflow-x:clip}
 a{color:inherit}
 .bar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;gap:10px;align-items:center;padding:10px max(3vw,14px);flex-wrap:wrap}
-.bar b{flex:1;font-size:17px}
+.bar b{flex:1;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:600px){.bar{gap:6px;padding:8px 10px}.bar b{font-size:15px}.bar a,.bar button{padding:5px 10px!important;font-size:13.5px!important}}
 .bar a,.bar button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:7px 14px;font:inherit;font-size:15px;text-decoration:none;cursor:pointer;white-space:nowrap}
 .bar a:hover,.bar button:hover{background:rgba(255,255,255,.2)}
 .bar .pri{background:var(--orange);border-color:var(--orange)}
 .lay{display:grid;grid-template-columns:290px minmax(0,1fr);gap:32px;max-width:1240px;margin:auto;padding:28px max(3vw,14px)}
-@media(max-width:900px){.lay{grid-template-columns:1fr}.side{position:static!important;max-height:none!important}}
+@media(max-width:900px){.lay{grid-template-columns:1fr}.side{position:sticky!important;top:58px;z-index:10;max-height:70vh!important}}
 .side{position:sticky;top:70px;align-self:start;max-height:calc(100vh - 90px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
-.side h3{margin:0 0 8px;font-size:16px}
+.side summary{font-weight:800;font-size:16px;cursor:pointer;margin-bottom:8px}.side details:not([open]) summary{margin:0}
 .side ol{list-style:none;margin:0 0 10px;padding:0}
 .side li a{display:block;text-decoration:none;padding:3px 6px;border-radius:6px;font-size:14px;line-height:1.4}
 .side li a:hover,.side li a.on{background:var(--soft);color:var(--teal-d)}
@@ -115,8 +116,11 @@ footer .ver{display:block;margin-top:4px}
 JS = r'''<script>
 document.getElementById('prt').onclick=()=>window.print();
 if(/[?&]print=1/.test(location.search))(document.fonts?document.fonts.ready:Promise.resolve()).then(()=>setTimeout(()=>window.print(),600));
+const side=document.querySelector('.side'),det=side.querySelector('details');if(matchMedia('(max-width:900px)').matches)det.open=false;
+const fixTop=()=>{side.style.top=matchMedia('(max-width:900px)').matches?(document.querySelector('.bar').offsetHeight+6)+'px':''};fixTop();addEventListener('resize',fixTop);
+side.addEventListener('click',e=>{if(e.target.closest('a')&&matchMedia('(max-width:900px)').matches)det.open=false});
 const links=[...document.querySelectorAll('.side a')],map=new Map(links.map(a=>[a.getAttribute('href').slice(1),a]));
-const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('on'));const a=map.get(e.target.id);if(a){a.classList.add('on');a.scrollIntoView({block:'nearest'})}}})},{rootMargin:'-80px 0px -70% 0px'});
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('on'));const a=map.get(e.target.id);if(a){a.classList.add('on');if(side.scrollHeight>side.clientHeight+4&&getComputedStyle(side).position==='sticky'){const y=a.offsetTop;if(y<side.scrollTop||y>side.scrollTop+side.clientHeight-30)side.scrollTop=y-side.clientHeight/2}}}})},{rootMargin:'-80px 0px -70% 0px'});
 document.querySelectorAll('article h1[id],article h2[id],article h3[id]').forEach(h=>{if(map.has(h.id))io.observe(h)});
 </script>'''
 
@@ -145,7 +149,7 @@ def page(for_pdf=False):
   <a class="pri" href="{PDF}" download="NGQA-CT-GenAI-book.pdf">הורדת PDF</a>
 </div>
 <div class="lay">
-<nav class="side" aria-label="תוכן העניינים"><h3>תוכן העניינים</h3>{toc_html()}</nav>
+<nav class="side" aria-label="תוכן העניינים"><details open><summary>תוכן העניינים</summary>{toc_html()}</details></nav>
 <article>
 <div class="cover"><img src="../logo.png" alt="NGQA">
 <span class="tag">CT-GenAI · ISTQB Certified Tester – Testing with Generative AI</span>

@@ -7,7 +7,7 @@ from gen import layout
 
 R = pathlib.Path(__file__).resolve().parent
 OUT = R.parents[1] / 'site' / 'courses' / 'genai' / 'puzzles'
-VER, DATE = '1.0', '23.11.2026'
+VER, DATE = '1.1', '23.11.2026'
 
 def pack(L):
     # answers are lightly obfuscated so they are not readable at a glance in the page source
@@ -112,7 +112,7 @@ function step(s){const w=word();if(!w)return;const i=w.cells.findIndex(([r,c])=>
 function mv(dr,dc){let [r,c]=sel;for(let t=0;t<30;t++){r+=dr;c+=dc;if(r<0||c<0||r>=G.p.H||c>=G.p.W)return;if(G.cells[r+','+c]){if(dr)dir='D';else dir='A';focusCell([r,c]);return}}}
 function focusCell([r,c]){sel=[r,c];const i=q(r+','+c);i&&i.focus();hl()}
 function hl(){document.querySelectorAll('.cell.word,.cell.focus').forEach(x=>x.classList.remove('word','focus'));document.querySelectorAll('.clues li.on').forEach(x=>x.classList.remove('on'));
-  if(!sel)return;const w=word();if(w){w.cells.forEach(([r,c])=>q(r+','+c).parentNode.classList.add('word'));const l=document.querySelector(`li[data-w="${w.d}${w.n}"]`);l.classList.add('on');l.scrollIntoView({block:'nearest'});
+  if(!sel)return;const w=word();if(w){w.cells.forEach(([r,c])=>q(r+','+c).parentNode.classList.add('word'));const l=document.querySelector(`li[data-w="${w.d}${w.n}"]`);l.classList.add('on');
   $('cur').innerHTML=`<b>${w.n} ${w.d==='A'?'מאוזן':'מאונך'}</b> · ${w.clue} <span dir="ltr">(${w.len})</span>`}
   q(sel.join()).parentNode.classList.add('focus')}
 function status(){const v=St[cur].v;let ok=0;const all=Object.keys(G.cells);all.forEach(k=>{if(v[k]===G.cells[k].ch)ok++});
