@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<script src="/auth.js"></script>
+<script>document.documentElement.style.visibility='hidden';NGQAAuth.guard('mat').then(ok=>{if(ok)document.documentElement.style.visibility=''}).catch(()=>{document.documentElement.style.visibility=''});</script>
+<script>try{const t=localStorage.getItem('ngqa-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>חדר בריחה · CT-MAT | NGQA</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;--red:#e5484d;--green:#1fb57a;
+--bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960);--soft:light-dark(#eef9f8,#14304a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 Heebo,Arial,sans-serif}
+button,input{font:inherit}
+.bar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;gap:10px;align-items:center;padding:10px max(3vw,14px);flex-wrap:wrap}
+.bar b{flex:1;font-size:17px}
+.bar a,.bar button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 14px;text-decoration:none;cursor:pointer;font-size:15px}
+.clock{font:700 20px/1 ui-monospace,Consolas,monospace;direction:ltr;background:#000a;border-radius:10px;padding:8px 12px;color:var(--teal)}
+.clock.late{color:var(--orange)}
+.wrap{max-width:1100px;margin:auto;padding:26px max(3vw,14px)}
+.hero{background:var(--navy);color:#fff;border-radius:18px;padding:clamp(22px,4vw,40px);margin-bottom:22px}
+.hero h1{margin:0 0 8px;font-size:clamp(26px,4vw,40px);line-height:1.15}
+.hero p{color:#c9cbf0;margin:8px 0;max-width:75ch}.hero q{color:#fff}
+.hero .go{margin-top:12px;background:var(--orange);color:#fff;border:0;border-radius:12px;padding:10px 22px;font-weight:700;font-size:17px;cursor:pointer}
+.slots{display:flex;gap:8px;direction:ltr;justify-content:center;margin:0 0 22px}
+.slots span{width:52px;height:60px;border-radius:12px;border:2px dashed var(--line);display:grid;place-items:center;font:800 28px Heebo,Arial;position:relative;background:var(--card)}
+.slots span small{position:absolute;bottom:2px;font-size:11px;color:var(--mute);font-weight:500}
+.slots span.on{border:2px solid var(--teal);color:var(--teal-d)}
+.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px}
+@media(max-width:800px){.rooms{grid-template-columns:1fr 1fr}}@media(max-width:520px){.rooms{grid-template-columns:1fr}}
+.rm{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;text-align:start;cursor:pointer;color:inherit;position:relative}
+.rm:hover{border-color:var(--teal)}.rm.cur{border:2px solid var(--orange)}
+.rm .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;margin-inline-end:8px}
+.rm b{font-size:17.5px}.rm small{display:block;color:var(--mute);font-size:13.5px;margin-top:4px}
+.rm .st{position:absolute;inset-block-start:12px;inset-inline-end:14px;font-size:13px;font-weight:700;color:var(--mute)}
+.rm.done .st{color:var(--green)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,32px);margin-bottom:22px}
+.panel h2{margin:0;font-size:26px}.panel .sub{color:var(--teal-d);font-weight:700;margin-bottom:12px}
+q{quotes:"\201D" "\201C"}
+.codebox,.cfg,.req,.runs,.fields{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0}
+.codebox div{display:flex;gap:12px;align-items:center;margin:6px 0}
+code{direction:ltr;unicode-bidi:isolate;font:15.5px ui-monospace,Consolas,monospace;background:var(--soft);padding:2px 8px;border-radius:6px}
+pre{margin:0;font:14.5px/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap}
+.lab{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:8px;background:var(--orange);color:#fff;font-weight:800;font-size:15px;margin-inline-end:8px;flex:none}
+.frags{display:grid;gap:8px;margin:12px 0}.frags div{border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:flex;align-items:flex-start;background:light-dark(#fffdf8,#1b1a44)}
+.cases{padding-inline-start:26px}.cases li{margin:6px 0}
+.runs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}@media(max-width:700px){.runs{grid-template-columns:1fr}}
+.runs ol{margin:4px 0;padding-inline-start:20px;font-size:14.5px}
+.doc{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 16px;padding-inline-start:40px;font-size:15px}
+.fields{display:flex;flex-wrap:wrap;gap:8px}.fields span{border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card)}
+.req ul{margin:6px 0;padding-inline-start:22px}
+.tw{overflow-x:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:15px}th{background:var(--navy);color:#fff;padding:7px 10px;text-align:start}td{border-bottom:1px solid var(--line);padding:7px 10px}
+.lock{border-top:2px dashed var(--line);margin-top:18px;padding-top:16px}
+.lock .q{font-weight:700}.lock .fmt{color:var(--mute);font-size:14px}
+.lock form{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.lock input{flex:1;min-width:180px;border:2px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--bg);color:var(--ink);direction:ltr;text-align:center;font:700 18px ui-monospace,Consolas,monospace;letter-spacing:2px}
+.lock button.try{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:8px 20px;font-weight:700;cursor:pointer}
+:root[data-theme=dark] .lock button.try{background:var(--teal-d)}
+.lock .msg{min-height:1.4em;font-weight:700}.msg.bad{color:var(--red)}.msg.ok{color:var(--green)}
+.lock.solved input{border-color:var(--green);background:light-dark(#ecfbf4,#123a2c)}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.hints{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hints button{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:3px 12px;font-size:14px;cursor:pointer}
+.hints button:disabled{opacity:.45;cursor:default}
+.hint{background:light-dark(#fff4e6,#3a2a12);border-inline-start:4px solid var(--orange);border-radius:8px;padding:6px 12px;margin:6px 0;font-size:15px}
+.reward{margin-top:14px;background:var(--soft);border-radius:12px;padding:10px 14px;font-weight:700}
+.final{border:2px solid var(--orange)}
+.cert{display:none;text-align:center;border:6px double var(--teal);border-radius:18px;padding:30px;background:var(--card);margin-bottom:22px}
+.cert h2{font-size:32px;margin:6px 0}.cert .nm{font-size:28px;font-weight:800;color:var(--teal-d)}
+.cert .row{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin:14px 0;font-size:18px}
+.cert button,.solbox a{background:var(--orange);color:#fff;border:0;border-radius:10px;padding:8px 18px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.solbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin-bottom:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.solbox p{margin:0;flex:1;color:var(--mute)}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}footer .ver{display:block}
+@media print{.bar,.rooms,.panel,.slots,.hero,.solbox,footer{display:none!important}body{background:#fff}.cert{display:block!important;margin-top:40mm}}
+</style>
+</head>
+<body>
+<div class="bar"><b>חדר בריחה · CT-MAT</b><span class="clock" id="clock" title="זמן שנותר (כולל קנס רמזים)">60:00</span><button type="button" id="reset">איפוס</button><a href="../">חזרה לקורס</a></div>
+<div class="wrap">
+<div class="hero"><h1>חדר בריחה: האפליקציה שקרסה</h1><p>אפליקציית המשלוחים "QuickBite" קורסת אצל אלפי משתמשים, והחנות הסירה אותה זמנית. מנהלת המוצר נעלה את חדר הבדיקות עד שתוכנית בדיקות מובייל מלאה תהיה מוכנה. חמישה מנעולים עומדים בדרך.</p>
+<p>יש לכם <b>60 דקות</b>. מותר להשתמש במצגות, בסילבוס ובמחשבון. בכל מנעול יש 3 רמזים, וכל רמז מוסיף 3 דקות. כל חדר שתפרצו יחשוף אות ואת מיקומה בסיסמה.</p><button type="button" class="go" id="go">מתחילים — השעון רץ</button></div>
+<div class="slots" id="slots" aria-label="סיסמת השחרור"></div>
+<div class="rooms" id="rooms"></div>
+<div class="panel" id="panel" style="display:none"></div>
+<div class="cert" id="cert"><div>NGQA · CT-MAT</div><h2>האפליקציה חזרה לחנות! 📱</h2><div>תעודת בריחה · חדר בריחה: האפליקציה שקרסה</div><div class="nm" id="cn"></div>
+<div class="row"><span>זמן כולל: <b id="ct" dir="ltr"></b></span><span>רמזים: <b id="ch"></b></span><span>תאריך: <b id="cd"></b></span></div>
+<p>בחרתם מכשירים, סביבות וכלים, זיהיתם הפרעות ובדקתם כדאיות של אוטומציה — בדיוק כמו בודק מובייל.</p><button type="button" id="cprint">הדפסת התעודה</button></div>
+<div class="solbox" id="solbox" style="display:none"><p>מדריך הפתרונות המלא — כל תשובה עם ההסבר שלה. הוא נפתח אחרי שמשתחררים מהחדר או כשהזמן נגמר.</p><a href="../pdf/NGQA-CT-MAT-escape-solutions.pdf" download="NGQA-CT-MAT-escape-solutions.pdf">הורדת מדריך הפתרונות</a></div>
+</div>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">חדר בריחה <bdi dir="ltr">v1.0 · 23.11.2026</bdi></span></footer>
+<script>
+const D={"minutes": 60, "penalty": 3, "rooms": [{"id": "r1", "n": 1, "title": "חדר סוגי האפליקציות", "sub": "פרק 1 · אפליקציות Native, ‏Web ו-Hybrid ופרגמנטציה", "body": "<p>שלוש גרסאות של QuickBite פותחו לאורך השנים:</p>\n<ol class=\"doc\"><li>נכתבה ב-Swift ל-iOS בלבד, עם גישה מלאה לכל ממשקי המכשיר.</li><li>רצה בדפדפן הנייד, בלי התקנה מהחנות.</li><li>קוד ווב שעטוף במעטפת Native — בסיס קוד אחד, ומופצת בחנויות.</li></ol>\n<p>הקודים: N — ‏Native · ‏W — ‏Mobile Web · ‏H — ‏Hybrid.</p>\n<p>ובתוכנית הבדיקות: 4 דגמי מכשירים, 3 גרסאות מערכת הפעלה לכל דגם, ובדיקה גם לרוחב וגם לאורך.</p>", "reward": ["I", 3], "locks": [{"id": "r1a", "label": "כתבו את סוג האפליקציה לכל גרסה, לפי הסדר 1–3.", "fmt": "3 אותיות", "hash": "651cff3669d6a422df153f49c614d1c42fca3fdd9e8cb7b68aa73c953469d619", "hints": ["Native נכתבת לפלטפורמה אחת בשפה שלה.", "Mobile Web רצה בדפדפן.", "Hybrid משלבת ווב בתוך מעטפת Native."]}, {"id": "r1b", "label": "כמה צירופים יש לבדוק בתוכנית המלאה?", "fmt": "מספר", "hash": "fbad2f912ac767e0169ce1350eb3c9c3f2bd67bc8a45d6230f413c58f00c2cc2", "hints": ["כפלו את מספר האפשרויות בכל ממד.", "דגמים × גרסאות × כיוונים.", "4 × 3 × 2."]}]}, {"id": "r2", "n": 2, "title": "חדר ההפרעות", "sub": "פרק 2 · סוגי בדיקות לאפליקציות מובייל", "body": "<p>ארבעה דיווחים של משתמשים מהשבוע האחרון:</p>\n<ol class=\"doc\"><li>\"באמצע התשלום נכנסה שיחה, וכשחזרתי ההזמנה נעלמה.\"</li><li>\"עברתי מ-WiFi לסלולרי באמצע העלאת תמונה, וההעלאה נתקעה.\"</li><li>\"האפליקציה גומרת 20% סוללה בחצי שעה.\"</li><li>\"סובבתי את הטלפון לרוחב, והעגלה התרוקנה.\"</li></ol>\n<p>הקודים: I — בדיקת הפרעות (Interrupt) · ‏C — קישוריות ורשת · ‏P — צריכת חשמל · ‏O — שינוי כיוון מסך (Orientation).</p>", "reward": ["S", 1], "locks": [{"id": "r2a", "label": "איזה סוג בדיקה היה תופס כל תקלה? לפי הסדר 1–4.", "fmt": "4 אותיות", "hash": "a47340dc539436ca008c466c19fb6ea06198a75200260890b86a336491d40225", "hints": ["שיחה נכנסת, הודעה או התראה — הפרעה.", "מעבר בין רשתות — קישוריות.", "סוללה — צריכת חשמל; סיבוב — כיוון מסך."]}]}, {"id": "r3", "n": 3, "title": "חדר הסביבות", "sub": "פרק 3 · אמולטורים, סימולטורים, מכשירים אמיתיים ובדיקות בטא", "body": "<p>שלושה צרכים בתוכנית הבדיקות:</p>\n<ol class=\"doc\"><li>בדיקה מהירה וזולה של פריסת המסך על 15 גדלי מסך, בשלב מוקדם.</li><li>מדידת צריכת סוללה ודיוק GPS.</li><li>הרצה על 300 דגמי מכשירים בלי לקנות אותם.</li></ol>\n<p>הקודים: V — אמולטור או סימולטור · ‏R — מכשיר אמיתי · ‏C — חוות מכשירים בענן (Device Farm).</p>\n<p>ובדוח הבטא: 5,000 בודקי בטא, ‏40,000 סשנים, ושיעור קריסה של 0.6% מהסשנים.</p>", "reward": ["E", 5], "locks": [{"id": "r3a", "label": "איזו סביבה מתאימה לכל צורך? לפי הסדר 1–3.", "fmt": "3 אותיות", "hash": "1d0c70ba2e5bbdfa172569ee0c4410c51a92626e8c68bdf7055c436c1a924a1e", "hints": ["אמולטור זול ומהיר לבדיקות מוקדמות של ממשק.", "סוללה וחיישנים דורשים חומרה אמיתית.", "מאות דגמים בלי לקנות — ענן."]}, {"id": "r3b", "label": "כמה סשנים קרסו בבטא?", "fmt": "מספר", "hash": "881f92ecefa56d6d759fb907c9b57c6f76365bbcadeaa107de1b53353d7da0d9", "hints": ["שיעור הקריסה נמדד מתוך הסשנים — לא מתוך הבודקים.", "0.6% מ-40,000.", "40,000 × 0.006."]}]}, {"id": "r4", "n": 4, "title": "חדר הכלים", "sub": "פרק 4 · פלטפורמות, כלים וסביבות עבודה", "body": "<p>שלושה כלים לאוטומציה של QuickBite:</p>\n<ol class=\"doc\"><li>בודק גם Android וגם iOS עם API אחד, על בסיס פרוטוקול WebDriver.</li><li>הספרייה של Google לבדיקות ממשק של אפליקציות Android, מתוך האפליקציה עצמה.</li><li>הספרייה של Apple לבדיקות ממשק של אפליקציות iOS.</li></ol>\n<p>הקודים: A — ‏Appium · ‏E — ‏Espresso · ‏X — ‏XCUITest.</p>\n<p>וגם פקודה ששכחו בטרמינל:</p>\n<div class=\"cfg\"><pre dir=\"ltr\">adb shell monkey -p com.quickbite.app -v 500</pre></div>", "reward": ["W", 2], "locks": [{"id": "r4a", "label": "התאימו כלי לכל תיאור, לפי הסדר 1–3, ואחר כך הוסיפו כמה אירועים אקראיים תשלח הפקודה בטרמינל.", "fmt": "3 אותיות ואז מספר", "hash": "309bfdf89e427fc1994631dca4123f555393650ffaec4967cbc00c3d8cabeff3", "hints": ["Appium הוא חוצה-פלטפורמות.", "Espresso — ‏Android; ‏XCUITest — ‏iOS.", "הפרמטר האחרון של monkey הוא מספר האירועים."]}]}, {"id": "r5", "n": 5, "title": "חדר האוטומציה", "sub": "פרק 5 · אוטומציה של הרצת בדיקות והחזר השקעה", "body": "<p>מנהלת המוצר שואלת אם כדאי לבנות אוטומציה לחבילת הרגרסיה:</p>\n<div class=\"req\"><ul><li>הרצה ידנית של החבילה: 6 שעות בכל מחזור.</li><li>בניית האוטומציה: 60 שעות, חד-פעמי.</li><li>בכל מחזור אחרי הבנייה: חצי שעה הרצה ושעה תחזוקה.</li></ul></div>\n<p>ושלוש גישות אוטומציה שהצוות שוקל:</p>\n<ol class=\"doc\"><li>מקליטים את הפעולות על המסך ומריצים אותן שוב.</li><li>אותו תסריט רץ על 50 שורות של נתונים מקובץ CSV.</li><li>בודקים לא-טכניים כותבים צעדים במילות מפתח כמו \"התחבר\", \"הוסף לעגלה\".</li></ol>\n<p>הקודים: R — ‏Record &amp; Playback · ‏D — ‏Data-Driven · ‏K — ‏Keyword-Driven.</p>", "reward": ["P", 4], "locks": [{"id": "r5a", "label": "אחרי כמה מחזורים האוטומציה מתחילה להיות משתלמת (המחזור הראשון שבו העלות המצטברת שלה נמוכה מהידני)? ואחר כך התאימו גישה לכל תיאור, לפי הסדר 1–3.", "fmt": "מספר ואז 3 אותיות", "hash": "c0ea27831a84d4d1bbbc9960556f706477e1b8880f52a25595596bc1195be56d", "hints": ["עלות ידנית אחרי n מחזורים: 6n. עלות אוטומציה: 60 + 1.5n.", "פתרו 60 + 1.5n < 6n.", "n > 13.3, ולכן המחזור ה-14."]}]}], "final": {"id": "fin", "label": "הרכיבו את הסיסמה מחמש האותיות, כל אחת במיקום שלה.", "fmt": "5 אותיות", "hash": "6086363ffd85e324722e42d6dad84413824fbde82c4333343638cae8aece6371", "hints": ["כל חדר חשף אות ומספר.", "תנועת אצבע על מסך המגע.", "S W I P E"]}},KEY='ngqa-escape-mat-v1',$=id=>document.getElementById(id);
+let S;try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
+S.solved=S.solved||{};S.hints=S.hints||{};S.vals=S.vals||{};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const norm=s=>s.toUpperCase().replace(/[^A-Z0-9]/g,'');
+async function sha(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+const allLocks=()=>[...D.rooms.flatMap(r=>r.locks),D.final];
+const hintCount=()=>Object.values(S.hints).reduce((a,b)=>a+b,0);
+const roomDone=r=>r.locks.every(l=>S.solved[l.id]);
+const elapsed=()=>S.start?((S.end||Date.now())-S.start)/1000+hintCount()*D.penalty*60:0;
+const fmt=s=>{s=Math.max(0,Math.floor(s));const m=Math.floor(s/60),x=s%60;return String(m).padStart(2,'0')+':'+String(x).padStart(2,'0')};
+let cur=null;
+function tick(){const e=elapsed(),left=D.minutes*60-e;const c=$('clock');
+  if(!S.start){c.textContent=fmt(D.minutes*60);return}
+  c.textContent=left>=0?fmt(left):'+'+fmt(-left);c.classList.toggle('late',left<0);
+  $('solbox').style.display=(S.end||left<0)?'flex':'none'}
+function slots(){$('slots').innerHTML=[1,2,3,4,5,6].map(p=>{const r=D.rooms.find(r=>r.reward[1]===p);const on=r&&roomDone(r);return `<span class="${on?'on':''}">${on?r.reward[0]:''}<small>${p}</small></span>`}).join('')}
+function grid(){$('rooms').innerHTML=D.rooms.map(r=>{const d=roomDone(r),k=r.locks.filter(l=>S.solved[l.id]).length;
+  return `<button type="button" class="rm${d?' done':''}${cur===r.id?' cur':''}" data-r="${r.id}"><span class="n">${r.n}</span><b>${r.title}</b><small>${r.sub}</small><span class="st">${d?'✓ נפרץ':k+'/'+r.locks.length}</span></button>`}).join('')+
+  `<button type="button" class="rm${S.end?' done':''}${cur==='fin'?' cur':''}" data-r="fin"><span class="n">★</span><b>דלת השחרור</b><small>${D.rooms.every(roomDone)?'כל המנעולים נפרצו — הזינו את הסיסמה':'נפתחת אחרי שכל ששת החדרים נפרצו'}</small><span class="st">${S.end?'✓ שוחרר':''}</span></button>`;
+  document.querySelectorAll('.rm').forEach(b=>b.onclick=()=>{if(!S.start){alert('לחצו קודם על "מתחילים" — השעון יתחיל לרוץ.');return}open(b.dataset.r)})}
+function lockHtml(l){const n=S.hints[l.id]||0,sv=S.solved[l.id];
+  return `<div class="lock${sv?' solved':''}" id="L-${l.id}"><div class="q">${l.label}</div><div class="fmt">פורמט: ${l.fmt}</div>
+  <form data-l="${l.id}"><input autocomplete="off" spellcheck="false" aria-label="קוד" value="${sv?(S.vals[l.id]||''):''}" ${sv?'disabled':''}><button class="try" ${sv?'disabled':''}>${sv?'✓ נפתח':'נסה לפתוח'}</button></form>
+  <div class="msg ${sv?'ok':''}">${sv?'המנעול נפתח.':''}</div>
+  <div class="hints">${sv?'':`<button type="button" data-h="${l.id}" ${n>=3?'disabled':''}>רמז ${Math.min(n+1,3)} מתוך 3 (+${D.penalty} דק׳)</button>`}</div>
+  ${l.hints.slice(0,n).map((t,i)=>`<div class="hint"><b>רמז ${i+1}:</b> ${t}</div>`).join('')}</div>`}
+function open(id){cur=id;grid();const p=$('panel');p.style.display='block';
+  if(id==='fin'){p.className='panel final';const ready=D.rooms.every(roomDone);
+    p.innerHTML=`<h2>דלת השחרור</h2><div class="sub">כל האותיות שאספתם — במקום הנכון</div>`+(ready?lockHtml(D.final):'<p>הדלת נעולה עד שכל ששת החדרים ייפרצו. האותיות שכבר אספתם מופיעות למעלה.</p>')}
+  else{const r=D.rooms.find(r=>r.id===id);p.className='panel';
+    p.innerHTML=`<h2>חדר ${r.n} · ${r.title}</h2><div class="sub">${r.sub}</div>${r.body}${r.locks.map(lockHtml).join('')}`+(roomDone(r)?`<div class="reward">🔓 החדר נפרץ! על הקיר מופיעה האות <b>${r.reward[0]}</b>, ולידה המספר <b>${r.reward[1]}</b>.</div>`:'')}
+  bind();p.scrollIntoView({behavior:'smooth',block:'start'})}
+function bind(){
+  document.querySelectorAll('.lock form').forEach(f=>f.onsubmit=async e=>{e.preventDefault();const id=f.dataset.l,l=allLocks().find(x=>x.id===id),inp=f.querySelector('input'),v=norm(inp.value),m=f.parentNode.querySelector('.msg');
+    if(!v){m.className='msg bad';m.textContent='הקלידו קוד.';return}
+    if(await sha(`ngqa-er|${id}|${v}`)===l.hash){S.solved[id]=true;S.vals[id]=inp.value.trim();if(id==='fin'&&!S.end)S.end=Date.now();save();slots();open(cur);if(id==='fin')finish()}
+    else{S.tries=(S.tries||0)+1;save();m.className='msg bad';m.textContent='המנעול לא זז. בדקו שוב — או קחו רמז.';f.classList.remove('shake');void f.offsetWidth;f.classList.add('shake')}});
+  document.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{const id=b.dataset.h;const n=S.hints[id]||0;if(n>=3)return;
+    if(!confirm(`לחשוף את רמז ${n+1}? יתווספו ${D.penalty} דקות לזמן שלכם.`))return;S.hints[id]=n+1;save();open(cur);tick()})}
+async function finish(){let name='';try{const i=NGQAAuth.info(await NGQAAuth.session());name=(i&&(i.name||i.email))||''}catch(e){}
+  $('cn').textContent=name||'בודק/ת אמיץ/ה';$('ct').textContent=fmt(elapsed());$('ch').textContent=hintCount();
+  $('cd').textContent=new Date(S.end).toLocaleDateString('he-IL');$('cert').style.display='block';$('cert').scrollIntoView({behavior:'smooth'})}
+$('go').onclick=()=>{if(!S.start){S.start=Date.now();save()}$('go').style.display='none';tick();open(D.rooms[0].id)};
+$('reset').onclick=()=>{if(confirm('לאפס את כל ההתקדמות ולהתחיל מחדש?')){S={solved:{},hints:{},vals:{}};save();location.reload()}};
+$('cprint').onclick=()=>window.print();
+if(S.start)$('go').textContent='ממשיכים';
+slots();grid();tick();setInterval(tick,1000);if(S.end)finish();
+</script>
+</body>
+</html>

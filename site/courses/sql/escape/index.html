@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<script src="/auth.js"></script>
+<script>document.documentElement.style.visibility='hidden';NGQAAuth.guard('sql').then(ok=>{if(ok)document.documentElement.style.visibility=''}).catch(()=>{document.documentElement.style.visibility=''});</script>
+<script>try{const t=localStorage.getItem('ngqa-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>חדר בריחה · SQL | NGQA</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;--red:#e5484d;--green:#1fb57a;
+--bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960);--soft:light-dark(#eef9f8,#14304a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 Heebo,Arial,sans-serif}
+button,input{font:inherit}
+.bar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;gap:10px;align-items:center;padding:10px max(3vw,14px);flex-wrap:wrap}
+.bar b{flex:1;font-size:17px}
+.bar a,.bar button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 14px;text-decoration:none;cursor:pointer;font-size:15px}
+.clock{font:700 20px/1 ui-monospace,Consolas,monospace;direction:ltr;background:#000a;border-radius:10px;padding:8px 12px;color:var(--teal)}
+.clock.late{color:var(--orange)}
+.wrap{max-width:1100px;margin:auto;padding:26px max(3vw,14px)}
+.hero{background:var(--navy);color:#fff;border-radius:18px;padding:clamp(22px,4vw,40px);margin-bottom:22px}
+.hero h1{margin:0 0 8px;font-size:clamp(26px,4vw,40px);line-height:1.15}
+.hero p{color:#c9cbf0;margin:8px 0;max-width:75ch}.hero q{color:#fff}
+.hero .go{margin-top:12px;background:var(--orange);color:#fff;border:0;border-radius:12px;padding:10px 22px;font-weight:700;font-size:17px;cursor:pointer}
+.slots{display:flex;gap:8px;direction:ltr;justify-content:center;margin:0 0 22px}
+.slots span{width:52px;height:60px;border-radius:12px;border:2px dashed var(--line);display:grid;place-items:center;font:800 28px Heebo,Arial;position:relative;background:var(--card)}
+.slots span small{position:absolute;bottom:2px;font-size:11px;color:var(--mute);font-weight:500}
+.slots span.on{border:2px solid var(--teal);color:var(--teal-d)}
+.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px}
+@media(max-width:800px){.rooms{grid-template-columns:1fr 1fr}}@media(max-width:520px){.rooms{grid-template-columns:1fr}}
+.rm{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;text-align:start;cursor:pointer;color:inherit;position:relative}
+.rm:hover{border-color:var(--teal)}.rm.cur{border:2px solid var(--orange)}
+.rm .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;margin-inline-end:8px}
+.rm b{font-size:17.5px}.rm small{display:block;color:var(--mute);font-size:13.5px;margin-top:4px}
+.rm .st{position:absolute;inset-block-start:12px;inset-inline-end:14px;font-size:13px;font-weight:700;color:var(--mute)}
+.rm.done .st{color:var(--green)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,32px);margin-bottom:22px}
+.panel h2{margin:0;font-size:26px}.panel .sub{color:var(--teal-d);font-weight:700;margin-bottom:12px}
+q{quotes:"\201D" "\201C"}
+.codebox,.cfg,.req,.runs,.fields{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0}
+.codebox div{display:flex;gap:12px;align-items:center;margin:6px 0}
+code{direction:ltr;unicode-bidi:isolate;font:15.5px ui-monospace,Consolas,monospace;background:var(--soft);padding:2px 8px;border-radius:6px}
+pre{margin:0;font:14.5px/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap}
+.lab{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:8px;background:var(--orange);color:#fff;font-weight:800;font-size:15px;margin-inline-end:8px;flex:none}
+.frags{display:grid;gap:8px;margin:12px 0}.frags div{border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:flex;align-items:flex-start;background:light-dark(#fffdf8,#1b1a44)}
+.cases{padding-inline-start:26px}.cases li{margin:6px 0}
+.runs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}@media(max-width:700px){.runs{grid-template-columns:1fr}}
+.runs ol{margin:4px 0;padding-inline-start:20px;font-size:14.5px}
+.doc{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 16px;padding-inline-start:40px;font-size:15px}
+.fields{display:flex;flex-wrap:wrap;gap:8px}.fields span{border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card)}
+.req ul{margin:6px 0;padding-inline-start:22px}
+.tw{overflow-x:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:15px}th{background:var(--navy);color:#fff;padding:7px 10px;text-align:start}td{border-bottom:1px solid var(--line);padding:7px 10px}
+.lock{border-top:2px dashed var(--line);margin-top:18px;padding-top:16px}
+.lock .q{font-weight:700}.lock .fmt{color:var(--mute);font-size:14px}
+.lock form{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.lock input{flex:1;min-width:180px;border:2px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--bg);color:var(--ink);direction:ltr;text-align:center;font:700 18px ui-monospace,Consolas,monospace;letter-spacing:2px}
+.lock button.try{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:8px 20px;font-weight:700;cursor:pointer}
+:root[data-theme=dark] .lock button.try{background:var(--teal-d)}
+.lock .msg{min-height:1.4em;font-weight:700}.msg.bad{color:var(--red)}.msg.ok{color:var(--green)}
+.lock.solved input{border-color:var(--green);background:light-dark(#ecfbf4,#123a2c)}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.hints{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hints button{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:3px 12px;font-size:14px;cursor:pointer}
+.hints button:disabled{opacity:.45;cursor:default}
+.hint{background:light-dark(#fff4e6,#3a2a12);border-inline-start:4px solid var(--orange);border-radius:8px;padding:6px 12px;margin:6px 0;font-size:15px}
+.reward{margin-top:14px;background:var(--soft);border-radius:12px;padding:10px 14px;font-weight:700}
+.final{border:2px solid var(--orange)}
+.cert{display:none;text-align:center;border:6px double var(--teal);border-radius:18px;padding:30px;background:var(--card);margin-bottom:22px}
+.cert h2{font-size:32px;margin:6px 0}.cert .nm{font-size:28px;font-weight:800;color:var(--teal-d)}
+.cert .row{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin:14px 0;font-size:18px}
+.cert button,.solbox a{background:var(--orange);color:#fff;border:0;border-radius:10px;padding:8px 18px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.solbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin-bottom:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.solbox p{margin:0;flex:1;color:var(--mute)}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}footer .ver{display:block}
+@media print{.bar,.rooms,.panel,.slots,.hero,.solbox,footer{display:none!important}body{background:#fff}.cert{display:block!important;margin-top:40mm}}
+</style>
+</head>
+<body>
+<div class="bar"><b>חדר בריחה · SQL</b><span class="clock" id="clock" title="זמן שנותר (כולל קנס רמזים)">75:00</span><button type="button" id="reset">איפוס</button><a href="../">חזרה לקורס</a></div>
+<div class="wrap">
+<div class="hero"><h1>חדר בריחה: היהלום שנעלם</h1><p>בוקר שבת, 21.11.2026. יהלום "Blue Star" נעלם מאולם האבנים היקרות במוזיאון. המשטרה עוד בדרך, ומנהלת המוזיאון סגרה את כל הדלתות. המפתח היחיד לחדר הבקרה נמצא אצלכם: גישה למסד הנתונים של המוזיאון.</p>
+<p><b>לפני שמתחילים:</b> הורידו את <a href="../dl/escape_setup.sql" download>escape_setup.sql</a>, פתחו אותו ב-SSMS בתוך מסד נתונים ריק לתרגול, והריצו אותו. נוצרות ארבע טבלאות: <code>Halls</code>, ‏<code>Exhibits</code>, ‏<code>Staff</code> ו-<code>AccessLog</code>. כל התשובות מגיעות מהרצת שאילתות. אפשר גם לפתור על הנייר, אבל זה הרבה יותר קשה.</p>
+<p>יש לכם <b>75 דקות</b>. בכל מנעול יש 3 רמזים, וכל רמז מוסיף 3 דקות. כל חדר שתפרצו יחשוף אות ואת מיקומה בסיסמה הסופית.</p><button type="button" class="go" id="go">מתחילים — השעון רץ</button></div>
+<div class="slots" id="slots" aria-label="סיסמת השחרור"></div>
+<div class="rooms" id="rooms"></div>
+<div class="panel" id="panel" style="display:none"></div>
+<div class="cert" id="cert"><div>NGQA · SQL</div><h2>התעלומה נפתרה! 🎉</h2><div>תעודת בריחה · חדר בריחה: היהלום שנעלם</div><div class="nm" id="cn"></div>
+<div class="row"><span>זמן כולל: <b id="ct" dir="ltr"></b></span><span>רמזים: <b id="ch"></b></span><span>תאריך: <b id="cd"></b></span></div>
+<p>בעזרת SELECT, ‏WHERE, פונקציות, JOIN ושאילתות משנה מצאתם את הגנב — כמו בודק שמאמת נתונים ישירות במסד.</p><button type="button" id="cprint">הדפסת התעודה</button></div>
+<div class="solbox" id="solbox" style="display:none"><p>מדריך הפתרונות המלא — כל תשובה עם ההסבר שלה. הוא נפתח אחרי שמשתחררים מהחדר או כשהזמן נגמר.</p><a href="../pdf/NGQA-SQL-escape-solutions.pdf" download="NGQA-SQL-escape-solutions.pdf">הורדת מדריך הפתרונות</a></div>
+</div>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">חדר בריחה <bdi dir="ltr">v1.0 · 23.11.2026</bdi></span></footer>
+<script>
+const D={"minutes": 75, "penalty": 3, "rooms": [{"id": "r1", "n": 1, "title": "חדר כוח האדם", "sub": "פרקים 1–2 · SELECT, ‏WHERE ו-ORDER BY", "body": "<p>הבלש מבקש להתחיל מרשימת העובדים. כל העובדים נמצאים בטבלה <code>Staff</code>.</p>", "reward": ["E", 2], "locks": [{"id": "r1a", "label": "כמה עובדים יש במחלקת האבטחה (Security)?", "fmt": "מספר", "hash": "8aa12d41a30bcb2a1da943ae1a4e7aea9036d3612b43b50e3ff577181ed6053f", "hints": ["השתמשו ב-COUNT(*) עם תנאי WHERE.", "התנאי הוא Department = 'Security'.", "SELECT COUNT(*) FROM Staff WHERE Department = 'Security';"]}, {"id": "r1b", "label": "מה שם המשפחה של העובד שהתקבל לעבודה אחרון?", "fmt": "שם משפחה באנגלית", "hash": "eb8bd1ed0520b32f14c100183ae4faf55da1b8159317f889847d4e340547c8e2", "hints": ["צריך למיין לפי HireDate.", "מיון יורד (DESC) והצגת השורה הראשונה בלבד.", "SELECT TOP 1 LastName FROM Staff ORDER BY HireDate DESC;"]}]}, {"id": "r2", "n": 2, "title": "חדר המוצגים", "sub": "פרק 3 · BETWEEN, ‏IN ו-LIKE", "body": "<p>חברת הביטוח רוצה לדעת אילו מוצגים \"בטווח הסיכון\" שלה, ומה עוד עלול להיעלם.</p>", "reward": ["L", 3], "locks": [{"id": "r2a", "label": "כמה מוצגים שווים בין 400,000 ל-1,000,000 (כולל), והסטטוס שלהם הוא OnDisplay או Restoration?", "fmt": "מספר", "hash": "ced098839a487e4035c7a5044522746fb3e77bb44b0e474d2bb7a6324d679e02", "hints": ["השתמשו ב-BETWEEN לערך וב-IN לסטטוס.", "BETWEEN כולל את שני הקצוות.", "SELECT COUNT(*) FROM Exhibits WHERE InsuranceValue BETWEEN 400000 AND 1000000 AND Status IN ('OnDisplay','Restoration');"]}, {"id": "r2b", "label": "בכמה שמות משפחה של עובדים מופיעה האות a (בכל מקום בשם)?", "fmt": "מספר", "hash": "aa87e4ad8d987111ffda62f57a2c1f66a622346b38bb9fb8588ea1dd55e88a45", "hints": ["השתמשו ב-LIKE עם התו הכללי %.", "LastName LIKE '%a%' — ברירת המחדל ב-SQL Server לא מבחינה בין אותיות גדולות לקטנות.", "SELECT COUNT(*) FROM Staff WHERE LastName LIKE '%a%';"]}]}, {"id": "r3", "n": 3, "title": "חדר הכספים", "sub": "פרקים 4–5 · פונקציות מוכללות, GROUP BY ושאילתות משולבות", "body": "<p>המשטרה בודקת מניעים כלכליים. ההנהלה מבקשת תמונת מצב כספית.</p>", "reward": ["T", 6], "locks": [{"id": "r3a", "label": "לאיזו מחלקה יש את השכר הממוצע הגבוה ביותר?", "fmt": "שם המחלקה באנגלית", "hash": "1864740427787458fa83e9855fcee917e05a0755dc6f86ae8797772e9e11b046", "hints": ["השתמשו ב-AVG עם GROUP BY Department.", "מיינו לפי הממוצע בסדר יורד.", "SELECT Department, AVG(Salary) AS AvgSalary FROM Staff GROUP BY Department ORDER BY AvgSalary DESC;"]}, {"id": "r3b", "label": "מה שווי הביטוח הכולל של המוצגים שנשארו באולם Gems (בלי המוצג שנעלם)?", "fmt": "מספר, בלי פסיקים", "hash": "a9c938d4ca4f5621adfb492a23183cddc664eb4aaefdec02d9c479f376e0dfde", "hints": ["צריך את HallID של האולם Gems — מהטבלה Halls.", "SUM(InsuranceValue) עם תנאי על האולם ועל Status <> 'Missing'.", "SELECT SUM(InsuranceValue) FROM Exhibits WHERE HallID = 'H2' AND Status <> 'Missing';"]}]}, {"id": "r4", "n": 4, "title": "חדר יומן הכניסות", "sub": "פרק 6 · JOIN", "body": "<p>המצלמה באולם Gems הייתה מושבתת בין <b>22:00 ל-23:30</b> ב-20.11.2026. כל כניסה דרך הדלת <code>D-GEMS</code> נרשמה בטבלה <code>AccessLog</code>, אבל שם יש רק מספרי עובדים — את השמות צריך להביא מ-<code>Staff</code>.</p>", "reward": ["S", 1], "locks": [{"id": "r4a", "label": "כמה עובדים שונים נכנסו בדלת D-GEMS בחלון הזמן 22:00–23:30 (לפי שעת הכניסה)?", "fmt": "מספר", "hash": "d265bb53ea37512a4899cef19453fb84419d8473fcbc978455b8b2445d8abb2e", "hints": ["התחילו מ-AccessLog וסננו לפי Door ולפי EntryTime.", "EntryTime BETWEEN '2026-11-20T22:00:00' AND '2026-11-20T23:30:00'.", "COUNT(DISTINCT StaffID) — ואם רוצים שמות, JOIN ל-Staff."]}, {"id": "r4b", "label": "מה סכום המשכורות של שלושת החשודים?", "fmt": "מספר, בלי פסיקים", "hash": "463dff24d39b6fb7a78370cd99be3b79e04ad00110d8a8067d79ec9fc5cabf8f", "hints": ["אותו JOIN ואותו תנאי — רק עם SUM.", "SUM(s.Salary).", "7,600 + 10,400 + 12,800."]}]}, {"id": "r5", "n": 5, "title": "חדר החקירה", "sub": "פרק 7 · שאילתות משנה", "body": "<p>מנהלת המוזיאון נזכרת: <q>הכספת עם המפתח הרזרבי של תיבת היהלום נמצאת בארכיון. מי שגנב חייב היה לעבור קודם בארכיון — באותו ערב.</q> הדלת של הארכיון היא <code>D-ARCH</code>.</p>", "reward": ["C", 5], "locks": [{"id": "r5a", "label": "מה שם המשפחה של העובד שנכנס ל-D-GEMS בחלון הזמן, וגם נכנס ל-D-ARCH ב-20.11.2026?", "fmt": "שם משפחה באנגלית", "hash": "776c2deffd94974ea4b910ab3041a7b7d536b30817b6b226cdf9ca9937c9a2f4", "hints": ["שתי שאילתות משנה עם IN — אחת לכל דלת.", "התנאי השני: Door = 'D-ARCH' AND EntryTime >= '2026-11-20T00:00:00' AND EntryTime < '2026-11-21T00:00:00'.", "SELECT LastName FROM Staff WHERE StaffID IN (…D-GEMS בחלון…) AND StaffID IN (…D-ARCH באותו יום…);"]}]}, {"id": "r6", "n": 6, "title": "חדר השינויים", "sub": "פרקים 8–11 · DML, ‏DDL, ‏Views ופרוצדורות", "body": "<p>לפני שהמשטרה מגיעה, מישהו מנסה \"לנקות\" את המסד. מצאתם שתי פקודות שמוכנות להרצה:</p>\n<div class=\"cfg\"><pre dir=\"ltr\">-- (1)\nUPDATE Staff\nSET Salary = Salary * 1.05\nWHERE Department IN (SELECT Department FROM Staff\n                     GROUP BY Department\n                     HAVING COUNT(*) &gt;= 3);\n\n-- (2)\nDELETE FROM AccessLog\nWHERE ExitTime &lt; '2026-11-20T00:00:00';</pre></div>\n<p>עדיף לבדוק בתוך <code>BEGIN TRANSACTION; … ROLLBACK;</code> כדי לא לאבד ראיות.</p>", "reward": ["E", 4], "locks": [{"id": "r6a", "label": "כמה שורות תעדכן פקודה (1)? ואחרי פקודה (2), כמה שורות יישארו ב-AccessLog? (על הנתונים המקוריים)", "fmt": "שני המספרים ברצף, לדוגמה: 512", "hash": "bca803875a03c966a9cfae64293a765f1429fa22261331f7e8df01cc849071f7", "hints": ["בפקודה (1): אילו מחלקות מופיעות 3 פעמים או יותר?", "רק למחלקת Security יש 4 עובדים. בפקודה (2): כמה כניסות יצאו לפני 20.11?", "פקודה (1) מעדכנת 4 שורות; פקודה (2) מוחקת שורה אחת מתוך 12."]}]}], "final": {"id": "fin", "label": "הרכיבו את הסיסמה הסופית מששת האותיות, כל אחת במיקום שלה.", "fmt": "6 אותיות", "hash": "92986fa9cf0c740e8ba16d680b31b930219c1a6c877cc05d8842d220c86aa7e2", "hints": ["כל חדר חשף אות ומספר. המספר הוא המיקום בסיסמה.", "זו מילת המפתח הראשונה שלמדתם ב-SQL.", "S E L E C T"]}},KEY='ngqa-escape-sql-v1',$=id=>document.getElementById(id);
+let S;try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
+S.solved=S.solved||{};S.hints=S.hints||{};S.vals=S.vals||{};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const norm=s=>s.toUpperCase().replace(/[^A-Z0-9]/g,'');
+async function sha(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+const allLocks=()=>[...D.rooms.flatMap(r=>r.locks),D.final];
+const hintCount=()=>Object.values(S.hints).reduce((a,b)=>a+b,0);
+const roomDone=r=>r.locks.every(l=>S.solved[l.id]);
+const elapsed=()=>S.start?((S.end||Date.now())-S.start)/1000+hintCount()*D.penalty*60:0;
+const fmt=s=>{s=Math.max(0,Math.floor(s));const m=Math.floor(s/60),x=s%60;return String(m).padStart(2,'0')+':'+String(x).padStart(2,'0')};
+let cur=null;
+function tick(){const e=elapsed(),left=D.minutes*60-e;const c=$('clock');
+  if(!S.start){c.textContent=fmt(D.minutes*60);return}
+  c.textContent=left>=0?fmt(left):'+'+fmt(-left);c.classList.toggle('late',left<0);
+  $('solbox').style.display=(S.end||left<0)?'flex':'none'}
+function slots(){$('slots').innerHTML=[1,2,3,4,5,6].map(p=>{const r=D.rooms.find(r=>r.reward[1]===p);const on=r&&roomDone(r);return `<span class="${on?'on':''}">${on?r.reward[0]:''}<small>${p}</small></span>`}).join('')}
+function grid(){$('rooms').innerHTML=D.rooms.map(r=>{const d=roomDone(r),k=r.locks.filter(l=>S.solved[l.id]).length;
+  return `<button type="button" class="rm${d?' done':''}${cur===r.id?' cur':''}" data-r="${r.id}"><span class="n">${r.n}</span><b>${r.title}</b><small>${r.sub}</small><span class="st">${d?'✓ נפרץ':k+'/'+r.locks.length}</span></button>`}).join('')+
+  `<button type="button" class="rm${S.end?' done':''}${cur==='fin'?' cur':''}" data-r="fin"><span class="n">★</span><b>דלת השחרור</b><small>${D.rooms.every(roomDone)?'כל המנעולים נפרצו — הזינו את הסיסמה':'נפתחת אחרי שכל ששת החדרים נפרצו'}</small><span class="st">${S.end?'✓ שוחרר':''}</span></button>`;
+  document.querySelectorAll('.rm').forEach(b=>b.onclick=()=>{if(!S.start){alert('לחצו קודם על "מתחילים" — השעון יתחיל לרוץ.');return}open(b.dataset.r)})}
+function lockHtml(l){const n=S.hints[l.id]||0,sv=S.solved[l.id];
+  return `<div class="lock${sv?' solved':''}" id="L-${l.id}"><div class="q">${l.label}</div><div class="fmt">פורמט: ${l.fmt}</div>
+  <form data-l="${l.id}"><input autocomplete="off" spellcheck="false" aria-label="קוד" value="${sv?(S.vals[l.id]||''):''}" ${sv?'disabled':''}><button class="try" ${sv?'disabled':''}>${sv?'✓ נפתח':'נסה לפתוח'}</button></form>
+  <div class="msg ${sv?'ok':''}">${sv?'המנעול נפתח.':''}</div>
+  <div class="hints">${sv?'':`<button type="button" data-h="${l.id}" ${n>=3?'disabled':''}>רמז ${Math.min(n+1,3)} מתוך 3 (+${D.penalty} דק׳)</button>`}</div>
+  ${l.hints.slice(0,n).map((t,i)=>`<div class="hint"><b>רמז ${i+1}:</b> ${t}</div>`).join('')}</div>`}
+function open(id){cur=id;grid();const p=$('panel');p.style.display='block';
+  if(id==='fin'){p.className='panel final';const ready=D.rooms.every(roomDone);
+    p.innerHTML=`<h2>דלת השחרור</h2><div class="sub">כל האותיות שאספתם — במקום הנכון</div>`+(ready?lockHtml(D.final):'<p>הדלת נעולה עד שכל ששת החדרים ייפרצו. האותיות שכבר אספתם מופיעות למעלה.</p>')}
+  else{const r=D.rooms.find(r=>r.id===id);p.className='panel';
+    p.innerHTML=`<h2>חדר ${r.n} · ${r.title}</h2><div class="sub">${r.sub}</div>${r.body}${r.locks.map(lockHtml).join('')}`+(roomDone(r)?`<div class="reward">🔓 החדר נפרץ! על הקיר מופיעה האות <b>${r.reward[0]}</b>, ולידה המספר <b>${r.reward[1]}</b>.</div>`:'')}
+  bind();p.scrollIntoView({behavior:'smooth',block:'start'})}
+function bind(){
+  document.querySelectorAll('.lock form').forEach(f=>f.onsubmit=async e=>{e.preventDefault();const id=f.dataset.l,l=allLocks().find(x=>x.id===id),inp=f.querySelector('input'),v=norm(inp.value),m=f.parentNode.querySelector('.msg');
+    if(!v){m.className='msg bad';m.textContent='הקלידו קוד.';return}
+    if(await sha(`ngqa-er|${id}|${v}`)===l.hash){S.solved[id]=true;S.vals[id]=inp.value.trim();if(id==='fin'&&!S.end)S.end=Date.now();save();slots();open(cur);if(id==='fin')finish()}
+    else{S.tries=(S.tries||0)+1;save();m.className='msg bad';m.textContent='המנעול לא זז. בדקו שוב — או קחו רמז.';f.classList.remove('shake');void f.offsetWidth;f.classList.add('shake')}});
+  document.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{const id=b.dataset.h;const n=S.hints[id]||0;if(n>=3)return;
+    if(!confirm(`לחשוף את רמז ${n+1}? יתווספו ${D.penalty} דקות לזמן שלכם.`))return;S.hints[id]=n+1;save();open(cur);tick()})}
+async function finish(){let name='';try{const i=NGQAAuth.info(await NGQAAuth.session());name=(i&&(i.name||i.email))||''}catch(e){}
+  $('cn').textContent=name||'בודק/ת אמיץ/ה';$('ct').textContent=fmt(elapsed());$('ch').textContent=hintCount();
+  $('cd').textContent=new Date(S.end).toLocaleDateString('he-IL');$('cert').style.display='block';$('cert').scrollIntoView({behavior:'smooth'})}
+$('go').onclick=()=>{if(!S.start){S.start=Date.now();save()}$('go').style.display='none';tick();open(D.rooms[0].id)};
+$('reset').onclick=()=>{if(confirm('לאפס את כל ההתקדמות ולהתחיל מחדש?')){S={solved:{},hints:{},vals:{}};save();location.reload()}};
+$('cprint').onclick=()=>window.print();
+if(S.start)$('go').textContent='ממשיכים';
+slots();grid();tick();setInterval(tick,1000);if(S.end)finish();
+</script>
+</body>
+</html>

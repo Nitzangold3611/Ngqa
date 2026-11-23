@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<script src="/auth.js"></script>
+<script>document.documentElement.style.visibility='hidden';NGQAAuth.guard('jobs').then(ok=>{if(ok)document.documentElement.style.visibility=''}).catch(()=>{document.documentElement.style.visibility=''});</script>
+<script>try{const t=localStorage.getItem('ngqa-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>חדר בריחה · Jobs | NGQA</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;--red:#e5484d;--green:#1fb57a;
+--bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960);--soft:light-dark(#eef9f8,#14304a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 Heebo,Arial,sans-serif}
+button,input{font:inherit}
+.bar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;gap:10px;align-items:center;padding:10px max(3vw,14px);flex-wrap:wrap}
+.bar b{flex:1;font-size:17px}
+.bar a,.bar button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 14px;text-decoration:none;cursor:pointer;font-size:15px}
+.clock{font:700 20px/1 ui-monospace,Consolas,monospace;direction:ltr;background:#000a;border-radius:10px;padding:8px 12px;color:var(--teal)}
+.clock.late{color:var(--orange)}
+.wrap{max-width:1100px;margin:auto;padding:26px max(3vw,14px)}
+.hero{background:var(--navy);color:#fff;border-radius:18px;padding:clamp(22px,4vw,40px);margin-bottom:22px}
+.hero h1{margin:0 0 8px;font-size:clamp(26px,4vw,40px);line-height:1.15}
+.hero p{color:#c9cbf0;margin:8px 0;max-width:75ch}.hero q{color:#fff}
+.hero .go{margin-top:12px;background:var(--orange);color:#fff;border:0;border-radius:12px;padding:10px 22px;font-weight:700;font-size:17px;cursor:pointer}
+.slots{display:flex;gap:8px;direction:ltr;justify-content:center;margin:0 0 22px}
+.slots span{width:52px;height:60px;border-radius:12px;border:2px dashed var(--line);display:grid;place-items:center;font:800 28px Heebo,Arial;position:relative;background:var(--card)}
+.slots span small{position:absolute;bottom:2px;font-size:11px;color:var(--mute);font-weight:500}
+.slots span.on{border:2px solid var(--teal);color:var(--teal-d)}
+.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px}
+@media(max-width:800px){.rooms{grid-template-columns:1fr 1fr}}@media(max-width:520px){.rooms{grid-template-columns:1fr}}
+.rm{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;text-align:start;cursor:pointer;color:inherit;position:relative}
+.rm:hover{border-color:var(--teal)}.rm.cur{border:2px solid var(--orange)}
+.rm .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;margin-inline-end:8px}
+.rm b{font-size:17.5px}.rm small{display:block;color:var(--mute);font-size:13.5px;margin-top:4px}
+.rm .st{position:absolute;inset-block-start:12px;inset-inline-end:14px;font-size:13px;font-weight:700;color:var(--mute)}
+.rm.done .st{color:var(--green)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,32px);margin-bottom:22px}
+.panel h2{margin:0;font-size:26px}.panel .sub{color:var(--teal-d);font-weight:700;margin-bottom:12px}
+q{quotes:"\201D" "\201C"}
+.codebox,.cfg,.req,.runs,.fields{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0}
+.codebox div{display:flex;gap:12px;align-items:center;margin:6px 0}
+code{direction:ltr;unicode-bidi:isolate;font:15.5px ui-monospace,Consolas,monospace;background:var(--soft);padding:2px 8px;border-radius:6px}
+pre{margin:0;font:14.5px/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap}
+.lab{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:8px;background:var(--orange);color:#fff;font-weight:800;font-size:15px;margin-inline-end:8px;flex:none}
+.frags{display:grid;gap:8px;margin:12px 0}.frags div{border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:flex;align-items:flex-start;background:light-dark(#fffdf8,#1b1a44)}
+.cases{padding-inline-start:26px}.cases li{margin:6px 0}
+.runs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}@media(max-width:700px){.runs{grid-template-columns:1fr}}
+.runs ol{margin:4px 0;padding-inline-start:20px;font-size:14.5px}
+.doc{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 16px;padding-inline-start:40px;font-size:15px}
+.fields{display:flex;flex-wrap:wrap;gap:8px}.fields span{border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card)}
+.req ul{margin:6px 0;padding-inline-start:22px}
+.tw{overflow-x:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:15px}th{background:var(--navy);color:#fff;padding:7px 10px;text-align:start}td{border-bottom:1px solid var(--line);padding:7px 10px}
+.lock{border-top:2px dashed var(--line);margin-top:18px;padding-top:16px}
+.lock .q{font-weight:700}.lock .fmt{color:var(--mute);font-size:14px}
+.lock form{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.lock input{flex:1;min-width:180px;border:2px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--bg);color:var(--ink);direction:ltr;text-align:center;font:700 18px ui-monospace,Consolas,monospace;letter-spacing:2px}
+.lock button.try{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:8px 20px;font-weight:700;cursor:pointer}
+:root[data-theme=dark] .lock button.try{background:var(--teal-d)}
+.lock .msg{min-height:1.4em;font-weight:700}.msg.bad{color:var(--red)}.msg.ok{color:var(--green)}
+.lock.solved input{border-color:var(--green);background:light-dark(#ecfbf4,#123a2c)}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.hints{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hints button{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:3px 12px;font-size:14px;cursor:pointer}
+.hints button:disabled{opacity:.45;cursor:default}
+.hint{background:light-dark(#fff4e6,#3a2a12);border-inline-start:4px solid var(--orange);border-radius:8px;padding:6px 12px;margin:6px 0;font-size:15px}
+.reward{margin-top:14px;background:var(--soft);border-radius:12px;padding:10px 14px;font-weight:700}
+.final{border:2px solid var(--orange)}
+.cert{display:none;text-align:center;border:6px double var(--teal);border-radius:18px;padding:30px;background:var(--card);margin-bottom:22px}
+.cert h2{font-size:32px;margin:6px 0}.cert .nm{font-size:28px;font-weight:800;color:var(--teal-d)}
+.cert .row{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin:14px 0;font-size:18px}
+.cert button,.solbox a{background:var(--orange);color:#fff;border:0;border-radius:10px;padding:8px 18px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.solbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin-bottom:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.solbox p{margin:0;flex:1;color:var(--mute)}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}footer .ver{display:block}
+@media print{.bar,.rooms,.panel,.slots,.hero,.solbox,footer{display:none!important}body{background:#fff}.cert{display:block!important;margin-top:40mm}}
+</style>
+</head>
+<body>
+<div class="bar"><b>חדר בריחה · Jobs</b><span class="clock" id="clock" title="זמן שנותר (כולל קנס רמזים)">45:00</span><button type="button" id="reset">איפוס</button><a href="../">חזרה לקורס</a></div>
+<div class="wrap">
+<div class="hero"><h1>חדר בריחה: הראיון</h1><p>יש לכם ראיון למשרת QA בחברת "TestWave" בעוד שעה. הרכזת שלחה לכם קישור ל"חדר המתנה דיגיטלי", ומתברר שזה חדר בריחה: חמש דלתות, וכל אחת בודקת שלב אחר בדרך לעבודה.</p>
+<p>יש לכם <b>45 דקות</b>. מותר להשתמש במצגות הסדנה. בכל מנעול יש 3 רמזים, וכל רמז מוסיף 3 דקות. כל דלת שתפתחו תחשוף אות ואת מיקומה במילה הסופית.</p><button type="button" class="go" id="go">מתחילים — השעון רץ</button></div>
+<div class="slots" id="slots" aria-label="סיסמת השחרור"></div>
+<div class="rooms" id="rooms"></div>
+<div class="panel" id="panel" style="display:none"></div>
+<div class="cert" id="cert"><div>NGQA · Jobs</div><h2>קיבלתם את התפקיד! 🎉</h2><div>תעודת בריחה · חדר בריחה: הראיון</div><div class="nm" id="cn"></div>
+<div class="row"><span>זמן כולל: <b id="ct" dir="ltr"></b></span><span>רמזים: <b id="ch"></b></span><span>תאריך: <b id="cd"></b></span></div>
+<p>קורות חיים מדויקים, פרופיל לינקדאין חזק, ראיון מוכן והצעה שנוהלה נכון — ככה מגיעים לחוזה.</p><button type="button" id="cprint">הדפסת התעודה</button></div>
+<div class="solbox" id="solbox" style="display:none"><p>מדריך הפתרונות המלא — כל תשובה עם ההסבר שלה. הוא נפתח אחרי שמשתחררים מהחדר או כשהזמן נגמר.</p><a href="../pdf/NGQA-Jobs-escape-solutions.pdf" download="NGQA-Jobs-escape-solutions.pdf">הורדת מדריך הפתרונות</a></div>
+</div>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">חדר בריחה <bdi dir="ltr">v1.0 · 23.11.2026</bdi></span></footer>
+<script>
+const D={"minutes": 45, "penalty": 3, "rooms": [{"id": "r1", "n": 1, "title": "חדר קורות החיים", "sub": "חלק 1 · כתיבת קורות חיים", "body": "<p>על השולחן מפוזרים שישה סעיפים של קורות חיים:</p>\n<div class=\"frags\">\n<div><span class=\"lab\">T</span>כלים ותוכנות, לפי קטגוריות.</div>\n<div><span class=\"lab\">P</span>פרטים אישיים: שם, טלפון, מייל, אזור מגורים, לינקדאין.</div>\n<div><span class=\"lab\">L</span>שירות צבאי ושפות.</div>\n<div><span class=\"lab\">S</span>תמצית של 3–4 שורות עם מילות מפתח.</div>\n<div><span class=\"lab\">X</span>ניסיון ופרויקטים.</div>\n<div><span class=\"lab\">E</span>השכלה וקורסים.</div>\n</div>\n<p>ולצדם, קורות חיים של מועמד אחר. הרכזת סימנה שש שורות:</p>\n<ol class=\"doc\">\n<li>שם הקובץ: Israel Israeli – QA Engineer CV.</li>\n<li>התמצית: תשע שורות על תחביבים.</li>\n<li>בסעיף ההשכלה: 2018 ואחריה 2021.</li>\n<li>הפרטים האישיים כוללים מספר תעודת זהות ומצב משפחתי.</li>\n<li>הכלים מחולקים לקטגוריות: מערכות הפעלה, ניהול בדיקות, אוטומציה.</li>\n<li>שש תכונות אופי: חרוץ, יצירתי, אחראי, סקרן, מסור, שאפתן.</li>\n</ol>", "reward": ["R", 3], "locks": [{"id": "r1a", "label": "סדרו את ששת הסעיפים לפי הסדר המומלץ בסדנה.", "fmt": "6 אותיות", "hash": "b78949f9c78197d22fa4d82e2659d0f5d3df8cbe02a019a891bb5ba37387e73d", "hints": ["מתחילים בפרטים האישיים, ומיד אחריהם — הדבר החשוב ביותר שהמגייס קורא.", "אחרי התמצית באים הכלים, ואז השכלה וקורסים.", "צבא ושפות — בסוף, בקצרה."]}, {"id": "r1b", "label": "אילו שורות שסימנה הרכזת הן טעויות? כתבו את המספרים בסדר עולה.", "fmt": "ספרות ברצף", "hash": "7fd28e454189b1823bd5d72d669f68237333620b534d08bbe1b91cbfba44b42b", "hints": ["תמצית צריכה להיות קצרה ומקצועית.", "בכל סעיף — סדר כרונולוגי הפוך. ותעודת זהות לא כותבים, אלא אם ביקשו.", "לא יותר מ-3 תכונות, ועדיף כאלה שאפשר להוכיח."]}]}, {"id": "r2", "n": 2, "title": "חדר הלינקדאין", "sub": "חלק 2 · פרופיל הלינקדאין", "body": "<p>שש כתיבות של כלים מתוך פרופילים שונים:</p>\n<div class=\"fields\"><span>A · jQuery</span><span>B · Jquery</span><span>C · MySQL</span><span>D · Mysql</span><span>E · WordPress</span><span>F · WORDPRESS</span></div>\n<p>וחמישה פרטים מהפרופיל של חברה מהקורס:</p>\n<ol class=\"doc\">\n<li>הפרופיל כתוב בעברית.</li>\n<li>תמונת הפרופיל: סלפי מהחוף.</li>\n<li>הכותרת: QA Engineer | Selenium | SQL | API Testing.</li>\n<li>התקציר: highly motivated, team player, fast learner.</li>\n<li>האפשרות Open to Work מופעלת, עם תפקידים ומיקום מבוקשים.</li>\n</ol>", "reward": ["E", 4], "locks": [{"id": "r2a", "label": "אילו כתיבות נכונות? כתבו את האותיות שלהן, ואחר כך את מספרי הפרטים התקינים בפרופיל.", "fmt": "3 אותיות ואז ספרות", "hash": "9b92fdf9b0bed1f8ca9331eb4ec4540378c009197ca78ab7a871461b1a458345", "hints": ["מגייסים מחפשים לפי מילות מפתח — כתבו את השם בדיוק כמו היצרן.", "פרופיל בעברית לא יופיע היטב בחיפוש; התמונה צריכה להיות מקצועית.", "תקציר בלי מילות מפתח מקצועיות לא יביא מגייסים."]}]}, {"id": "r3", "n": 3, "title": "חדר הראיון", "sub": "חלק 3 · ראיון טלפוני וראיון פרונטאלי", "body": "<p>שלבי הראיון הפרונטאלי התערבבו:</p>\n<div class=\"frags\">\n<div><span class=\"lab\">K</span>רקע מקצועי: ידע, ניסיון ושאלות מקצועיות.</div>\n<div><span class=\"lab\">G</span>רקע כללי: תיאור קצר של לימודים, משפחה ותחביבים.</div>\n<div><span class=\"lab\">N</span>רקע אנושי: תיאור התפקיד, החברה ושעות העבודה.</div>\n</div>\n<p>ושש התנהגויות בראיון:</p>\n<ol class=\"doc\"><li>לשאול על המוצר ועל המתחרים.</li><li>להתווכח עם המראיין על שיטת בדיקה.</li><li>להגיע לפחות 15 דקות לפני הזמן.</li><li>לקטוע את המראיין כדי להשלים משפט.</li><li>לתת למראיין עצות איך לשפר את המוצר.</li><li>להכין הצגה עצמית קצרה וחדה.</li></ol>", "reward": ["H", 1], "locks": [{"id": "r3a", "label": "סדרו את שלבי הראיון, ואחר כך כתבו את מספרי ההתנהגויות המומלצות בסדר עולה.", "fmt": "3 אותיות ואז ספרות", "hash": "41bdd701eab6f04861ecc736e4299e07f195c979b6acd823e0bebdb9d48ab396", "hints": ["הראיון מתחיל בהיכרות כללית ומסתיים בשאלות המקצועיות.", "ברשימת \"מה לא לעשות\" בסדנה: לא להתווכח, לא לתת עצות, לא לקטוע.", "שלוש התנהגויות מומלצות: שאלות, הגעה מוקדמת, הצגה עצמית."]}]}, {"id": "r4", "n": 4, "title": "חדר השאלות", "sub": "חלק 4 · שאלות מראיונות עבודה", "body": "<p>המראיין שולף שתי שאלות קלאסיות. הראשונה — מחזור החיים של באג. ששת המצבים התערבבו:</p>\n<div class=\"fields\"><span>V · Verified</span><span>N · New</span><span>T · Test</span><span>C · Closed</span><span>O · Open</span><span>A · Assign</span></div>\n<p>השנייה — שאלת חשיבה: יש 25 סוסים ומסלול שבו רצים 5 סוסים בכל מרוץ. אין שעון — רק סדר ההגעה. מה מספר המרוצים המינימלי שצריך כדי למצוא את שלושת הסוסים המהירים ביותר?</p>", "reward": ["D", 5], "locks": [{"id": "r4a", "label": "סדרו את מחזור החיים של הבאג, ואחר כך הוסיפו את מספר המרוצים המינימלי.", "fmt": "6 אותיות ואז מספר", "hash": "f7a62e5919c603a42d2dfd1cc5f105d1fdc63d611f8931250a96d7a7d9372033", "hints": ["הבאג נפתח, משויך למפתח, מתוקן ונבדק שוב.", "New ← Open ← Assign ← Test ← Verified ← Closed.", "סוסים: 5 מרוצים מקדימים, מרוץ של המנצחים, ועוד מרוץ אחד בין המועמדים שנשארו."]}]}, {"id": "r5", "n": 5, "title": "חדר ההצעה", "sub": "חלק 3 · הצעה, חוזה וראיון בזום", "body": "<p>הגעתם לשלב האחרון. ארבע החלטות — נכון (T) או לא נכון (F)?</p>\n<ol class=\"doc\">\n<li>קיבלתם הצעה כספית נמוכה? תציבו אולטימטום: \"או 2,000 ₪ יותר, או שאני הולך\".</li>\n<li>מבקשים מהרכזת הצעה מפורטת בכתב, כולל כל התנאים וההטבות.</li>\n<li>בראיון בזום מסתכלים למצלמה, ולא לתמונה של המראיין על המסך.</li>\n<li>בראיון בזום מניחים את המחשב על הברכיים, כדי לשבת בנוח.</li>\n</ol>", "reward": ["I", 2], "locks": [{"id": "r5a", "label": "כתבו T או F לכל החלטה, לפי הסדר 1–4.", "fmt": "4 אותיות", "hash": "f54fcb0d495b5993f2c5f4022123204eb266cd459b5472310f06ad9ba4224b08", "hints": ["מעסיקים לא אוהבים שמכניסים אותם לפינה.", "בקשה להצעה מפורטת פותחת משא ומתן חדש.", "המחשב צריך לעמוד יציב על שולחן."]}]}], "final": {"id": "fin", "label": "הרכיבו את המילה הסופית מחמש האותיות, כל אחת במיקום שלה.", "fmt": "5 אותיות", "hash": "24381d8377239d14154720fe1e714fcbc190df9cc96d696a1ac01b1d7c692ef1", "hints": ["כל חדר חשף אות ומספר.", "מה שאתם רוצים לשמוע בסוף התהליך — באנגלית.", "H I R E D"]}},KEY='ngqa-escape-jobs-v1',$=id=>document.getElementById(id);
+let S;try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
+S.solved=S.solved||{};S.hints=S.hints||{};S.vals=S.vals||{};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const norm=s=>s.toUpperCase().replace(/[^A-Z0-9]/g,'');
+async function sha(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+const allLocks=()=>[...D.rooms.flatMap(r=>r.locks),D.final];
+const hintCount=()=>Object.values(S.hints).reduce((a,b)=>a+b,0);
+const roomDone=r=>r.locks.every(l=>S.solved[l.id]);
+const elapsed=()=>S.start?((S.end||Date.now())-S.start)/1000+hintCount()*D.penalty*60:0;
+const fmt=s=>{s=Math.max(0,Math.floor(s));const m=Math.floor(s/60),x=s%60;return String(m).padStart(2,'0')+':'+String(x).padStart(2,'0')};
+let cur=null;
+function tick(){const e=elapsed(),left=D.minutes*60-e;const c=$('clock');
+  if(!S.start){c.textContent=fmt(D.minutes*60);return}
+  c.textContent=left>=0?fmt(left):'+'+fmt(-left);c.classList.toggle('late',left<0);
+  $('solbox').style.display=(S.end||left<0)?'flex':'none'}
+function slots(){$('slots').innerHTML=[1,2,3,4,5,6].map(p=>{const r=D.rooms.find(r=>r.reward[1]===p);const on=r&&roomDone(r);return `<span class="${on?'on':''}">${on?r.reward[0]:''}<small>${p}</small></span>`}).join('')}
+function grid(){$('rooms').innerHTML=D.rooms.map(r=>{const d=roomDone(r),k=r.locks.filter(l=>S.solved[l.id]).length;
+  return `<button type="button" class="rm${d?' done':''}${cur===r.id?' cur':''}" data-r="${r.id}"><span class="n">${r.n}</span><b>${r.title}</b><small>${r.sub}</small><span class="st">${d?'✓ נפרץ':k+'/'+r.locks.length}</span></button>`}).join('')+
+  `<button type="button" class="rm${S.end?' done':''}${cur==='fin'?' cur':''}" data-r="fin"><span class="n">★</span><b>דלת השחרור</b><small>${D.rooms.every(roomDone)?'כל המנעולים נפרצו — הזינו את הסיסמה':'נפתחת אחרי שכל ששת החדרים נפרצו'}</small><span class="st">${S.end?'✓ שוחרר':''}</span></button>`;
+  document.querySelectorAll('.rm').forEach(b=>b.onclick=()=>{if(!S.start){alert('לחצו קודם על "מתחילים" — השעון יתחיל לרוץ.');return}open(b.dataset.r)})}
+function lockHtml(l){const n=S.hints[l.id]||0,sv=S.solved[l.id];
+  return `<div class="lock${sv?' solved':''}" id="L-${l.id}"><div class="q">${l.label}</div><div class="fmt">פורמט: ${l.fmt}</div>
+  <form data-l="${l.id}"><input autocomplete="off" spellcheck="false" aria-label="קוד" value="${sv?(S.vals[l.id]||''):''}" ${sv?'disabled':''}><button class="try" ${sv?'disabled':''}>${sv?'✓ נפתח':'נסה לפתוח'}</button></form>
+  <div class="msg ${sv?'ok':''}">${sv?'המנעול נפתח.':''}</div>
+  <div class="hints">${sv?'':`<button type="button" data-h="${l.id}" ${n>=3?'disabled':''}>רמז ${Math.min(n+1,3)} מתוך 3 (+${D.penalty} דק׳)</button>`}</div>
+  ${l.hints.slice(0,n).map((t,i)=>`<div class="hint"><b>רמז ${i+1}:</b> ${t}</div>`).join('')}</div>`}
+function open(id){cur=id;grid();const p=$('panel');p.style.display='block';
+  if(id==='fin'){p.className='panel final';const ready=D.rooms.every(roomDone);
+    p.innerHTML=`<h2>דלת השחרור</h2><div class="sub">כל האותיות שאספתם — במקום הנכון</div>`+(ready?lockHtml(D.final):'<p>הדלת נעולה עד שכל ששת החדרים ייפרצו. האותיות שכבר אספתם מופיעות למעלה.</p>')}
+  else{const r=D.rooms.find(r=>r.id===id);p.className='panel';
+    p.innerHTML=`<h2>חדר ${r.n} · ${r.title}</h2><div class="sub">${r.sub}</div>${r.body}${r.locks.map(lockHtml).join('')}`+(roomDone(r)?`<div class="reward">🔓 החדר נפרץ! על הקיר מופיעה האות <b>${r.reward[0]}</b>, ולידה המספר <b>${r.reward[1]}</b>.</div>`:'')}
+  bind();p.scrollIntoView({behavior:'smooth',block:'start'})}
+function bind(){
+  document.querySelectorAll('.lock form').forEach(f=>f.onsubmit=async e=>{e.preventDefault();const id=f.dataset.l,l=allLocks().find(x=>x.id===id),inp=f.querySelector('input'),v=norm(inp.value),m=f.parentNode.querySelector('.msg');
+    if(!v){m.className='msg bad';m.textContent='הקלידו קוד.';return}
+    if(await sha(`ngqa-er|${id}|${v}`)===l.hash){S.solved[id]=true;S.vals[id]=inp.value.trim();if(id==='fin'&&!S.end)S.end=Date.now();save();slots();open(cur);if(id==='fin')finish()}
+    else{S.tries=(S.tries||0)+1;save();m.className='msg bad';m.textContent='המנעול לא זז. בדקו שוב — או קחו רמז.';f.classList.remove('shake');void f.offsetWidth;f.classList.add('shake')}});
+  document.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{const id=b.dataset.h;const n=S.hints[id]||0;if(n>=3)return;
+    if(!confirm(`לחשוף את רמז ${n+1}? יתווספו ${D.penalty} דקות לזמן שלכם.`))return;S.hints[id]=n+1;save();open(cur);tick()})}
+async function finish(){let name='';try{const i=NGQAAuth.info(await NGQAAuth.session());name=(i&&(i.name||i.email))||''}catch(e){}
+  $('cn').textContent=name||'בודק/ת אמיץ/ה';$('ct').textContent=fmt(elapsed());$('ch').textContent=hintCount();
+  $('cd').textContent=new Date(S.end).toLocaleDateString('he-IL');$('cert').style.display='block';$('cert').scrollIntoView({behavior:'smooth'})}
+$('go').onclick=()=>{if(!S.start){S.start=Date.now();save()}$('go').style.display='none';tick();open(D.rooms[0].id)};
+$('reset').onclick=()=>{if(confirm('לאפס את כל ההתקדמות ולהתחיל מחדש?')){S={solved:{},hints:{},vals:{}};save();location.reload()}};
+$('cprint').onclick=()=>window.print();
+if(S.start)$('go').textContent='ממשיכים';
+slots();grid();tick();setInterval(tick,1000);if(S.end)finish();
+</script>
+</body>
+</html>

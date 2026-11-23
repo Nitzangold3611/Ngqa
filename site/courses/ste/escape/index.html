@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<script src="/auth.js"></script>
+<script>document.documentElement.style.visibility='hidden';NGQAAuth.guard('ste').then(ok=>{if(ok)document.documentElement.style.visibility=''}).catch(()=>{document.documentElement.style.visibility=''});</script>
+<script>try{const t=localStorage.getItem('ngqa-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>חדר בריחה · STE | NGQA</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;--red:#e5484d;--green:#1fb57a;
+--bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960);--soft:light-dark(#eef9f8,#14304a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 Heebo,Arial,sans-serif}
+button,input{font:inherit}
+.bar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;gap:10px;align-items:center;padding:10px max(3vw,14px);flex-wrap:wrap}
+.bar b{flex:1;font-size:17px}
+.bar a,.bar button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 14px;text-decoration:none;cursor:pointer;font-size:15px}
+.clock{font:700 20px/1 ui-monospace,Consolas,monospace;direction:ltr;background:#000a;border-radius:10px;padding:8px 12px;color:var(--teal)}
+.clock.late{color:var(--orange)}
+.wrap{max-width:1100px;margin:auto;padding:26px max(3vw,14px)}
+.hero{background:var(--navy);color:#fff;border-radius:18px;padding:clamp(22px,4vw,40px);margin-bottom:22px}
+.hero h1{margin:0 0 8px;font-size:clamp(26px,4vw,40px);line-height:1.15}
+.hero p{color:#c9cbf0;margin:8px 0;max-width:75ch}.hero q{color:#fff}
+.hero .go{margin-top:12px;background:var(--orange);color:#fff;border:0;border-radius:12px;padding:10px 22px;font-weight:700;font-size:17px;cursor:pointer}
+.slots{display:flex;gap:8px;direction:ltr;justify-content:center;margin:0 0 22px}
+.slots span{width:52px;height:60px;border-radius:12px;border:2px dashed var(--line);display:grid;place-items:center;font:800 28px Heebo,Arial;position:relative;background:var(--card)}
+.slots span small{position:absolute;bottom:2px;font-size:11px;color:var(--mute);font-weight:500}
+.slots span.on{border:2px solid var(--teal);color:var(--teal-d)}
+.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px}
+@media(max-width:800px){.rooms{grid-template-columns:1fr 1fr}}@media(max-width:520px){.rooms{grid-template-columns:1fr}}
+.rm{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;text-align:start;cursor:pointer;color:inherit;position:relative}
+.rm:hover{border-color:var(--teal)}.rm.cur{border:2px solid var(--orange)}
+.rm .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;margin-inline-end:8px}
+.rm b{font-size:17.5px}.rm small{display:block;color:var(--mute);font-size:13.5px;margin-top:4px}
+.rm .st{position:absolute;inset-block-start:12px;inset-inline-end:14px;font-size:13px;font-weight:700;color:var(--mute)}
+.rm.done .st{color:var(--green)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,32px);margin-bottom:22px}
+.panel h2{margin:0;font-size:26px}.panel .sub{color:var(--teal-d);font-weight:700;margin-bottom:12px}
+q{quotes:"\201D" "\201C"}
+.codebox,.cfg,.req,.runs,.fields{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0}
+.codebox div{display:flex;gap:12px;align-items:center;margin:6px 0}
+code{direction:ltr;unicode-bidi:isolate;font:15.5px ui-monospace,Consolas,monospace;background:var(--soft);padding:2px 8px;border-radius:6px}
+pre{margin:0;font:14.5px/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap}
+.lab{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:8px;background:var(--orange);color:#fff;font-weight:800;font-size:15px;margin-inline-end:8px;flex:none}
+.frags{display:grid;gap:8px;margin:12px 0}.frags div{border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:flex;align-items:flex-start;background:light-dark(#fffdf8,#1b1a44)}
+.cases{padding-inline-start:26px}.cases li{margin:6px 0}
+.runs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}@media(max-width:700px){.runs{grid-template-columns:1fr}}
+.runs ol{margin:4px 0;padding-inline-start:20px;font-size:14.5px}
+.doc{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 16px;padding-inline-start:40px;font-size:15px}
+.fields{display:flex;flex-wrap:wrap;gap:8px}.fields span{border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card)}
+.req ul{margin:6px 0;padding-inline-start:22px}
+.tw{overflow-x:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:15px}th{background:var(--navy);color:#fff;padding:7px 10px;text-align:start}td{border-bottom:1px solid var(--line);padding:7px 10px}
+.lock{border-top:2px dashed var(--line);margin-top:18px;padding-top:16px}
+.lock .q{font-weight:700}.lock .fmt{color:var(--mute);font-size:14px}
+.lock form{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.lock input{flex:1;min-width:180px;border:2px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--bg);color:var(--ink);direction:ltr;text-align:center;font:700 18px ui-monospace,Consolas,monospace;letter-spacing:2px}
+.lock button.try{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:8px 20px;font-weight:700;cursor:pointer}
+:root[data-theme=dark] .lock button.try{background:var(--teal-d)}
+.lock .msg{min-height:1.4em;font-weight:700}.msg.bad{color:var(--red)}.msg.ok{color:var(--green)}
+.lock.solved input{border-color:var(--green);background:light-dark(#ecfbf4,#123a2c)}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.hints{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hints button{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:3px 12px;font-size:14px;cursor:pointer}
+.hints button:disabled{opacity:.45;cursor:default}
+.hint{background:light-dark(#fff4e6,#3a2a12);border-inline-start:4px solid var(--orange);border-radius:8px;padding:6px 12px;margin:6px 0;font-size:15px}
+.reward{margin-top:14px;background:var(--soft);border-radius:12px;padding:10px 14px;font-weight:700}
+.final{border:2px solid var(--orange)}
+.cert{display:none;text-align:center;border:6px double var(--teal);border-radius:18px;padding:30px;background:var(--card);margin-bottom:22px}
+.cert h2{font-size:32px;margin:6px 0}.cert .nm{font-size:28px;font-weight:800;color:var(--teal-d)}
+.cert .row{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin:14px 0;font-size:18px}
+.cert button,.solbox a{background:var(--orange);color:#fff;border:0;border-radius:10px;padding:8px 18px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.solbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin-bottom:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.solbox p{margin:0;flex:1;color:var(--mute)}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}footer .ver{display:block}
+@media print{.bar,.rooms,.panel,.slots,.hero,.solbox,footer{display:none!important}body{background:#fff}.cert{display:block!important;margin-top:40mm}}
+</style>
+</head>
+<body>
+<div class="bar"><b>חדר בריחה · STE</b><span class="clock" id="clock" title="זמן שנותר (כולל קנס רמזים)">75:00</span><button type="button" id="reset">איפוס</button><a href="../">חזרה לקורס</a></div>
+<div class="wrap">
+<div class="hero"><h1>חדר בריחה: מתקפה בלילה</h1><p>02:13 בלילה. מערכת ההתראות של חברת הביטוח "SafeNest" זיהתה פעילות חשודה. מי שתקף נעל את חדר צוות התגובה (SOC) ושינה את הסיסמה. כדי לחזור ולטפל באירוע צריך לפרוץ שישה מנעולים, וכל אחד מהם בודק עיקרון אחר מעולם בדיקות האבטחה.</p>
+<p>יש לכם <b>75 דקות</b>. מותר להשתמש במצגות ובסילבוס. בכל מנעול יש 3 רמזים, וכל רמז מוסיף 3 דקות. כל חדר שתפרצו יחשוף אות ואת מיקומה בסיסמה החדשה.</p><button type="button" class="go" id="go">מתחילים — השעון רץ</button></div>
+<div class="slots" id="slots" aria-label="סיסמת השחרור"></div>
+<div class="rooms" id="rooms"></div>
+<div class="panel" id="panel" style="display:none"></div>
+<div class="cert" id="cert"><div>NGQA · STE</div><h2>המערכת מאובטחת! 🛡️</h2><div>תעודת בריחה · חדר בריחה: מתקפה בלילה</div><div class="nm" id="cn"></div>
+<div class="row"><span>זמן כולל: <b id="ct" dir="ltr"></b></span><span>רמזים: <b id="ch"></b></span><span>תאריך: <b id="cd"></b></span></div>
+<p>זיהיתם איומים, מיפיתם חולשות, דירגתם ממצאים ובחרתם את הכלים הנכונים — עבודה של Security Test Engineer.</p><button type="button" id="cprint">הדפסת התעודה</button></div>
+<div class="solbox" id="solbox" style="display:none"><p>מדריך הפתרונות המלא — כל תשובה עם ההסבר שלה. הוא נפתח אחרי שמשתחררים מהחדר או כשהזמן נגמר.</p><a href="../pdf/NGQA-STE-escape-solutions.pdf" download="NGQA-STE-escape-solutions.pdf">הורדת מדריך הפתרונות</a></div>
+</div>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">חדר בריחה <bdi dir="ltr">v1.0 · 23.11.2026</bdi></span></footer>
+<script>
+const D={"minutes": 75, "penalty": 3, "rooms": [{"id": "r1", "n": 1, "title": "חדר היסודות", "sub": "פרק 1 · CIA, אימות והרשאה", "body": "<p>ביומן האירועים של השנה ארבעה אירועים:</p>\n<ol class=\"doc\">\n<li>מאגר הלקוחות פורסם בפורום ברשת האפלה.</li>\n<li>תוקף שינה במסד הנתונים את מספר חשבון הבנק בחשבוניות של ספק.</li>\n<li>מתקפת DDoS השביתה את אתר החברה ליומיים.</li>\n<li>עובד במחלקת השיווק פתח את קובץ המשכורות של ההנהלה.</li>\n</ol>\n<p>ובקיר השני, ארבע בקשות שהגיעו לשרת:</p>\n<ol class=\"doc\">\n<li>פקיד מנסה לאשר הלוואה של 80,000 ₪, ומקבל הודעה שהסמכות שלו היא עד 50,000 ₪.</li>\n<li>משתמשת מזינה סיסמה וקוד חד-פעמי שקיבלה ב-SMS.</li>\n<li>טביעת אצבע פותחת את אפליקציית הבנק בטלפון.</li>\n<li>קריאה ל-API של הזמנה של לקוח אחר מחזירה 403 Forbidden.</li>\n</ol>", "reward": ["C", 3], "locks": [{"id": "r1a", "label": "איזה רכיב של משולש CIA נפגע בכל אירוע ביומן? כתבו C, ‏I או A לפי הסדר 1–4.", "fmt": "4 אותיות", "hash": "174d751e8436c81ef0f4a28e52c79e044bd83f6a89cc48afd3bba706c44ee9b9", "hints": ["C = Confidentiality (סודיות), I = Integrity (שלמות), A = Availability (זמינות).", "שינוי נתונים הוא פגיעה בשלמות; השבתה היא פגיעה בזמינות.", "אירועים 1 ו-4 הם חשיפה של מידע למי שאינו מורשה."]}, {"id": "r1b", "label": "עבור כל בקשה בקיר השני: האם היא עוסקת באימות זהות (N — Authentication) או בהרשאה (Z — Authorization)? לפי הסדר 1–4.", "fmt": "4 אותיות", "hash": "f5c1101099b72edac8d8af04d5c4a7f98a3947689160f7e7335c32ed442c0c95", "hints": ["אימות עונה על השאלה \"מי אתה?\"; הרשאה עונה על \"מה מותר לך?\".", "סיסמה, קוד חד-פעמי וטביעת אצבע — אלה גורמי אימות.", "מגבלת סמכות וחסימת גישה למשאב של אחר — אלה הרשאות."]}]}, {"id": "r2", "n": 2, "title": "חדר מודל האיומים", "sub": "פרק 2 · STRIDE ו-SAST, ‏DAST, ‏IAST", "body": "<p>הצוות ממפה איומים על אפליקציית הביטוח לפי STRIDE. שישה תרחישים:</p>\n<ol class=\"doc\">\n<li>תוקף גנב עוגיית Session ונכנס למערכת בתור לקוח אחר.</li>\n<li>לקוח מכחיש שביצע העברה, ואין שום לוג שמוכיח שכן.</li>\n<li>תוקף שינה את המחיר בשדה נסתר בטופס ההזמנה.</li>\n<li>משתמש רגיל קרא ל-API של מנהלים וקיבל הרשאות מנהל.</li>\n<li>דף שגיאה מציג Stack Trace עם מחרוזת החיבור למסד הנתונים.</li>\n<li>הצפה של בקשות הפילה את שירות ההתחברות.</li>\n</ol>\n<p>ולצד זה, ארבע שיטות בדיקה שהצוות שוקל:</p>\n<ol class=\"doc\">\n<li>ניתוח קוד המקור בלי להריץ אותו.</li>\n<li>תקיפת האפליקציה הרצה מבחוץ, כמו תוקף.</li>\n<li>שליחת אלפי קלטים אקראיים ופגומים כדי לגרום לקריסה.</li>\n<li>סוכן שמותקן בתוך האפליקציה הרצה ומנטר את זרימת הנתונים בזמן בדיקה.</li>\n</ol>", "reward": ["S", 1], "locks": [{"id": "r2a", "label": "כתבו את האות של קטגוריית STRIDE לכל תרחיש, לפי הסדר 1–6.", "fmt": "6 אותיות", "hash": "e479e7aaf6afe59fbd2e4ec2c2211e9ff8e69d5aca77dad2d04da1c0f813b22b", "hints": ["S — Spoofing, T — Tampering, R — Repudiation, I — Information Disclosure, D — Denial of Service, E — Elevation of Privilege.", "התחזות לאחר היא S; שינוי נתונים הוא T; הכחשה בלי ראיות היא R.", "Stack Trace שחושף מידע הוא I; קבלת הרשאות מנהל היא E."]}, {"id": "r2b", "label": "איזו שיטה כל תיאור? S = ‏SAST · D = ‏DAST · I = ‏IAST · F = ‏Fuzzing. לפי הסדר 1–4.", "fmt": "4 אותיות", "hash": "5f2b75a9506ed0834e063bd3d7618b04b5788cfd88b1760860e3c5633ead9c2d", "hints": ["SAST סטטי; DAST דינמי מבחוץ.", "IAST משלב — סוכן בתוך האפליקציה הרצה.", "קלטים אקראיים ופגומים — Fuzzing."]}]}, {"id": "r3", "n": 3, "title": "חדר בדיקת החדירות", "sub": "פרק 3 · תהליך בדיקות האבטחה ואבטחה ב-SDLC", "body": "<p>תוכנית בדיקת החדירות של הצוות נקרעה, ונשארו חמישה כרטיסים:</p>\n<div class=\"frags\">\n<div><span class=\"lab\">K</span>ניצול חולשה והשגת גישה (Exploitation).</div>\n<div><span class=\"lab\">B</span>איסוף מידע על היעד ממקורות גלויים (Reconnaissance).</div>\n<div><span class=\"lab\">X</span>כתיבת דוח ממצאים והמלצות לתיקון.</div>\n<div><span class=\"lab\">M</span>סריקת פורטים, שירותים וחולשות ידועות (Scanning).</div>\n<div><span class=\"lab\">Q</span>בדיקה אם אפשר להישאר במערכת ולהרחיב את הגישה (Post-Exploitation).</div>\n</div>\n<p>ובמחברת של ראש הצוות — איזו פעילות אבטחה שייכת לאיזה שלב ב-SDLC:</p>\n<ol class=\"doc\"><li>סקירת קוד מאובטח והרצת SAST.</li><li>הגדרת דרישה שכל המשתמשים יתחברו עם MFA.</li><li>בדיקה שמשתמש רגיל לא יכול לגשת למסכי מנהל.</li><li>מידול איומים עם STRIDE ותרשימי זרימת נתונים.</li></ol>\n<p>השלבים: ‏1 · Requirements ‏2 · Design ‏3 · Development ‏4 · Testing ‏5 · Deployment ‏6 · Maintenance.</p>", "reward": ["E", 6], "locks": [{"id": "r3a", "label": "סדרו את חמשת הכרטיסים לפי סדר השלבים בבדיקת חדירות.", "fmt": "5 אותיות", "hash": "e6572ae40824bb115534d665444d03cb39128bf3c4bfe7c488ab1f19a7764b8c", "hints": ["לפני שתוקפים — אוספים מידע.", "אחרי איסוף המידע סורקים, ורק אז מנצלים חולשה.", "הדוח תמיד בסוף."]}, {"id": "r3b", "label": "כתבו את מספר שלב ה-SDLC של כל פעילות במחברת, לפי הסדר 1–4.", "fmt": "4 ספרות", "hash": "6cc932404e022ddb9972a61df7b682e439f9ba18ca81e2cc07d2e04d08ac5de6", "hints": ["דרישת MFA מוגדרת עוד לפני התכנון.", "מידול איומים נעשה בשלב התכנון.", "SAST רץ בזמן כתיבת הקוד; בדיקת ההרשאות — בשלב הבדיקות."]}]}, {"id": "r4", "n": 4, "title": "חדר התקנים", "sub": "פרק 4 · OWASP Top 10 ותקנים", "body": "<p>ארבעה ממצאים מבדיקה קודמת, וליד כל אחד מקום ריק לקטגוריית OWASP Top 10 ‏(2021):</p>\n<ol class=\"doc\">\n<li>הזנת <code>' OR '1'='1</code> בשדה החיפוש מחזירה את כל המשתמשים.</li>\n<li>שינוי <code>?invoice=124</code> ל-<code>?invoice=125</code> מציג חשבונית של לקוח אחר.</li>\n<li>הסיסמאות שמורות במסד כ-MD5 בלי Salt.</li>\n<li>אין נעילה אחרי ניסיונות התחברות כושלים, כך שאפשר לנחש סיסמאות ללא הגבלה.</li>\n</ol>\n<p>ובמגירה, ארבעה תקנים ומסגרות:</p>\n<ol class=\"doc\"><li>דרישות למערכת ניהול אבטחת מידע (ISMS) בארגון.</li><li>תקן לאבטחת נתוני כרטיסי אשראי.</li><li>רשימת עשרת סיכוני האבטחה הנפוצים ביותר באפליקציות ווב.</li><li>מדריך לבקרות אבטחת מידע שמפרט איך ליישם אותן.</li></ol>", "reward": ["R", 5], "locks": [{"id": "r4a", "label": "כתבו את מספר הקטגוריה ב-OWASP Top 10 ‏(2021) לכל ממצא, לפי הסדר 1–4.", "fmt": "4 ספרות", "hash": "730b5508814569bed09516c54de9969a85e9c405073010e373cacf8563162dd0", "hints": ["A01 — Broken Access Control, ‏A02 — Cryptographic Failures, ‏A03 — Injection.", "גישה לחשבונית של אחר בשינוי מזהה — בקרת גישה.", "A07 — Identification and Authentication Failures."]}, {"id": "r4b", "label": "התאימו תיאור לכל מסגרת, בסדר הזה: ISO/IEC 27001 ← ISO/IEC 27002 ← PCI DSS ← OWASP Top 10.", "fmt": "4 ספרות", "hash": "e7ed3833f89ae718fe8d3e363672f1e170185409a0f1b496e9b350e701fc1a6f", "hints": ["ISO 27001 מגדיר דרישות ל-ISMS.", "ISO 27002 הוא מדריך מפורט לבקרות.", "PCI DSS — כרטיסי אשראי; OWASP Top 10 — סיכוני ווב."]}]}, {"id": "r5", "n": 5, "title": "חדר הארגון", "sub": "פרקים 5–7 · DevSecOps ו-ISMS", "body": "<p>הצוות בונה צינור DevSecOps. חמישה שלבים מבולבלים:</p>\n<div class=\"frags\">\n<div><span class=\"lab\">G</span>DAST על סביבת Staging אחרי הפריסה האוטומטית.</div>\n<div><span class=\"lab\">W</span>מידול איומים בתכנון הפיצ'ר.</div>\n<div><span class=\"lab\">P</span>ניטור והתראות בייצור (Monitoring).</div>\n<div><span class=\"lab\">H</span>SAST ובדיקת תלויות (SCA) בכל Commit.</div>\n<div><span class=\"lab\">Y</span>בדיקת חדירות לפני שחרור גרסה גדולה.</div>\n</div>\n<p>ובתיקיית ה-ISMS ארבע פעילויות, כל אחת שייכת לשלב אחר במעגל PDCA:</p>\n<ol class=\"doc\"><li>ביקורת פנימית על הבקרות.</li><li>הגדרת תוכנית לטיפול בסיכונים.</li><li>יישום הבקרות שנבחרו.</li><li>פעולות מתקנות אחרי ממצאי הביקורת.</li></ol>", "reward": ["U", 4], "locks": [{"id": "r5a", "label": "סדרו את חמשת השלבים לפי סדרם בצינור, מהמוקדם למאוחר.", "fmt": "5 אותיות", "hash": "1917ddf43be55120b8c055b15dc926c35daccef0b8ba92ff76295227526f0fe3", "hints": ["Shift-Left: מתחילים בתכנון.", "SAST רץ על הקוד עוד לפני שיש סביבה רצה; DAST דורש סביבה רצה.", "ניטור בייצור הוא השלב האחרון — והוא מתמשך."]}, {"id": "r5b", "label": "כתבו את שלב ה-PDCA של כל פעילות (P, ‏D, ‏C או A), לפי הסדר 1–4.", "fmt": "4 אותיות", "hash": "5df29998394ee8e0b0cfadc2e2fb86de78f18746dda42298cff27f2c3a1d537e", "hints": ["Plan — מתכננים; Do — מיישמים; Check — בודקים; Act — משפרים.", "ביקורת פנימית היא בדיקה.", "פעולות מתקנות הן שיפור."]}]}, {"id": "r6", "n": 6, "title": "חדר הדוח", "sub": "פרקים 8–9 · דירוג ממצאים (CVSS) וכלים", "body": "<p>הדוח מוכן כמעט. חסר רק דירוג החומרה של ארבעה ממצאים לפי ציון CVSS v3:</p>\n<div class=\"tw\"><table><tr><th>ממצא</th><th>תיאור</th><th>CVSS</th></tr>\n<tr><td>F</td><td>XSS מאוחסן בדף הפרופיל</td><td>5.4</td></tr>\n<tr><td>L</td><td>הרצת קוד מרחוק (RCE) בשירות ההעלאה</td><td>9.8</td></tr>\n<tr><td>T</td><td>חשיפת גרסת השרת בכותרת HTTP</td><td>3.1</td></tr>\n<tr><td>V</td><td>עקיפת אימות ב-API פנימי</td><td>8.1</td></tr></table></div>\n<p>ובנוסף, שלושה תרחישי בדיקה שצריך לסווג לפי גישת הכלי:</p>\n<ol class=\"doc\"><li>הבודק מקבל את קוד המקור, את קובצי התצורה ואת הארכיטקטורה.</li><li>הבודק מקבל רק את כתובת האתר, בלי שום מידע פנימי.</li><li>הבודק מקבל משתמש בדיקה ואת תרשים הארכיטקטורה, ובודק מערכת רצה.</li></ol>", "reward": ["E", 2], "locks": [{"id": "r6a", "label": "סדרו את הממצאים מהחמור לקל, ואחר כך כתבו כמה מהם מדורגים High או Critical.", "fmt": "4 אותיות ואז ספרה", "hash": "162ae119665a26362198cced5eeda7a41b0e0a9fe0675c12fc465989c0fb3130", "hints": ["בסולם CVSS v3: ‏0.1–3.9 Low · ‏4.0–6.9 Medium · ‏7.0–8.9 High · ‏9.0–10.0 Critical.", "מיינו לפי הציון.", "L ‏Critical, ‏V ‏High, ‏F ‏Medium, ‏T ‏Low."]}, {"id": "r6b", "label": "סווגו את שלושת התרחישים: W = ‏White Box · B = ‏Black Box · G = ‏Grey Box. לפי הסדר 1–3.", "fmt": "3 אותיות", "hash": "657cb1d95b01535cb3795d68ab934f0c5933916f6c2e36f6d59d563f1791ae50", "hints": ["White Box — גישה מלאה למידע הפנימי.", "Black Box — כמו תוקף חיצוני, בלי מידע פנימי.", "Grey Box — מידע חלקי ומערכת רצה."]}]}], "final": {"id": "fin", "label": "הרכיבו את הסיסמה החדשה לחדר ה-SOC מששת האותיות, כל אחת במיקום שלה.", "fmt": "6 אותיות", "hash": "eebd10683df7fdb1ed1e1d569bd27b7fc687aa2b9e96a39fea0fb159507af132", "hints": ["כל חדר חשף אות ומספר. המספר הוא המיקום בסיסמה.", "מילה באנגלית בת 6 אותיות — מה שהמערכת צריכה להיות.", "S E C U R E"]}},KEY='ngqa-escape-ste-v1',$=id=>document.getElementById(id);
+let S;try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
+S.solved=S.solved||{};S.hints=S.hints||{};S.vals=S.vals||{};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const norm=s=>s.toUpperCase().replace(/[^A-Z0-9]/g,'');
+async function sha(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+const allLocks=()=>[...D.rooms.flatMap(r=>r.locks),D.final];
+const hintCount=()=>Object.values(S.hints).reduce((a,b)=>a+b,0);
+const roomDone=r=>r.locks.every(l=>S.solved[l.id]);
+const elapsed=()=>S.start?((S.end||Date.now())-S.start)/1000+hintCount()*D.penalty*60:0;
+const fmt=s=>{s=Math.max(0,Math.floor(s));const m=Math.floor(s/60),x=s%60;return String(m).padStart(2,'0')+':'+String(x).padStart(2,'0')};
+let cur=null;
+function tick(){const e=elapsed(),left=D.minutes*60-e;const c=$('clock');
+  if(!S.start){c.textContent=fmt(D.minutes*60);return}
+  c.textContent=left>=0?fmt(left):'+'+fmt(-left);c.classList.toggle('late',left<0);
+  $('solbox').style.display=(S.end||left<0)?'flex':'none'}
+function slots(){$('slots').innerHTML=[1,2,3,4,5,6].map(p=>{const r=D.rooms.find(r=>r.reward[1]===p);const on=r&&roomDone(r);return `<span class="${on?'on':''}">${on?r.reward[0]:''}<small>${p}</small></span>`}).join('')}
+function grid(){$('rooms').innerHTML=D.rooms.map(r=>{const d=roomDone(r),k=r.locks.filter(l=>S.solved[l.id]).length;
+  return `<button type="button" class="rm${d?' done':''}${cur===r.id?' cur':''}" data-r="${r.id}"><span class="n">${r.n}</span><b>${r.title}</b><small>${r.sub}</small><span class="st">${d?'✓ נפרץ':k+'/'+r.locks.length}</span></button>`}).join('')+
+  `<button type="button" class="rm${S.end?' done':''}${cur==='fin'?' cur':''}" data-r="fin"><span class="n">★</span><b>דלת השחרור</b><small>${D.rooms.every(roomDone)?'כל המנעולים נפרצו — הזינו את הסיסמה':'נפתחת אחרי שכל ששת החדרים נפרצו'}</small><span class="st">${S.end?'✓ שוחרר':''}</span></button>`;
+  document.querySelectorAll('.rm').forEach(b=>b.onclick=()=>{if(!S.start){alert('לחצו קודם על "מתחילים" — השעון יתחיל לרוץ.');return}open(b.dataset.r)})}
+function lockHtml(l){const n=S.hints[l.id]||0,sv=S.solved[l.id];
+  return `<div class="lock${sv?' solved':''}" id="L-${l.id}"><div class="q">${l.label}</div><div class="fmt">פורמט: ${l.fmt}</div>
+  <form data-l="${l.id}"><input autocomplete="off" spellcheck="false" aria-label="קוד" value="${sv?(S.vals[l.id]||''):''}" ${sv?'disabled':''}><button class="try" ${sv?'disabled':''}>${sv?'✓ נפתח':'נסה לפתוח'}</button></form>
+  <div class="msg ${sv?'ok':''}">${sv?'המנעול נפתח.':''}</div>
+  <div class="hints">${sv?'':`<button type="button" data-h="${l.id}" ${n>=3?'disabled':''}>רמז ${Math.min(n+1,3)} מתוך 3 (+${D.penalty} דק׳)</button>`}</div>
+  ${l.hints.slice(0,n).map((t,i)=>`<div class="hint"><b>רמז ${i+1}:</b> ${t}</div>`).join('')}</div>`}
+function open(id){cur=id;grid();const p=$('panel');p.style.display='block';
+  if(id==='fin'){p.className='panel final';const ready=D.rooms.every(roomDone);
+    p.innerHTML=`<h2>דלת השחרור</h2><div class="sub">כל האותיות שאספתם — במקום הנכון</div>`+(ready?lockHtml(D.final):'<p>הדלת נעולה עד שכל ששת החדרים ייפרצו. האותיות שכבר אספתם מופיעות למעלה.</p>')}
+  else{const r=D.rooms.find(r=>r.id===id);p.className='panel';
+    p.innerHTML=`<h2>חדר ${r.n} · ${r.title}</h2><div class="sub">${r.sub}</div>${r.body}${r.locks.map(lockHtml).join('')}`+(roomDone(r)?`<div class="reward">🔓 החדר נפרץ! על הקיר מופיעה האות <b>${r.reward[0]}</b>, ולידה המספר <b>${r.reward[1]}</b>.</div>`:'')}
+  bind();p.scrollIntoView({behavior:'smooth',block:'start'})}
+function bind(){
+  document.querySelectorAll('.lock form').forEach(f=>f.onsubmit=async e=>{e.preventDefault();const id=f.dataset.l,l=allLocks().find(x=>x.id===id),inp=f.querySelector('input'),v=norm(inp.value),m=f.parentNode.querySelector('.msg');
+    if(!v){m.className='msg bad';m.textContent='הקלידו קוד.';return}
+    if(await sha(`ngqa-er|${id}|${v}`)===l.hash){S.solved[id]=true;S.vals[id]=inp.value.trim();if(id==='fin'&&!S.end)S.end=Date.now();save();slots();open(cur);if(id==='fin')finish()}
+    else{S.tries=(S.tries||0)+1;save();m.className='msg bad';m.textContent='המנעול לא זז. בדקו שוב — או קחו רמז.';f.classList.remove('shake');void f.offsetWidth;f.classList.add('shake')}});
+  document.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{const id=b.dataset.h;const n=S.hints[id]||0;if(n>=3)return;
+    if(!confirm(`לחשוף את רמז ${n+1}? יתווספו ${D.penalty} דקות לזמן שלכם.`))return;S.hints[id]=n+1;save();open(cur);tick()})}
+async function finish(){let name='';try{const i=NGQAAuth.info(await NGQAAuth.session());name=(i&&(i.name||i.email))||''}catch(e){}
+  $('cn').textContent=name||'בודק/ת אמיץ/ה';$('ct').textContent=fmt(elapsed());$('ch').textContent=hintCount();
+  $('cd').textContent=new Date(S.end).toLocaleDateString('he-IL');$('cert').style.display='block';$('cert').scrollIntoView({behavior:'smooth'})}
+$('go').onclick=()=>{if(!S.start){S.start=Date.now();save()}$('go').style.display='none';tick();open(D.rooms[0].id)};
+$('reset').onclick=()=>{if(confirm('לאפס את כל ההתקדמות ולהתחיל מחדש?')){S={solved:{},hints:{},vals:{}};save();location.reload()}};
+$('cprint').onclick=()=>window.print();
+if(S.start)$('go').textContent='ממשיכים';
+slots();grid();tick();setInterval(tick,1000);if(S.end)finish();
+</script>
+</body>
+</html>

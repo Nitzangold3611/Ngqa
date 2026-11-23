@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;--red:#e5484d;--green:#1fb57a;
+--bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960);--soft:light-dark(#eef9f8,#14304a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 Heebo,Arial,sans-serif}
+button,input{font:inherit}
+.bar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;gap:10px;align-items:center;padding:10px max(3vw,14px);flex-wrap:wrap}
+.bar b{flex:1;font-size:17px}
+.bar a,.bar button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 14px;text-decoration:none;cursor:pointer;font-size:15px}
+.clock{font:700 20px/1 ui-monospace,Consolas,monospace;direction:ltr;background:#000a;border-radius:10px;padding:8px 12px;color:var(--teal)}
+.clock.late{color:var(--orange)}
+.wrap{max-width:1100px;margin:auto;padding:26px max(3vw,14px)}
+.hero{background:var(--navy);color:#fff;border-radius:18px;padding:clamp(22px,4vw,40px);margin-bottom:22px}
+.hero h1{margin:0 0 8px;font-size:clamp(26px,4vw,40px);line-height:1.15}
+.hero p{color:#c9cbf0;margin:8px 0;max-width:75ch}.hero q{color:#fff}
+.hero .go{margin-top:12px;background:var(--orange);color:#fff;border:0;border-radius:12px;padding:10px 22px;font-weight:700;font-size:17px;cursor:pointer}
+.slots{display:flex;gap:8px;direction:ltr;justify-content:center;margin:0 0 22px}
+.slots span{width:52px;height:60px;border-radius:12px;border:2px dashed var(--line);display:grid;place-items:center;font:800 28px Heebo,Arial;position:relative;background:var(--card)}
+.slots span small{position:absolute;bottom:2px;font-size:11px;color:var(--mute);font-weight:500}
+.slots span.on{border:2px solid var(--teal);color:var(--teal-d)}
+.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:22px}
+@media(max-width:800px){.rooms{grid-template-columns:1fr 1fr}}@media(max-width:520px){.rooms{grid-template-columns:1fr}}
+.rm{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;text-align:start;cursor:pointer;color:inherit;position:relative}
+.rm:hover{border-color:var(--teal)}.rm.cur{border:2px solid var(--orange)}
+.rm .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;margin-inline-end:8px}
+.rm b{font-size:17.5px}.rm small{display:block;color:var(--mute);font-size:13.5px;margin-top:4px}
+.rm .st{position:absolute;inset-block-start:12px;inset-inline-end:14px;font-size:13px;font-weight:700;color:var(--mute)}
+.rm.done .st{color:var(--green)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,32px);margin-bottom:22px}
+.panel h2{margin:0;font-size:26px}.panel .sub{color:var(--teal-d);font-weight:700;margin-bottom:12px}
+q{quotes:"\201D" "\201C"}
+.codebox,.cfg,.req,.runs,.fields{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:12px 0}
+.codebox div{display:flex;gap:12px;align-items:center;margin:6px 0}
+code{direction:ltr;unicode-bidi:isolate;font:15.5px ui-monospace,Consolas,monospace;background:var(--soft);padding:2px 8px;border-radius:6px}
+pre{margin:0;font:14.5px/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap}
+.lab{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:8px;background:var(--orange);color:#fff;font-weight:800;font-size:15px;margin-inline-end:8px;flex:none}
+.frags{display:grid;gap:8px;margin:12px 0}.frags div{border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:flex;align-items:flex-start;background:light-dark(#fffdf8,#1b1a44)}
+.cases{padding-inline-start:26px}.cases li{margin:6px 0}
+.runs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}@media(max-width:700px){.runs{grid-template-columns:1fr}}
+.runs ol{margin:4px 0;padding-inline-start:20px;font-size:14.5px}
+.doc{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 16px;padding-inline-start:40px;font-size:15px}
+.fields{display:flex;flex-wrap:wrap;gap:8px}.fields span{border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card)}
+.req ul{margin:6px 0;padding-inline-start:22px}
+.tw{overflow-x:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:15px}th{background:var(--navy);color:#fff;padding:7px 10px;text-align:start}td{border-bottom:1px solid var(--line);padding:7px 10px}
+.lock{border-top:2px dashed var(--line);margin-top:18px;padding-top:16px}
+.lock .q{font-weight:700}.lock .fmt{color:var(--mute);font-size:14px}
+.lock form{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.lock input{flex:1;min-width:180px;border:2px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--bg);color:var(--ink);direction:ltr;text-align:center;font:700 18px ui-monospace,Consolas,monospace;letter-spacing:2px}
+.lock button.try{background:var(--navy);color:#fff;border:0;border-radius:10px;padding:8px 20px;font-weight:700;cursor:pointer}
+:root[data-theme=dark] .lock button.try{background:var(--teal-d)}
+.lock .msg{min-height:1.4em;font-weight:700}.msg.bad{color:var(--red)}.msg.ok{color:var(--green)}
+.lock.solved input{border-color:var(--green);background:light-dark(#ecfbf4,#123a2c)}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.hints{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hints button{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:3px 12px;font-size:14px;cursor:pointer}
+.hints button:disabled{opacity:.45;cursor:default}
+.hint{background:light-dark(#fff4e6,#3a2a12);border-inline-start:4px solid var(--orange);border-radius:8px;padding:6px 12px;margin:6px 0;font-size:15px}
+.reward{margin-top:14px;background:var(--soft);border-radius:12px;padding:10px 14px;font-weight:700}
+.final{border:2px solid var(--orange)}
+.cert{display:none;text-align:center;border:6px double var(--teal);border-radius:18px;padding:30px;background:var(--card);margin-bottom:22px}
+.cert h2{font-size:32px;margin:6px 0}.cert .nm{font-size:28px;font-weight:800;color:var(--teal-d)}
+.cert .row{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin:14px 0;font-size:18px}
+.cert button,.solbox a{background:var(--orange);color:#fff;border:0;border-radius:10px;padding:8px 18px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.solbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin-bottom:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.solbox p{margin:0;flex:1;color:var(--mute)}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}footer .ver{display:block}
+@media print{.bar,.rooms,.panel,.slots,.hero,.solbox,footer{display:none!important}body{background:#fff}.cert{display:block!important;margin-top:40mm}}
+
+body{background:#fff;color:#121133;font-size:11pt;line-height:1.6}
+@page{size:A4;margin:15mm}
+.cv{background:#121133;color:#fff;border-radius:14px;padding:26px 30px;margin-bottom:16px}.cv h1{margin:0 0 6px;font-size:26pt}.cv p{color:#c9cbf0;margin:4px 0}
+section{break-before:page}section h2{color:#0E9F97;font-size:18pt;margin:0}.sub{color:#5d5c7c;font-weight:700;margin-bottom:8px}
+.lk{border:2px solid #14DACD;border-radius:12px;padding:10px 14px;margin:12px 0;break-inside:avoid;background:#f3fdfc}
+.lk .q{font-weight:700}.ans{font-size:13pt;margin:6px 0}.ans b{background:#F38911;color:#fff;border-radius:6px;padding:1px 10px;font-family:Consolas,monospace;letter-spacing:1px}
+.rw{font-weight:700;background:#eef9f8;border-radius:10px;padding:8px 12px}
+.frags div,.codebox,.cfg,.req,.runs,.fields,.doc{break-inside:avoid}
+</style></head><body>
+<div class="cv"><h1>מדריך פתרונות — חדר בריחה: האפליקציה שקרסה</h1><p>NGQA · CT-MAT · חדר בריחה v1.0 · 23.11.2026</p><p>לכל מנעול: התשובה, הדרך אליה, והקשר לחומר הקורס. מומלץ לקרוא אחרי המשחק.</p></div>
+<h2>איך משחקים</h2><p>אפליקציית המשלוחים "QuickBite" קורסת אצל אלפי משתמשים, והחנות הסירה אותה זמנית. מנהלת המוצר נעלה את חדר הבדיקות עד שתוכנית בדיקות מובייל מלאה תהיה מוכנה. חמישה מנעולים עומדים בדרך.</p>
+<p>יש לכם <b>60 דקות</b>. מותר להשתמש במצגות, בסילבוס ובמחשבון. בכל מנעול יש 3 רמזים, וכל רמז מוסיף 3 דקות. כל חדר שתפרצו יחשוף אות ואת מיקומה בסיסמה.</p><p>החדרים פתוחים בכל סדר. כל חדר שנפרץ חושף אות ואת מיקומה בסיסמת השחרור. אפשר להשתמש בשלושה רמזים לכל מנעול, וכל רמז מוסיף 3 דקות. ההתקדמות נשמרת בדפדפן.</p>
+<div class="rw">תקציר התשובות: R1A: NWH · R1B: 24 · R2A: ICPO · R3A: VRC · R3B: 240 · R4A: AEX500 · R5A: 14RDK · סיסמה: SWIPE</div>
+<section><h2>חדר 1 · חדר סוגי האפליקציות</h2><div class="sub">פרק 1 · אפליקציות Native, ‏Web ו-Hybrid ופרגמנטציה</div><p>שלוש גרסאות של QuickBite פותחו לאורך השנים:</p>
+<ol class="doc"><li>נכתבה ב-Swift ל-iOS בלבד, עם גישה מלאה לכל ממשקי המכשיר.</li><li>רצה בדפדפן הנייד, בלי התקנה מהחנות.</li><li>קוד ווב שעטוף במעטפת Native — בסיס קוד אחד, ומופצת בחנויות.</li></ol>
+<p>הקודים: N — ‏Native · ‏W — ‏Mobile Web · ‏H — ‏Hybrid.</p>
+<p>ובתוכנית הבדיקות: 4 דגמי מכשירים, 3 גרסאות מערכת הפעלה לכל דגם, ובדיקה גם לרוחב וגם לאורך.</p><div class="lk"><div class="q">כתבו את סוג האפליקציה לכל גרסה, לפי הסדר 1–3.</div><div class="ans">תשובה: <b dir="ltr">NWH</b></div><p>1 — Native ‏(Swift ל-iOS). 2 — Mobile Web. 3 — Hybrid. התשובה: NWH.</p></div><div class="lk"><div class="q">כמה צירופים יש לבדוק בתוכנית המלאה?</div><div class="ans">תשובה: <b dir="ltr">24</b></div><p>4 × 3 × 2 = 24. כך נראית הפרגמנטציה: המספר גדל מהר, ולכן בוחרים מכשירים לפי נתוני שימוש וסיכון.</p></div><div class="rw">פרס החדר: האות <b>I</b> במיקום <b>3</b></div></section><section><h2>חדר 2 · חדר ההפרעות</h2><div class="sub">פרק 2 · סוגי בדיקות לאפליקציות מובייל</div><p>ארבעה דיווחים של משתמשים מהשבוע האחרון:</p>
+<ol class="doc"><li>"באמצע התשלום נכנסה שיחה, וכשחזרתי ההזמנה נעלמה."</li><li>"עברתי מ-WiFi לסלולרי באמצע העלאת תמונה, וההעלאה נתקעה."</li><li>"האפליקציה גומרת 20% סוללה בחצי שעה."</li><li>"סובבתי את הטלפון לרוחב, והעגלה התרוקנה."</li></ol>
+<p>הקודים: I — בדיקת הפרעות (Interrupt) · ‏C — קישוריות ורשת · ‏P — צריכת חשמל · ‏O — שינוי כיוון מסך (Orientation).</p><div class="lk"><div class="q">איזה סוג בדיקה היה תופס כל תקלה? לפי הסדר 1–4.</div><div class="ans">תשובה: <b dir="ltr">ICPO</b></div><p>1 — Interrupt. 2 — קישוריות. 3 — צריכת חשמל. 4 — כיוון מסך. התשובה: ICPO.</p></div><div class="rw">פרס החדר: האות <b>S</b> במיקום <b>1</b></div></section><section><h2>חדר 3 · חדר הסביבות</h2><div class="sub">פרק 3 · אמולטורים, סימולטורים, מכשירים אמיתיים ובדיקות בטא</div><p>שלושה צרכים בתוכנית הבדיקות:</p>
+<ol class="doc"><li>בדיקה מהירה וזולה של פריסת המסך על 15 גדלי מסך, בשלב מוקדם.</li><li>מדידת צריכת סוללה ודיוק GPS.</li><li>הרצה על 300 דגמי מכשירים בלי לקנות אותם.</li></ol>
+<p>הקודים: V — אמולטור או סימולטור · ‏R — מכשיר אמיתי · ‏C — חוות מכשירים בענן (Device Farm).</p>
+<p>ובדוח הבטא: 5,000 בודקי בטא, ‏40,000 סשנים, ושיעור קריסה של 0.6% מהסשנים.</p><div class="lk"><div class="q">איזו סביבה מתאימה לכל צורך? לפי הסדר 1–3.</div><div class="ans">תשובה: <b dir="ltr">VRC</b></div><p>1 — אמולטור או סימולטור. 2 — מכשיר אמיתי: אמולטור לא מדמה סוללה ו-GPS נאמנה. 3 — Device Farm בענן. התשובה: VRC.</p></div><div class="lk"><div class="q">כמה סשנים קרסו בבטא?</div><div class="ans">תשובה: <b dir="ltr">240</b></div><p>40,000 × 0.6% = 240 סשנים. מספר הבודקים (5,000) הוא מסיח — השיעור מחושב מתוך הסשנים.</p></div><div class="rw">פרס החדר: האות <b>E</b> במיקום <b>5</b></div></section><section><h2>חדר 4 · חדר הכלים</h2><div class="sub">פרק 4 · פלטפורמות, כלים וסביבות עבודה</div><p>שלושה כלים לאוטומציה של QuickBite:</p>
+<ol class="doc"><li>בודק גם Android וגם iOS עם API אחד, על בסיס פרוטוקול WebDriver.</li><li>הספרייה של Google לבדיקות ממשק של אפליקציות Android, מתוך האפליקציה עצמה.</li><li>הספרייה של Apple לבדיקות ממשק של אפליקציות iOS.</li></ol>
+<p>הקודים: A — ‏Appium · ‏E — ‏Espresso · ‏X — ‏XCUITest.</p>
+<p>וגם פקודה ששכחו בטרמינל:</p>
+<div class="cfg"><pre dir="ltr">adb shell monkey -p com.quickbite.app -v 500</pre></div><div class="lk"><div class="q">התאימו כלי לכל תיאור, לפי הסדר 1–3, ואחר כך הוסיפו כמה אירועים אקראיים תשלח הפקודה בטרמינל.</div><div class="ans">תשובה: <b dir="ltr">AEX500</b></div><p>1 — Appium. 2 — Espresso. 3 — XCUITest. ‏monkey שולח אירועים אקראיים (מגע, החלקה, מקשים), והמספר בסוף — 500 — הוא מספר האירועים. התשובה: AEX500.</p></div><div class="rw">פרס החדר: האות <b>W</b> במיקום <b>2</b></div></section><section><h2>חדר 5 · חדר האוטומציה</h2><div class="sub">פרק 5 · אוטומציה של הרצת בדיקות והחזר השקעה</div><p>מנהלת המוצר שואלת אם כדאי לבנות אוטומציה לחבילת הרגרסיה:</p>
+<div class="req"><ul><li>הרצה ידנית של החבילה: 6 שעות בכל מחזור.</li><li>בניית האוטומציה: 60 שעות, חד-פעמי.</li><li>בכל מחזור אחרי הבנייה: חצי שעה הרצה ושעה תחזוקה.</li></ul></div>
+<p>ושלוש גישות אוטומציה שהצוות שוקל:</p>
+<ol class="doc"><li>מקליטים את הפעולות על המסך ומריצים אותן שוב.</li><li>אותו תסריט רץ על 50 שורות של נתונים מקובץ CSV.</li><li>בודקים לא-טכניים כותבים צעדים במילות מפתח כמו "התחבר", "הוסף לעגלה".</li></ol>
+<p>הקודים: R — ‏Record &amp; Playback · ‏D — ‏Data-Driven · ‏K — ‏Keyword-Driven.</p><div class="lk"><div class="q">אחרי כמה מחזורים האוטומציה מתחילה להיות משתלמת (המחזור הראשון שבו העלות המצטברת שלה נמוכה מהידני)? ואחר כך התאימו גישה לכל תיאור, לפי הסדר 1–3.</div><div class="ans">תשובה: <b dir="ltr">14RDK</b></div><p>ידני: 6n. אוטומציה: 60 + (0.5 + 1)·n = 60 + 1.5n. האוטומציה זולה יותר כש-4.5n > 60, כלומר n > 13.3 — מהמחזור ה-14. הגישות: 1 — Record & Playback, ‏2 — Data-Driven, ‏3 — Keyword-Driven. התשובה: 14RDK. ושימו לב שהתחזוקה היא חלק מהחישוב — מי שמתעלם ממנה מקבל 11.</p></div><div class="rw">פרס החדר: האות <b>P</b> במיקום <b>4</b></div></section>
+<section><h2>דלת השחרור</h2><div class="lk"><div class="q">הרכיבו את הסיסמה מחמש האותיות, כל אחת במיקום שלה.</div><div class="ans">תשובה: <b dir="ltr">SWIPE</b></div><p>S(1) W(2) I(3) P(4) E(5) — SWIPE.</p></div></section>
+</body></html>

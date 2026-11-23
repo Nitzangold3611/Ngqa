@@ -272,6 +272,16 @@ a.chip:hover{background:light-dark(#dff5f3,#2f2e6a)}
 .allc{display:table;color:#c9cbf0;text-decoration:none;font-size:14px;font-weight:600;border:1px solid #3b3a78;border-radius:999px;padding:4px 12px;margin-bottom:14px}.allc:hover{color:var(--teal);border-color:var(--teal)}
 .frame{touch-action:pan-y pinch-zoom}.frame.pfs,.frame:fullscreen{touch-action:none}
 .fpill{transition:opacity .35s;opacity:0;pointer-events:none}.fpill.on{opacity:.95}
+/*aux*/.aux{margin-bottom:34px}.aux h2{margin-bottom:12px}
+.auxg{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:18px}
+.ax{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:flex;gap:16px;align-items:flex-start}
+.ax .ic{flex:none;width:54px;height:54px;border-radius:14px;background:var(--navy);display:grid;place-items:center}
+.ax .ic svg{width:30px;height:30px;fill:none;stroke:var(--teal);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ax b{display:block;font-size:19px;line-height:1.3}.ax p{margin:4px 0 12px;color:var(--mute);font-size:15px}
+.ax .acts{display:flex;gap:8px;flex-wrap:wrap}
+.ax .acts a{text-decoration:none;border:1px solid var(--line);border-radius:10px;padding:6px 14px;font-size:15px;font-weight:600;color:var(--ink)}
+.ax .acts a:hover{border-color:var(--teal)}.ax .acts a.pri{background:var(--orange);border-color:var(--orange);color:#fff}
+/*/aux*/
 .hsr{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}.hsr h2{margin:0;flex:1}
 .hsb{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;cursor:pointer}
 .hsb:hover{border-color:var(--teal);color:var(--teal-d)}.hsb svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
@@ -300,6 +310,10 @@ a.chip:hover{background:light-dark(#dff5f3,#2f2e6a)}
     </div>
   </header>
   <main class="band"><div class="wrap">
+    <section class="aux" aria-labelledby="auxh"><h2 id="auxh">חומרי עזר</h2><div class="auxg">
+      <div class="ax"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v3"/></svg></span><div><b>חדר בריחה: המודל שהשתגע</b><p>מטריצת בלבול, מדדי ביצועים, איכות נתונים, הטיה, Metamorphic Testing ועוד. משחק לבד, עם רמזים ומדריך פתרונות.</p><div class="acts"><a class="pri" href="escape/">כניסה לחדר</a></div></div></div>
+      <div class="ax"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></span><div><b>תשבץ ותשחץ</b><p>המונחים המקצועיים של הקורס בשני משחקים דיגיטליים: תשבץ הגדרות ותשחץ עם הגדרות היגיון. אפשר גם להדפיס.</p><div class="acts"><a class="pri" href="puzzles/">תשבץ</a><a href="puzzles/#cryptic">תשחץ</a></div></div></div>
+    </div></section>
     <div class="xbx">
       <a class="xb" href="#ch10"><span class="xi" aria-hidden="true">📝</span><span><b>מבחן לדוגמא</b><small>40 שאלות בסגנון ISTQB – לכל שאלה שקף שאלה ושקף תשובה עם הסבר</small></span></a>
     </div>

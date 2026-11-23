@@ -25,6 +25,8 @@ data = dict(minutes=MINUTES, penalty=PENALTY,
             rooms=[dict(id=r['id'], n=r['n'], title=r['title'], sub=r['sub'], body=r['body'], reward=r['reward'],
                         locks=[pub_lock(l) for l in r['locks']]) for r in ROOMS],
             final=pub_lock(FINAL_LOCK))
+_rw = sorted((r['reward'][1], r['reward'][0]) for r in ROOMS)
+assert [p for p, _ in _rw] == list(range(1, len(ROOMS) + 1)) and ''.join(c for _, c in _rw) == FINAL, ('rewards do not spell FINAL', _rw)
 for r in ROOMS:
     for l in r['locks']:
         assert norm(l['ans']) == l['ans'] or l['id'] == 'r3b', l['id']
@@ -73,6 +75,7 @@ pre{margin:0;font:14.5px/1.6 ui-monospace,Consolas,monospace;white-space:pre-wra
 .doc{background:light-dark(#f6f7fc,#11103a);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 16px;padding-inline-start:40px;font-size:15px}
 .fields{display:flex;flex-wrap:wrap;gap:8px}.fields span{border:1px solid var(--line);border-radius:8px;padding:4px 10px;background:var(--card)}
 .req ul{margin:6px 0;padding-inline-start:22px}
+.tw{overflow-x:auto;margin:12px 0}table{border-collapse:collapse;width:100%;font-size:15px}th{background:var(--navy);color:#fff;padding:7px 10px;text-align:start}td{border-bottom:1px solid var(--line);padding:7px 10px}
 .lock{border-top:2px dashed var(--line);margin-top:18px;padding-top:16px}
 .lock .q{font-weight:700}.lock .fmt{color:var(--mute);font-size:14px}
 .lock form{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
