@@ -71,7 +71,7 @@ footer{color:var(--mute);font-size:13px;text-align:center;padding:24px 16px 36px
 .lock span{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.3)}
 .lock svg{width:30px;height:30px;fill:none;stroke:var(--navy);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .course.locked .go{background:var(--orange)}
-.course.hide{display:none}.grid.pending{visibility:hidden}
+.course.hide{display:none}.course .until{font-size:13px;color:var(--mute);margin:2px 0 8px}.course .until.soon{color:#b45309;font-weight:700}.grid.pending{visibility:hidden}
 .notice{max-width:1320px;margin:0 auto;padding:12px 16px;border-radius:12px;background:light-dark(#fff4e6,#3a2a12);border:1px solid #f3c58a;color:var(--ink);display:none;margin-bottom:16px}
 .notice.on{display:block}
 dialog{border:0;border-radius:18px;padding:0;width:min(440px,94vw);background:var(--card);color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.45)}
@@ -247,8 +247,15 @@ async function render(){
   const i=A.info(await A.fresh());
   // logged-in students see only the courses opened to them; visitors and admins see the full catalogue
   const only=!!(i&&!i.admin);
-  document.querySelectorAll('.course').forEach(c=>{const ok=A.can(i,c.dataset.c);c.classList.toggle('locked',!ok);c.classList.toggle('hide',only&&!ok);
-    c.querySelector('.go').textContent=ok?'כניסה לקורס ←':(i?'אין לך גישה לקורס':'התחברות לקורס 🔒')});
+  document.querySelectorAll('.course').forEach(c=>{const id=c.dataset.c,ok=A.can(i,id),ended=only&&A.courseExpired(i,id)&&i.roles.includes(id);
+    c.classList.toggle('locked',!ok);c.classList.toggle('hide',only&&!ok&&!ended);
+    c.querySelector('.go').textContent=ok?'כניסה לקורס ←':ended?'הגישה הסתיימה':(i?'אין לך גישה לקורס':'התחברות לקורס 🔒');
+    /* v3.11: access end date under the card (students only) */
+    let u=c.querySelector('.until');if(!u){u=document.createElement('span');u.className='until';c.querySelector('.go').before(u)}
+    const end=only?A.courseEnd(i,id):'',lv=only?A.level(i,id):'';
+    u.textContent=ended?'הגישה הסתיימה ב-'+A.dmy(A.courseEnd(i,id)):end?'בתוקף עד '+A.dmy(end)+(A.daysLeft(end)<=14?' · עוד '+A.daysLeft(end)+' ימים':''):'';
+    if(lv&&A.REC_COURSES.includes(id))u.textContent+=(u.textContent?' · ':'')+(lv==='full'?'כולל שיעורים מוקלטים':'מצגות וחומרים');
+    u.classList.toggle('soon',!!end&&!ended&&A.daysLeft(end)<=14);u.hidden=!u.textContent});
   $('hsrT').textContent=only?'הקורסים שלי':'בחרו קורס';$('cgrid').classList.remove('pending');
   if(only&&![...document.querySelectorAll('.course')].some(c=>!c.classList.contains('hide'))&&!$('notice').textContent)notice('עדיין לא נפתחו לך קורסים. NGQA תפתח לך גישה בקרוב — לשאלות: 052-6718757 או nitzan@ngqa.info');
   $('topbar').innerHTML=i?`<div class="umenu" id="um"><button class="abtn" type="button" id="umB" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>${esc(i.name||i.email.split('@')[0])}</button>
@@ -272,7 +279,7 @@ async function afterLogin(msg){
 document.querySelectorAll('.course').forEach(c=>c.addEventListener('click',async e=>{
   if(!on)return;const i=A.info(await A.session());if(A.can(i,c.dataset.c))return;
   e.preventDefault();
-  if(!i){next=c.getAttribute('href');viewLogin()}else notice('אין לך גישה לקורס '+c.querySelector('b').textContent+'. אם זו טעות, פנו לניצן: 052-6718757 או nitzan@ngqa.info');
+  if(!i){next=c.getAttribute('href');viewLogin()}else if(A.courseExpired(i,c.dataset.c)&&i.roles.includes(c.dataset.c))notice('הגישה שלך לקורס '+c.querySelector('b').textContent+' הסתיימה ב-'+A.dmy(A.courseEnd(i,c.dataset.c))+'. להארכה פנו לניצן: 052-6718757 או nitzan@ngqa.info');else notice('אין לך גישה לקורס '+c.querySelector('b').textContent+'. אם זו טעות, פנו לניצן: 052-6718757 או nitzan@ngqa.info');
 }));
 async function hubSearch(){
   const all=[{id:'ctfl',name:'CTFL 4.0'},{id:'genai',name:'CT-GenAI'},{id:'sql',name:'SQL'},{id:'ste',name:'CT-STE'},{id:'ai',name:'CT-AI'},{id:'mat',name:'CT-MAT'},{id:'jobs',name:'מחפשי עבודה'}];let cs=all;
@@ -287,7 +294,7 @@ document.addEventListener('keydown',e=>{if(NGQASearch.isOpen()||dlg.open)return;
   const h=await A.handleHash();
   const q=new URLSearchParams(location.search);next=q.get('next');
   if(next&&/^#(ch\d|home)/.test(location.hash))next+=location.hash;
-  if(q.has('login')||q.has('denied')||q.has('next')||q.has('expired'))history.replaceState(null,'','/');
+  if(q.has('login')||q.has('denied')||q.has('next')||q.has('expired')||q.has('cexp'))history.replaceState(null,'','/');
   if(next&&!h){const i=A.info(await A.fresh()),nc=(next.match(/^\/courses\/([a-z0-9-]+)\//)||[])[1];
     if(i&&nc&&A.can(i,nc)){
       /* loop guard: the server sent us back here although the browser thinks access is allowed */
@@ -303,6 +310,8 @@ document.addEventListener('keydown',e=>{if(NGQASearch.isOpen()||dlg.open)return;
   else if(h&&h.type==='error')notice(A.he(h.message));
   else if(q.has('expired')||(A.info(await A.session())||{}).expired){const ex=q.get('expired')||(A.info(await A.session())||{}).expires||'';
     notice('תקופת הגישה שלך לאתר הסתיימה'+(/^\d{4}-\d{2}-\d{2}$/.test(ex)?' ב-'+ex.split('-').reverse().join('/'):'')+'. לחידוש הגישה פנו לניצן: 052-6718757 או nitzan@ngqa.info')}
+  else if(q.has('cexp')){const [cid,d]=(q.get('cexp')||'').split(':'),c=A.COURSES.find(x=>x.id===cid);
+    notice('הגישה שלך לקורס '+(c?c.name:'')+' הסתיימה'+(/^\d{4}-\d{2}-\d{2}$/.test(d||'')?' ב-'+A.dmy(d):'')+'. להארכה פנו לניצן: 052-6718757 או nitzan@ngqa.info')}
   else if(q.has('denied')){const c=A.COURSES.find(c=>c.id===q.get('denied'));notice('אין לך גישה לקורס '+(c?c.name:'')+'. אם זו טעות, פנו לניצן: 052-6718757 או nitzan@ngqa.info')}
   else if(q.has('login')){const i=A.info(await A.session()),nc=next&&(next.match(/^\/courses\/([a-z0-9-]+)\//)||[])[1];
     if(i&&nc){const c=A.COURSES.find(x=>x.id===nc);notice('אין לך גישה לקורס '+(c?c.name:'')+'. אם זו טעות, פנו לניצן: 052-6718757 או nitzan@ngqa.info')}else if(!i)viewLogin()}
