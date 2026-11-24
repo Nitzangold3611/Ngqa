@@ -244,7 +244,7 @@ setTimeout(()=>{const g=document.getElementById('cgrid');if(g)g.classList.remove
 function notice(t){const n=$('notice');n.textContent=t||'';n.classList.toggle('on',!!t)}
 async function render(){
   if(!on){$('topbar').innerHTML='';$('cgrid').classList.remove('pending');return}
-  const i=A.info(await A.fresh());
+  const i=A.info(await A.fresh());await A.config();
   // logged-in students see only the courses opened to them; visitors and admins see the full catalogue
   const only=!!(i&&!i.admin);
   document.querySelectorAll('.course').forEach(c=>{const id=c.dataset.c,ok=A.can(i,id),ended=only&&A.courseExpired(i,id)&&i.roles.includes(id);

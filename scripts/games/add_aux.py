@@ -31,9 +31,9 @@ def cards(cid):
     if cid == 'genai':
         card('book', 'ספר מסכם לקורס', 'כל החומר לפי פרקים ותתי-פרקים, עם מושגים והסברים בסוף כל פרק וסיכום במילים פשוטות.',
              [('קריאה', 'book/', ''), ('הורדת PDF', 'pdf/NGQA-CT-GenAI-book.pdf', ' download="NGQA-CT-GenAI-book.pdf"'), ('הדפסה', 'book/?print=1', ' target="_blank" rel="noopener"')])
-        out.append('''      <div class="ax" id="recCard"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">''' + ICON['rec'] + '''</svg></span><div><b>שיעורים מוקלטים</b><p id="recTxt">השיעורים המוקלטים של הקורס, לפי פרקים.</p><div class="acts" id="recActs"><a class="pri" href="lessons/">לשיעורים</a></div></div></div>''')
         card('quiz', 'שאלות חזרה בין פרק לפרק', '20 שאלות אמריקאיות לכל פרק, עם הסבר לכל תשובה, ציון ותרגול חוזר של הטעויות. אפשר גם להדפיס.',
              [(f'פרק {n}', f'quiz/#ch{n}', '') for n in range(1, 6)])
+    out.append('''      <div class="ax" id="recCard" hidden><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">''' + ICON['rec'] + '''</svg></span><div><b>שיעורים מוקלטים</b><p id="recTxt">השיעורים המוקלטים של הקורס, לפי פרקים.</p><div class="acts" id="recActs"><a class="pri" href="lessons/">לשיעורים</a></div></div></div>''')
     if (ROOT / 'site/courses' / cid / 'escape/index.html').exists():
         t, x = ESC[cid]; card('escape', t, x, [('כניסה לחדר', 'escape/', '')])
     if (ROOT / 'site/courses' / cid / 'puzzles/index.html').exists():
@@ -49,35 +49,51 @@ CSS = '''/*aux*/.aux{margin-bottom:34px}.aux h2{margin-bottom:12px}
 .ax .acts{display:flex;gap:8px;flex-wrap:wrap}
 .ax .acts a{text-decoration:none;border:1px solid var(--line);border-radius:10px;padding:6px 14px;font-size:15px;font-weight:600;color:var(--ink)}
 .ax .acts a:hover{border-color:var(--teal)}.ax .acts a.pri{background:var(--orange);border-color:var(--orange);color:#fff}
-.ax.lockd .ic{background:#6b6a8a}.ax.flash{outline:3px solid var(--orange);outline-offset:3px}
+.ax[hidden]{display:none}.ax.lockd .ic{background:#6b6a8a}.ax.flash{outline:3px solid var(--orange);outline-offset:3px}
 /*/aux*/'''
 
 # recorded-lessons card: locked look + explanation for users without the "<course>-rec" level (v3.11)
-REC_JS = '''<script>(async()=>{const A=window.NGQAAuth,c=document.getElementById('recCard');if(!A||!c)return;
-  const i=A.info(await A.session()),q=new URLSearchParams(location.search),nr=q.get('norec');
-  if(A.canRec(i,'__C__')){const e=A.recEnd(i,'__C__');if(e&&!i.admin)document.getElementById('recTxt').textContent+=' הגישה לשיעורים בתוקף עד '+A.dmy(e)+'.';return}
-  c.classList.add('lockd');
-  const ended=nr&&/^\\d{4}-\\d{2}-\\d{2}$/.test(nr);
-  document.getElementById('recTxt').textContent=ended?'הגישה שלך לשיעורים המוקלטים הסתיימה ב-'+A.dmy(nr)+'. להארכה פנו לניצן.':'השיעורים המוקלטים לא כלולים בגישה שלך. לפרטים ולהוספה לגישה — פנו לניצן.';
-  document.getElementById('recActs').innerHTML='<a class="pri" href="https://wa.me/972526718757" target="_blank" rel="noopener">וואטסאפ לניצן</a>';
-  c.querySelector('b').textContent='שיעורים מוקלטים 🔒';
-  if(nr!==null){history.replaceState(null,'',location.pathname+location.hash);c.scrollIntoView({block:'center'});c.classList.add('flash')}})();
-/* "שיעורים מוקלטים" tab in the chapter viewer, next to מצגת / תרגילים (hash #<chapter>/rec) */
-(()=>{const init=()=>{const S=document.getElementById('tabS'),E=document.getElementById('tabE');if(!S||!E||document.getElementById('tabR'))return;
-  const st=document.createElement('style');st.textContent='#recview{display:none;max-width:980px;margin:16px auto 40px;padding:0 max(3vw,12px)}body.m-rec #recview{display:block}body.m-rec .stage,body.m-rec .rail,body.m-rec #feed,body.m-rec .fpill,body.m-rec #exlist,body.m-rec #exview{display:none!important}body.m-rec #fs,body.m-rec #prt,body.m-rec #tocb{display:none}#recview .rc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;text-align:center}#recview .rc h2{margin:0 0 8px}#recview .rc p{color:var(--mute);margin:6px auto 14px;max-width:56ch}#recview .rc a{display:inline-block;background:var(--orange);color:#fff;border-radius:10px;padding:8px 18px;font-weight:700;text-decoration:none}';
-  document.head.appendChild(st);
-  const R=document.createElement('button');R.type='button';R.setAttribute('role','tab');R.id='tabR';R.setAttribute('aria-selected','false');
-  R.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M17 10l4-2v8l-4-2z"/></svg>שיעורים מוקלטים';E.after(R);
-  const pane=document.createElement('section');pane.id='recview';pane.setAttribute('aria-label','שיעורים מוקלטים');(document.getElementById('exview')||E).after(pane);
-  const chOf=()=>(location.hash.match(/^#([^/]+)/)||[])[1];
-  R.onclick=()=>{const c=chOf();if(c)location.hash=c+'/rec'};
-  async function sync(){const m=location.hash.match(/^#([^/]+)\\/rec$/);document.body.classList.toggle('m-rec',!!m);R.setAttribute('aria-selected',!!m);if(!m)return;
-    S.setAttribute('aria-selected',false);E.setAttribute('aria-selected',false);window.scrollTo(0,0);
-    const A=window.NGQAAuth,i=A&&A.info(await A.session()),ok=A&&A.canRec(i,'__C__'),n=(m[1].match(/\\d+/)||[''])[0];
-    pane.innerHTML=ok?'<div class="rc"><h2>שיעורים מוקלטים'+(n?' · פרק '+n:'')+'</h2><p>השיעורים המוקלטים של הפרק הזה יעלו כאן בקרוב — עם נגן, סימון "נצפה" והמשך מהמקום שבו עצרת.</p><a href="lessons/">לכל השיעורים המוקלטים</a></div>'
-      :'<div class="rc"><h2>שיעורים מוקלטים 🔒</h2><p>השיעורים המוקלטים לא כלולים בגישה שלך. לפרטים ולהוספה לגישה — פנו לניצן.</p><a href="https://wa.me/972526718757" target="_blank" rel="noopener">וואטסאפ לניצן</a></div>'}
-  addEventListener('hashchange',()=>setTimeout(sync,0));setTimeout(sync,0)};
-  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init()})();</script>'''
+REC_JS = '''<script>/* v3.13 site settings from the backoffice: recordings on/off per course, PDF downloads, edited course info */
+(()=>{const C='__C__',A=window.NGQAAuth;if(!A)return;
+  const ready=f=>document.readyState==='loading'?document.addEventListener('DOMContentLoaded',f):f();
+  const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  Promise.all([A.session(),A.config()]).then(([s,cfg])=>ready(()=>{const i=A.info(s);
+    /* edited "מידע על הקורס" texts */
+    const inf=cfg.info&&cfg.info[C];
+    if(inf){const set=(f,v)=>{const e=document.querySelector('#cinfo [data-f="'+f+'"]');if(e&&v!=null)e.innerHTML=v};
+      if(inf.about)set('about',esc(inf.about));if(inf.audience&&inf.audience.length)set('audience',inf.audience.map(x=>'<li>'+esc(x)+'</li>').join(''));
+      if(inf.prereq)set('prereq',esc(inf.prereq));if(inf.goals&&inf.goals.length)set('goals',inf.goals.map(x=>'<li>'+esc(x)+'</li>').join(''))}
+    /* PDF downloads switched off for students */
+    if(cfg.pdf&&cfg.pdf[C]===false&&!(i&&i.admin)){const st=document.createElement('style');st.textContent='#pdf,a[href^="pdf/"],a[href*="/pdf/"]{display:none!important}';document.head.appendChild(st)}
+    if(!A.REC_COURSES.includes(C))return;
+    recCard(i);recTab()}));
+  function recCard(i){const c=document.getElementById('recCard');if(!c)return;c.hidden=false;
+    const q=new URLSearchParams(location.search),nr=q.get('norec');
+    if(A.canRec(i,C)){const e=A.recEnd(i,C);if(e&&!i.admin)document.getElementById('recTxt').textContent+=' הגישה לשיעורים בתוקף עד '+A.dmy(e)+'.';return}
+    c.classList.add('lockd');
+    const ended=nr&&/^\\d{4}-\\d{2}-\\d{2}$/.test(nr);
+    document.getElementById('recTxt').textContent=ended?'הגישה שלך לשיעורים המוקלטים הסתיימה ב-'+A.dmy(nr)+'. להארכה פנו לניצן.':'השיעורים המוקלטים לא כלולים בגישה שלך. לפרטים ולהוספה לגישה — פנו לניצן.';
+    document.getElementById('recActs').innerHTML='<a class="pri" href="https://wa.me/972526718757" target="_blank" rel="noopener">וואטסאפ לניצן</a>';
+    c.querySelector('b').textContent='שיעורים מוקלטים 🔒';
+    if(nr!==null){history.replaceState(null,'',location.pathname+location.hash);c.scrollIntoView({block:'center'});c.classList.add('flash')}}
+  /* "שיעורים מוקלטים" tab in the chapter viewer, next to מצגת / תרגילים (hash #<chapter>/rec) */
+  function recTab(){const S=document.getElementById('tabS'),E=document.getElementById('tabE');if(!S||!E||document.getElementById('tabR'))return;
+    const st=document.createElement('style');st.textContent='#recview{display:none;max-width:1240px;margin:16px auto 40px;padding:0 max(3vw,12px)}body.m-rec #recview{display:block}body.m-rec .stage,body.m-rec .rail,body.m-rec #feed,body.m-rec .fpill,body.m-rec #exlist,body.m-rec #exview{display:none!important}body.m-rec #fs,body.m-rec #prt,body.m-rec #tocb{display:none}#recview .rc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;text-align:center}#recview .rc h2{margin:0 0 8px}#recview .rc p{color:var(--mute);margin:6px auto 14px;max-width:56ch}#recview .rc a{display:inline-block;background:var(--orange);color:#fff;border-radius:10px;padding:8px 18px;font-weight:700;text-decoration:none}';
+    document.head.appendChild(st);
+    const R=document.createElement('button');R.type='button';R.setAttribute('role','tab');R.id='tabR';R.setAttribute('aria-selected','false');
+    R.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M17 10l4-2v8l-4-2z"/></svg>שיעורים מוקלטים';E.after(R);
+    const pane=document.createElement('section');pane.id='recview';pane.setAttribute('aria-label','שיעורים מוקלטים');(document.getElementById('exview')||E).after(pane);
+    const chOf=()=>(location.hash.match(/^#([^/]+)/)||[])[1];
+    R.onclick=()=>{const c=chOf();if(c)location.hash=c+'/rec'};
+    let lib=null;const need=()=>lib||(lib=new Promise(r=>{if(window.NGQALessons)return r();const x=document.createElement('script');x.src='/lessons.js';x.onload=r;x.onerror=r;document.head.appendChild(x)}));
+    let decks=null;const getDecks=async()=>decks||(decks=await fetch('decks.json').then(r=>r.json()).catch(()=>[]));
+    async function sync(){const m=location.hash.match(/^#([^/]+)\\/rec$/);document.body.classList.toggle('m-rec',!!m);R.setAttribute('aria-selected',!!m);if(!m)return;
+      S.setAttribute('aria-selected',false);E.setAttribute('aria-selected',false);window.scrollTo(0,0);
+      const i=A.info(await A.session());
+      if(!A.canRec(i,C)){pane.innerHTML='<div class="rc"><h2>שיעורים מוקלטים 🔒</h2><p>השיעורים המוקלטים לא כלולים בגישה שלך. לפרטים ולהוספה לגישה — פנו לניצן.</p><a href="https://wa.me/972526718757" target="_blank" rel="noopener">וואטסאפ לניצן</a></div>';return}
+      await need();const d=await getDecks();if(window.NGQALessons)NGQALessons.render(pane,{c:C,decks:d,only:m[1],base:'',hash:false})}
+    addEventListener('hashchange',()=>setTimeout(sync,0));setTimeout(sync,0)}
+})();</script>'''
 
 # ---------------------------------------------------------------- "מידע על הקורס" tab (v3.12)
 import json, html as _h
@@ -146,7 +162,7 @@ def info_html(cid):
     if exams: mats.append(f'{"מבחן לדוגמא" if len(exams) == 1 else str(len(exams)) + " מבחנים לדוגמא"} במבנה הבחינה הרשמית')
     if projs: mats.append('פרויקט גמר עם הנחיות')
     if cid == 'genai':
-        mats += ['ספר מסכם לקורס — לקריאה, PDF והדפסה', 'שאלות חזרה: 20 שאלות אמריקאיות לכל פרק', 'שיעורים מוקלטים (לפי סוג הגישה)']
+        mats += ['ספר מסכם לקורס — לקריאה, PDF והדפסה', 'שאלות חזרה: 20 שאלות אמריקאיות לכל פרק']
     if (base / 'escape/index.html').exists(): mats.append('חדר בריחה דיגיטלי למשחק עצמאי')
     if (base / 'puzzles/index.html').exists(): mats.append('תשבץ ותשחץ של המונחים המקצועיים')
     dl = base / 'dl'
@@ -157,9 +173,9 @@ def info_html(cid):
     if nex: kp.append((nex, 'תרגילים'))
     if exams: kp.append((len(exams), 'מבחנים לדוגמא' if len(exams) > 1 else 'מבחן לדוגמא'))
     kph = ''.join(f'<div><b>{a}</b><span>{b}</span></div>' for a, b in kp)
-    out = [f'<div class="ic2 wide"><h3><i></i>על הקורס</h3><p>{e(cfg["about"])}</p><div class="kp">{kph}</div></div>',
-           '<div class="ic2"><h3><i></i>למי הקורס מתאים</h3><ul>' + ''.join(f'<li>{e(a)}</li>' for a in cfg['audience']) + f'</ul><div class="pre"><b>דרישות קדם:</b> {e(cfg["prereq"])}</div></div>',
-           '<div class="ic2"><h3><i></i>מה לומדים</h3><ul class="ok2">' + ''.join(f'<li>{e(a)}</li>' for a in cfg['goals']) + '</ul></div>',
+    out = [f'<div class="ic2 wide"><h3><i></i>על הקורס</h3><p data-f="about">{e(cfg["about"])}</p><div class="kp">{kph}</div></div>',
+           '<div class="ic2"><h3><i></i>למי הקורס מתאים</h3><ul data-f="audience">' + ''.join(f'<li>{e(a)}</li>' for a in cfg['audience']) + f'</ul><div class="pre"><b>דרישות קדם:</b> <span data-f="prereq">{e(cfg["prereq"])}</span></div></div>',
+           '<div class="ic2"><h3><i></i>מה לומדים</h3><ul class="ok2" data-f="goals">' + ''.join(f'<li>{e(a)}</li>' for a in cfg['goals']) + '</ul></div>',
            f'<div class="ic2 wide"><h3><i></i>מבנה הקורס</h3><ul class="chl">{"".join(lis)}</ul><p class="mu" style="margin:10px 0 0">לחיצה על פרק פותחת אותו.</p></div>',
            '<div class="ic2"><h3><i></i>מה כלול באתר</h3><ul class="ok2">' + ''.join(f'<li>{e(a)}</li>' for a in mats) + '</ul></div>']
     ex = INFO['exams'].get(cfg.get('exam') or '')
@@ -182,7 +198,7 @@ def strip(src):
     src = re.sub(r'/\*info\*/.*?/\*/info\*/\n?', '', src, flags=re.S)
     src = re.sub(r'<!--info-->.*?<!--/info-->\n?\s*', '', src, flags=re.S)
     src = re.sub(r'\.aux\{margin-bottom:34px\}.*?\.ax \.acts a\.pri\{[^}]*\}\n', '', src, flags=re.S)  # legacy (unmarked) css
-    src = re.sub(r'<section class="aux".*?</section>\n\s*(<script>\(async\(\)=>\{const A=window.NGQAAuth,c=document.getElementById\(\'recCard\'\).*?</script>\n\s*)?', '', src, flags=re.S)
+    src = re.sub(r'<section class="aux".*?</section>\n\s*(<script>(?:\(async\(\)=>\{const A=window.NGQAAuth,c=document.getElementById\(\'recCard\'\)|/\* v3\.13 site settings).*?</script>\n\s*)?', '', src, flags=re.S)
     return src
 
 def apply(cid):
@@ -195,7 +211,7 @@ def apply(cid):
     if body:
         src = src.replace('.hsr{display:flex', CSS + '\n.hsr{display:flex', 1)
         sec = f'<section class="aux" aria-labelledby="auxh"><h2 id="auxh">חומרי עזר</h2><div class="auxg">\n{body}\n    </div></section>\n    '
-        if 'id="recCard"' in body: sec += REC_JS.replace('__C__', cid) + '\n    '
+        sec += REC_JS.replace('__C__', cid) + '\n    '
         m = re.search(r'<main class="band"><div class="wrap">\s*', src)
         assert m, cid
         src = src[:m.end()] + sec + src[m.end():]

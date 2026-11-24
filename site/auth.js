@@ -82,7 +82,18 @@
   }
   /* v3.11 access levels: role "<course>" = materials, "<course>-rec" = + recorded lessons; optional end dates in
      app_metadata.access[<course>] = { m, r } (YYYY-MM-DD, Israel time). Also enforced on the server (expiry.js). */
-  const REC_COURSES = ['genai'];
+  /* v3.13: courses with recorded lessons come from the backoffice (site-config function), cached per session; default genai */
+  const REC_COURSES = (() => { try { const c = JSON.parse(sessionStorage.getItem('ngqa.cfg') || 'null'); if (c && Array.isArray(c.rec)) return c.rec.slice(); } catch (e) {} return ['genai']; })();
+  let cfgP = null;
+  function config() {
+    if (cfgP) return cfgP;
+    cfgP = fetch('/.netlify/functions/site-config').then(r => r.ok ? r.json() : null).catch(() => null).then(c => {
+      if (c && Array.isArray(c.rec)) { REC_COURSES.splice(0, REC_COURSES.length, ...c.rec); try { sessionStorage.setItem('ngqa.cfg', JSON.stringify(c)); } catch (e) {} return c; }
+      try { const k = JSON.parse(sessionStorage.getItem('ngqa.cfg') || 'null'); if (k) return k; } catch (e) {}
+      return { rec: REC_COURSES, pdf: {}, info: {} };
+    });
+    return cfgP;
+  }
   const acc = (i, c) => (i && i.access && i.access[c]) || {};
   const cexpired = (i, c) => !!i && !i.admin && !!acc(i, c).m && today() >= acc(i, c).m;
   const recExpired = (i, c) => !!i && !i.admin && !!acc(i, c).r && today() >= acc(i, c).r;
@@ -121,7 +132,7 @@
   const canRec = (i, course) => level(i, course) === 'full';
 
   const Auth = {
-    COURSES, REC_COURSES, isEnabled, session, fresh, info, can, canRec, level, dmy, daysLeft,
+    COURSES, REC_COURSES, config, isEnabled, session, fresh, info, can, canRec, level, dmy, daysLeft,
     courseEnd: (i, c) => acc(i, c).m || '', recEnd: (i, c) => acc(i, c).r || '', courseExpired: cexpired,
     async login(email, password) { return storeTokens(await req('/token', form({ grant_type: 'password', username: email, password }))); },
     google() { location.href = API + '/authorize?provider=google'; },

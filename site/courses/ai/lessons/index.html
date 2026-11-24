@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<script src="/auth.js"></script>
+<script>document.documentElement.style.visibility='hidden';
+NGQAAuth.guard('ai').then(async ok=>{if(!ok)return;const A=NGQAAuth,i=A.info(await A.session());await A.config();
+  if(!A.canRec(i,'ai')){location.replace('/courses/ai/?norec=1');return}
+  document.documentElement.style.visibility=''}).catch(()=>{document.documentElement.style.visibility=''});</script>
+<script>try{const t=localStorage.getItem('ngqa-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>שיעורים מוקלטים · CT-AI | NGQA</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;
+--bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 Heebo,Arial,sans-serif}
+a{color:inherit}
+.bar{background:var(--navy);color:#fff;display:flex;gap:10px;align-items:center;padding:10px max(3vw,14px)}
+.bar img{height:34px}.bar b{flex:1;font-size:18px}.bar a{color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 14px;text-decoration:none;font-size:15px;white-space:nowrap}
+.wrap{max-width:1240px;margin:auto;padding:22px max(3vw,14px)}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}
+</style>
+</head>
+<body>
+<div class="bar"><img src="/logo.png" alt="NGQA"><b>שיעורים מוקלטים · CT-AI</b><a href="../">חזרה לקורס</a></div>
+<main class="wrap" id="ls"></main>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה</footer>
+<script src="/lessons.js"></script>
+<script>(async()=>{let decks=[];try{decks=await (await fetch('../decks.json')).json()}catch(e){}
+  NGQALessons.render(document.getElementById('ls'),{c:'ai',decks,only:'',base:'../',hash:true})})();</script>
+</body>
+</html>

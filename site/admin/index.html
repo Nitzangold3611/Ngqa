@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>ניהול משתמשים · NGQA הדרכות</title>
+<title>מערכת ניהול · NGQA הדרכות</title>
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#121133">
@@ -22,8 +22,18 @@ button,input,select{font:inherit}
 .bar img{height:38px}.bar h1{font-size:19px;margin:0;flex:1}
 .bar a{color:#c9cbf0;text-decoration:none;border:1.5px solid #3b3a78;border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600;white-space:nowrap}
 .bar a:hover{color:var(--teal);border-color:var(--teal)}
-main{max-width:1180px;margin:0 auto;padding:20px max(3vw,12px) 60px;display:grid;gap:18px}
+main,.view{display:grid;gap:18px;align-content:start}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+/* v3.13 backoffice shell */
+.bo{display:grid;grid-template-columns:220px minmax(0,1fr);gap:22px;max-width:1440px;margin:0 auto;padding:20px max(3vw,12px) 60px;align-items:start}
+.side{position:sticky;top:76px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:8px;display:grid;gap:2px}
+.side a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:var(--ink);text-decoration:none;font-weight:600;font-size:15.5px}
+.side a svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none;color:var(--mute)}
+.side a:hover{background:var(--soft)}.side a.on{background:var(--navy);color:#fff}.side a.on svg{color:var(--teal)}
+.side a .soon{margin-inline-start:auto;font-size:11px;font-weight:700;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:0 7px}
+.side a.on .soon{color:#c9cbf0;border-color:#3b3a78}
+.vh{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.vh h2{margin:0;font-size:22px;flex:1}
+@media(max-width:900px){.bo{grid-template-columns:1fr}.side{position:static;display:flex;overflow-x:auto;gap:4px}.side a{white-space:nowrap;padding:8px 12px}.side a .soon{display:none}}
 /* summary tiles */
 .tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
 .tile{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;text-align:start;cursor:pointer;color:var(--ink);display:grid;gap:2px}
@@ -115,8 +125,18 @@ dialog label.opt input{width:auto}
 </style>
 </head>
 <body>
-<header class="bar"><img src="/logo.png" alt="NGQA"><h1>ניהול משתמשים</h1><a href="/">← לאתר הקורסים</a></header>
-<main id="main"><p class="msg">טוען…</p></main>
+<header class="bar"><img src="/logo.png" alt="NGQA"><h1>מערכת ניהול</h1><a href="/">← לאתר הקורסים</a></header>
+<div class="bo">
+<nav class="side" id="side" aria-label="תפריט ניהול" hidden></nav>
+<div>
+<main id="main" class="view" data-v="users"><p class="msg">טוען…</p></main>
+<section class="view" id="v-dash" data-v="dash" hidden></section>
+<section class="view" id="v-courses" data-v="courses" hidden></section>
+<section class="view" id="v-lessons" data-v="lessons" hidden></section>
+<section class="view" id="v-progress" data-v="progress" hidden></section>
+<section class="view" id="v-log" data-v="log" hidden></section>
+</div>
+</div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="/auth.js"></script>
 <script>
@@ -334,10 +354,12 @@ document.addEventListener('click',async e=>{
   if(!(await A.isEnabled())){$('main').innerHTML='<div class="card gate"><h2>ההתחברות עוד לא הופעלה</h2><p>צריך להפעיל את Netlify Identity באתר. אחרי זה הדף הזה יעבוד.</p></div>';return}
   const i=A.info(await A.session());
   if(!i){location.replace('/?login=1&next='+encodeURIComponent('/admin/'));return}
-  try{const d=await api('GET');users=d.users;courses=d.courses||courses;recC=d.rec||recC;meEmail=d.me;shell();list()}
+  try{const d=await api('GET');users=d.users;courses=d.courses||courses;recC=d.rec||recC;meEmail=d.me;shell();list();
+    window.boUsers=()=>users;window.boSetRec=r=>{recC=r;shell();list()};window.boApi=api;window.boToast=toast;document.dispatchEvent(new Event('bo:ready'))}
   catch(x){$('main').innerHTML=`<div class="card gate"><h2>אין גישה לדף הניהול</h2><p>${esc(x.message)}</p><p><a href="/">חזרה לאתר</a></p></div>`}
 })();
 }
 </script>
+<script src="bo.js"></script>
 </body>
 </html>
