@@ -5,9 +5,21 @@
 https://ngqa-ctfl40.netlify.app/*  https://courses.ngqa.net/:splat  301!
 
 # ---- server-side lock (v3.2): course files only for logged-in users with the course role ----
-# ---- v3.11: recorded lessons need the "<course>-rec" role (pilot: genai). Must come before the course rule. ----
+# ---- v3.11/v3.13: recorded lessons need the "<course>-rec" role (on/off per course in the backoffice). Must come before the course rule. ----
+/courses/ctfl/lessons/*  /courses/ctfl/lessons/:splat  200!  Role=ctfl-rec,admin
 /courses/genai/lessons/*  /courses/genai/lessons/:splat  200!  Role=genai-rec,admin
-/courses/genai/lessons/*  /courses/genai/?norec=1         302!
+/courses/sql/lessons/*  /courses/sql/lessons/:splat  200!  Role=sql-rec,admin
+/courses/ste/lessons/*  /courses/ste/lessons/:splat  200!  Role=ste-rec,admin
+/courses/ai/lessons/*  /courses/ai/lessons/:splat  200!  Role=ai-rec,admin
+/courses/mat/lessons/*  /courses/mat/lessons/:splat  200!  Role=mat-rec,admin
+/courses/jobs/lessons/*  /courses/jobs/lessons/:splat  200!  Role=jobs-rec,admin
+/courses/ctfl/lessons/*  /courses/ctfl/?norec=1  302!
+/courses/genai/lessons/*  /courses/genai/?norec=1  302!
+/courses/sql/lessons/*  /courses/sql/?norec=1  302!
+/courses/ste/lessons/*  /courses/ste/?norec=1  302!
+/courses/ai/lessons/*  /courses/ai/?norec=1  302!
+/courses/mat/lessons/*  /courses/mat/?norec=1  302!
+/courses/jobs/lessons/*  /courses/jobs/?norec=1  302!
 /courses/ctfl/*   /courses/ctfl/:splat   200!  Role=ctfl,admin
 /courses/genai/*  /courses/genai/:splat  200!  Role=genai,admin
 /courses/sql/*    /courses/sql/:splat    200!  Role=sql,admin

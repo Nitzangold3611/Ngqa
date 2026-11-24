@@ -221,6 +221,27 @@ body.feed .stage>.nextch{display:none!important}
 .allc{display:table;color:#c9cbf0;text-decoration:none;font-size:14px;font-weight:600;border:1px solid #3b3a78;border-radius:999px;padding:4px 12px;margin-bottom:14px}.allc:hover{color:var(--teal);border-color:var(--teal)}
 .frame{touch-action:pan-y pinch-zoom}.frame.pfs,.frame:fullscreen{touch-action:none}
 .fpill{transition:opacity .35s;opacity:0;pointer-events:none}.fpill.on{opacity:.95}
+/*info*/.ctabs{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:5px;width:max-content;max-width:100%;margin:0 0 26px}
+.ctabs button{font:inherit;font-size:16px;font-weight:700;border:0;border-radius:10px;padding:9px 18px;background:none;color:var(--mute);cursor:pointer;display:flex;align-items:center;gap:8px}
+.ctabs button svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ctabs button[aria-selected=true]{background:var(--navy);color:#fff}.ctabs button[aria-selected=true] svg{stroke:var(--teal)}
+#cinfo{display:none}body.m-info #cinfo{display:block}body.m-info .wrap>:not(.ctabs):not(#cinfo){display:none!important}
+.ig{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px}
+.ic2{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px}.ic2.wide{grid-column:1/-1}
+.ic2 h3{margin:0 0 10px;font-size:19px;display:flex;align-items:center;gap:10px}.ic2 h3 i{width:10px;height:10px;border-radius:3px;background:var(--teal);flex:none}
+.ic2 p{margin:0 0 10px;line-height:1.7}.ic2 ul{margin:0;padding-inline-start:20px;line-height:1.75}.ic2 .mu{color:var(--mute);font-size:14.5px}
+.ic2 .pre{background:light-dark(#fff6ea,#3a2a14);border-radius:10px;padding:10px 14px;margin-top:12px;font-size:15px}
+.chl{list-style:none;padding:0!important;margin:0;display:grid;gap:6px}
+.chl li{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:8px 12px;cursor:pointer}
+.chl li:hover{border-color:var(--teal)}.chl .n{flex:none;min-width:64px;font-size:13.5px;font-weight:700;color:var(--mute)}
+.chl .t{flex:1;font-weight:600}.chl .b{flex:none;font-size:13px;color:var(--mute)}.chl .x{flex:none;font-size:12.5px;font-weight:700;border-radius:999px;padding:2px 9px;background:light-dark(#eafbfa,#13324a)}
+.chl li.e .x{background:light-dark(#fff1de,#3a2a14)}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:10px;margin:4px 0 12px}
+.kp div{border:1px solid var(--line);border-radius:12px;padding:10px 12px;text-align:center}.kp b{display:block;font-size:28px;line-height:1.1;color:var(--orange)}.kp span{font-size:13.5px;color:var(--mute)}
+.ok2{list-style:none;padding:0!important}.ok2 li{padding-inline-start:26px;position:relative}.ok2 li:before{content:"";position:absolute;inset-inline-start:2px;top:.55em;width:12px;height:7px;border-inline-start:2.5px solid var(--teal);border-bottom:2.5px solid var(--teal);transform:rotate(-45deg)}
+.wa2{display:inline-block;background:var(--orange);color:#fff!important;border-radius:10px;padding:8px 18px;font-weight:700;text-decoration:none;margin-top:4px}
+@media(max-width:600px){.ctabs{width:100%}.ctabs button{flex:1;justify-content:center;padding:9px 8px;font-size:15px}.chl .b{display:none}}
+/*/info*/
 /*aux*/.aux{margin-bottom:34px}.aux h2{margin-bottom:12px}
 .auxg{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:18px}
 .ax{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:flex;gap:16px;align-items:flex-start}
@@ -230,6 +251,7 @@ body.feed .stage>.nextch{display:none!important}
 .ax .acts{display:flex;gap:8px;flex-wrap:wrap}
 .ax .acts a{text-decoration:none;border:1px solid var(--line);border-radius:10px;padding:6px 14px;font-size:15px;font-weight:600;color:var(--ink)}
 .ax .acts a:hover{border-color:var(--teal)}.ax .acts a.pri{background:var(--orange);border-color:var(--orange);color:#fff}
+.ax[hidden]{display:none}.ax.lockd .ic{background:#6b6a8a}.ax.flash{outline:3px solid var(--orange);outline-offset:3px}
 /*/aux*/
 .hsr{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}.hsr h2{margin:0;flex:1}
 .hsb{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;cursor:pointer}
@@ -259,14 +281,72 @@ body.feed .stage>.nextch{display:none!important}
     </div>
   </header>
   <main class="band"><div class="wrap">
+    <!--info--><nav class="ctabs" role="tablist" aria-label="תצוגת הקורס"><button type="button" role="tab" id="ctC" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>פרקי הקורס</button><button type="button" role="tab" id="ctI" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></svg>מידע על הקורס</button></nav>
+    <section id="cinfo" aria-label="מידע על הקורס"><div class="ig">
+      <div class="ic2 wide"><h3><i></i>על הקורס</h3><p data-f="about">קורס ההסמכה הבסיסי של ISTQB לבודקי תוכנה, לפי סילבוס CTFL 4.0. הקורס עובר על כל פרקי הסילבוס — מהעקרונות של בדיקות תוכנה, דרך בדיקות לאורך מחזור החיים, בדיקות סטטיות וטכניקות בדיקה, ועד ניהול בדיקות וכלים — ומכין לבחינת ההסמכה הבינלאומית.</p><div class="kp"><div><b>6</b><span>פרקים</span></div><div><b>880</b><span>שקופיות</span></div><div><b>4</b><span>מבחנים לדוגמא</span></div></div></div>
+      <div class="ic2"><h3><i></i>למי הקורס מתאים</h3><ul data-f="audience"><li>מי שרוצה להיכנס לתחום בדיקות התוכנה</li><li>בודקים שעובדים בתחום ורוצים הסמכה רשמית</li><li>מפתחים, אנליסטים ומנהלי מוצר שרוצים להבין את עולם הבדיקות</li></ul><div class="pre"><b>דרישות קדם:</b> <span data-f="prereq">אין דרישות קדם. זו ההסמכה הבסיסית, והיא תנאי לכל הסמכות ההמשך של ISTQB.</span></div></div>
+      <div class="ic2"><h3><i></i>מה לומדים</h3><ul class="ok2" data-f="goals"><li>להבין למה בודקים, מה בודקים ואיך משתלבים בצוות הפיתוח</li><li>להכיר רמות וסוגי בדיקות לאורך מחזור חיי התוכנה</li><li>לבצע סקירות ובדיקות סטטיות</li><li>לתכנן בדיקות בטכניקות קופסה שחורה, קופסה לבנה ומבוססות ניסיון</li><li>לתכנן, להעריך ולנהל בדיקות וסיכונים</li><li>להתכונן לבחינה עם ארבעה מבחנים לדוגמא</li></ul></div>
+      <div class="ic2 wide"><h3><i></i>מבנה הקורס</h3><ul class="chl"><li class="" data-id="ch1"><span class="n">פרק 1</span><span class="t">מבוא לבדיקות תוכנה</span><span class="b">86 שקופיות</span></li><li class="" data-id="ch2"><span class="n">פרק 2</span><span class="t">בדיקות לאורך מחזור חיי התוכנה</span><span class="b">181 שקופיות</span></li><li class="" data-id="ch3"><span class="n">פרק 3</span><span class="t">בדיקות סטטיות</span><span class="b">38 שקופיות</span></li><li class="" data-id="ch4"><span class="n">פרק 4</span><span class="t">טכניקות בדיקה</span><span class="b">98 שקופיות</span></li><li class="" data-id="ch5"><span class="n">פרק 5</span><span class="t">ניהול בדיקות</span><span class="b">118 שקופיות</span></li><li class="" data-id="ch6"><span class="n">פרק 6</span><span class="t">כלי בדיקה</span><span class="b">27 שקופיות</span></li><li class="e" data-id="ch7"><span class="n">מבחן A</span><span class="t">מבחן לדוגמא A</span><span class="x">מבחן</span><span class="b">83 שקופיות</span></li><li class="e" data-id="ch8"><span class="n">מבחן B</span><span class="t">מבחן לדוגמא B</span><span class="x">מבחן</span><span class="b">83 שקופיות</span></li><li class="e" data-id="ch9"><span class="n">מבחן C</span><span class="t">מבחן לדוגמא C</span><span class="x">מבחן</span><span class="b">83 שקופיות</span></li><li class="e" data-id="ch10"><span class="n">מבחן D</span><span class="t">מבחן לדוגמא D</span><span class="x">מבחן</span><span class="b">83 שקופיות</span></li></ul><p class="mu" style="margin:10px 0 0">לחיצה על פרק פותחת אותו.</p></div>
+      <div class="ic2"><h3><i></i>מה כלול באתר</h3><ul class="ok2"><li>6 פרקים במצגות — 880 שקופיות, עם חיפוש בקורס, מסך מלא ותצוגת גלילה</li><li>PDF של כל פרק להורדה ולהדפסה</li><li>4 מבחנים לדוגמא במבנה הבחינה הרשמית</li><li>חדר בריחה דיגיטלי למשחק עצמאי</li><li>תשבץ ותשחץ של המונחים המקצועיים</li></ul></div>
+      <div class="ic2"><h3><i></i>בחינת ההסמכה · <bdi dir="ltr">ISTQB CTFL v4.0</bdi></h3><div class="kp"><div><b>40</b><span>שאלות אמריקאיות</span></div><div><b>40</b><span>נקודות</span></div><div><b>26</b><span>לעבור (65%)</span></div><div><b>60</b><span>דקות</span></div></div><p class="mu">למי שנבחן שלא בשפת האם — 75 דקות (תוספת 25%). חלק מהשאלות שוות יותר מנקודה אחת. המקור: <a href="https://www.istqb.org/" target="_blank" rel="noopener">ISTQB Exam Structure &amp; Rules Tables v1.18</a>.</p></div>
+      <div class="ic2"><h3><i></i>שאלות, מועדים והרשמה</h3><p>לשאלות על הקורס, על הגישה לחומרים או על ההרשמה לבחינה — אפשר לפנות לניצן.</p><a class="wa2" href="https://wa.me/972526718757" target="_blank" rel="noopener">וואטסאפ לניצן</a></div>
+    </div></section>
+    <script>(()=>{const b=document.getElementById('ctC'),i=document.getElementById('ctI');if(!b||!i)return;
+  const sync=()=>{const on=location.hash==='#info';document.body.classList.toggle('m-info',on);i.setAttribute('aria-selected',on);b.setAttribute('aria-selected',!on)};
+  i.onclick=()=>{if(location.hash!=='#info')location.hash='info'};
+  b.onclick=()=>{if(location.hash==='#info')history.pushState(null,'',location.pathname+location.search);sync()};
+  document.querySelectorAll('#cinfo .chl li[data-id]').forEach(li=>{li.onclick=()=>{location.hash=li.dataset.id};li.tabIndex=0;li.onkeydown=e=>{if(e.key==='Enter')li.click()}});
+  addEventListener('hashchange',sync);addEventListener('popstate',sync);sync()})();</script><!--/info-->
     <section class="aux" aria-labelledby="auxh"><h2 id="auxh">חומרי עזר</h2><div class="auxg">
+      <div class="ax" id="recCard" hidden><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M17 10l4-2v8l-4-2z"/></svg></span><div><b>שיעורים מוקלטים</b><p id="recTxt">השיעורים המוקלטים של הקורס, לפי פרקים.</p><div class="acts" id="recActs"><a class="pri" href="lessons/">לשיעורים</a></div></div></div>
       <div class="ax"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v3"/></svg></span><div><b>חדר בריחה: ליל השחרור</b><p>שישה חדרים, אחד לכל פרק בסילבוס: טעות-פגם-כשל ועקרונות, רמות וסוגי בדיקה, סקירות, טכניקות, ניהול סיכונים וכלים. משחק לבד, עם רמזים ומדריך פתרונות.</p><div class="acts"><a class="pri" href="escape/">כניסה לחדר</a></div></div></div>
       <div class="ax"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></span><div><b>תשבץ ותשחץ</b><p>המונחים המקצועיים של הקורס בשני משחקים דיגיטליים: תשבץ הגדרות ותשחץ עם הגדרות היגיון. אפשר גם להדפיס.</p><div class="acts"><a class="pri" href="puzzles/">תשבץ</a><a href="puzzles/#cryptic">תשחץ</a></div></div></div>
     </div></section>
+    <script>/* v3.13 site settings from the backoffice: recordings on/off per course, PDF downloads, edited course info */
+(()=>{const C='ctfl',A=window.NGQAAuth;if(!A)return;
+  const ready=f=>document.readyState==='loading'?document.addEventListener('DOMContentLoaded',f):f();
+  const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  Promise.all([A.session(),A.config()]).then(([s,cfg])=>ready(()=>{const i=A.info(s);
+    /* edited "מידע על הקורס" texts */
+    const inf=cfg.info&&cfg.info[C];
+    if(inf){const set=(f,v)=>{const e=document.querySelector('#cinfo [data-f="'+f+'"]');if(e&&v!=null)e.innerHTML=v};
+      if(inf.about)set('about',esc(inf.about));if(inf.audience&&inf.audience.length)set('audience',inf.audience.map(x=>'<li>'+esc(x)+'</li>').join(''));
+      if(inf.prereq)set('prereq',esc(inf.prereq));if(inf.goals&&inf.goals.length)set('goals',inf.goals.map(x=>'<li>'+esc(x)+'</li>').join(''))}
+    /* PDF downloads switched off for students */
+    if(cfg.pdf&&cfg.pdf[C]===false&&!(i&&i.admin)){const st=document.createElement('style');st.textContent='#pdf,a[href^="pdf/"],a[href*="/pdf/"]{display:none!important}';document.head.appendChild(st)}
+    if(!A.REC_COURSES.includes(C))return;
+    recCard(i);recTab()}));
+  function recCard(i){const c=document.getElementById('recCard');if(!c)return;c.hidden=false;
+    const q=new URLSearchParams(location.search),nr=q.get('norec');
+    if(A.canRec(i,C)){const e=A.recEnd(i,C);if(e&&!i.admin)document.getElementById('recTxt').textContent+=' הגישה לשיעורים בתוקף עד '+A.dmy(e)+'.';return}
+    c.classList.add('lockd');
+    const ended=nr&&/^\d{4}-\d{2}-\d{2}$/.test(nr);
+    document.getElementById('recTxt').textContent=ended?'הגישה שלך לשיעורים המוקלטים הסתיימה ב-'+A.dmy(nr)+'. להארכה פנו לניצן.':'השיעורים המוקלטים לא כלולים בגישה שלך. לפרטים ולהוספה לגישה — פנו לניצן.';
+    document.getElementById('recActs').innerHTML='<a class="pri" href="https://wa.me/972526718757" target="_blank" rel="noopener">וואטסאפ לניצן</a>';
+    c.querySelector('b').textContent='שיעורים מוקלטים 🔒';
+    if(nr!==null){history.replaceState(null,'',location.pathname+location.hash);c.scrollIntoView({block:'center'});c.classList.add('flash')}}
+  /* "שיעורים מוקלטים" tab in the chapter viewer, next to מצגת / תרגילים (hash #<chapter>/rec) */
+  function recTab(){const S=document.getElementById('tabS'),E=document.getElementById('tabE');if(!S||!E||document.getElementById('tabR'))return;
+    const st=document.createElement('style');st.textContent='#recview{display:none;max-width:1240px;margin:16px auto 40px;padding:0 max(3vw,12px)}body.m-rec #recview{display:block}body.m-rec .stage,body.m-rec .rail,body.m-rec #feed,body.m-rec .fpill,body.m-rec #exlist,body.m-rec #exview{display:none!important}body.m-rec #fs,body.m-rec #prt,body.m-rec #tocb{display:none}#recview .rc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;text-align:center}#recview .rc h2{margin:0 0 8px}#recview .rc p{color:var(--mute);margin:6px auto 14px;max-width:56ch}#recview .rc a{display:inline-block;background:var(--orange);color:#fff;border-radius:10px;padding:8px 18px;font-weight:700;text-decoration:none}';
+    document.head.appendChild(st);
+    const R=document.createElement('button');R.type='button';R.setAttribute('role','tab');R.id='tabR';R.setAttribute('aria-selected','false');
+    R.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M17 10l4-2v8l-4-2z"/></svg>שיעורים מוקלטים';E.after(R);
+    const pane=document.createElement('section');pane.id='recview';pane.setAttribute('aria-label','שיעורים מוקלטים');(document.getElementById('exview')||E).after(pane);
+    const chOf=()=>(location.hash.match(/^#([^/]+)/)||[])[1];
+    R.onclick=()=>{const c=chOf();if(c)location.hash=c+'/rec'};
+    let lib=null;const need=()=>lib||(lib=new Promise(r=>{if(window.NGQALessons)return r();const x=document.createElement('script');x.src='/lessons.js';x.onload=r;x.onerror=r;document.head.appendChild(x)}));
+    let decks=null;const getDecks=async()=>decks||(decks=await fetch('decks.json').then(r=>r.json()).catch(()=>[]));
+    async function sync(){const m=location.hash.match(/^#([^/]+)\/rec$/);document.body.classList.toggle('m-rec',!!m);R.setAttribute('aria-selected',!!m);if(!m)return;
+      S.setAttribute('aria-selected',false);E.setAttribute('aria-selected',false);window.scrollTo(0,0);
+      const i=A.info(await A.session());
+      if(!A.canRec(i,C)){pane.innerHTML='<div class="rc"><h2>שיעורים מוקלטים 🔒</h2><p>השיעורים המוקלטים לא כלולים בגישה שלך. לפרטים ולהוספה לגישה — פנו לניצן.</p><a href="https://wa.me/972526718757" target="_blank" rel="noopener">וואטסאפ לניצן</a></div>';return}
+      await need();const d=await getDecks();if(window.NGQALessons)NGQALessons.render(pane,{c:C,decks:d,only:m[1],base:'',hash:false})}
+    addEventListener('hashchange',()=>setTimeout(sync,0));setTimeout(sync,0)}
+})();</script>
     <div class="hsr"><h2>פרקי הקורס</h2><button type="button" class="hsb" id="hsrch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>חיפוש בקורס</button></div>
     <div class="grid" id="grid"></div>
   </div></main>
-  <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.4 · 22.11.2026</bdi></span></footer>
+  <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.5 · 24.11.2026</bdi></span></footer>
 </div>
 
 <div id="viewer">
@@ -296,7 +376,7 @@ body.feed .stage>.nextch{display:none!important}
   </div>
   <div class="rail" id="rail"></div>
   <div id="feed" aria-label="שקופיות המצגת"></div>
-  <p class="ver vver">גרסה <bdi dir="ltr">v3.3 · 21.11.2026</bdi></p>
+  <p class="ver vver">גרסה <bdi dir="ltr">v3.5 · 24.11.2026</bdi></p>
   <div class="fpill" id="fpill" aria-hidden="true"></div>
 </div>
 

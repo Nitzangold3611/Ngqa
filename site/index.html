@@ -158,7 +158,7 @@ dialog::backdrop{background:rgba(11,10,36,.6)}
     </a>
   </div>
 </main>
-<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.11 · 24.11.2026</bdi></span></footer>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">גרסה <bdi dir="ltr">v3.13 · 24.11.2026</bdi></span></footer>
 <script>
 {const g=document.getElementById('traces');let s='';const col=i=>i%4===2?'#F38911':'#14DACD';
 for(let i=0;i<9;i++){const y=380-i*24,a=60+((i*97)%220),b=20+((i*53)%50),c=30+((i*71)%140);
@@ -244,7 +244,7 @@ setTimeout(()=>{const g=document.getElementById('cgrid');if(g)g.classList.remove
 function notice(t){const n=$('notice');n.textContent=t||'';n.classList.toggle('on',!!t)}
 async function render(){
   if(!on){$('topbar').innerHTML='';$('cgrid').classList.remove('pending');return}
-  const i=A.info(await A.fresh());
+  const i=A.info(await A.fresh());await A.config();
   // logged-in students see only the courses opened to them; visitors and admins see the full catalogue
   const only=!!(i&&!i.admin);
   document.querySelectorAll('.course').forEach(c=>{const id=c.dataset.c,ok=A.can(i,id),ended=only&&A.courseExpired(i,id)&&i.roles.includes(id);
