@@ -64,7 +64,8 @@
       const tok = decode(s.access_token) || {};
       const same = JSON.stringify((tok.app_metadata || {}).roles || []) === JSON.stringify((u.app_metadata || {}).roles || [])
                 && !!(tok.app_metadata || {}).blocked === !!(u.app_metadata || {}).blocked
-                && ((tok.app_metadata || {}).expires || '') === ((u.app_metadata || {}).expires || '');
+                && ((tok.app_metadata || {}).expires || '') === ((u.app_metadata || {}).expires || '')
+                && JSON.stringify((tok.app_metadata || {}).access || {}) === JSON.stringify((u.app_metadata || {}).access || {});
       if (!same) s = await storeTokens(await req('/token', form({ grant_type: 'refresh_token', refresh_token: s.refresh_token })));
       else { s.user = u; save(s); }
     } catch (e) { if (e.status === 401) { save(null); return null; } }
@@ -77,14 +78,51 @@
     const roles = am.roles || [];
     const admin = roles.includes('admin'), expires = am.expires || '';
     return { email: c.email || u.email, name: um.full_name || um.name || '', roles, admin, blocked: !!am.blocked,
-             expires, expired: !admin && !!expires && today() >= expires };
+             expires, expired: !admin && !!expires && today() >= expires, access: am.access || {} };
+  }
+  /* v3.11 access levels: role "<course>" = materials, "<course>-rec" = + recorded lessons; optional end dates in
+     app_metadata.access[<course>] = { m, r } (YYYY-MM-DD, Israel time). Also enforced on the server (expiry.js). */
+  const REC_COURSES = ['genai'];
+  const acc = (i, c) => (i && i.access && i.access[c]) || {};
+  const cexpired = (i, c) => !!i && !i.admin && !!acc(i, c).m && today() >= acc(i, c).m;
+  const recExpired = (i, c) => !!i && !i.admin && !!acc(i, c).r && today() >= acc(i, c).r;
+  /* what the user has in a course: 'none' | 'materials' | 'full', plus the relevant end dates */
+  function level(i, c) {
+    if (!i || i.blocked || i.expired) return 'none';
+    if (i.admin) return REC_COURSES.includes(c) ? 'full' : 'materials';
+    if (!i.roles.includes(c) || cexpired(i, c)) return 'none';
+    return REC_COURSES.includes(c) && i.roles.includes(c + '-rec') && !recExpired(i, c) ? 'full' : 'materials';
+  }
+  const daysLeft = d => Math.round((Date.parse(d) - Date.parse(today())) / 864e5);
+  const dmy = d => d ? d.split('-').reverse().join('/') : '';
+  /* small reminder bar on course pages when the course (or its recordings) ends within 14 days */
+  function accessNote(i, c) {
+    if (!i || i.admin) return;
+    const a = acc(i, c), items = [];
+    if (a.m && daysLeft(a.m) <= 14) items.push(['הגישה שלך לקורס', a.m]);
+    else if (level(i, c) === 'full' && a.r && daysLeft(a.r) <= 14) items.push(['הגישה שלך לשיעורים המוקלטים', a.r]);
+    if (!items.length) return;
+    const [what, d] = items[0], n = daysLeft(d), key = 'ngqa.note.' + c + '.' + d + '.' + today();
+    try { if (sessionStorage.getItem(key)) return; } catch (e) {}
+    const show = () => {
+      const bar = document.createElement('div');
+      bar.setAttribute('role', 'status');
+      bar.style.cssText = 'position:fixed;inset-inline:0;bottom:0;z-index:2147483000;background:#F38911;color:#fff;font:600 15px/1.4 Heebo,Arial,sans-serif;padding:10px 48px 10px 16px;text-align:center;direction:rtl;box-shadow:0 -4px 16px rgba(0,0,0,.2)';
+      bar.innerHTML = what + ' בתוקף עד <b>' + dmy(d) + '</b> (' + (n <= 0 ? 'היום הוא היום האחרון' : 'עוד ' + n + ' ימים') + '). להארכה: <a style="color:#fff;text-decoration:underline" href="https://wa.me/972526718757" target="_blank" rel="noopener">וואטסאפ לניצן</a>'
+        + '<button type="button" aria-label="סגירה" style="position:absolute;inset-inline-end:10px;top:50%;transform:translateY(-50%);background:none;border:0;color:#fff;font-size:22px;cursor:pointer">×</button>';
+      bar.querySelector('button').onclick = () => { bar.remove(); try { sessionStorage.setItem(key, '1'); } catch (e) {} };
+      document.body.appendChild(bar);
+    };
+    document.body ? show() : document.addEventListener('DOMContentLoaded', show);
   }
   /* access lock date (v3.9): YYYY-MM-DD in app_metadata.expires, counted in Israel time; also enforced on the server */
   const today = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jerusalem' }).format(new Date());
-  const can = (i, course) => !!i && !i.blocked && !i.expired && (i.admin || i.roles.includes(course));
+  const can = (i, course) => !!i && !i.blocked && !i.expired && (i.admin || (i.roles.includes(course) && !cexpired(i, course)));
+  const canRec = (i, course) => level(i, course) === 'full';
 
   const Auth = {
-    COURSES, isEnabled, session, fresh, info, can,
+    COURSES, REC_COURSES, isEnabled, session, fresh, info, can, canRec, level, dmy, daysLeft,
+    courseEnd: (i, c) => acc(i, c).m || '', recEnd: (i, c) => acc(i, c).r || '', courseExpired: cexpired,
     async login(email, password) { return storeTokens(await req('/token', form({ grant_type: 'password', username: email, password }))); },
     google() { location.href = API + '/authorize?provider=google'; },
     async recover(email) { await req('/recover', json('POST', { email })); },
@@ -112,8 +150,8 @@
     async guard(course) {
       if (!(await isEnabled())) return true;
       const i = info(await fresh());
-      if (can(i, course)) return true;
-      location.replace('/?' + (i ? (i.expired ? 'expired=' + i.expires : 'denied=' + course) : 'login=1&next=' + encodeURIComponent(location.pathname + location.hash)));
+      if (can(i, course)) { accessNote(i, course); return true; }
+      location.replace('/?' + (i ? (i.expired ? 'expired=' + i.expires : cexpired(i, course) ? 'cexp=' + course + ':' + acc(i, course).m : 'denied=' + course) : 'login=1&next=' + encodeURIComponent(location.pathname + location.hash)));
       return false;
     },
     inApp: () => /FBAN|FBAV|Instagram|WhatsApp|Line\/|; wv\)|TikTok|Snapchat|LinkedInApp/i.test(navigator.userAgent),

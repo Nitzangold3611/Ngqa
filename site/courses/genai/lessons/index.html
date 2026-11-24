@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<script src="/auth.js"></script>
+<script>document.documentElement.style.visibility='hidden';
+NGQAAuth.guard('genai').then(async ok=>{if(!ok)return;const A=NGQAAuth,i=A.info(await A.session());
+  if(!A.canRec(i,'genai')){location.replace('/courses/genai/?norec=1');return}
+  document.documentElement.style.visibility=''}).catch(()=>{document.documentElement.style.visibility=''});</script>
+<script>try{const t=localStorage.getItem('ngqa-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>שיעורים מוקלטים · CT-GenAI | NGQA</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;
+--bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Heebo,Arial,sans-serif}
+.bar{background:var(--navy);color:#fff;display:flex;gap:10px;align-items:center;padding:10px max(3vw,14px)}
+.bar b{flex:1}.bar a{color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 14px;text-decoration:none;font-size:15px}
+.wrap{max-width:860px;margin:auto;padding:28px max(3vw,14px)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,4vw,40px);text-align:center}
+.card h1{margin:0 0 8px;font-size:clamp(24px,4vw,34px)}.card p{color:var(--mute);max-width:56ch;margin:8px auto}
+.ic{width:72px;height:72px;border-radius:20px;background:var(--navy);display:grid;place-items:center;margin:0 auto 14px}
+.ic svg{width:40px;height:40px;fill:none;stroke:var(--teal);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}
+</style>
+</head>
+<body>
+<div class="bar"><b>שיעורים מוקלטים · CT-GenAI</b><a href="../">חזרה לקורס</a></div>
+<div class="wrap"><div class="card">
+  <div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M17 10l4-2v8l-4-2z"/></svg></div>
+  <h1>השיעורים המוקלטים יעלו כאן בקרוב</h1>
+  <p>יש לך גישה מלאה לקורס, כולל השיעורים המוקלטים. ברגע שהשיעורים הראשונים יעלו, הם יופיעו כאן לפי פרקים — עם נגן, סימון "נצפה" והמשך מהמקום שבו עצרת.</p>
+</div></div>
+<footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה</footer>
+</body>
+</html>
