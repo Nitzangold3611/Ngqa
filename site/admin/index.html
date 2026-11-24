@@ -11,88 +11,107 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;--red:#c0392b;
+:root{color-scheme:light dark;--navy:#121133;--teal:#14DACD;--teal-d:#0E9F97;--orange:#F38911;--red:#c0392b;--green:#1f9d6a;
 --bg:light-dark(#f4f6fb,#0b0a24);--card:light-dark(#fff,#18173f);--ink:light-dark(#121133,#eef0ff);--mute:light-dark(#5d5c7c,#a9a8cf);--line:light-dark(#e1e3ef,#2a2960);--soft:light-dark(#eef0f8,#26255a)}
 *{box-sizing:border-box;min-width:0}
+[hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Heebo,Arial,sans-serif}
 :focus-visible{outline:3px solid var(--orange);outline-offset:2px}
-button,input{font:inherit}
+button,input,select{font:inherit}
 .bar{background:var(--navy);color:#fff;display:flex;align-items:center;gap:12px;padding:10px max(3vw,12px);position:sticky;top:0;z-index:5}
 .bar img{height:38px}.bar h1{font-size:19px;margin:0;flex:1}
 .bar a{color:#c9cbf0;text-decoration:none;border:1.5px solid #3b3a78;border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600;white-space:nowrap}
 .bar a:hover{color:var(--teal);border-color:var(--teal)}
-main{max-width:1000px;margin:0 auto;padding:20px max(3vw,12px) 60px;display:grid;gap:18px}
+main{max-width:1180px;margin:0 auto;padding:20px max(3vw,12px) 60px;display:grid;gap:18px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
-.card h2{margin:0 0 12px;font-size:18px}
-.inv{display:grid;grid-template-columns:1fr 1.3fr 1fr .9fr auto;gap:10px;align-items:end}
-.inv label{display:grid;gap:4px;font-size:13.5px;font-weight:600}
-.inv input[type=text],.inv input[type=email],.inv input[type=tel],.inv input[type=date],.search,.flt,dialog input{padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
-.inv .crs{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:14px}
+/* summary tiles */
+.tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.tile{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;text-align:start;cursor:pointer;color:var(--ink);display:grid;gap:2px}
+.tile b{font-size:28px;line-height:1.1}.tile span{font-size:13.5px;color:var(--mute);font-weight:600}
+.tile:hover{border-color:var(--teal)}.tile.on{border-color:var(--orange);box-shadow:0 0 0 3px color-mix(in srgb,var(--orange) 25%,transparent)}
+.tile.warn b{color:#b45309}.tile.bad b{color:var(--red)}.tile.ok b{color:var(--green)}
+/* toolbar */
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.toolbar h2{margin:0;font-size:20px;flex:1}
+.filters{display:grid;grid-template-columns:1.6fr 1fr 1.2fr;gap:10px;margin-bottom:12px}
+.search,.flt,dialog input,dialog select{padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
 .btn{min-height:42px;padding:0 16px;border-radius:10px;border:0;background:var(--navy);color:#fff;font-weight:700;cursor:pointer;white-space:nowrap}
 .btn:hover{background:var(--teal-d)}.btn[disabled]{opacity:.55;cursor:default}
+.btn.pri{background:var(--orange)}.btn.pri:hover{background:#d97706}
 .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
 .btn.ghost:hover{border-color:var(--teal);color:var(--teal-d);background:transparent}
-.btn.danger{background:transparent;color:var(--red);border:1.5px solid color-mix(in srgb,var(--red) 40%,transparent)}
-.top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
-.top h2{margin:0;flex:1}.search{min-width:220px}
 .stats{color:var(--mute);font-size:14px}
+/* user rows */
 .list{display:grid;gap:10px}
-.u{display:grid;grid-template-columns:minmax(0,1.4fr) auto auto;gap:14px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--bg)}
-.u.blocked{opacity:.6}
-.who b{display:block;font-size:16px}.who small{color:var(--mute);direction:ltr;display:block;text-align:end;overflow:hidden;text-overflow:ellipsis}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
-.chip{font-size:12px;border-radius:999px;padding:2px 9px;background:var(--soft)}
-.chip.ph{direction:ltr}.chip.exp{background:#fff1dc;color:#8a4b00}.chip.dead{background:#fde2e2;color:#9b1c1c}
-.chip.pend{background:#fff1dc;color:#8a4b00}.chip.adm{background:var(--navy);color:#fff}.chip.blk{background:#fde2e2;color:#9b1c1c}.chip.g{background:#e7f0fe;color:#1a56b8}
-.sw{display:flex;gap:14px;flex-wrap:wrap}
-.tg{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;font-weight:600;color:var(--mute);cursor:pointer;user-select:none}
-.tg input{position:absolute;opacity:0;pointer-events:none}
-.tg .t{width:46px;height:26px;border-radius:999px;background:#c9cbd8;position:relative;transition:background .2s}
-.tg .t::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:inset-inline-start .2s}
-.tg input:checked+.t{background:var(--teal-d)}.tg input:checked+.t::after{inset-inline-start:23px}
-.tg input:focus-visible+.t{outline:3px solid var(--orange);outline-offset:2px}
-.tg input:disabled+.t{opacity:.5}
+.u{display:grid;grid-template-columns:minmax(230px,1fr) minmax(0,2fr) auto;gap:16px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--bg)}
+.u.blocked,.u.expired{opacity:.62}
+.who{display:flex;gap:10px;align-items:flex-start}
+.who .pk{width:18px;height:18px;margin-top:12px;accent-color:var(--teal-d);flex:none}
+.av{flex:none;width:42px;height:42px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:800;font-size:15px}
+.u.adm .av{background:var(--orange)}
+.who b{display:block;font-size:16px;line-height:1.3}.who small{color:var(--mute);direction:ltr;display:block;text-align:end;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+.chip{font-size:12px;border-radius:999px;padding:2px 9px;background:var(--soft);white-space:nowrap}
+.chip.ph{direction:ltr}.chip.exp,.chip.soon,.chip.pend{background:#fff1dc;color:#8a4b00}.chip.soon{font-weight:700}.chip.dead,.chip.blk{background:#fde2e2;color:#9b1c1c}
+.chip.adm{background:var(--navy);color:#fff}.chip.g{background:#e7f0fe;color:#1a56b8}.chip.lv{background:#fff1dc;color:#8a4b00}
+/* course access pills */
+.sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px}
+.tg>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cp{border:1.5px solid var(--line);border-radius:12px;padding:6px 8px;background:var(--card);display:grid;gap:4px;align-content:start}
+.cp.on{border-color:color-mix(in srgb,var(--teal-d) 55%,var(--line));background:light-dark(#effbf9,#12334a)}
+.tg{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;user-select:none}
+.tg input,.rec input{position:absolute;opacity:0;pointer-events:none}
+.t{flex:none;width:38px;height:22px;border-radius:999px;background:#c9cbd8;position:relative;transition:background .2s}
+.t::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:inset-inline-start .2s}
+input:checked+.t{background:var(--teal-d)}input:checked+.t::after{inset-inline-start:19px}
+input:focus-visible+.t{outline:3px solid var(--orange);outline-offset:2px}
+input:disabled+.t{opacity:.5}
+.cp:not(.on) .tg{color:var(--mute)}
+.rec{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12px;font-weight:700;color:#8a4b00;cursor:pointer;border-top:1px dashed var(--line);padding-top:4px}
+.rec .t{width:32px;height:18px}.rec .t::after{width:12px;height:12px}.rec input:checked+.t{background:var(--orange)}.rec input:checked+.t::after{inset-inline-start:17px}
+/* menu */
 .more{position:relative}
 .more>button{width:42px;height:42px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;font-size:20px;line-height:1}
-.menu{position:absolute;inset-inline-end:0;top:calc(100% + 6px);min-width:230px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 14px 34px rgba(0,0,0,.22);padding:6px;display:none;z-index:4}
+.menu{position:absolute;inset-inline-end:0;top:calc(100% + 6px);min-width:240px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 14px 34px rgba(0,0,0,.22);padding:6px;display:none;z-index:4}
 .more.open .menu{display:block}
 .menu button{display:block;width:100%;text-align:start;padding:10px;border:0;background:none;color:var(--ink);border-radius:8px;cursor:pointer}
-.menu button:hover{background:var(--soft)}.menu .del{color:var(--red)}
+.menu button:hover{background:var(--soft)}.menu .del{color:var(--red)}.menu hr{border:0;border-top:1px solid var(--line);margin:4px 0}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:12px 18px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.3);opacity:0;transition:.25s;z-index:20;max-width:92vw;pointer-events:none}
 .toast.on{opacity:1;transform:translateX(-50%)}.toast.err{background:var(--red)}
 .msg{text-align:center;color:var(--mute);padding:40px 10px}
-.wa{display:none;margin-top:12px;padding:12px;border-radius:12px;background:light-dark(#e9fbf3,#123a2c);border:1px solid #9be3c4;font-size:14px}
-.wa.on{display:block}.wa p{margin:0 0 8px;white-space:pre-line}
 .gate{max-width:520px;margin:60px auto;text-align:center}
-.inv .opt{grid-column:1/-1;display:flex;gap:8px;align-items:center;font-size:14px;font-weight:500}
-.flt{min-width:190px}
-.u.expired{opacity:.7}
-dialog{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);padding:20px;width:min(440px,92vw)}
-dialog::backdrop{background:rgba(10,10,30,.45)}
-dialog h3{margin:0 0 4px}dialog p{margin:0 0 12px;color:var(--mute);font-size:14px}
+/* bulk */
+.bulk{display:none;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 12px;padding:10px 12px;border:1.5px dashed var(--teal-d);border-radius:12px;font-size:14px;background:light-dark(#effbf9,#12334a)}
+.bulk.on{display:flex}.bulk select{padding:8px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);width:auto}
+/* dialogs */
+dialog{border:1px solid var(--line);border-radius:18px;background:var(--card);color:var(--ink);padding:22px;width:min(460px,94vw)}
+dialog::backdrop{background:rgba(10,10,30,.5)}
+dialog h3{margin:0 0 4px;font-size:20px}dialog p{margin:0 0 12px;color:var(--mute);font-size:14px}
 dialog form{display:grid;gap:12px}dialog label{display:grid;gap:4px;font-size:13.5px;font-weight:600}
 dialog .row{display:flex;gap:8px;align-items:center}dialog .row input{flex:1}
-dialog .acts{display:flex;gap:8px;justify-content:flex-start;margin-top:4px}
+dialog .acts{display:flex;gap:8px;justify-content:flex-start;margin-top:4px;flex-wrap:wrap}
 .hint{font-size:12.5px;color:var(--mute);font-weight:400}
-.tgw{display:flex;flex-direction:column;align-items:center;gap:4px}
-.rec{display:flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;color:var(--mute);cursor:pointer;white-space:nowrap}
-.rec input{width:15px;height:15px;accent-color:var(--orange);margin:0}.rec.on{color:#b45309}
-.chip.lv{background:#fff1dc;color:#8a4b00}.chip.soon{background:#fff1dc;color:#8a4b00;font-weight:700}
-.sel{display:flex;align-items:center;gap:8px}.sel input{width:18px;height:18px;accent-color:var(--teal-d)}
-.bulk{display:none;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 12px;padding:10px 12px;border:1.5px dashed var(--teal-d);border-radius:12px;font-size:14px}
-.bulk.on{display:flex}.bulk select{padding:8px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+#idlg{width:min(720px,96vw)}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sect{border-top:1px solid var(--line);padding-top:12px;display:grid;gap:10px}
+.sect>b{font-size:15px}
+.isw{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.isw .rec{display:none}.isw .cp.on .rec{display:flex}
+dialog label.opt{display:flex;gap:8px;align-items:center;font-weight:500}
+dialog label.opt input{width:auto}
+.ok{background:light-dark(#e9fbf3,#123a2c);border:1px solid #9be3c4;border-radius:12px;padding:14px;display:grid;gap:10px}
+.ok p{margin:0;white-space:pre-line;color:var(--ink);font-size:14px}
 #adlg{width:min(760px,96vw)}
 .acc{display:grid;gap:10px;max-height:62vh;overflow:auto;padding:2px}
 .acr{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;grid-template-columns:110px 1fr;gap:8px 12px;align-items:center}
 .acr>b{grid-row:1/-1;align-self:start;padding-top:6px}
-.acr select,.acr input[type=date],.acr input[type=text]{padding:7px 9px;border-radius:9px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+.acr select,.acr input[type=date],.acr input[type=text]{padding:7px 9px;border-radius:9px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);width:auto}
 .acr .dl{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:13px}
 .acr .dl button{padding:4px 9px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;font-size:12.5px}
 .acr .dl button:hover{border-color:var(--teal)}.acr.off .dl,.acr.off .nt{opacity:.45;pointer-events:none}
-.acr .nt{width:100%}
-.inv .rlv{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
-@media(max-width:600px){.acr{grid-template-columns:1fr}.acr>b{grid-row:auto}}
-@media(max-width:760px){.inv{grid-template-columns:1fr}.flt{min-width:0;flex:1}.u{grid-template-columns:1fr auto}.u .sw{grid-column:1/-1;order:3}.search{min-width:0;flex:1}}
+.acr .nt{width:100%!important}
+@media(max-width:980px){.u{grid-template-columns:1fr auto}.u .sw{grid-column:1/-1;order:3}.tiles{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:640px){.filters,.f2{grid-template-columns:1fr}.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.acr{grid-template-columns:1fr}.acr>b{grid-row:auto}}
 </style>
 </head>
 <body>
@@ -132,31 +151,33 @@ const waLink=(p,t)=>'https://wa.me/'+p+'?text='+encodeURIComponent(t.replace(/\s
 let flt='all',dlgId=null;
 const fmt=d=>d?new Date(d).toLocaleDateString('he-IL',{day:'numeric',month:'numeric',year:'2-digit'}):'';
 function shell(){
+  const cpI=c=>`<div class="cp"><label class="tg"><span>${NAMES[c]||c}</span><input type="checkbox" name="r" value="${c}"><span class="t"></span></label>${recC.includes(c)?`<label class="rec"><span>הקלטות</span><input type="checkbox" name="rr" value="${c}"><span class="t"></span></label>`:''}</div>`;
   $('main').innerHTML=`
-  <section class="card" aria-labelledby="h1">
-    <h2 id="h1">הזמנת תלמיד</h2>
-    <form id="inv" class="inv">
-      <label>שם מלא<input type="text" name="name" autocomplete="off"></label>
-      <label>מייל<input type="email" name="email" required dir="ltr" autocomplete="off"></label>
-      <label>טלפון נייד<input type="tel" name="phone" dir="ltr" autocomplete="off" placeholder="050-1234567"></label>
-      <label>נעילת גישה בתאריך<input type="date" name="expires" min="${todayIL()}"></label>
-      <button class="btn" type="submit">שליחת הזמנה</button>
-      <label class="opt"><input type="checkbox" name="wa"> שליחת ההזמנה גם בוואטסאפ <span class="hint">(נפתח וואטסאפ עם הודעה מוכנה למספר שהוזן)</span></label>
-      <div class="crs"><span>גישה לקורסים:</span>${courses.map(c=>`<label class="tg" style="flex-direction:row;gap:8px"><input type="checkbox" name="r" value="${c}" checked><span class="t"></span>${NAMES[c]||c}</label>${recC.includes(c)?`<label class="rlv"><input type="checkbox" name="rr" value="${c}"> כולל שיעורים מוקלטים ב-${NAMES[c]||c}</label>`:''}`).join('')}</div>
-      <label class="opt">תוקף הגישה לקורסים שנבחרו: <select name="until" class="flt" style="min-width:0"><option value="">ללא הגבלת זמן</option><option value="3">3 חודשים</option><option value="6">6 חודשים</option><option value="12">12 חודשים</option></select><span class="hint">(אפשר לשנות לכל קורס בנפרד אחר כך, בתפריט ⋯ ← "גישה לקורסים ותאריכים")</span></label>
-    </form>
-    <div class="wa" id="wa"><p id="waT"></p><button class="btn ghost" type="button" id="waC">העתקת ההודעה לוואטסאפ</button></div>
-  </section>
+  <section class="tiles" id="tiles" aria-label="סיכום"></section>
   <section class="card" aria-labelledby="h2">
-    <div class="top"><h2 id="h2">תלמידים</h2><span class="stats" id="stats"></span><select class="flt" id="flt" aria-label="סינון לפי סטטוס"></select><select class="flt" id="cflt" aria-label="סינון לפי קורס ורמת גישה"></select><input class="search" id="q" type="search" placeholder="חיפוש לפי שם, מייל או טלפון" aria-label="חיפוש"></div>
+    <div class="toolbar"><h2 id="h2">תלמידים</h2><span class="stats" id="stats"></span><button class="btn pri" type="button" id="invB">＋ הזמנת תלמיד</button></div>
+    <div class="filters"><input class="search" id="q" type="search" placeholder="חיפוש לפי שם, מייל או טלפון" aria-label="חיפוש"><select class="flt" id="flt" aria-label="סינון לפי סטטוס"></select><select class="flt" id="cflt" aria-label="סינון לפי קורס ורמת גישה"></select></div>
     <div class="bulk" id="bulk"><b id="bulkN"></b><span>שינוי לנבחרים:</span><select id="bC" aria-label="קורס"></select><select id="bL" aria-label="רמת גישה"></select><select id="bM" aria-label="תוקף"><option value="">בלי לשנות תאריך</option><option value="3">+3 חודשים</option><option value="6">+6 חודשים</option><option value="12">+12 חודשים</option><option value="clear">ללא הגבלת זמן</option></select><button class="btn" type="button" id="bGo">החלה</button><button class="btn ghost" type="button" id="bX">ניקוי הבחירה</button></div>
     <div class="list" id="list"></div>
   </section>
+  <dialog id="idlg" aria-labelledby="idlgH"><h3 id="idlgH">הזמנת תלמיד</h3><p>התלמיד יקבל מייל עם קישור לבחירת סיסמה. פותחים רק את הקורסים שהוא צריך.</p>
+    <form id="inv">
+      <div class="f2"><label>שם מלא<input type="text" name="name" autocomplete="off"></label>
+        <label>מייל<input type="email" name="email" required dir="ltr" autocomplete="off"></label>
+        <label>טלפון נייד<input type="tel" name="phone" dir="ltr" autocomplete="off" placeholder="050-1234567"></label>
+        <label>תוקף הגישה לקורסים<select name="until"><option value="">ללא הגבלת זמן</option><option value="3">3 חודשים</option><option value="6">6 חודשים</option><option value="12">12 חודשים</option></select></label></div>
+      <div class="sect"><b>גישה לקורסים</b><span class="hint">הדליקו את הקורסים שנפתחים לתלמיד. בקורס שיש בו שיעורים מוקלטים, יופיע מתחתיו מתג "הקלטות".</span><div class="isw" id="isw">${courses.map(cpI).join('')}</div></div>
+      <div class="sect"><label>נעילת כל הגישה לאתר בתאריך <span class="hint">(לא חובה)</span><input type="date" name="expires" min="${todayIL()}"></label>
+        <label class="opt"><input type="checkbox" name="wa"> לשלוח את ההזמנה גם בוואטסאפ <span class="hint">(נפתח וואטסאפ עם הודעה מוכנה)</span></label></div>
+      <div class="acts"><button class="btn pri" type="submit">שליחת הזמנה</button><button class="btn ghost" type="button" id="idlgX">ביטול</button></div>
+    </form>
+    <div class="ok" id="invOk" hidden><b id="invOkT"></b><p id="waT"></p><div class="acts"><button class="btn ghost" type="button" id="waC">העתקת ההודעה לוואטסאפ</button><button class="btn" type="button" id="invMore">הזמנה נוספת</button><button class="btn ghost" type="button" id="invDone">סגירה</button></div></div>
+  </dialog>
   <dialog id="dlg" aria-labelledby="dlgH"><h3 id="dlgH">פרטי משתמש</h3><p id="dlgE" dir="ltr" style="text-align:end"></p>
     <form id="dlgF" method="dialog">
       <label>שם מלא<input type="text" name="name" autocomplete="off"></label>
       <label>טלפון נייד<input type="tel" name="phone" dir="ltr" autocomplete="off" placeholder="050-1234567"></label>
-      <label>נעילת גישה בתאריך <span class="hint">החל מהתאריך הזה (שעון ישראל) הגישה לקורסים נחסמת אוטומטית. ריק = ללא הגבלה.</span>
+      <label>נעילת כל הגישה לאתר בתאריך <span class="hint">החל מהתאריך הזה (שעון ישראל) הגישה לכל הקורסים נחסמת. ריק = ללא הגבלה. לתאריך לכל קורס בנפרד — "גישה לקורסים ותאריכים".</span>
         <span class="row"><input type="date" name="expires"><button class="btn ghost" type="button" id="dlgClr">ללא תאריך</button></span></label>
       <div class="acts"><button class="btn" type="submit" value="save">שמירה</button><button class="btn ghost" type="button" id="dlgX">ביטול</button></div>
     </form></dialog>
@@ -166,37 +187,48 @@ function shell(){
       <div class="acts"><button class="btn" type="submit">שמירה</button><button class="btn ghost" type="button" id="adlgX">ביטול</button></div></form></dialog>`;
   $('inv').onsubmit=invite;$('q').oninput=e=>{q=e.target.value.trim().toLowerCase();list()};
   $('flt').onchange=e=>{flt=e.target.value;list()};
+  $('invB').onclick=()=>{resetInv();$('idlg').showModal();$('inv').email.focus()};
+  $('idlgX').onclick=$('invDone').onclick=()=>$('idlg').close();$('invMore').onclick=()=>{resetInv();$('inv').email.focus()};
+  $('isw').addEventListener('change',e=>{const r=e.target.closest('[name=r]');if(!r)return;const cp=r.closest('.cp');cp.classList.toggle('on',r.checked);if(!r.checked){const rr=cp.querySelector('[name=rr]');if(rr)rr.checked=false}});
   $('dlgX').onclick=()=>$('dlg').close();$('dlgClr').onclick=()=>{$('dlgF').expires.value=''};
   $('dlgF').onsubmit=saveDetails;
   $('cflt').onchange=e=>{cflt=e.target.value;list()};$('adlgX').onclick=()=>$('adlg').close();$('adlgF').onsubmit=saveAccess;
   $('bC').innerHTML=courses.map(c=>`<option value="${c}">${NAMES[c]||c}</option>`).join('');
   const bl=()=>{const c=$('bC').value;$('bL').innerHTML=['materials',...(recC.includes(c)?['full']:[]),'none'].map(l=>`<option value="${l}">${LVN[l]}</option>`).join('')};$('bC').onchange=bl;bl();
   $('bX').onclick=()=>{picked.clear();list()};$('bGo').onclick=bulkApply;
+  $('tiles').addEventListener('click',e=>{const t=e.target.closest('.tile');if(!t)return;const [a,v]=t.dataset.f.split(':');
+    if(a==='all'){flt='all';cflt='all'}else if(a==='s'){flt=flt===v?'all':v;cflt='all'}else{cflt=cflt==='soon'?'all':'soon';flt='all'}list()});
   $('waC').onclick=async()=>{try{await navigator.clipboard.writeText($('waT').textContent);toast('ההודעה הועתקה')}catch(e){toast('לא הצלחתי להעתיק – סמנו והעתיקו ידנית',1)}};
 }
+function resetInv(){const f=$('inv');f.reset();f.hidden=false;$('invOk').hidden=true;f.querySelectorAll('.cp').forEach(x=>x.classList.remove('on'))}
+const initials=u=>{const n=(u.name||u.email).trim().split(/\s+/);return ((n[0]||'')[0]||'').toUpperCase()+((n[1]||'')[0]||'').toUpperCase()};
 function row(u){
   const self=u.email===meEmail,adm=u.roles.includes('admin');
   const ex=expired(u),dt=u.expires&&!adm?daysTo(u.expires):null;
-  return `<div class="u${u.blocked?' blocked':''}${ex?' expired':''}" data-id="${u.id}">
-    <div class="who"><label class="sel"><input type="checkbox" data-pick="${u.id}" ${picked.has(u.id)?'checked':''} ${adm?'disabled':''} aria-label="בחירה לשינוי קבוצתי"><b>${esc(u.name||u.email.split('@')[0])}</b></label><small>${esc(u.email)}</small>
-      <div class="chips">${!u.confirmed?`<span class="chip pend">הוזמן ${fmt(u.invited_at)} · טרם נרשם</span>`:`<span class="chip">פעיל מ-${fmt(u.created_at)}</span>`}
+  const cp=c=>{const on=adm||u.roles.includes(c),rc=recC.includes(c),ron=adm||u.roles.includes(c+'-rec');
+    return `<div class="cp${on?' on':''}"><label class="tg" title="${on?'סגירת':'פתיחת'} הגישה ל-${NAMES[c]}"><span>${NAMES[c]||c}</span><input type="checkbox" data-c="${c}" ${on?'checked':''} ${adm||u.blocked?'disabled':''}><span class="t"></span></label>`
+      +(rc&&on?`<label class="rec" title="שיעורים מוקלטים ב-${NAMES[c]}"><span>הקלטות</span><input type="checkbox" data-rec="${c}" ${ron?'checked':''} ${adm||u.blocked?'disabled':''}><span class="t"></span></label>`:'')+'</div>'};
+  return `<div class="u${u.blocked?' blocked':''}${ex?' expired':''}${adm?' adm':''}" data-id="${u.id}">
+    <div class="who"><input class="pk" type="checkbox" data-pick="${u.id}" ${picked.has(u.id)?'checked':''} ${adm?'disabled':''} aria-label="בחירת ${esc(u.name||u.email)} לשינוי קבוצתי"><span class="av" aria-hidden="true">${esc(initials(u))}</span>
+      <div><b>${esc(u.name||u.email.split('@')[0])}</b><small>${esc(u.email)}</small>
+      <div class="chips">${!u.confirmed?`<span class="chip pend">הוזמן ${fmt(u.invited_at)} · טרם נרשם</span>`:''}
       ${adm?'<span class="chip adm">מנהל</span>':''}${u.blocked?'<span class="chip blk">חסום</span>':''}${u.provider==='google'?'<span class="chip g">Google</span>':''}
       ${u.phone?`<span class="chip ph">${esc(showPhone(u.phone))}</span>`:''}
-      ${dt===null?'':ex?`<span class="chip dead">הגישה ננעלה ב-${dmy(u.expires)}</span>`:`<span class="chip${dt<=14?' exp':''}">נעילה ב-${dmy(u.expires)}</span>`}
+      ${dt===null?'':ex?`<span class="chip dead">הגישה לאתר ננעלה ב-${dmy(u.expires)}</span>`:`<span class="chip${dt<=14?' exp':''}">נעילת האתר ב-${dmy(u.expires)}</span>`}
       ${adm?'':courses.filter(c=>u.roles.includes(c)||(u.blocked&&accOf(u,c).m)).map(c=>{const a=accOf(u,c),o=[];
         if(a.m)o.push(todayIL()>=a.m?`<span class="chip dead">${NAMES[c]}: הסתיים ${dmy(a.m)}</span>`:`<span class="chip${daysTo(a.m)<=14?' soon':''}">${NAMES[c]} עד ${dmy(a.m)}</span>`);
-        if(recC.includes(c)&&u.roles.includes(c+'-rec'))o.push(a.r&&todayIL()>=a.r?`<span class="chip dead">הקלטות ${NAMES[c]}: הסתיים ${dmy(a.r)}</span>`:`<span class="chip lv">🎬 ${NAMES[c]}: כולל הקלטות${a.r?' עד '+dmy(a.r):''}</span>`);
-        if(a.note)o.push(`<span class="chip" title="${esc(a.note)}">📝 ${NAMES[c]}</span>`);return o.join('')}).join('')}</div></div>
-    <div class="sw">${courses.map(c=>{const tg=`<label class="tg"><input type="checkbox" data-c="${c}" ${u.roles.includes(c)||adm?'checked':''} ${adm||u.blocked?'disabled':''}><span class="t"></span>${NAMES[c]||c}</label>`;
-      if(!recC.includes(c))return tg;const on=adm||u.roles.includes(c+'-rec');
-      return `<span class="tgw">${tg}<label class="rec${on?' on':''}" title="שיעורים מוקלטים"><input type="checkbox" data-rec="${c}" ${on?'checked':''} ${adm||u.blocked||!u.roles.includes(c)?'disabled':''}>🎬 הקלטות</label></span>`}).join('')}</div>
+        if(recC.includes(c)&&u.roles.includes(c+'-rec')&&a.r)o.push(todayIL()>=a.r?`<span class="chip dead">הקלטות ${NAMES[c]}: הסתיים ${dmy(a.r)}</span>`:`<span class="chip lv">הקלטות ${NAMES[c]} עד ${dmy(a.r)}</span>`);
+        if(a.note)o.push(`<span class="chip" title="${esc(a.note)}">📝 ${NAMES[c]}</span>`);return o.join('')}).join('')}</div></div></div>
+    <div class="sw" role="group" aria-label="גישה לקורסים">${courses.map(cp).join('')}</div>
     <div class="more"><button type="button" aria-label="פעולות נוספות עבור ${esc(u.email)}" aria-haspopup="true">⋯</button><div class="menu">
-      ${!u.confirmed?'<button type="button" data-a="resend">שליחת ההזמנה שוב</button>':'<button type="button" data-a="recover">שליחת קישור לאיפוס סיסמה</button>'}
       ${adm?'':'<button type="button" data-a="access">גישה לקורסים ותאריכים</button>'}
-      <button type="button" data-a="edit">עריכת טלפון ותאריך נעילה</button>
-      ${u.phone&&soonest(u)?'<button type="button" data-a="remind">תזכורת בוואטסאפ על סוף הגישה</button>':''}
+      <button type="button" data-a="edit">פרטים: שם, טלפון ונעילת האתר</button>
+      <hr>
+      ${!u.confirmed?'<button type="button" data-a="resend">שליחת ההזמנה שוב</button>':'<button type="button" data-a="recover">שליחת קישור לאיפוס סיסמה</button>'}
       ${u.phone?'<button type="button" data-a="wasend">שליחת הזמנה בוואטסאפ</button>':''}
+      ${u.phone&&soonest(u)?'<button type="button" data-a="remind">תזכורת בוואטסאפ על סוף הגישה</button>':''}
       <button type="button" data-a="wa">העתקת הודעה לוואטסאפ</button>
+      ${self?'':'<hr>'}
       ${self?'':`<button type="button" data-a="admin">${adm?'הסרת הרשאת מנהל':'הפיכה למנהל (גישה לכל הקורסים)'}</button>`}
       ${self?'':`<button type="button" data-a="block">${u.blocked?'ביטול חסימה':'חסימת גישה (בלי למחוק)'}</button>`}
       ${self?'':'<button type="button" data-a="delete" class="del">מחיקת המשתמש</button>'}
@@ -205,29 +237,34 @@ function list(){
   const qd=q.replace(/\D/g,'');
   const cOk=u=>{if(cflt==='all')return true;if(cflt==='soon')return !!soonest(u);const [c,l]=cflt.split(':');const lv=lvOf(u,c);return l==='any'?lv!=='none':lv===l};
   const f=users.filter(u=>(flt==='all'||status(u)===flt)&&cOk(u)&&(!q||(u.email+' '+u.name).toLowerCase().includes(q)||(qd.length>2&&(u.phone+' 0'+u.phone.slice(3)).includes(qd)))).sort((a,b)=>(b.roles.includes('admin')-a.roles.includes('admin'))||(a.name||a.email).localeCompare(b.name||b.email,'he'));
-  $('list').innerHTML=f.length?f.map(row).join(''):`<p class="msg">${users.length?'לא נמצאו תלמידים לסינון או לחיפוש הזה.':'עדיין אין תלמידים. הזמינו את הראשון למעלה.'}</p>`;
+  $('list').innerHTML=f.length?f.map(row).join(''):`<p class="msg">${users.length?'לא נמצאו תלמידים לסינון או לחיפוש הזה.':'עדיין אין תלמידים. לחצו על "הזמנת תלמיד".'}</p>`;
   const st=users.filter(u=>!u.roles.includes('admin'));
-  const n=k=>users.filter(u=>status(u)===k).length;
-  $('stats').textContent=`${st.length} תלמידים · ${n('invited')} ממתינים להרשמה`;
-  $('flt').innerHTML=[['all','כל הסטטוסים',users.length],['invited','הזמנה נשלחה',n('invited')],['active','משתמש פעיל',n('active')],['blocked','חסום',n('blocked')],['expired','הגישה ננעלה',n('expired')]]
+  const n=k=>users.filter(u=>status(u)===k).length,cn=fn=>users.filter(fn).length;
+  $('stats').textContent=f.length===users.length?'':`מוצגים ${f.length} מתוך ${users.length}`;
+  const soonN=cn(u=>!!soonest(u));
+  $('tiles').innerHTML=[['all','תלמידים',st.length,'',flt==='all'&&cflt==='all'],['s:active','פעילים',n('active'),'ok',flt==='active'],['s:invited','ממתינים להרשמה',n('invited'),n('invited')?'warn':'',flt==='invited'],['soon','הגישה מסתיימת ב-14 יום',soonN,soonN?'warn':'',cflt==='soon'],['s:blocked','חסומים',n('blocked'),n('blocked')?'bad':'',flt==='blocked']]
+    .map(([f,l,c,cls,on])=>`<button type="button" class="tile ${cls}${on?' on':''}" data-f="${f}"><b>${c}</b><span>${l}</span></button>`).join('');
+  $('flt').innerHTML=[['all','כל הסטטוסים',users.length],['invited','הזמנה נשלחה',n('invited')],['active','משתמש פעיל',n('active')],['blocked','חסום',n('blocked')],['expired','הגישה לאתר ננעלה',n('expired')]]
     .map(([v,l,c])=>`<option value="${v}"${v===flt?' selected':''}>${l} (${c})</option>`).join('');
-  const cn=fn=>users.filter(fn).length;
-  const opts=[['all','כל הקורסים',users.length],['soon','פג בקרוב (14 יום)',cn(u=>!!soonest(u))]];
+  const opts=[['all','כל הקורסים',users.length],['soon','הגישה מסתיימת ב-14 יום',soonN]];
   for(const c of courses){opts.push([c+':any',NAMES[c]+' – כל מי שיש לו גישה',cn(u=>lvOf(u,c)!=='none')]);
-    if(recC.includes(c)){opts.push([c+':full',NAMES[c]+' – מלא (כולל הקלטות)',cn(u=>lvOf(u,c)==='full')]);opts.push([c+':materials',NAMES[c]+' – מצגות וחומרים בלבד',cn(u=>lvOf(u,c)==='materials')])}}
+    if(recC.includes(c)){opts.push([c+':full',NAMES[c]+' – כולל הקלטות',cn(u=>lvOf(u,c)==='full')]);opts.push([c+':materials',NAMES[c]+' – בלי הקלטות',cn(u=>lvOf(u,c)==='materials')])}}
   $('cflt').innerHTML=opts.map(([v,l,c])=>`<option value="${v}"${v===cflt?' selected':''}>${l} (${c})</option>`).join('');
   for(const id of [...picked])if(!users.some(u=>u.id===id))picked.delete(id);
   $('bulk').classList.toggle('on',picked.size>0);$('bulkN').textContent=picked.size+' נבחרו';
 }
 function waText(name,email){return `שלום${name?' '+name:''} 👋\nפתחתי לך גישה לאתר המצגות של NGQA: https://courses.ngqa.net\nתקבל/י מייל מ-Netlify (באנגלית)${email?' לכתובת '+email:''} עם הנושא "You've been invited" – לחצו על הקישור, בחרו סיסמה ונכנסים. אם המייל לא מגיע, בדקו בספאם.\nאפשר גם להיכנס עם Google, אם המייל שלך הוא Gmail.`}
 async function invite(e){
-  e.preventDefault();const f=e.target,b=f.querySelector('.btn');
+  e.preventDefault();const f=e.target,b=f.querySelector('[type=submit]');
   const wantWa=f.wa.checked;if(wantWa&&!f.phone.value.trim()){toast('כדי לשלוח בוואטסאפ צריך להזין מספר טלפון',1);f.phone.focus();return}
+  const roles=[...f.querySelectorAll('[name=r]:checked')].map(x=>x.value);f.querySelectorAll('[name=rr]:checked').forEach(x=>{if(roles.includes(x.value))roles.push(x.value+'-rec')});
+  if(!roles.length&&!confirm('לא נבחר אף קורס. לשלוח הזמנה בלי גישה לקורסים? (אפשר לפתוח אחר כך)'))return;
   b.disabled=true;const w=wantWa?window.open('about:blank','_blank'):null;
-  try{const d=await api('POST',{action:'invite',email:f.email.value,name:f.name.value,phone:f.phone.value,expires:f.expires.value,roles:(()=>{const r=[...f.querySelectorAll('[name=r]:checked')].map(x=>x.value);f.querySelectorAll('[name=rr]:checked').forEach(x=>{if(r.includes(x.value))r.push(x.value+'-rec')});return r})(),until:f.until.value?addMonths('',+f.until.value):''});
-    users.push(d.user);list();toast('ההזמנה נשלחה ל-'+d.user.email+(w?' · וואטסאפ נפתח':''));
-    if(w){if(d.user.phone)w.location=waLink(d.user.phone,waText(f.name.value.trim(),d.user.email));else w.close()}
-    $('waT').textContent=waText(f.name.value.trim());$('wa').classList.add('on');f.reset();f.querySelectorAll('[name=r]').forEach(x=>x.checked=true)}
+  try{const nm=f.name.value.trim(),d=await api('POST',{action:'invite',email:f.email.value,name:nm,phone:f.phone.value,expires:f.expires.value,roles,until:f.until.value?addMonths('',+f.until.value):''});
+    users.push(d.user);list();
+    if(w){if(d.user.phone)w.location=waLink(d.user.phone,waText(nm,d.user.email));else w.close()}
+    $('invOkT').textContent='✓ ההזמנה נשלחה ל-'+d.user.email+(w?' · וואטסאפ נפתח':'');$('waT').textContent=waText(nm,d.user.email);
+    f.hidden=true;$('invOk').hidden=false}
   catch(x){if(w)w.close();toast(x.message,1)}finally{b.disabled=false}}
 async function saveDetails(e){
   e.preventDefault();const f=$('dlgF'),b=f.querySelector('[type=submit]');b.disabled=true;
@@ -285,7 +322,7 @@ document.addEventListener('click',async e=>{
       case 'remind':{const s=soonest(u);const what=s.k==='all'?'הגישה שלך לאתר הקורסים':s.k==='r'?'הגישה שלך לשיעורים המוקלטים בקורס '+NAMES[s.c]:'הגישה שלך לקורס '+NAMES[s.c];
         window.open(waLink(u.phone,`שלום${u.name?' '+u.name:''},\nתזכורת: ${what} ב-NGQA בתוקף עד ${dmy(s.d)}.\nרוצה להאריך? אפשר לענות כאן ונסדר.`),'_blank','noopener');break}
       case 'wasend':window.open(waLink(u.phone,waText(u.name,u.email)),'_blank','noopener');break;
-      case 'wa':try{await navigator.clipboard.writeText(waText(u.name,u.email));toast('ההודעה הועתקה')}catch(x){$('waT').textContent=waText(u.name,u.email);$('wa').classList.add('on');window.scrollTo({top:0,behavior:'smooth'})}break;
+      case 'wa':try{await navigator.clipboard.writeText(waText(u.name,u.email));toast('ההודעה הועתקה')}catch(x){prompt('העתיקו את ההודעה:',waText(u.name,u.email))}break;
       case 'admin':{const adm=u.roles.includes('admin');if(!confirm(adm?`להסיר את הרשאת המנהל מ-${who}?`:`להפוך את ${who} למנהל? מנהל רואה את כל הקורסים ויכול לנהל משתמשים.`))return;
         const r=new Set(u.roles);adm?r.delete('admin'):r.add('admin');upd((await api('POST',{action:'roles',id,roles:[...r]})).user);toast('עודכן');break}
       case 'block':{if(!u.blocked&&!confirm(`לחסום את ${who}? הוא לא יוכל להיכנס לאף קורס עד שתבטלו.`))return;
