@@ -78,7 +78,7 @@ REC_JS = '''<script>/* v3.13 site settings from the backoffice: recordings on/of
     if(nr!==null){history.replaceState(null,'',location.pathname+location.hash);c.scrollIntoView({block:'center'});c.classList.add('flash')}}
   /* "שיעורים מוקלטים" tab in the chapter viewer, next to מצגת / תרגילים (hash #<chapter>/rec) */
   function recTab(){const S=document.getElementById('tabS'),E=document.getElementById('tabE');if(!S||!E||document.getElementById('tabR'))return;
-    const st=document.createElement('style');st.textContent='#recview{display:none;max-width:1240px;margin:16px auto 40px;padding:0 max(3vw,12px)}body.m-rec #recview{display:block}body.m-rec .stage,body.m-rec .rail,body.m-rec #feed,body.m-rec .fpill,body.m-rec #exlist,body.m-rec #exview{display:none!important}body.m-rec #fs,body.m-rec #prt,body.m-rec #tocb{display:none}#recview .rc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;text-align:center}#recview .rc h2{margin:0 0 8px}#recview .rc p{color:var(--mute);margin:6px auto 14px;max-width:56ch}#recview .rc a{display:inline-block;background:var(--orange);color:#fff;border-radius:10px;padding:8px 18px;font-weight:700;text-decoration:none}';
+    const st=document.createElement('style');st.textContent='#recview{display:none;max-width:1560px;margin:16px auto 40px;padding:0 max(3vw,12px)}body.m-rec #recview{display:block}body.m-rec .stage,body.m-rec .rail,body.m-rec #feed,body.m-rec .fpill,body.m-rec #exlist,body.m-rec #exview{display:none!important}body.m-rec #fs,body.m-rec #prt,body.m-rec #tocb{display:none}#recview .rc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;text-align:center}#recview .rc h2{margin:0 0 8px}#recview .rc p{color:var(--mute);margin:6px auto 14px;max-width:56ch}#recview .rc a{display:inline-block;background:var(--orange);color:#fff;border-radius:10px;padding:8px 18px;font-weight:700;text-decoration:none}';
     document.head.appendChild(st);
     const R=document.createElement('button');R.type='button';R.setAttribute('role','tab');R.id='tabR';R.setAttribute('aria-selected','false');
     R.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M17 10l4-2v8l-4-2z"/></svg>שיעורים מוקלטים';E.after(R);
@@ -99,6 +99,9 @@ REC_JS = '''<script>/* v3.13 site settings from the backoffice: recordings on/of
 import json, html as _h
 INFO = json.loads((pathlib.Path(__file__).with_name('course_info.json')).read_text(encoding='utf-8'))
 
+WIDE_CSS = """/*wide*/.hero .in,.wrap,.stage,.where,.tabs,#exlist,#recview{max-width:1560px}.rail{max-width:1584px}#exview{max-width:1240px}
+@media(min-width:1100px){#exlist .exl{grid-template-columns:1fr 1fr}}
+/*/wide*/"""
 INFO_CSS = """/*info*/.ctabs{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:5px;width:max-content;max-width:100%;margin:0 0 26px}
 .ctabs button{font:inherit;font-size:16px;font-weight:700;border:0;border-radius:10px;padding:9px 18px;background:none;color:var(--mute);cursor:pointer;display:flex;align-items:center;gap:8px}
 .ctabs button svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
@@ -196,6 +199,7 @@ def info_html(cid):
 def strip(src):
     src = re.sub(r'/\*aux\*/.*?/\*/aux\*/\n?', '', src, flags=re.S)
     src = re.sub(r'/\*info\*/.*?/\*/info\*/\n?', '', src, flags=re.S)
+    src = re.sub(r'/\*wide\*/.*?/\*/wide\*/\n?', '', src, flags=re.S)
     src = re.sub(r'<!--info-->.*?<!--/info-->\n?\s*', '', src, flags=re.S)
     src = re.sub(r'\.aux\{margin-bottom:34px\}.*?\.ax \.acts a\.pri\{[^}]*\}\n', '', src, flags=re.S)  # legacy (unmarked) css
     src = re.sub(r'<section class="aux".*?</section>\n\s*(<script>(?:\(async\(\)=>\{const A=window.NGQAAuth,c=document.getElementById\(\'recCard\'\)|/\* v3\.13 site settings).*?</script>\n\s*)?', '', src, flags=re.S)
@@ -208,6 +212,7 @@ def apply(cid):
     inf = info_html(cid)
     if inf:
         src = src.replace('.hsr{display:flex', INFO_CSS + '\n.hsr{display:flex', 1)
+    src = src.replace('.hsr{display:flex', WIDE_CSS + '\n.hsr{display:flex', 1)
     if body:
         src = src.replace('.hsr{display:flex', CSS + '\n.hsr{display:flex', 1)
         sec = f'<section class="aux" aria-labelledby="auxh"><h2 id="auxh">חומרי עזר</h2><div class="auxg">\n{body}\n    </div></section>\n    '
