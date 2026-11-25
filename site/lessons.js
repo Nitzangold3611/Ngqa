@@ -28,7 +28,7 @@
     if (v) return `<iframe src="https://player.vimeo.com/video/${v}" title="${esc(l.title)}" allow="fullscreen; picture-in-picture" allowfullscreen></iframe>`;
     return `<video controls playsinline preload="metadata" controlslist="nodownload" src="${esc(l.src)}"></video>`;
   }
-  const CSS = `.lsn{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
+  const CSS = `.lsn{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:20px;align-items:start}
 .lsn .main{min-width:0}.lsn .side{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px;position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}
 .lp{aspect-ratio:16/9;background:#0b0a24;border-radius:16px;overflow:hidden;display:grid}
 .lp iframe,.lp video{width:100%;height:100%;border:0;display:block;background:#000}

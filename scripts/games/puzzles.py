@@ -31,7 +31,7 @@ button{font:inherit;cursor:pointer}
 .bar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;gap:10px;align-items:center;padding:10px max(3vw,14px);flex-wrap:wrap}
 .bar b{flex:1;font-size:17px}
 .bar a{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 14px;text-decoration:none;font-size:15px}
-.wrap{max-width:1240px;margin:auto;padding:22px max(3vw,14px)}
+.wrap{max-width:1560px;margin:auto;padding:22px max(3vw,14px)}
 .tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
 .tabs button{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:8px 18px;font-weight:700}
 .tabs button[aria-selected=true]{border-color:var(--orange);background:var(--orange);color:#fff}

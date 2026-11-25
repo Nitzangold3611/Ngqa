@@ -33,7 +33,7 @@ button{font:inherit;cursor:pointer}
 .bar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;gap:10px;align-items:center;padding:10px max(3vw,14px);flex-wrap:wrap}
 .bar b{flex:1;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bar a,.bar button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 14px;text-decoration:none;font-size:15px}
-.wrap{max-width:880px;margin:auto;padding:22px max(3vw,14px)}
+.wrap{max-width:1240px;margin:auto;padding:22px max(3vw,14px)}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
 .tabs button{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:6px 14px;font-weight:700}
 .tabs button small{display:block;font-weight:500;font-size:12px;color:var(--mute)}
@@ -42,7 +42,7 @@ button{font:inherit;cursor:pointer}
 .head{display:flex;justify-content:space-between;gap:10px;color:var(--mute);font-weight:700;font-size:14.5px;margin-bottom:8px;flex-wrap:wrap}
 .prog{height:6px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:16px}.prog i{display:block;height:100%;background:var(--teal);transition:width .3s}
 .q{font-size:20px;font-weight:700;margin:0 0 14px;line-height:1.45}
-.opts{display:grid;gap:10px}
+.opts{display:grid;gap:10px}@media(min-width:1000px){.opts{grid-template-columns:1fr 1fr}}
 .opt{display:flex;gap:12px;align-items:flex-start;text-align:start;border:2px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:10px 14px;width:100%}
 .opt:hover:not([disabled]){border-color:var(--teal)}
 .opt .l{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:#fff;font-weight:800}
