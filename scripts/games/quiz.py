@@ -9,6 +9,7 @@ VER = sys.argv[4] if len(sys.argv) > 4 else '1.0'
 DATE = sys.argv[5] if len(sys.argv) > 5 else '23.11.2026'
 _spec = importlib.util.spec_from_file_location('q', SRC); _m = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_m)
 OUT = pathlib.Path(__file__).resolve().parents[2] / 'site' / 'courses' / CID / 'quiz'
+REVIEW = 'כדאי לחזור על הפרק בספר המסכם ובמצגת, ולנסות שוב.' if (OUT.parent / 'book').is_dir() else 'כדאי לחזור על הפרק במצגת, ולנסות שוב.'
 
 chs = []
 for n, title, qs in _m.CHAPTERS:
@@ -57,6 +58,7 @@ button{font:inherit;cursor:pointer}
 .res{text-align:center}.res .big{font-size:52px;font-weight:800;color:var(--teal-d);line-height:1.1}
 .res ul{text-align:start;padding-inline-start:20px}.res li{margin:6px 0}
 .res .acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.res .acts a{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;padding:9px 20px;font-weight:700;color:var(--ink);text-decoration:none}
 .res .acts button{border:0;border-radius:10px;padding:9px 20px;font-weight:700;background:var(--orange);color:#fff}.res .acts button.sec{background:none;border:1px solid var(--line);color:var(--ink)}
 .print{display:none}
 footer{text-align:center;color:var(--mute);font-size:14px;padding:22px}footer .ver{display:block}
@@ -88,11 +90,11 @@ function show(){const k=st.ids[st.i],q=ch.qs[k],a=st.ans[st.i];
 function result(){const wrong=st.ids.filter((k,i)=>st.ans[i]!==ch.qs[k].a),ok=st.ids.length-wrong.length;
   if(st.ids.length===ch.qs.length){S['best'+ch.n]=Math.max(S['best'+ch.n]||0,ok);save()}
   const pct=Math.round(ok/st.ids.length*100),next=C.find(c=>c.n===ch.n+1);
-  $('card').innerHTML=`<div class="res"><div class="head"><span>פרק ${ch.n} · ${ch.t}</span><span>סיום</span></div><div class="big">${ok}/${st.ids.length}</div>
-  <p>${pct>=80?'מצוין! אתם מוכנים לפרק הבא.':pct>=65?'יפה — כדאי לחזור על השאלות שטעיתם בהן.':'כדאי לחזור על הפרק בספר המסכם ובמצגת, ולנסות שוב.'}</p>
+  $('card').innerHTML=`<div class="res"><div class="head"><span>פרק ${ch.n} · ${ch.t}</span><span>התוצאה שלך</span></div><div class="big">${ok}/${st.ids.length}</div>
+  <p>${pct>=80?'מצוין! אתם מוכנים לפרק הבא.':pct>=65?'יפה — כדאי לחזור על השאלות שטעיתם בהן.':'__REVIEW__'}</p>
   ${wrong.length?`<ul>${wrong.map(k=>`<li>${ch.qs[k].q} — <b>${L[ch.qs[k].a]}. ${ch.qs[k].o[ch.qs[k].a]}</b></li>`).join('')}</ul>`:''}
-  <div class="acts">${wrong.length?`<button type="button" id="rw">תרגול רק של הטעויות (${wrong.length})</button>`:''}<button type="button" class="sec" id="ra">מההתחלה</button>${next?`<button type="button" class="sec" id="nc">לפרק ${next.n}</button>`:''}</div></div>`;
-  tabs();if($('rw'))$('rw').onclick=()=>start(ch.n,wrong);$('ra').onclick=()=>start(ch.n);if($('nc'))$('nc').onclick=()=>start(next.n)}
+  <div class="acts">${wrong.length?`<button type="button" id="rw">תרגול רק של הטעויות (${wrong.length})</button>`:''}<button type="button" class="sec" id="ra">מההתחלה</button>${next?`<button type="button" class="sec" id="nc">לפרק ${next.n}</button>`:`<button type="button" class="sec" id="nc">חזרה לפרק ${C[0].n}</button><a class="sec" href="../">חזרה לקורס</a>`}</div></div>`;
+  tabs();if($('rw'))$('rw').onclick=()=>start(ch.n,wrong);$('ra').onclick=()=>start(ch.n);if($('nc'))$('nc').onclick=()=>start(next?next.n:C[0].n)}
 function printView(){$('print').innerHTML=`<h2>__LABEL__ · שאלות חזרה · פרק ${ch.n} — ${ch.t}</h2>`+ch.qs.map((q,i)=>`<div class="pq"><b>${i+1}. ${q.q}</b><ol>${q.o.map(o=>`<li>${o}</li>`).join('')}</ol></div>`).join('')+
   `<div class="key"><h2>תשובות והסברים — פרק ${ch.n}</h2><ol>${ch.qs.map(q=>`<li><b>${L[q.a]}.</b> ${q.o[q.a]} — ${q.w[q.a]}</li>`).join('')}</ol></div>`}
 $('prt').onclick=()=>window.print();
@@ -118,7 +120,7 @@ page = f'''<!DOCTYPE html>
 <div class="bar"><b>{_m.TITLE} · {LABEL}</b><button type="button" id="prt">הדפסת הפרק</button><a href="../">חזרה לקורס</a></div>
 <div class="wrap"><div class="tabs" id="tabs" role="tablist"></div><div class="card" id="card"></div><div class="print" id="print"></div></div>
 <footer>כל הזכויות שמורות ל-NGQA ייעוץ והדרכה בבדיקות תוכנה<span class="ver">שאלות חזרה <bdi dir="ltr">v{VER} · {DATE}</bdi></span></footer>
-<script>{JS.replace('__DATA__', json.dumps(chs, ensure_ascii=False)).replace('__CID__', CID).replace('__LABEL__', LABEL)}</script>
+<script>{JS.replace('__DATA__', json.dumps(chs, ensure_ascii=False)).replace('__CID__', CID).replace('__LABEL__', LABEL).replace('__REVIEW__', REVIEW)}</script>
 </body>
 </html>
 '''

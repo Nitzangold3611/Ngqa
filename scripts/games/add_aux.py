@@ -23,6 +23,15 @@ ESC = {
 }
 XW = 'המונחים המקצועיים של הקורס בשני משחקים דיגיטליים: תשבץ הגדרות ותשחץ עם הגדרות היגיון. אפשר גם להדפיס.'
 
+def quiz_info(cid):
+    """(chapters, questions per chapter) of the course's review quiz, read from the built page; None if there is none."""
+    p = ROOT / 'site/courses' / cid / 'quiz/index.html'
+    if not p.exists(): return None
+    t = p.read_text(encoding='utf-8'); i = t.find('const C=') + 8
+    try: chs = json.JSONDecoder().raw_decode(t, i)[0]
+    except Exception: return None
+    return len(chs), max(len(c['qs']) for c in chs)
+
 def cards(cid):
     out = []
     def card(kind, title, text, links):
@@ -31,8 +40,10 @@ def cards(cid):
     if cid == 'genai':
         card('book', 'ספר מסכם לקורס', 'כל החומר לפי פרקים ותתי-פרקים, עם מושגים והסברים בסוף כל פרק וסיכום במילים פשוטות.',
              [('קריאה', 'book/', ''), ('הורדת PDF', 'pdf/NGQA-CT-GenAI-book.pdf', ' download="NGQA-CT-GenAI-book.pdf"'), ('הדפסה', 'book/?print=1', ' target="_blank" rel="noopener"')])
-        card('quiz', 'שאלות חזרה בין פרק לפרק', '20 שאלות אמריקאיות לכל פרק, עם הסבר לכל תשובה, ציון ותרגול חוזר של הטעויות. אפשר גם להדפיס.',
-             [(f'פרק {n}', f'quiz/#ch{n}', '') for n in range(1, 6)])
+    qz = quiz_info(cid)
+    if qz:
+        card('quiz', 'שאלות חזרה בין פרק לפרק', f'{qz[1]} שאלות אמריקאיות לכל פרק, עם הסבר לכל תשובה, ציון ותרגול חוזר של הטעויות. אפשר גם להדפיס.',
+             [(f'פרק {n}', f'quiz/#ch{n}', '') for n in range(1, qz[0] + 1)])
     out.append('''      <div class="ax" id="recCard" hidden><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">''' + ICON['rec'] + '''</svg></span><div><b>שיעורים מוקלטים</b><p id="recTxt">השיעורים המוקלטים של הקורס, לפי פרקים.</p><div class="acts" id="recActs"><a class="pri" href="lessons/">לשיעורים</a></div></div></div>''')
     if (ROOT / 'site/courses' / cid / 'escape/index.html').exists():
         t, x = ESC[cid]; card('escape', t, x, [('כניסה לחדר', 'escape/', '')])
@@ -165,7 +176,9 @@ def info_html(cid):
     if exams: mats.append(f'{"מבחן לדוגמא" if len(exams) == 1 else str(len(exams)) + " מבחנים לדוגמא"} במבנה הבחינה הרשמית')
     if projs: mats.append('פרויקט גמר עם הנחיות')
     if cid == 'genai':
-        mats += ['ספר מסכם לקורס — לקריאה, PDF והדפסה', 'שאלות חזרה: 20 שאלות אמריקאיות לכל פרק']
+        mats += ['ספר מסכם לקורס — לקריאה, PDF והדפסה']
+    qz = quiz_info(cid)
+    if qz: mats.append(f'שאלות חזרה: {qz[1]} שאלות אמריקאיות לכל פרק')
     if (base / 'escape/index.html').exists(): mats.append('חדר בריחה דיגיטלי למשחק עצמאי')
     if (base / 'puzzles/index.html').exists(): mats.append('תשבץ ותשחץ של המונחים המקצועיים')
     dl = base / 'dl'
